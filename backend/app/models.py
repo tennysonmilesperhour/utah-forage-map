@@ -4,16 +4,41 @@ from sqlalchemy import (
     Boolean, Column, Date, DateTime, Float, ForeignKey,
     Integer, String, Text,
 )
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.postgresql import UUID as PG_UUID
 from sqlalchemy.orm import relationship
+from sqlalchemy.types import CHAR, TypeDecorator
 
 from app.database import Base
+
+
+class GUID(TypeDecorator):
+    impl = CHAR
+    cache_ok = True
+
+    def load_dialect_impl(self, dialect):
+        if dialect.name == "postgresql":
+            return dialect.type_descriptor(PG_UUID(as_uuid=True))
+        return dialect.type_descriptor(CHAR(36))
+
+    def process_bind_param(self, value, dialect):
+        if value is None:
+            return None
+        if dialect.name == "postgresql":
+            return value
+        if not isinstance(value, uuid.UUID):
+            value = uuid.UUID(str(value))
+        return str(value)
+
+    def process_result_value(self, value, dialect):
+        if value is None or isinstance(value, uuid.UUID):
+            return value
+        return uuid.UUID(str(value))
 
 
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id = Column(GUID(), primary_key=True, default=uuid.uuid4)
     username = Column(String, unique=True, nullable=False)
     email = Column(String, unique=True, nullable=False)
     hashed_password = Column(String, nullable=False)
@@ -30,7 +55,7 @@ class User(Base):
 class Species(Base):
     __tablename__ = "species"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id = Column(GUID(), primary_key=True, default=uuid.uuid4)
     common_name = Column(String, nullable=False)
     latin_name = Column(String, nullable=False)
     edibility = Column(String)
@@ -48,9 +73,9 @@ class Species(Base):
 class Sighting(Base):
     __tablename__ = "sightings"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
-    species_id = Column(UUID(as_uuid=True), ForeignKey("species.id"), nullable=False)
+    id = Column(GUID(), primary_key=True, default=uuid.uuid4)
+    user_id = Column(GUID(), ForeignKey("users.id"), nullable=False)
+    species_id = Column(GUID(), ForeignKey("species.id"), nullable=False)
     latitude = Column(Float, nullable=False)
     longitude = Column(Float, nullable=False)
     elevation_ft = Column(Float)
@@ -74,9 +99,9 @@ class Sighting(Base):
 class Verification(Base):
     __tablename__ = "verifications"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    sighting_id = Column(UUID(as_uuid=True), ForeignKey("sightings.id"), nullable=False)
-    verifier_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
+    id = Column(GUID(), primary_key=True, default=uuid.uuid4)
+    sighting_id = Column(GUID(), ForeignKey("sightings.id"), nullable=False)
+    verifier_id = Column(GUID(), ForeignKey("users.id"), nullable=False)
     confirmed = Column(Boolean, nullable=False)
     notes = Column(Text)
     verified_at = Column(DateTime, default=datetime.utcnow)
@@ -88,11 +113,67 @@ class Verification(Base):
 class CrawledSource(Base):
     __tablename__ = "crawled_sources"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    sighting_id = Column(UUID(as_uuid=True), ForeignKey("sightings.id"), nullable=True)
+    id = Column(GUID(), primary_key=True, default=uuid.uuid4)
+    sighting_id = Column(GUID(), ForeignKey("sightings.id"), nullable=True)
     source_name = Column(String, nullable=False)
     source_url = Column(String, nullable=False)
     raw_data = Column(Text)
     crawled_at = Column(DateTime, default=datetime.utcnow)
 
     sighting = relationship("Sighting", back_populates="crawled_sources")
+
+
+class CommunityFind(Base):
+    __tablename__ = "community_finds"
+
+    id = Column(GUID(), primary_key=True, default=uuid.uuid4)
+    title = Column(String, nullable=False)
+    region = Column(String, nullable=False)
+    species_name = Column(String)
+    summary = Column(Text)
+    photo_url = Column(String)
+    contributor_name = Column(String)
+    reviewed = Column(Boolean, default=False)
+    published = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class CommunityEvent(Base):
+    __tablename__ = "community_events"
+
+    id = Column(GUID(), primary_key=True, default=uuid.uuid4)
+    title = Column(String, nullable=False)
+    starts_on = Column(Date, nullable=False)
+    location_name = Column(String, nullable=False)
+    region = Column(String)
+    description = Column(Text)
+    organizer = Column(String)
+    url = Column(String)
+    published = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class ForageClub(Base):
+    __tablename__ = "forage_clubs"
+
+    id = Column(GUID(), primary_key=True, default=uuid.uuid4)
+    name = Column(String, nullable=False)
+    region = Column(String, nullable=False)
+    description = Column(Text)
+    contact_url = Column(String)
+    meeting_cadence = Column(String)
+    published = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class ResourceGuide(Base):
+    __tablename__ = "resource_guides"
+
+    id = Column(GUID(), primary_key=True, default=uuid.uuid4)
+    title = Column(String, nullable=False)
+    category = Column(String, nullable=False)
+    summary = Column(Text)
+    url = Column(String)
+    priority = Column(Integer, default=100)
+    published = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=datetime.utcnow)

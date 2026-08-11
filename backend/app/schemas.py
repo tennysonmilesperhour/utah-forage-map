@@ -78,6 +78,7 @@ class SightingRead(BaseModel):
     confidence_score: int
     verified: bool
     created_at: datetime
+    species: SpeciesRead
 
     model_config = {"from_attributes": True}
 
@@ -99,3 +100,59 @@ class VerificationCreate(BaseModel):
     sighting_id: UUID
     confirmed: bool
     notes: Optional[str] = None
+
+
+class CommunityFindRead(BaseModel):
+    id: UUID
+    title: str
+    region: str
+    species_name: Optional[str] = None
+    summary: Optional[str] = None
+    photo_url: Optional[str] = None
+    contributor_name: Optional[str] = None
+    reviewed: bool
+    published: bool
+    created_at: datetime
+
+    model_config = {"from_attributes": True}
+
+
+class CommunityEventRead(BaseModel):
+    id: UUID
+    title: str
+    starts_on: date
+    location_name: str
+    region: Optional[str] = None
+    description: Optional[str] = None
+    organizer: Optional[str] = None
+    url: Optional[str] = None
+    published: bool
+    created_at: datetime
+
+    model_config = {"from_attributes": True}
+
+
+class ForageClubRead(BaseModel):
+    id: UUID
+    name: str
+    region: str
+    description: Optional[str] = None
+    contact_url: Optional[str] = None
+    meeting_cadence: Optional[str] = None
+    published: bool
+    created_at: datetime
+
+    model_config = {"from_attributes": True}
+
+
+class ResourceGuideRead(BaseModel):
+    id: UUID
+    title: str
+    category: str
+    summary: Optional[str] = None
+    url: Optional[str] = None
+    priority: int
+    published: bool
+    created_at: datetime
+
+    model_config = {"from_attributes": True}
