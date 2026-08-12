@@ -19,3 +19,5 @@ dist/
 
 # Database
 *.sqlite3
+*.db
+.vercel/

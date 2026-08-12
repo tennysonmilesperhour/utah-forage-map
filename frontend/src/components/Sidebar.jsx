@@ -1,3 +1,5 @@
+import { MapPin, RotateCcw, ShieldCheck, SlidersHorizontal, X } from 'lucide-react'
+
 const HABITAT_TYPES = [
   'forest', 'meadow', 'riparian', 'alpine', 'desert', 'scrubland', 'wetland',
 ]
@@ -9,131 +11,165 @@ const MONTHS = [
   'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
 ]
 
-export default function Sidebar({ filters, onChange, sightingCount, loading }) {
+export default function Sidebar({
+  filters,
+  onChange,
+  sightingCount,
+  loading,
+  species = [],
+  variant = 'desktop',
+  onClose,
+}) {
+  const idPrefix = variant === 'mobile' ? 'mobile' : 'desktop'
+  const activeFilterCount = Object.values(filters).filter(value => value !== undefined && value !== '').length
+
   function set(key, value) {
     onChange({ ...filters, [key]: value })
   }
 
   return (
-    <aside className="w-72 shrink-0 bg-white border-r border-gray-200 flex flex-col overflow-y-auto">
-      <div className="p-4 border-b border-gray-200">
-        <h1 className="text-lg font-semibold text-gray-900">Utah Forage Map</h1>
-        <p className="text-sm text-gray-500 mt-0.5">
-          {loading ? 'Loading…' : `${sightingCount ?? 0} sightings`}
-        </p>
+    <aside className={`filter-panel filter-panel-${variant}`} aria-label="Map filters">
+      <div className="panel-heading">
+        <div>
+          <div className="panel-title-row">
+            <SlidersHorizontal size={18} aria-hidden="true" />
+            <h2>Explore Utah</h2>
+          </div>
+          <p>{loading ? 'Loading observations...' : `${sightingCount ?? 0} public observations on the map`}</p>
+        </div>
+        {onClose && (
+          <button className="icon-button" type="button" onClick={onClose} aria-label="Close filters">
+            <X size={20} aria-hidden="true" />
+          </button>
+        )}
       </div>
 
-      <div className="p-4 space-y-5 flex-1">
-        {/* Month range */}
-        <div>
-          <label className="block text-xs font-medium text-gray-700 mb-2 uppercase tracking-wide">
-            Month range
-          </label>
-          <div className="flex gap-2">
-            <select
-              className="flex-1 text-sm border border-gray-300 rounded px-2 py-1.5"
-              value={filters.month_min ?? ''}
-              onChange={e => set('month_min', e.target.value ? Number(e.target.value) : undefined)}
-            >
-              <option value="">Any</option>
-              {MONTHS.map((m, i) => (
-                <option key={i + 1} value={i + 1}>{m}</option>
-              ))}
-            </select>
-            <span className="self-center text-gray-400 text-sm">–</span>
-            <select
-              className="flex-1 text-sm border border-gray-300 rounded px-2 py-1.5"
-              value={filters.month_max ?? ''}
-              onChange={e => set('month_max', e.target.value ? Number(e.target.value) : undefined)}
-            >
-              <option value="">Any</option>
-              {MONTHS.map((m, i) => (
-                <option key={i + 1} value={i + 1}>{m}</option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        {/* Elevation */}
-        <div>
-          <label className="block text-xs font-medium text-gray-700 mb-2 uppercase tracking-wide">
-            Elevation (ft)
-          </label>
-          <div className="flex gap-2">
-            <input
-              type="number"
-              placeholder="Min"
-              className="flex-1 text-sm border border-gray-300 rounded px-2 py-1.5 w-0"
-              value={filters.elev_min ?? ''}
-              onChange={e => set('elev_min', e.target.value ? Number(e.target.value) : undefined)}
-            />
-            <span className="self-center text-gray-400 text-sm">–</span>
-            <input
-              type="number"
-              placeholder="Max"
-              className="flex-1 text-sm border border-gray-300 rounded px-2 py-1.5 w-0"
-              value={filters.elev_max ?? ''}
-              onChange={e => set('elev_max', e.target.value ? Number(e.target.value) : undefined)}
-            />
-          </div>
-        </div>
-
-        {/* Habitat */}
-        <div>
-          <label className="block text-xs font-medium text-gray-700 mb-2 uppercase tracking-wide">
-            Habitat type
-          </label>
+      <div className="filter-scroll">
+        <div className="filter-group">
+          <label htmlFor={`${idPrefix}-species`}>Species</label>
           <select
-            className="w-full text-sm border border-gray-300 rounded px-2 py-1.5"
+            id={`${idPrefix}-species`}
+            value={filters.species_id ?? ''}
+            onChange={event => set('species_id', event.target.value || undefined)}
+          >
+            <option value="">All mushrooms</option>
+            {species.map(item => (
+              <option key={item.id} value={item.id}>{item.common_name}</option>
+            ))}
+          </select>
+        </div>
+
+        <div className="filter-group">
+          <span className="field-label">Season window</span>
+          <div className="paired-fields">
+            <label>
+              <span>From</span>
+              <select
+                value={filters.month_min ?? ''}
+                onChange={event => set('month_min', event.target.value ? Number(event.target.value) : undefined)}
+              >
+                <option value="">Any month</option>
+                {MONTHS.map((month, index) => (
+                  <option key={month} value={index + 1}>{month}</option>
+                ))}
+              </select>
+            </label>
+            <label>
+              <span>Through</span>
+              <select
+                value={filters.month_max ?? ''}
+                onChange={event => set('month_max', event.target.value ? Number(event.target.value) : undefined)}
+              >
+                <option value="">Any month</option>
+                {MONTHS.map((month, index) => (
+                  <option key={month} value={index + 1}>{month}</option>
+                ))}
+              </select>
+            </label>
+          </div>
+        </div>
+
+        <div className="filter-group">
+          <span className="field-label">Elevation range</span>
+          <div className="paired-fields">
+            <label>
+              <span>Minimum</span>
+              <input
+                type="number"
+                inputMode="numeric"
+                placeholder="Any"
+                value={filters.elev_min ?? ''}
+                onChange={event => set('elev_min', event.target.value ? Number(event.target.value) : undefined)}
+              />
+            </label>
+            <label>
+              <span>Maximum</span>
+              <input
+                type="number"
+                inputMode="numeric"
+                placeholder="Any"
+                value={filters.elev_max ?? ''}
+                onChange={event => set('elev_max', event.target.value ? Number(event.target.value) : undefined)}
+              />
+            </label>
+          </div>
+          <p className="field-help">Feet above sea level</p>
+        </div>
+
+        <div className="filter-group">
+          <label htmlFor={`${idPrefix}-habitat`}>Habitat</label>
+          <select
+            id={`${idPrefix}-habitat`}
             value={filters.habitat_type ?? ''}
-            onChange={e => set('habitat_type', e.target.value || undefined)}
+            onChange={event => set('habitat_type', event.target.value || undefined)}
           >
             <option value="">All habitats</option>
-            {HABITAT_TYPES.map(h => (
-              <option key={h} value={h}>{h.charAt(0).toUpperCase() + h.slice(1)}</option>
+            {HABITAT_TYPES.map(habitat => (
+              <option key={habitat} value={habitat}>{habitat.charAt(0).toUpperCase() + habitat.slice(1)}</option>
             ))}
           </select>
         </div>
 
-        {/* Source */}
-        <div>
-          <label className="block text-xs font-medium text-gray-700 mb-2 uppercase tracking-wide">
-            Source
-          </label>
+        <div className="filter-group">
+          <label htmlFor={`${idPrefix}-source`}>Observation source</label>
           <select
-            className="w-full text-sm border border-gray-300 rounded px-2 py-1.5"
+            id={`${idPrefix}-source`}
             value={filters.source ?? ''}
-            onChange={e => set('source', e.target.value || undefined)}
+            onChange={event => set('source', event.target.value || undefined)}
           >
             <option value="">All sources</option>
-            {SOURCES.map(s => (
-              <option key={s} value={s}>{s}</option>
+            {SOURCES.map(source => (
+              <option key={source} value={source}>{source}</option>
             ))}
           </select>
         </div>
 
-        {/* Verified only */}
-        <div className="flex items-center gap-2">
+        <label className="check-control" htmlFor={`${idPrefix}-verified-only`}>
           <input
-            id="verified-only"
+            id={`${idPrefix}-verified-only`}
             type="checkbox"
-            className="w-4 h-4 rounded border-gray-300 text-green-600"
-            checked={!!filters.verified_only}
-            onChange={e => set('verified_only', e.target.checked || undefined)}
+            checked={Boolean(filters.verified_only)}
+            onChange={event => set('verified_only', event.target.checked || undefined)}
           />
-          <label htmlFor="verified-only" className="text-sm text-gray-700">
-            Verified sightings only
-          </label>
+          <span>
+            <strong>Reviewed locations only</strong>
+            <small>Hide observations awaiting community review</small>
+          </span>
+        </label>
+
+        <div className="safety-note">
+          <ShieldCheck size={19} aria-hidden="true" />
+          <p><strong>Map data is a starting point.</strong> Never eat a mushroom based on a pin or photo alone.</p>
         </div>
       </div>
 
-      {/* Reset */}
-      <div className="p-4 border-t border-gray-200">
-        <button
-          className="w-full text-sm text-gray-600 hover:text-gray-900 underline underline-offset-2"
-          onClick={() => onChange({})}
-        >
-          Reset filters
+      <div className="filter-footer">
+        <div>
+          <MapPin size={17} aria-hidden="true" />
+          <span>{loading ? 'Updating map' : `${sightingCount ?? 0} shown`}</span>
+        </div>
+        <button type="button" onClick={() => onChange({})} disabled={activeFilterCount === 0}>
+          <RotateCcw size={16} aria-hidden="true" /> Clear {activeFilterCount > 0 ? activeFilterCount : ''}
         </button>
       </div>
     </aside>
