@@ -33,13 +33,14 @@ function escapeHtml(value = '') {
     .replaceAll("'", '&#039;')
 }
 
-export default function MapView({ sightings = [], onSightingClick, draftLocation, onMapClick }) {
+export default function MapView({ sightings = [], onSightingClick, draftLocation, onMapClick, isPickingLocation = false }) {
   const containerRef = useRef(null)
   const mapRef = useRef(null)
   const markersRef = useRef([])
   const draftMarkerRef = useRef(null)
   const sightingsRef = useRef(sightings)
   const onSightingClickRef = useRef(onSightingClick)
+  const onMapClickRef = useRef(onMapClick)
 
   useEffect(() => {
     sightingsRef.current = sightings
@@ -48,6 +49,10 @@ export default function MapView({ sightings = [], onSightingClick, draftLocation
   useEffect(() => {
     onSightingClickRef.current = onSightingClick
   }, [onSightingClick])
+
+  useEffect(() => {
+    onMapClickRef.current = onMapClick
+  }, [onMapClick])
 
   // Sync markers when sightings change
   const syncMarkers = useCallback(() => {
@@ -119,7 +124,7 @@ export default function MapView({ sightings = [], onSightingClick, draftLocation
     }), 'top-right')
     map.addControl(new mapboxgl.ScaleControl({ unit: 'imperial' }), 'bottom-right')
     map.on('click', (event) => {
-      onMapClick?.({
+      onMapClickRef.current?.({
         latitude: event.lngLat.lat,
         longitude: event.lngLat.lng,
       })
@@ -133,7 +138,7 @@ export default function MapView({ sightings = [], onSightingClick, draftLocation
       map.remove()
       mapRef.current = null
     }
-  }, [onMapClick, syncMarkers])
+  }, [syncMarkers])
 
   useEffect(() => {
     const map = mapRef.current
@@ -159,21 +164,27 @@ export default function MapView({ sightings = [], onSightingClick, draftLocation
       .addTo(map)
   }, [draftLocation])
 
+  useEffect(() => {
+    const map = mapRef.current
+    if (!map) return
+    map.getCanvas().style.cursor = isPickingLocation ? 'crosshair' : ''
+  }, [isPickingLocation])
+
   const hasToken = !!import.meta.env.VITE_MAPBOX_TOKEN
 
   return (
-    <div className="relative h-full min-h-0 w-full">
+    <div className="map-canvas-wrap">
       <div className="absolute inset-0">
         <div ref={containerRef} className="h-full w-full" />
       </div>
       {!hasToken && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
-          <div className="text-center p-6 bg-white rounded-lg shadow">
-            <p className="font-medium text-gray-800 mb-2">Mapbox token required</p>
-            <p className="text-sm text-gray-500">
+        <div className="map-token-fallback">
+          <div>
+            <p>Mapbox token required</p>
+            <span>
               Set <code className="bg-gray-100 px-1 rounded">VITE_MAPBOX_TOKEN</code> in{' '}
               <code className="bg-gray-100 px-1 rounded">frontend/.env</code>
-            </p>
+            </span>
           </div>
         </div>
       )}

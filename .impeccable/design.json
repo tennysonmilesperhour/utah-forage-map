@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-11T00:00:00-06:00",
+  "title": "Design System: Utah Forage Map",
+  "extensions": {
+    "colorMeta": {
+      "field-pine": { "role": "primary", "displayName": "Field Pine", "canonical": "#184A3B", "tonalRamp": ["#0C231C", "#123B2F", "#184A3B", "#2D6654", "#5A8B79", "#91B4A7", "#C8DCD4", "#EDF4F1"] },
+      "trail-blue": { "role": "secondary", "displayName": "Trail Blue", "canonical": "#2563EB", "tonalRamp": ["#10204A", "#173A89", "#2563EB", "#5686EF", "#86A9F4", "#B6CAF8", "#DBE6FC", "#EFF4FE"] },
+      "canvas": { "role": "neutral", "displayName": "Cool Canvas", "canonical": "#F7F9F7", "tonalRamp": ["#17231F", "#34423C", "#52625A", "#76857D", "#A0ABA5", "#CBD6D0", "#EDF2EF", "#F7F9F7"] }
+    },
+    "typographyMeta": {
+      "headline": { "displayName": "Headline", "purpose": "Major panel and dialog titles." },
+      "body": { "displayName": "Body", "purpose": "Readable interface copy and field notes." },
+      "label": { "displayName": "Label", "purpose": "Compact controls and metadata." }
+    },
+    "shadows": [
+      { "name": "floating-control", "value": "0 2px 8px rgba(23, 35, 31, 0.16)", "purpose": "Map controls and menus." },
+      { "name": "modal-layer", "value": "0 12px 32px rgba(23, 35, 31, 0.22)", "purpose": "Authentication and confirmation dialogs." }
+    ],
+    "motion": [
+      { "name": "state-change", "value": "180ms cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "Hover, focus, drawer, and dialog state changes." }
+    ],
+    "breakpoints": [
+      { "name": "mobile", "value": "640px" },
+      { "name": "desktop", "value": "1024px" },
+      { "name": "wide", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The single strongest action in a local region.",
+      "html": "<button class=\"ds-button-primary\">Create account</button>",
+      "css": ".ds-button-primary { min-height: 44px; border: 0; border-radius: 8px; background: #184A3B; color: #FFFFFF; padding: 10px 16px; font: 650 14px/1.35 Inter, system-ui, sans-serif; transition: background 180ms cubic-bezier(0.22,1,0.36,1); } .ds-button-primary:hover { background: #123B2F; } .ds-button-primary:focus-visible { outline: 2px solid #184A3B; outline-offset: 2px; }"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "A high-contrast field sized for touch and keyboard use.",
+      "html": "<label class=\"ds-field\">Email<input type=\"email\" placeholder=\"you@example.com\"></label>",
+      "css": ".ds-field { display: grid; gap: 6px; color: #17231F; font: 650 12px/1.35 Inter, system-ui, sans-serif; } .ds-field input { min-height: 44px; border: 1px solid #CBD6D0; border-radius: 8px; background: #FFFFFF; color: #17231F; padding: 10px 12px; font: 400 14px/1.5 Inter, system-ui, sans-serif; } .ds-field input:focus { border-color: #184A3B; outline: 3px solid rgba(24,74,59,.15); }"
+    },
+    {
+      "name": "Guest Status",
+      "kind": "custom",
+      "description": "A quiet explanation of public access with an earned account action.",
+      "html": "<div class=\"ds-guest\"><strong>Browsing as a guest</strong><span>The full public map is open.</span><button>Create account</button></div>",
+      "css": ".ds-guest { width: 280px; border-radius: 8px; background: #FFFFFF; box-shadow: 0 2px 8px rgba(23,35,31,.16); padding: 16px; color: #17231F; font: 400 14px/1.5 Inter, system-ui, sans-serif; } .ds-guest strong,.ds-guest span { display:block; } .ds-guest button { margin-top:12px; border:0; background:transparent; color:#184A3B; padding:0; font-weight:650; } .ds-guest button:focus-visible { outline:2px solid #184A3B; outline-offset:3px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Field Desk",
+    "overview": "The interface feels like opening a clean, well-organized field kit beside a map. Information is compact but never cramped, controls use familiar product patterns, and the public map stays visually dominant.",
+    "keyCharacteristics": ["Map-first and immediately useful to guests.", "Restrained color with high-contrast semantic states.", "Familiar controls with clear keyboard and touch behavior.", "Flat at rest, elevated only for temporary layers.", "Friendly field language grounded in evidence and safety."],
+    "rules": [
+      { "name": "The Map Signal Rule", "body": "Accent colors identify actions or data states; they are never scattered as decoration.", "section": "colors" },
+      { "name": "The Outdoor Readability Rule", "body": "Secondary text remains readable in bright light; pale gray body copy is prohibited.", "section": "typography" },
+      { "name": "The Flat-at-Rest Rule", "body": "Persistent panels do not float; elevation communicates temporary layering or active interaction.", "section": "elevation" }
+    ],
+    "dos": ["Do keep the public map interactive before authentication.", "Do ask for an account at the moment a user saves, submits, or opens a private logbook.", "Do pair every status color with text or an icon.", "Do maintain 44px touch targets and WCAG AA contrast.", "Do use source, review, privacy, and safety language near the relevant action."],
+    "donts": ["Don't use account walls that block the public map before users understand its value.", "Don't use generic SaaS landing pages, oversized marketing headlines, or decorative feature-card grids.", "Don't use dense directory pages that make every link compete at the same visual weight.", "Don't use brown or beige outdoor palettes, novelty wilderness motifs, or decorative map styling that obscures data.", "Don't use tiny, low-contrast controls that fail in bright outdoor light.", "Don't pair a decorative wide shadow with a bordered card."]
+  }
+}

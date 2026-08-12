@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime, date
 from sqlalchemy import (
     Boolean, Column, Date, DateTime, Float, ForeignKey,
-    Integer, String, Text,
+    Index, Integer, String, Text,
 )
 from sqlalchemy.dialects.postgresql import UUID as PG_UUID
 from sqlalchemy.orm import relationship
@@ -46,10 +46,16 @@ class User(Base):
     trust_level = Column(Integer, default=0)
     total_finds = Column(Integer, default=0)
     is_active = Column(Boolean, default=True)
+    email_verified = Column(Boolean, default=False)
+    email_verified_at = Column(DateTime)
     joined_at = Column(DateTime, default=datetime.utcnow)
+    deleted_at = Column(DateTime)
 
     sightings = relationship("Sighting", back_populates="user", foreign_keys="Sighting.user_id")
     verifications = relationship("Verification", back_populates="verifier")
+    sessions = relationship("UserSession", back_populates="user", cascade="all, delete-orphan")
+    account_tokens = relationship("AccountToken", back_populates="user", cascade="all, delete-orphan")
+    saved_locations = relationship("SavedLocation", back_populates="user", cascade="all, delete-orphan")
 
 
 class Species(Base):
@@ -88,12 +94,20 @@ class Sighting(Base):
     source = Column(String, default="community")
     confidence_score = Column(Integer, default=50)
     verified = Column(Boolean, default=False)
+    location_privacy = Column(String, default="approximate", nullable=False)
+    review_status = Column(String, default="pending", nullable=False)
+    review_notes = Column(Text)
+    reviewer_id = Column(GUID(), ForeignKey("users.id"))
+    reviewed_at = Column(DateTime)
     created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     user = relationship("User", back_populates="sightings", foreign_keys=[user_id])
+    reviewer = relationship("User", foreign_keys=[reviewer_id])
     species = relationship("Species", back_populates="sightings")
     verifications = relationship("Verification", back_populates="sighting")
     crawled_sources = relationship("CrawledSource", back_populates="sighting")
+    saved_by = relationship("SavedLocation", back_populates="sighting")
 
 
 class Verification(Base):
@@ -116,11 +130,67 @@ class CrawledSource(Base):
     id = Column(GUID(), primary_key=True, default=uuid.uuid4)
     sighting_id = Column(GUID(), ForeignKey("sightings.id"), nullable=True)
     source_name = Column(String, nullable=False)
-    source_url = Column(String, nullable=False)
+    source_url = Column(String, nullable=False, unique=True)
     raw_data = Column(Text)
     crawled_at = Column(DateTime, default=datetime.utcnow)
 
     sighting = relationship("Sighting", back_populates="crawled_sources")
+
+
+class UserSession(Base):
+    __tablename__ = "user_sessions"
+
+    id = Column(GUID(), primary_key=True, default=uuid.uuid4)
+    user_id = Column(GUID(), ForeignKey("users.id"), nullable=False, index=True)
+    token_hash = Column(String(64), unique=True, nullable=False, index=True)
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    expires_at = Column(DateTime, nullable=False)
+    last_seen_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    revoked_at = Column(DateTime)
+    user_agent = Column(String(300))
+    ip_hash = Column(String(64))
+
+    user = relationship("User", back_populates="sessions")
+
+
+class AccountToken(Base):
+    __tablename__ = "account_tokens"
+
+    id = Column(GUID(), primary_key=True, default=uuid.uuid4)
+    user_id = Column(GUID(), ForeignKey("users.id"), nullable=False, index=True)
+    purpose = Column(String(30), nullable=False)
+    token_hash = Column(String(64), unique=True, nullable=False, index=True)
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    expires_at = Column(DateTime, nullable=False)
+    consumed_at = Column(DateTime)
+
+    user = relationship("User", back_populates="account_tokens")
+
+
+class RateLimitEvent(Base):
+    __tablename__ = "rate_limit_events"
+    __table_args__ = (Index("ix_rate_limit_action_key_created", "action", "key_hash", "created_at"),)
+
+    id = Column(GUID(), primary_key=True, default=uuid.uuid4)
+    action = Column(String(30), nullable=False)
+    key_hash = Column(String(64), nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+
+
+class SavedLocation(Base):
+    __tablename__ = "saved_locations"
+
+    id = Column(GUID(), primary_key=True, default=uuid.uuid4)
+    user_id = Column(GUID(), ForeignKey("users.id"), nullable=False, index=True)
+    sighting_id = Column(GUID(), ForeignKey("sightings.id", ondelete="CASCADE"), nullable=True)
+    title = Column(String(120), nullable=False)
+    notes = Column(Text)
+    latitude = Column(Float, nullable=False)
+    longitude = Column(Float, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+
+    user = relationship("User", back_populates="saved_locations")
+    sighting = relationship("Sighting", back_populates="saved_by")
 
 
 class CommunityFind(Base):

@@ -1,0 +1,124 @@
+from pathlib import Path
+import os
+import sys
+import tempfile
+from urllib.parse import parse_qs, urlparse
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.append(str(ROOT))
+
+runtime_dir = tempfile.TemporaryDirectory()
+os.environ["DATABASE_URL"] = f"sqlite:///{Path(runtime_dir.name) / 'auth-smoke.db'}"
+os.environ["SECRET_KEY"] = "auth-smoke-secret"
+os.environ["ADMIN_EMAILS"] = "moderator@example.com"
+
+from fastapi.testclient import TestClient
+
+import app.main as main_module
+from app.database import SessionLocal
+from app.models import Species
+
+
+sent_links = []
+
+
+def capture_email(_to, _subject, _heading, _message, _action, path):
+    sent_links.append(path)
+    return True
+
+
+main_module.send_account_email = capture_email
+
+
+def token_from_last_link(name):
+    return parse_qs(urlparse(sent_links[-1]).query)[name][0]
+
+
+def main():
+    with TestClient(main_module.app) as client:
+        db = SessionLocal()
+        species = Species(common_name="Morel", latin_name="Morchella esculenta", edibility="choice")
+        db.add(species)
+        db.commit()
+        db.refresh(species)
+        species_id = str(species.id)
+        db.close()
+
+        registration = client.post("/api/auth/register", json={
+            "username": "Trail Moderator",
+            "email": "moderator@example.com",
+            "password": "field-notes-2026",
+        })
+        assert registration.status_code == 201, registration.text
+        assert registration.json()["role"] == "user"
+        assert registration.json()["email_verified"] is False
+        assert client.get("/api/auth/me").status_code == 200
+
+        verification = client.post("/api/auth/verify-email", json={"token": token_from_last_link("verify")})
+        assert verification.status_code == 200, verification.text
+        assert verification.json()["email_verified"] is True
+        assert verification.json()["role"] == "admin"
+
+        submission = client.post("/api/sightings", json={
+            "species_id": species_id,
+            "latitude": 40.7,
+            "longitude": -111.9,
+            "notes": "Exact test field point",
+            "location_privacy": "approximate",
+        })
+        assert submission.status_code == 201, submission.text
+        sighting_id = submission.json()["id"]
+        assert submission.json()["review_status"] == "pending"
+        assert client.get("/api/sightings").json() == []
+
+        logbook = client.get("/api/account/logbook")
+        assert logbook.status_code == 200, logbook.text
+        assert logbook.json()[0]["latitude"] == 40.7
+
+        approval = client.patch(f"/api/moderation/sightings/{sighting_id}", json={
+            "status": "approved", "notes": "Identity and field details reviewed.",
+        })
+        assert approval.status_code == 200, approval.text
+        public = client.get("/api/sightings").json()
+        assert len(public) == 1
+        assert public[0]["latitude"] != 40.7
+        assert "user_id" not in public[0]
+
+        saved = client.post("/api/account/saved", json={
+            "sighting_id": sighting_id,
+            "title": "Morel area",
+            "latitude": public[0]["latitude"],
+            "longitude": public[0]["longitude"],
+        })
+        assert saved.status_code == 201, saved.text
+        assert len(client.get("/api/account/saved").json()) == 1
+
+        sessions = client.get("/api/account/sessions")
+        assert sessions.status_code == 200 and sessions.json()[0]["current"]
+
+        client.post("/api/auth/password/forgot", json={"email": "moderator@example.com"})
+        reset = client.post("/api/auth/password/reset", json={
+            "token": token_from_last_link("reset"), "password": "new-field-notes-2026",
+        })
+        assert reset.status_code == 204, reset.text
+        assert client.get("/api/auth/me").status_code == 401
+        login = client.post("/api/auth/login", json={
+            "email": "moderator@example.com", "password": "new-field-notes-2026",
+        })
+        assert login.status_code == 200, login.text
+
+        edit = client.patch(f"/api/account/logbook/{sighting_id}", json={"notes": "Updated owner note"})
+        assert edit.status_code == 200 and edit.json()["review_status"] == "pending"
+        client.patch(f"/api/moderation/sightings/{sighting_id}", json={"status": "approved"})
+
+        deletion = client.request("DELETE", "/api/account", json={"password": "new-field-notes-2026"})
+        assert deletion.status_code == 204, deletion.text
+        assert client.get("/api/auth/me").status_code == 401
+        assert len(client.get("/api/sightings").json()) == 1
+
+    runtime_dir.cleanup()
+    print("Account, privacy, saved-place, moderation, and recovery smoke test passed.")
+
+
+if __name__ == "__main__":
+    main()

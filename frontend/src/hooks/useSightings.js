@@ -44,6 +44,8 @@ export function useCreateSighting() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['sightings'] })
       queryClient.invalidateQueries({ queryKey: ['species'] })
+      queryClient.invalidateQueries({ queryKey: ['logbook'] })
+      queryClient.invalidateQueries({ queryKey: ['current-user'] })
     },
   })
 }
