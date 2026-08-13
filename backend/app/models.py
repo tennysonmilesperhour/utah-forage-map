@@ -64,13 +64,14 @@ class Species(Base):
     id = Column(GUID(), primary_key=True, default=uuid.uuid4)
     common_name = Column(String, nullable=False)
     latin_name = Column(String, nullable=False)
+    inaturalist_taxon_id = Column(Integer, unique=True)
     edibility = Column(String)
     look_alikes = Column(Text)
     habitat_notes = Column(Text)
-    peak_months = Column(String)  # comma-separated ints e.g. "4,5,6", northern-hemisphere reference
+    peak_months = Column(String)  # comma-separated ints e.g. "4,5,6"
     elevation_min_ft = Column(Integer)
     elevation_max_ft = Column(Integer)
-    regions = Column(String)  # world regions where the species is recorded
+    range_notes = Column(String)
     notes = Column(Text)
 
     sightings = relationship("Sighting", back_populates="species")
@@ -89,7 +90,6 @@ class Sighting(Base):
     month = Column(Integer)
     habitat_type = Column(String)
     substrate = Column(String)
-    place_name = Column(String(160))  # coarse locality, e.g. "Bavaria, Germany"
     notes = Column(Text)
     photo_url = Column(String)
     source = Column(String, default="community")
@@ -136,6 +136,16 @@ class CrawledSource(Base):
     crawled_at = Column(DateTime, default=datetime.utcnow)
 
     sighting = relationship("Sighting", back_populates="crawled_sources")
+
+
+class SourceSync(Base):
+    __tablename__ = "source_syncs"
+
+    source_name = Column(String, primary_key=True)
+    last_started_at = Column(DateTime)
+    last_succeeded_at = Column(DateTime)
+    last_result = Column(Text)
+    last_error = Column(Text)
 
 
 class UserSession(Base):

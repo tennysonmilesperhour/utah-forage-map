@@ -1,184 +1,126 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
-import PlaceSearch from './PlaceSearch'
-import { useUnitSystem } from '../hooks/useUnits'
 
-// The map opens on the whole world; results then pull it toward wherever the data is.
-const WORLD_CENTER = [10, 25]
-const WORLD_ZOOM = 1.4
-const SOURCE_ID = 'sightings'
-const CLUSTER_LAYER = 'sighting-clusters'
-const CLUSTER_COUNT_LAYER = 'sighting-cluster-count'
-const POINT_LAYER = 'sighting-points'
-const VIEWPORT_DEBOUNCE_MS = 350
+const WORLD_CENTER = [0, 20]
+const WORLD_ZOOM = 1.35
+const SOURCE_ID = 'mushroom-observations'
+const CLUSTER_LAYER = 'observation-clusters'
+const CLUSTER_COUNT_LAYER = 'observation-cluster-count'
+const POINT_LAYER = 'observation-points'
 
 const EDIBILITY_COLORS = {
   edible: '#16a34a',
   choice: '#15803d',
-  inedible: '#9ca3af',
+  inedible: '#7b8680',
   poisonous: '#dc2626',
   deadly: '#7f1d1d',
 }
 
-const SOURCE_COLORS = {
-  community: '#184a3b',
-  iNaturalist: '#2563eb',
-  GBIF: '#7c3aed',
-  'field desk': '#6b7280',
-}
-
-function markerColor(sighting) {
-  return EDIBILITY_COLORS[sighting.species?.edibility] ?? '#f59e0b'
-}
-
-function escapeHtml(value = '') {
-  return String(value)
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#039;')
-}
-
-function toFeatureCollection(sightings, unitSystem) {
+function geojson(sightings) {
   return {
     type: 'FeatureCollection',
     features: sightings.map(sighting => ({
       type: 'Feature',
-      geometry: { type: 'Point', coordinates: [sighting.longitude, sighting.latitude] },
+      geometry: {
+        type: 'Point',
+        coordinates: [sighting.longitude, sighting.latitude],
+      },
       properties: {
-        id: String(sighting.id),
-        color: markerColor(sighting),
-        ring: SOURCE_COLORS[sighting.source] ?? '#6b7280',
-        popup: popupMarkup(sighting, unitSystem),
+        id: sighting.id,
+        edibility: sighting.species?.edibility ?? 'unknown',
+        source: sighting.source,
       },
     })),
   }
 }
 
-function popupMarkup(sighting, unitSystem) {
-  const elevation = sighting.elevation_ft == null
-    ? null
-    : unitSystem === 'imperial'
-      ? `${Math.round(sighting.elevation_ft).toLocaleString()} ft`
-      : `${Math.round(sighting.elevation_ft / 3.280839895).toLocaleString()} m`
-
-  return `
-    <div style="font-size:13px;line-height:1.4">
-      <strong>${escapeHtml(sighting.species?.common_name ?? 'Unknown')}</strong>
-      ${sighting.species?.latin_name ? `<br><em style="color:#666">${escapeHtml(sighting.species.latin_name)}</em>` : ''}
-      ${sighting.place_name ? `<br>${escapeHtml(sighting.place_name)}` : ''}
-      ${sighting.found_on ? `<br>Found: ${escapeHtml(sighting.found_on)}` : ''}
-      ${elevation ? `<br>Elev: ${escapeHtml(elevation)}` : ''}
-      ${sighting.habitat_type ? `<br>Habitat: ${escapeHtml(sighting.habitat_type)}` : ''}
-      <br>Source: ${escapeHtml(sighting.source)}
-      ${sighting.verified ? '<br><span style="color:#16a34a">Reviewed</span>' : ''}
-    </div>
-  `
-}
-
-function boundsOf(sightings) {
-  const bounds = new mapboxgl.LngLatBounds()
-  sightings.forEach(sighting => bounds.extend([sighting.longitude, sighting.latitude]))
-  return bounds
+function roundedBounds(map) {
+  const bounds = map.getBounds()
+  const longitudeSpan = bounds.getEast() - bounds.getWest()
+  const normalizeLongitude = value => ((value + 180) % 360 + 360) % 360 - 180
+  return {
+    west: longitudeSpan >= 360 ? -180 : Number(normalizeLongitude(bounds.getWest()).toFixed(4)),
+    south: Number(Math.max(-85, bounds.getSouth()).toFixed(4)),
+    east: longitudeSpan >= 360 ? 180 : Number(normalizeLongitude(bounds.getEast()).toFixed(4)),
+    north: Number(Math.min(85, bounds.getNorth()).toFixed(4)),
+  }
 }
 
 export default function MapView({
   sightings = [],
   onSightingClick,
+  onBoundsChange,
+  flyTarget,
   draftLocation,
   onMapClick,
   isPickingLocation = false,
-  onViewportChange,
-  fitToken = 0,
 }) {
   const containerRef = useRef(null)
   const mapRef = useRef(null)
-  const scaleRef = useRef(null)
   const draftMarkerRef = useRef(null)
-  const popupRef = useRef(null)
   const sightingsRef = useRef(sightings)
   const onSightingClickRef = useRef(onSightingClick)
+  const onBoundsChangeRef = useRef(onBoundsChange)
   const onMapClickRef = useRef(onMapClick)
-  const onViewportChangeRef = useRef(onViewportChange)
-  const appliedFitRef = useRef(0)
-  const [styleReady, setStyleReady] = useState(false)
-  const { system: unitSystem } = useUnitSystem()
+  const isPickingLocationRef = useRef(isPickingLocation)
 
   useEffect(() => { sightingsRef.current = sightings }, [sightings])
   useEffect(() => { onSightingClickRef.current = onSightingClick }, [onSightingClick])
+  useEffect(() => { onBoundsChangeRef.current = onBoundsChange }, [onBoundsChange])
   useEffect(() => { onMapClickRef.current = onMapClick }, [onMapClick])
-  useEffect(() => { onViewportChangeRef.current = onViewportChange }, [onViewportChange])
+  useEffect(() => { isPickingLocationRef.current = isPickingLocation }, [isPickingLocation])
 
-  const flyToPlace = useCallback((place) => {
-    const map = mapRef.current
-    if (!map) return
-    if (place.bbox) {
-      map.fitBounds(place.bbox, { padding: 60, maxZoom: 12, duration: 900 })
-      return
-    }
-    map.flyTo({ center: place.center, zoom: 9, duration: 900 })
+  const syncSource = useCallback(() => {
+    const source = mapRef.current?.getSource(SOURCE_ID)
+    if (source) source.setData(geojson(sightingsRef.current))
   }, [])
 
-  // Init map once
   useEffect(() => {
     const token = import.meta.env.VITE_MAPBOX_TOKEN
-    if (!token) {
-      console.warn('VITE_MAPBOX_TOKEN is not set - map will not load')
-      return undefined
-    }
+    if (!token) return undefined
 
     mapboxgl.accessToken = token
-
+    const compactViewport = containerRef.current.clientWidth < 600
     const map = new mapboxgl.Map({
       container: containerRef.current,
       style: 'mapbox://styles/mapbox/outdoors-v12',
       center: WORLD_CENTER,
-      zoom: WORLD_ZOOM,
-      projection: 'globe',
-      renderWorldCopies: true,
+      zoom: compactViewport ? 0.45 : WORLD_ZOOM,
+      minZoom: 0.3,
+      maxBounds: [[-180, -85], [180, 85]],
+      renderWorldCopies: false,
     })
 
-    map.addControl(new mapboxgl.NavigationControl({ visualizePitch: false }), 'top-right')
+    map.addControl(new mapboxgl.NavigationControl(), 'top-right')
     map.addControl(new mapboxgl.GeolocateControl({
       positionOptions: { enableHighAccuracy: true },
       trackUserLocation: true,
       showUserHeading: true,
     }), 'top-right')
-    scaleRef.current = new mapboxgl.ScaleControl({ unit: 'metric' })
-    map.addControl(scaleRef.current, 'bottom-right')
-
-    map.on('click', (event) => {
-      onMapClickRef.current?.({
-        latitude: event.lngLat.lat,
-        longitude: event.lngLat.lng,
-      })
-    })
+    map.addControl(new mapboxgl.ScaleControl({ unit: 'metric' }), 'bottom-right')
 
     map.on('load', () => {
       map.addSource(SOURCE_ID, {
         type: 'geojson',
-        data: { type: 'FeatureCollection', features: [] },
+        data: geojson(sightingsRef.current),
         cluster: true,
-        clusterRadius: 45,
         clusterMaxZoom: 12,
+        clusterRadius: 48,
       })
-
       map.addLayer({
         id: CLUSTER_LAYER,
         type: 'circle',
         source: SOURCE_ID,
         filter: ['has', 'point_count'],
         paint: {
-          'circle-color': ['step', ['get', 'point_count'], '#2f7d5e', 25, '#1f6a4d', 100, '#184a3b'],
-          'circle-radius': ['step', ['get', 'point_count'], 15, 25, 20, 100, 26],
-          'circle-stroke-width': 2.5,
+          'circle-color': ['step', ['get', 'point_count'], '#2e6f5e', 50, '#1f5a49', 250, '#123b2f'],
+          'circle-radius': ['step', ['get', 'point_count'], 17, 50, 21, 250, 26],
+          'circle-stroke-width': 2,
           'circle-stroke-color': '#ffffff',
           'circle-opacity': 0.92,
         },
       })
-
       map.addLayer({
         id: CLUSTER_COUNT_LAYER,
         type: 'symbol',
@@ -186,148 +128,105 @@ export default function MapView({
         filter: ['has', 'point_count'],
         layout: {
           'text-field': ['get', 'point_count_abbreviated'],
-          'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
           'text-size': 12,
         },
         paint: { 'text-color': '#ffffff' },
       })
-
       map.addLayer({
         id: POINT_LAYER,
         type: 'circle',
         source: SOURCE_ID,
         filter: ['!', ['has', 'point_count']],
         paint: {
-          'circle-color': ['get', 'color'],
-          'circle-radius': ['interpolate', ['linear'], ['zoom'], 3, 4, 8, 7, 14, 9],
+          'circle-radius': 6,
+          'circle-color': [
+            'match', ['get', 'edibility'],
+            'choice', EDIBILITY_COLORS.choice,
+            'edible', EDIBILITY_COLORS.edible,
+            'poisonous', EDIBILITY_COLORS.poisonous,
+            'deadly', EDIBILITY_COLORS.deadly,
+            'inedible', EDIBILITY_COLORS.inedible,
+            '#d97706',
+          ],
           'circle-stroke-width': 2,
-          'circle-stroke-color': ['get', 'ring'],
+          'circle-stroke-color': '#ffffff',
         },
       })
-
-      map.on('click', CLUSTER_LAYER, (event) => {
-        const feature = event.features?.[0]
-        if (!feature) return
-        const zoomTo = zoom => map.easeTo({ center: feature.geometry.coordinates, zoom })
-        const result = map.getSource(SOURCE_ID)?.getClusterExpansionZoom(
-          feature.properties.cluster_id,
-          (error, zoom) => { if (!error) zoomTo(zoom) },
-        )
-        // Newer releases resolve a promise instead of calling back.
-        if (result && typeof result.then === 'function') result.then(zoomTo).catch(() => {})
-      })
-
-      map.on('click', POINT_LAYER, (event) => {
-        const feature = event.features?.[0]
-        if (!feature) return
-        const coordinates = feature.geometry.coordinates.slice()
-        // Keep the popup on the copy of the world the reader clicked.
-        while (Math.abs(event.lngLat.lng - coordinates[0]) > 180) {
-          coordinates[0] += event.lngLat.lng > coordinates[0] ? 360 : -360
-        }
-        popupRef.current?.remove()
-        popupRef.current = new mapboxgl.Popup({ offset: 12, closeButton: false })
-          .setLngLat(coordinates)
-          .setHTML(feature.properties.popup)
-          .addTo(map)
-        const sighting = sightingsRef.current.find(item => String(item.id) === feature.properties.id)
-        if (sighting) onSightingClickRef.current?.(sighting)
-      })
-
-      for (const layer of [CLUSTER_LAYER, POINT_LAYER]) {
-        map.on('mouseenter', layer, () => { map.getCanvas().style.cursor = 'pointer' })
-        map.on('mouseleave', layer, () => { map.getCanvas().style.cursor = '' })
-      }
-
-      setStyleReady(true)
+      onBoundsChangeRef.current?.(roundedBounds(map))
     })
 
-    let viewportTimer = 0
-    map.on('moveend', () => {
-      window.clearTimeout(viewportTimer)
-      viewportTimer = window.setTimeout(() => {
-        const bounds = map.getBounds()
-        onViewportChangeRef.current?.({
-          min_lat: Number(bounds.getSouth().toFixed(2)),
-          max_lat: Number(bounds.getNorth().toFixed(2)),
-          min_lng: Number(bounds.getWest().toFixed(2)),
-          max_lng: Number(bounds.getEast().toFixed(2)),
-        })
-      }, VIEWPORT_DEBOUNCE_MS)
+    map.on('moveend', () => onBoundsChangeRef.current?.(roundedBounds(map)))
+    map.on('click', event => {
+      const features = map.getLayer(CLUSTER_LAYER)
+        ? map.queryRenderedFeatures(event.point, { layers: [CLUSTER_LAYER, POINT_LAYER] })
+        : []
+      const feature = features[0]
+      if (feature?.layer.id === CLUSTER_LAYER) {
+        map.easeTo({ center: feature.geometry.coordinates, zoom: Math.min(map.getZoom() + 2, 13) })
+        return
+      }
+      if (feature?.layer.id === POINT_LAYER) {
+        const sighting = sightingsRef.current.find(item => item.id === feature.properties.id)
+        if (sighting) onSightingClickRef.current?.(sighting)
+        return
+      }
+      onMapClickRef.current?.({ latitude: event.lngLat.lat, longitude: event.lngLat.lng })
+    })
+    map.on('mousemove', event => {
+      const interactive = map.getLayer(CLUSTER_LAYER)
+        ? map.queryRenderedFeatures(event.point, { layers: [CLUSTER_LAYER, POINT_LAYER] }).length > 0
+        : false
+      map.getCanvas().style.cursor = isPickingLocationRef.current ? 'crosshair' : interactive ? 'pointer' : ''
     })
 
     mapRef.current = map
-
     return () => {
-      window.clearTimeout(viewportTimer)
-      popupRef.current?.remove()
-      popupRef.current = null
       map.remove()
       mapRef.current = null
-      scaleRef.current = null
-      setStyleReady(false)
     }
   }, [])
 
-  // Push observations into the clustered source
-  useEffect(() => {
-    const map = mapRef.current
-    if (!map || !styleReady) return
-    map.getSource(SOURCE_ID)?.setData(toFeatureCollection(sightings, unitSystem))
-  }, [sightings, styleReady, unitSystem])
-
-  // Frame the results after the first load and whenever the filters change
-  useEffect(() => {
-    const map = mapRef.current
-    if (!map || !styleReady || sightings.length === 0) return
-    if (appliedFitRef.current === fitToken) return
-    appliedFitRef.current = fitToken
-    map.fitBounds(boundsOf(sightings), { padding: 70, maxZoom: 9, duration: 900 })
-  }, [sightings, styleReady, fitToken])
+  useEffect(() => { syncSource() }, [sightings, syncSource])
 
   useEffect(() => {
-    scaleRef.current?.setUnit(unitSystem)
-  }, [unitSystem])
+    const map = mapRef.current
+    if (!map || !flyTarget) return
+    if (flyTarget.bbox?.length === 4) {
+      map.fitBounds([[flyTarget.bbox[0], flyTarget.bbox[1]], [flyTarget.bbox[2], flyTarget.bbox[3]]], {
+        padding: 70,
+        maxZoom: 10,
+      })
+    } else {
+      map.flyTo({ center: flyTarget.center, zoom: 8 })
+    }
+  }, [flyTarget])
 
   useEffect(() => {
     const map = mapRef.current
     if (!map) return
-
     draftMarkerRef.current?.remove()
     draftMarkerRef.current = null
-
     if (!draftLocation) return
 
-    const el = document.createElement('div')
-    el.className = 'draft-marker'
-    draftMarkerRef.current = new mapboxgl.Marker({ element: el })
+    const element = document.createElement('div')
+    element.className = 'draft-marker'
+    draftMarkerRef.current = new mapboxgl.Marker({ element })
       .setLngLat([draftLocation.longitude, draftLocation.latitude])
       .addTo(map)
   }, [draftLocation])
 
   useEffect(() => {
     const map = mapRef.current
-    if (!map) return
-    map.getCanvas().style.cursor = isPickingLocation ? 'crosshair' : ''
+    if (map) map.getCanvas().style.cursor = isPickingLocation ? 'crosshair' : ''
   }, [isPickingLocation])
 
   const hasToken = !!import.meta.env.VITE_MAPBOX_TOKEN
-
   return (
     <div className="map-canvas-wrap">
-      <div className="absolute inset-0">
-        <div ref={containerRef} className="h-full w-full" />
-      </div>
-      {hasToken && <PlaceSearch onSelect={flyToPlace} />}
+      <div className="absolute inset-0"><div ref={containerRef} className="h-full w-full" /></div>
       {!hasToken && (
         <div className="map-token-fallback">
-          <div>
-            <p>Mapbox token required</p>
-            <span>
-              Set <code className="bg-gray-100 px-1 rounded">VITE_MAPBOX_TOKEN</code> in{' '}
-              <code className="bg-gray-100 px-1 rounded">frontend/.env</code>
-            </span>
-          </div>
+          <div><p>Mapbox token required</p><span>Set <code>VITE_MAPBOX_TOKEN</code> in <code>frontend/.env</code></span></div>
         </div>
       )}
     </div>

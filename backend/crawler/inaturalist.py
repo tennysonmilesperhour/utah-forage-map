@@ -1,31 +1,25 @@
 import json
-import os
-from datetime import date
+import time
+from datetime import date, datetime, timedelta
 
 import httpx
 from sqlalchemy import func
+from sqlalchemy.orm import joinedload
 
-from app.models import CrawledSource, Sighting, Species, User
+from app.models import CrawledSource, Sighting, SourceSync, Species, User
 from app.security import new_token, passwords
 
 
 INATURALIST_URL = "https://api.inaturalist.org/v1/observations"
-DEFAULT_PAGES = int(os.getenv("INATURALIST_PAGES", "3"))
-DEFAULT_PER_PAGE = int(os.getenv("INATURALIST_PER_PAGE", "100"))
-# Optional "swlat,swlng,nelat,nelng" box. Unset means the whole world.
-BBOX_ENV = os.getenv("INATURALIST_BBOX", "").strip()
-# Optional comma-separated iNaturalist place IDs, e.g. a country or state.
-PLACE_IDS_ENV = os.getenv("INATURALIST_PLACE_IDS", "").strip()
-
-
-def bounds_params(bbox: str = BBOX_ENV) -> dict:
-    if not bbox:
-        return {}
-    try:
-        swlat, swlng, nelat, nelng = (float(value) for value in bbox.split(","))
-    except ValueError as error:
-        raise ValueError("INATURALIST_BBOX must be 'swlat,swlng,nelat,nelng'") from error
-    return {"swlat": swlat, "swlng": swlng, "nelat": nelat, "nelng": nelng}
+SOURCE_NAME = "iNaturalist"
+SYNC_INTERVAL = timedelta(days=14)
+ROLLING_WINDOW = timedelta(days=90)
+PAGE_SIZE = 200
+MAX_PAGES_PER_RUN = 18
+REQUEST_HEADERS = {
+    "Accept": "application/json",
+    "User-Agent": "MushroomForageMap/2.0 (https://utah-forage-map.vercel.app)",
+}
 
 
 def crawler_user(db):
@@ -44,121 +38,332 @@ def crawler_user(db):
     return user
 
 
-def species_index(db) -> tuple[dict, dict]:
-    """Index the catalogue by exact latin name and, where safe, by genus.
-
-    Global observations arrive as specific taxa such as ``Morchella importuna``,
-    while the catalogue may carry a genus entry such as ``Morchella spp.``. Only
-    genus-level entries join the genus index: a species-level entry such as
-    ``Boletus edulis group`` must never absorb every other Boletus, because the
-    catalogue carries edibility and an unrelated species would inherit it.
-    """
-    by_name = {}
-    by_genus = {}
-    for item in db.query(Species).all():
-        latin = (item.latin_name or "").strip().lower()
-        if not latin:
-            continue
-        by_name[latin] = item
-        first, _, rest = latin.partition(" ")
-        if rest in {"spp.", "spp", ""}:
-            by_genus.setdefault(first, item)
-    return by_name, by_genus
-
-
-def match_species(taxon_name: str, by_name: dict, by_genus: dict):
-    latin = (taxon_name or "").strip().lower()
-    if not latin:
+def observation_date(observation):
+    value = observation.get("observed_on")
+    if not value:
         return None
-    if latin in by_name:
-        return by_name[latin]
-    if f"{latin} group" in by_name:
-        return by_name[f"{latin} group"]
-    genus = latin.partition(" ")[0]
-    return by_genus.get(genus)
+    try:
+        return date.fromisoformat(value)
+    except ValueError:
+        return None
 
 
-def fetch_page(page: int, per_page: int, params: dict) -> list[dict]:
-    response = httpx.get(
-        INATURALIST_URL,
-        params={
-            **params,
-            "iconic_taxa": "Fungi",
-            "quality_grade": "research",
-            "geo": "true",
-            "order_by": "observed_on",
-            "order": "desc",
-            "per_page": min(per_page, 200),
-            "page": page,
-        },
-        timeout=25,
-    )
-    response.raise_for_status()
-    return response.json().get("results", [])
+def observation_species(observation, species_by_taxon_id):
+    taxon = observation.get("taxon") or {}
+    taxon_ids = [taxon.get("id"), *(reversed(taxon.get("ancestor_ids") or []))]
+    for taxon_id in taxon_ids:
+        if taxon_id in species_by_taxon_id:
+            return species_by_taxon_id[taxon_id]
+    return None
 
 
-def import_observations(db, per_page: int = DEFAULT_PER_PAGE, pages: int = DEFAULT_PAGES):
-    """Import research-grade, geolocated fungal observations from anywhere in the world."""
-    params = bounds_params()
-    if PLACE_IDS_ENV:
-        params["place_id"] = PLACE_IDS_ENV
+def fetch_observations(
+    client,
+    taxon_ids,
+    window_start,
+    cursor=None,
+    per_page=PAGE_SIZE,
+    max_pages=MAX_PAGES_PER_RUN,
+    sleeper=time.sleep,
+):
+    per_page = min(max(per_page, 1), PAGE_SIZE)
+    params = {
+        "taxon_id": ",".join(str(value) for value in taxon_ids),
+        "quality_grade": "research",
+        "captive": "false",
+        "geo": "true",
+        "d1": window_start.isoformat(),
+        "order_by": "id",
+        "order": "asc",
+        "per_page": per_page,
+    }
+    observations = []
+    total_results = 0
+    next_cursor = cursor
+    complete = False
 
-    by_name, by_genus = species_index(db)
+    for page_index in range(max_pages):
+        if page_index:
+            sleeper(1.05)
+        page_params = {**params}
+        if next_cursor is not None:
+            page_params["id_above"] = next_cursor
+        response = client.get(INATURALIST_URL, params=page_params)
+        response.raise_for_status()
+        payload = response.json()
+        page = payload.get("results", [])
+        if page_index == 0:
+            total_results = int(payload.get("total_results", len(page)))
+        observations.extend(page)
+        if len(page) < per_page:
+            complete = True
+            next_cursor = None
+            break
+        next_cursor = page[-1]["id"]
+
+    return observations, total_results, complete, next_cursor
+
+
+def compact_observation(observation):
+    taxon = observation.get("taxon") or {}
+    return json.dumps({
+        "id": observation.get("id"),
+        "observed_on": observation.get("observed_on"),
+        "quality_grade": observation.get("quality_grade"),
+        "coordinates": (observation.get("geojson") or {}).get("coordinates"),
+        "taxon_id": taxon.get("id"),
+        "photo_url": ((observation.get("photos") or [{}])[0].get("url")),
+        "uri": observation.get("uri"),
+    }, default=str, separators=(",", ":"))
+
+
+def import_observation_batch(db, observations, species_by_taxon_id, crawled_at):
+    source_urls = [
+        f"https://www.inaturalist.org/observations/{item['id']}"
+        for item in observations
+        if item.get("id")
+    ]
+    existing_sources = {
+        item.source_url: item
+        for item in db.query(CrawledSource)
+        .options(joinedload(CrawledSource.sighting))
+        .filter(
+            CrawledSource.source_name == SOURCE_NAME,
+            CrawledSource.source_url.in_(source_urls),
+        )
+        .all()
+    } if source_urls else {}
     importer = crawler_user(db)
-    fetched = 0
     imported = 0
+    updated = 0
+    unchanged = 0
     skipped = 0
 
-    for page in range(1, max(pages, 1) + 1):
-        observations = fetch_page(page, per_page, params)
-        if not observations:
-            break
-        fetched += len(observations)
+    for observation in observations:
+        species = observation_species(observation, species_by_taxon_id)
+        coordinates = (observation.get("geojson") or {}).get("coordinates")
+        observation_id = observation.get("id")
+        if not species or not coordinates or len(coordinates) < 2 or not observation_id:
+            skipped += 1
+            continue
 
-        for observation in observations:
-            taxon = observation.get("taxon") or {}
-            species = match_species(taxon.get("name"), by_name, by_genus)
-            coordinates = (observation.get("geojson") or {}).get("coordinates")
-            source_url = observation.get("uri") or f"https://www.inaturalist.org/observations/{observation['id']}"
-            if not species or not coordinates or db.query(CrawledSource).filter_by(source_url=source_url).first():
-                skipped += 1
-                continue
+        source_url = f"https://www.inaturalist.org/observations/{observation_id}"
+        found_on = observation_date(observation)
+        photo_url = ((observation.get("photos") or [{}])[0].get("url"))
+        values = {
+            "species_id": species.id,
+            "latitude": coordinates[1],
+            "longitude": coordinates[0],
+            "found_on": found_on,
+            "month": found_on.month if found_on else None,
+            "notes": f"Research-grade iNaturalist observation {observation_id}",
+            "photo_url": photo_url,
+            "source": SOURCE_NAME,
+            "confidence_score": 90,
+            "verified": True,
+            "location_privacy": "approximate",
+            "review_status": "approved",
+            "review_notes": None,
+            "reviewer_id": None,
+            "reviewed_at": None,
+        }
+        source = existing_sources.get(source_url)
+        sighting = source.sighting if source else None
+        raw_data = compact_observation(observation)
 
-            observed_on = observation.get("observed_on")
-            found_on = date.fromisoformat(observed_on) if observed_on else None
-            place_name = (observation.get("place_guess") or "").strip()[:160] or None
-            sighting = Sighting(
-                user_id=importer.id,
-                species_id=species.id,
-                latitude=coordinates[1],
-                longitude=coordinates[0],
-                found_on=found_on,
-                month=found_on.month if found_on else None,
-                place_name=place_name,
-                notes=f"Research-grade iNaturalist observation {observation['id']}",
-                photo_url=((observation.get("photos") or [{}])[0].get("url")),
-                source="iNaturalist",
-                confidence_score=90,
-                verified=True,
-                location_privacy="approximate",
-                review_status="approved",
-            )
-            db.add(sighting)
-            db.flush()
-            db.add(CrawledSource(
-                sighting_id=sighting.id,
-                source_name="iNaturalist",
+        if sighting is None:
+            sighting = Sighting(user_id=importer.id, **values)
+            source = CrawledSource(
+                sighting=sighting,
+                source_name=SOURCE_NAME,
                 source_url=source_url,
-                raw_data=json.dumps(observation, default=str),
-            ))
+                raw_data=raw_data,
+                crawled_at=crawled_at,
+            )
+            db.add_all([sighting, source])
             imported += 1
+            continue
 
-        if len(observations) < min(per_page, 200):
-            break
+        changed = source.raw_data != raw_data or any(
+            getattr(sighting, key) != value for key, value in values.items()
+        )
+        for key, value in values.items():
+            setattr(sighting, key, value)
+        source.raw_data = raw_data
+        source.crawled_at = crawled_at
+        if changed:
+            updated += 1
+        else:
+            unchanged += 1
 
-    importer.total_finds = db.query(func.count(Sighting.id)).filter(Sighting.user_id == importer.id).scalar()
+    importer.total_finds = db.query(func.count(Sighting.id)).filter(
+        Sighting.user_id == importer.id,
+        Sighting.review_status == "approved",
+    ).scalar()
+    db.flush()
+    return {
+        "imported": imported,
+        "updated": updated,
+        "unchanged": unchanged,
+        "skipped": skipped,
+    }
+
+
+def retire_missing_observations(db, cycle_started_at, fetched_total):
+    tracked_count = db.query(func.count(CrawledSource.id)).filter(
+        CrawledSource.source_name == SOURCE_NAME
+    ).scalar()
+    if tracked_count >= 20 and fetched_total < tracked_count / 2:
+        raise RuntimeError(
+            "iNaturalist returned fewer than half of the previously tracked observations; "
+            "refusing to retire records from a suspiciously small result set"
+        )
+
+    stale_sources = db.query(CrawledSource).options(joinedload(CrawledSource.sighting)).filter(
+        CrawledSource.source_name == SOURCE_NAME,
+        CrawledSource.crawled_at < cycle_started_at,
+    ).all()
+    retired = 0
+    for source in stale_sources:
+        sighting = source.sighting
+        if sighting and (sighting.verified or sighting.review_status == "approved"):
+            sighting.verified = False
+            sighting.review_status = "rejected"
+            sighting.review_notes = "Outside the current 90-day research-grade iNaturalist window."
+            retired += 1
+    return retired
+
+
+def parse_cycle(sync):
+    if not sync.last_result:
+        return None
+    try:
+        result = json.loads(sync.last_result)
+    except (TypeError, ValueError):
+        return None
+    if result.get("status") != "in_progress":
+        return None
+    try:
+        return {
+            **result,
+            "cycle_started_at": datetime.fromisoformat(result["cycle_started_at"]),
+            "window_start": date.fromisoformat(result["window_start"]),
+        }
+    except (KeyError, TypeError, ValueError):
+        return None
+
+
+def run_scheduled_import(db, force=False, client=None, sleeper=time.sleep, now=None):
+    now = now or datetime.utcnow()
+    sync = db.get(SourceSync, SOURCE_NAME)
+    if sync is None:
+        sync = SourceSync(source_name=SOURCE_NAME)
+        db.add(sync)
+        db.flush()
+
+    cycle = parse_cycle(sync)
+    next_run_at = sync.last_succeeded_at + SYNC_INTERVAL if sync.last_succeeded_at else None
+    if not force and cycle is None and next_run_at and now < next_run_at:
+        return {
+            "status": "skipped",
+            "reason": "not_due",
+            "last_succeeded_at": sync.last_succeeded_at.isoformat(),
+            "next_run_at": next_run_at.isoformat(),
+        }
+    if (
+        not force
+        and sync.last_started_at
+        and (not sync.last_succeeded_at or sync.last_started_at > sync.last_succeeded_at)
+        and now - sync.last_started_at < timedelta(hours=1)
+    ):
+        return {"status": "skipped", "reason": "already_running"}
+
+    if cycle is None:
+        cycle = {
+            "cycle_started_at": now,
+            "window_start": (now - ROLLING_WINDOW).date(),
+            "cursor": None,
+            "fetched": 0,
+            "available": 0,
+            "imported": 0,
+            "updated": 0,
+            "unchanged": 0,
+            "skipped": 0,
+        }
+
+    sync.last_started_at = now
+    sync.last_error = None
     db.commit()
-    return {"status": "ok", "fetched": fetched, "imported": imported, "skipped": skipped}
+
+    species_by_taxon_id = {
+        item.inaturalist_taxon_id: item
+        for item in db.query(Species).filter(Species.inaturalist_taxon_id.is_not(None)).all()
+    }
+    if not species_by_taxon_id:
+        raise RuntimeError("No iNaturalist taxon IDs are configured in the species catalogue")
+
+    owns_client = client is None
+    client = client or httpx.Client(headers=REQUEST_HEADERS, timeout=25)
+    try:
+        observations, available, complete, cursor = fetch_observations(
+            client,
+            sorted(species_by_taxon_id),
+            window_start=cycle["window_start"],
+            cursor=cycle.get("cursor"),
+            sleeper=sleeper,
+        )
+        batch = import_observation_batch(
+            db,
+            observations,
+            species_by_taxon_id,
+            crawled_at=cycle["cycle_started_at"],
+        )
+        cycle["cursor"] = cursor
+        cycle["fetched"] += len(observations)
+        cycle["available"] = max(cycle.get("available", 0), available)
+        for key in ("imported", "updated", "unchanged", "skipped"):
+            cycle[key] += batch[key]
+
+        sync = db.get(SourceSync, SOURCE_NAME)
+        if not complete:
+            result = {
+                **cycle,
+                "status": "in_progress",
+                "cycle_started_at": cycle["cycle_started_at"].isoformat(),
+                "window_start": cycle["window_start"].isoformat(),
+            }
+            sync.last_result = json.dumps(result)
+            db.commit()
+            return result
+
+        retired = retire_missing_observations(db, cycle["cycle_started_at"], cycle["fetched"])
+        result = {
+            **cycle,
+            "status": "ok",
+            "complete": True,
+            "cursor": None,
+            "retired": retired,
+            "cycle_started_at": cycle["cycle_started_at"].isoformat(),
+            "window_start": cycle["window_start"].isoformat(),
+            "last_succeeded_at": now.isoformat(),
+            "next_run_at": (now + SYNC_INTERVAL).isoformat(),
+        }
+        sync.last_succeeded_at = now
+        sync.last_result = json.dumps(result)
+        db.commit()
+        return result
+    except Exception as error:
+        db.rollback()
+        sync = db.get(SourceSync, SOURCE_NAME)
+        if sync is None:
+            sync = SourceSync(source_name=SOURCE_NAME, last_started_at=now)
+            db.add(sync)
+        sync.last_error = f"{type(error).__name__}: {error}"[:2000]
+        db.commit()
+        raise
+    finally:
+        if owns_client:
+            client.close()
 
 
 if __name__ == "__main__":
@@ -166,6 +371,6 @@ if __name__ == "__main__":
 
     session = SessionLocal()
     try:
-        print(import_observations(session))
+        print(run_scheduled_import(session, force=True))
     finally:
         session.close()

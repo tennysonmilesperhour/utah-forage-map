@@ -18,7 +18,7 @@ export default function CommunityPanel({ portal = {}, loading, onClose }) {
         <div className="drawer-heading">
           <div>
             <p>Community field desk</p>
-            <h2>What foragers are seeing worldwide</h2>
+            <h2>What foragers are seeing</h2>
           </div>
           <button className="icon-button" type="button" onClick={onClose} aria-label="Close community panel">
             <X size={20} aria-hidden="true" />
@@ -71,7 +71,7 @@ export default function CommunityPanel({ portal = {}, loading, onClose }) {
           <section className="community-section">
             <div className="community-section-heading">
               <Users size={18} aria-hidden="true" />
-              <h3>Groups and societies</h3>
+              <h3>Local groups</h3>
             </div>
             <div className="community-list divided-list">
               {clubs.map(club => (

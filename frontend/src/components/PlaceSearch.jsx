@@ -1,116 +1,89 @@
-import { useEffect, useId, useRef, useState } from 'react'
-import { Loader2, Search, X } from 'lucide-react'
+import { useState } from 'react'
+import { LoaderCircle, Search, X } from 'lucide-react'
 
-const GEOCODER_URL = 'https://api.mapbox.com/search/geocode/v6/forward'
-const DEBOUNCE_MS = 300
-
-// A worldwide map needs a way to get somewhere specific without endless panning.
 export default function PlaceSearch({ onSelect }) {
   const [query, setQuery] = useState('')
   const [results, setResults] = useState([])
-  const [searching, setSearching] = useState(false)
-  const [open, setOpen] = useState(false)
-  const wrapRef = useRef(null)
-  const listId = useId()
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
-  useEffect(() => {
-    const term = query.trim()
-    if (term.length < 3) {
+  async function search(event) {
+    event.preventDefault()
+    const value = query.trim()
+    const token = import.meta.env.VITE_MAPBOX_TOKEN
+    if (!value || !token) return
+
+    setLoading(true)
+    setError('')
+    try {
+      const params = new URLSearchParams({
+        q: value,
+        access_token: token,
+        limit: '5',
+        language: navigator.language.split('-')[0] || 'en',
+      })
+      const response = await fetch(`https://api.mapbox.com/search/geocode/v6/forward?${params}`)
+      if (!response.ok) throw new Error('Search failed')
+      const payload = await response.json()
+      setResults(payload.features ?? [])
+      if (!(payload.features ?? []).length) setError('No places found')
+    } catch {
       setResults([])
-      setSearching(false)
-      return undefined
+      setError('Place search is unavailable')
+    } finally {
+      setLoading(false)
     }
+  }
 
-    const controller = new AbortController()
-    const timer = window.setTimeout(async () => {
-      setSearching(true)
-      try {
-        const url = `${GEOCODER_URL}?q=${encodeURIComponent(term)}&limit=5&access_token=${import.meta.env.VITE_MAPBOX_TOKEN}`
-        const response = await fetch(url, { signal: controller.signal })
-        if (!response.ok) throw new Error('Place search failed')
-        const data = await response.json()
-        setResults((data.features ?? []).map(feature => ({
-          id: feature.id ?? feature.properties?.mapbox_id,
-          name: feature.properties?.name ?? feature.properties?.full_address ?? term,
-          context: feature.properties?.place_formatted ?? '',
-          center: feature.geometry?.coordinates,
-          bbox: feature.properties?.bbox,
-        })).filter(place => Array.isArray(place.center)))
-        setOpen(true)
-      } catch (error) {
-        if (error.name !== 'AbortError') setResults([])
-      } finally {
-        if (!controller.signal.aborted) setSearching(false)
-      }
-    }, DEBOUNCE_MS)
-
-    return () => {
-      controller.abort()
-      window.clearTimeout(timer)
-    }
-  }, [query])
-
-  useEffect(() => {
-    function onPointerDown(event) {
-      if (!wrapRef.current?.contains(event.target)) setOpen(false)
-    }
-    document.addEventListener('pointerdown', onPointerDown)
-    return () => document.removeEventListener('pointerdown', onPointerDown)
-  }, [])
-
-  function choose(place) {
-    onSelect?.(place)
-    setOpen(false)
-    setQuery(place.name)
+  function choose(feature) {
+    const coordinates = feature.geometry?.coordinates
+    if (!coordinates) return
+    onSelect({
+      center: coordinates,
+      bbox: feature.properties?.bbox ?? feature.bbox,
+      key: feature.id,
+    })
+    setQuery(feature.properties?.full_address ?? feature.properties?.name ?? feature.place_name ?? query)
+    setResults([])
+    setError('')
   }
 
   function clear() {
     setQuery('')
     setResults([])
-    setOpen(false)
+    setError('')
   }
 
   return (
-    <div className="place-search" ref={wrapRef}>
-      <div className="place-search-field">
+    <div className="place-search">
+      <form onSubmit={search} role="search">
         <Search size={17} aria-hidden="true" />
         <input
           type="search"
           value={query}
-          placeholder="Search anywhere in the world"
-          aria-label="Search for a place"
-          aria-expanded={open && results.length > 0}
-          aria-controls={listId}
-          autoComplete="off"
           onChange={event => setQuery(event.target.value)}
-          onFocus={() => results.length > 0 && setOpen(true)}
-          onKeyDown={event => {
-            if (event.key === 'Escape') clear()
-            if (event.key === 'Enter') {
-              event.preventDefault()
-              if (results[0]) choose(results[0])
-            }
-          }}
+          placeholder="Find a city, region, or country"
+          aria-label="Find a place"
         />
-        {searching && <Loader2 size={16} className="place-search-spinner" aria-hidden="true" />}
-        {!searching && query && (
+        {query && !loading && (
           <button type="button" onClick={clear} aria-label="Clear place search">
             <X size={16} aria-hidden="true" />
           </button>
         )}
-      </div>
-
-      {open && results.length > 0 && (
-        <ul className="place-search-results" id={listId} role="listbox" aria-label="Place results">
-          {results.map(place => (
-            <li key={place.id ?? `${place.center[0]},${place.center[1]}`} role="option" aria-selected="false">
-              <button type="button" onClick={() => choose(place)}>
-                <strong>{place.name}</strong>
-                {place.context && <span>{place.context}</span>}
-              </button>
-            </li>
+        <button type="submit" aria-label="Search for place" disabled={!query.trim() || loading}>
+          {loading ? <LoaderCircle className="spin" size={17} aria-hidden="true" /> : <Search size={17} aria-hidden="true" />}
+        </button>
+      </form>
+      {(results.length > 0 || error) && (
+        <div className="place-results" role="listbox">
+          {error && <p>{error}</p>}
+          {results.map(feature => (
+            <button key={feature.id} type="button" role="option" aria-selected="false" onClick={() => choose(feature)}>
+              <strong>{feature.properties?.name ?? feature.text}</strong>
+              <span>{feature.properties?.full_address ?? feature.place_name}</span>
+            </button>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   )
