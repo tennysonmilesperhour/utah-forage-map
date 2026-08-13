@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { Crosshair, MapPin, ShieldCheck, X } from 'lucide-react'
 import { getApiError } from '../hooks/useAuth'
+import { useUnitSystem } from '../hooks/useUnits'
+import { approximateOffsetLabel, displayToMetres, elevationUnit, metresToDisplay } from '../lib/units'
 
 const HABITAT_TYPES = ['forest', 'meadow', 'riparian', 'alpine', 'desert', 'scrubland', 'wetland']
 const EMPTY_FORM = {
@@ -11,6 +13,7 @@ const EMPTY_FORM = {
 export default function SubmitDrawer({ species = [], location, onSubmit, onClose, creating }) {
   const [form, setForm] = useState(EMPTY_FORM)
   const [error, setError] = useState('')
+  const { system: unitSystem } = useUnitSystem()
 
   async function submit(event) {
     event.preventDefault()
@@ -25,7 +28,7 @@ export default function SubmitDrawer({ species = [], location, onSubmit, onClose
         found_on: form.found_on || undefined,
         month: form.found_on ? Number(form.found_on.slice(5, 7)) : undefined,
         habitat_type: form.habitat_type || undefined,
-        elevation_ft: form.elevation_m ? Number(form.elevation_m) * 3.28084 : undefined,
+        elevation_ft: form.elevation_m === '' ? undefined : Number(form.elevation_m) * 3.28084,
         place_name: form.place_name.trim() || undefined,
         notes: form.notes || undefined,
         location_privacy: form.location_privacy,
@@ -75,13 +78,16 @@ export default function SubmitDrawer({ species = [], location, onSubmit, onClose
             <input type="date" value={form.found_on} onChange={event => setForm({ ...form, found_on: event.target.value })} />
           </label>
           <label>
-            Elevation
+            Elevation ({elevationUnit(unitSystem)})
             <input
               type="number"
               inputMode="numeric"
-              placeholder="Meters"
-              value={form.elevation_m}
-              onChange={event => setForm({ ...form, elevation_m: event.target.value })}
+              placeholder={unitSystem === 'imperial' ? 'Feet' : 'Meters'}
+              value={form.elevation_m === '' ? '' : Math.round(metresToDisplay(form.elevation_m, unitSystem))}
+              onChange={event => setForm({
+                ...form,
+                elevation_m: event.target.value === '' ? '' : displayToMetres(event.target.value, unitSystem),
+              })}
             />
           </label>
         </div>
@@ -121,7 +127,7 @@ export default function SubmitDrawer({ species = [], location, onSubmit, onClose
         <label>
           Public location
           <select value={form.location_privacy} onChange={event => setForm({ ...form, location_privacy: event.target.value })}>
-            <option value="approximate">Approximate within 1-2.5 miles</option>
+            <option value="approximate">Approximate within {approximateOffsetLabel(unitSystem)}</option>
             <option value="private">Private, logbook only</option>
             <option value="exact">Exact point</option>
           </select>
