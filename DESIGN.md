@@ -1,6 +1,6 @@
 ---
-name: Utah Forage Map
-description: A calm, map-first field tool for Utah's mushroom community.
+name: Mushroom Forage Map
+description: A calm, map-first field tool for mushroom communities worldwide.
 colors:
   field-pine: "#184A3B"
   field-pine-deep: "#123B2F"
@@ -66,13 +66,13 @@ components:
     padding: "10px 12px"
 ---
 
-# Design System: Utah Forage Map
+# Design System: Mushroom Forage Map
 
 ## 1. Overview
 
 **Creative North Star: "The Field Desk"**
 
-The interface should feel like opening a clean, well-organized field kit beside a map. Information is compact but never cramped, controls use familiar product patterns, and the public map stays visually dominant. A restrained palette and disciplined typography help source, review, and safety information carry more weight than decoration.
+The interface should feel like opening a clean, well-organized field kit beside a map. Information is compact but never cramped, controls use familiar product patterns, and the public map stays visually dominant. Worldwide place search, visible-area results, and recent found dates help users move quickly from global context to local evidence. A restrained palette and disciplined typography help source, review, and safety information carry more weight than decoration.
 
 This system rejects account walls, generic SaaS landing-page composition, dense directory treatment, brown or beige outdoor palettes, novelty wilderness motifs, and tiny low-contrast controls. Responsive behavior is structural: side panels become drawers, toolbars simplify, and the map retains a useful viewport at every size.
 

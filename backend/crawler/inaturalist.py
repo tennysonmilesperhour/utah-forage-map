@@ -1,5 +1,4 @@
 import json
-import math
 import time
 from datetime import date, datetime, timedelta
 
@@ -14,12 +13,12 @@ from app.security import new_token, passwords
 INATURALIST_URL = "https://api.inaturalist.org/v1/observations"
 SOURCE_NAME = "iNaturalist"
 SYNC_INTERVAL = timedelta(days=14)
+ROLLING_WINDOW = timedelta(days=90)
 PAGE_SIZE = 200
-MAX_PAGES = 20
-UTAH_BOUNDS = {"nelat": 42.1, "nelng": -109.0, "swlat": 36.9, "swlng": -114.1}
+MAX_PAGES_PER_RUN = 18
 REQUEST_HEADERS = {
     "Accept": "application/json",
-    "User-Agent": "UtahForageMap/1.0 (https://utah-forage-map.vercel.app)",
+    "User-Agent": "MushroomForageMap/2.0 (https://utah-forage-map.vercel.app)",
 }
 
 
@@ -58,75 +57,83 @@ def observation_species(observation, species_by_taxon_id):
     return None
 
 
-def fetch_observations(client, taxon_ids, per_page=PAGE_SIZE, sleeper=time.sleep):
+def fetch_observations(
+    client,
+    taxon_ids,
+    window_start,
+    cursor=None,
+    per_page=PAGE_SIZE,
+    max_pages=MAX_PAGES_PER_RUN,
+    sleeper=time.sleep,
+):
     per_page = min(max(per_page, 1), PAGE_SIZE)
     params = {
-        **UTAH_BOUNDS,
         "taxon_id": ",".join(str(value) for value in taxon_ids),
         "quality_grade": "research",
         "captive": "false",
         "geo": "true",
+        "d1": window_start.isoformat(),
         "order_by": "id",
         "order": "asc",
         "per_page": per_page,
     }
     observations = []
     total_results = 0
-    complete = True
-    id_above = None
+    next_cursor = cursor
+    complete = False
 
-    for page_index in range(MAX_PAGES):
+    for page_index in range(max_pages):
         if page_index:
             sleeper(1.05)
         page_params = {**params}
-        if id_above is not None:
-            page_params["id_above"] = id_above
+        if next_cursor is not None:
+            page_params["id_above"] = next_cursor
         response = client.get(INATURALIST_URL, params=page_params)
         response.raise_for_status()
         payload = response.json()
         page = payload.get("results", [])
         if page_index == 0:
             total_results = int(payload.get("total_results", len(page)))
-            complete = math.ceil(total_results / per_page) <= MAX_PAGES
         observations.extend(page)
-        if len(observations) >= total_results or len(page) < per_page:
+        if len(page) < per_page:
+            complete = True
+            next_cursor = None
             break
-        id_above = page[-1]["id"]
+        next_cursor = page[-1]["id"]
 
-    return observations, total_results, complete
+    return observations, total_results, complete, next_cursor
 
 
-def import_observations(db, per_page=PAGE_SIZE, client=None, sleeper=time.sleep, crawled_at=None):
-    crawled_at = crawled_at or datetime.utcnow()
-    species_by_taxon_id = {
-        item.inaturalist_taxon_id: item
-        for item in db.query(Species).filter(Species.inaturalist_taxon_id.is_not(None)).all()
-    }
-    if not species_by_taxon_id:
-        raise RuntimeError("No iNaturalist taxon IDs are configured in the species catalogue")
+def compact_observation(observation):
+    taxon = observation.get("taxon") or {}
+    return json.dumps({
+        "id": observation.get("id"),
+        "observed_on": observation.get("observed_on"),
+        "quality_grade": observation.get("quality_grade"),
+        "coordinates": (observation.get("geojson") or {}).get("coordinates"),
+        "taxon_id": taxon.get("id"),
+        "photo_url": ((observation.get("photos") or [{}])[0].get("url")),
+        "uri": observation.get("uri"),
+    }, default=str, separators=(",", ":"))
 
-    owns_client = client is None
-    client = client or httpx.Client(headers=REQUEST_HEADERS, timeout=25)
-    try:
-        observations, total_results, complete = fetch_observations(
-            client,
-            sorted(species_by_taxon_id),
-            per_page=per_page,
-            sleeper=sleeper,
-        )
-    finally:
-        if owns_client:
-            client.close()
 
-    importer = crawler_user(db)
+def import_observation_batch(db, observations, species_by_taxon_id, crawled_at):
+    source_urls = [
+        f"https://www.inaturalist.org/observations/{item['id']}"
+        for item in observations
+        if item.get("id")
+    ]
     existing_sources = {
         item.source_url: item
         for item in db.query(CrawledSource)
         .options(joinedload(CrawledSource.sighting))
-        .filter(CrawledSource.source_name == SOURCE_NAME)
+        .filter(
+            CrawledSource.source_name == SOURCE_NAME,
+            CrawledSource.source_url.in_(source_urls),
+        )
         .all()
-    }
-    seen_urls = set()
+    } if source_urls else {}
+    importer = crawler_user(db)
     imported = 0
     updated = 0
     unchanged = 0
@@ -141,7 +148,6 @@ def import_observations(db, per_page=PAGE_SIZE, client=None, sleeper=time.sleep,
             continue
 
         source_url = f"https://www.inaturalist.org/observations/{observation_id}"
-        seen_urls.add(source_url)
         found_on = observation_date(observation)
         photo_url = ((observation.get("photos") or [{}])[0].get("url"))
         values = {
@@ -163,6 +169,7 @@ def import_observations(db, per_page=PAGE_SIZE, client=None, sleeper=time.sleep,
         }
         source = existing_sources.get(source_url)
         sighting = source.sighting if source else None
+        raw_data = compact_observation(observation)
 
         if sighting is None:
             sighting = Sighting(user_id=importer.id, **values)
@@ -172,42 +179,24 @@ def import_observations(db, per_page=PAGE_SIZE, client=None, sleeper=time.sleep,
                 sighting_id=sighting.id,
                 source_name=SOURCE_NAME,
                 source_url=source_url,
+                raw_data=raw_data,
+                crawled_at=crawled_at,
             )
             db.add(source)
-            existing_sources[source_url] = source
             imported += 1
-            source.raw_data = json.dumps(observation, default=str)
-            source.crawled_at = crawled_at
-        else:
-            sighting_changed = any(getattr(sighting, key) != value for key, value in values.items())
-            for key, value in values.items():
-                setattr(sighting, key, value)
-            raw_data = json.dumps(observation, default=str)
-            source_changed = source.raw_data != raw_data
-            if sighting_changed or source_changed:
-                source.raw_data = raw_data
-                source.crawled_at = crawled_at
-                updated += 1
-            else:
-                unchanged += 1
+            continue
 
-    if complete and len(existing_sources) >= 20 and len(seen_urls) < len(existing_sources) / 2:
-        raise RuntimeError(
-            "iNaturalist returned fewer than half of the previously tracked observations; "
-            "refusing to retire records from a suspiciously small result set"
+        changed = source.raw_data != raw_data or any(
+            getattr(sighting, key) != value for key, value in values.items()
         )
-
-    retired = 0
-    if complete:
-        for source_url, source in existing_sources.items():
-            sighting = source.sighting
-            if source_url in seen_urls or sighting is None:
-                continue
-            if sighting.verified or sighting.review_status == "approved":
-                sighting.verified = False
-                sighting.review_status = "rejected"
-                sighting.review_notes = "No longer present in the current research-grade iNaturalist results."
-                retired += 1
+        for key, value in values.items():
+            setattr(sighting, key, value)
+        source.raw_data = raw_data
+        source.crawled_at = crawled_at
+        if changed:
+            updated += 1
+        else:
+            unchanged += 1
 
     importer.total_finds = db.query(func.count(Sighting.id)).filter(
         Sighting.user_id == importer.id,
@@ -215,16 +204,55 @@ def import_observations(db, per_page=PAGE_SIZE, client=None, sleeper=time.sleep,
     ).scalar()
     db.flush()
     return {
-        "status": "ok",
-        "fetched": len(observations),
-        "available": total_results,
-        "complete": complete,
         "imported": imported,
         "updated": updated,
         "unchanged": unchanged,
-        "retired": retired,
         "skipped": skipped,
     }
+
+
+def retire_missing_observations(db, cycle_started_at, fetched_total):
+    tracked_count = db.query(func.count(CrawledSource.id)).filter(
+        CrawledSource.source_name == SOURCE_NAME
+    ).scalar()
+    if tracked_count >= 20 and fetched_total < tracked_count / 2:
+        raise RuntimeError(
+            "iNaturalist returned fewer than half of the previously tracked observations; "
+            "refusing to retire records from a suspiciously small result set"
+        )
+
+    stale_sources = db.query(CrawledSource).options(joinedload(CrawledSource.sighting)).filter(
+        CrawledSource.source_name == SOURCE_NAME,
+        CrawledSource.crawled_at < cycle_started_at,
+    ).all()
+    retired = 0
+    for source in stale_sources:
+        sighting = source.sighting
+        if sighting and (sighting.verified or sighting.review_status == "approved"):
+            sighting.verified = False
+            sighting.review_status = "rejected"
+            sighting.review_notes = "Outside the current 90-day research-grade iNaturalist window."
+            retired += 1
+    return retired
+
+
+def parse_cycle(sync):
+    if not sync.last_result:
+        return None
+    try:
+        result = json.loads(sync.last_result)
+    except (TypeError, ValueError):
+        return None
+    if result.get("status") != "in_progress":
+        return None
+    try:
+        return {
+            **result,
+            "cycle_started_at": datetime.fromisoformat(result["cycle_started_at"]),
+            "window_start": date.fromisoformat(result["window_start"]),
+        }
+    except (KeyError, TypeError, ValueError):
+        return None
 
 
 def run_scheduled_import(db, force=False, client=None, sleeper=time.sleep, now=None):
@@ -235,8 +263,9 @@ def run_scheduled_import(db, force=False, client=None, sleeper=time.sleep, now=N
         db.add(sync)
         db.flush()
 
+    cycle = parse_cycle(sync)
     next_run_at = sync.last_succeeded_at + SYNC_INTERVAL if sync.last_succeeded_at else None
-    if not force and next_run_at and now < next_run_at:
+    if not force and cycle is None and next_run_at and now < next_run_at:
         return {
             "status": "skipped",
             "reason": "not_due",
@@ -251,21 +280,77 @@ def run_scheduled_import(db, force=False, client=None, sleeper=time.sleep, now=N
     ):
         return {"status": "skipped", "reason": "already_running"}
 
+    if cycle is None:
+        cycle = {
+            "cycle_started_at": now,
+            "window_start": (now - ROLLING_WINDOW).date(),
+            "cursor": None,
+            "fetched": 0,
+            "available": 0,
+            "imported": 0,
+            "updated": 0,
+            "unchanged": 0,
+            "skipped": 0,
+        }
+
     sync.last_started_at = now
     sync.last_error = None
     db.commit()
 
+    species_by_taxon_id = {
+        item.inaturalist_taxon_id: item
+        for item in db.query(Species).filter(Species.inaturalist_taxon_id.is_not(None)).all()
+    }
+    if not species_by_taxon_id:
+        raise RuntimeError("No iNaturalist taxon IDs are configured in the species catalogue")
+
+    owns_client = client is None
+    client = client or httpx.Client(headers=REQUEST_HEADERS, timeout=25)
     try:
-        result = import_observations(
-            db,
-            client=client,
+        observations, available, complete, cursor = fetch_observations(
+            client,
+            sorted(species_by_taxon_id),
+            window_start=cycle["window_start"],
+            cursor=cycle.get("cursor"),
             sleeper=sleeper,
-            crawled_at=now,
         )
+        batch = import_observation_batch(
+            db,
+            observations,
+            species_by_taxon_id,
+            crawled_at=cycle["cycle_started_at"],
+        )
+        cycle["cursor"] = cursor
+        cycle["fetched"] += len(observations)
+        cycle["available"] = max(cycle.get("available", 0), available)
+        for key in ("imported", "updated", "unchanged", "skipped"):
+            cycle[key] += batch[key]
+
         sync = db.get(SourceSync, SOURCE_NAME)
+        if not complete:
+            result = {
+                **cycle,
+                "status": "in_progress",
+                "cycle_started_at": cycle["cycle_started_at"].isoformat(),
+                "window_start": cycle["window_start"].isoformat(),
+            }
+            sync.last_result = json.dumps(result)
+            db.commit()
+            return result
+
+        retired = retire_missing_observations(db, cycle["cycle_started_at"], cycle["fetched"])
+        result = {
+            **cycle,
+            "status": "ok",
+            "complete": True,
+            "cursor": None,
+            "retired": retired,
+            "cycle_started_at": cycle["cycle_started_at"].isoformat(),
+            "window_start": cycle["window_start"].isoformat(),
+            "last_succeeded_at": now.isoformat(),
+            "next_run_at": (now + SYNC_INTERVAL).isoformat(),
+        }
         sync.last_succeeded_at = now
-        result["last_succeeded_at"] = now.isoformat()
-        result["next_run_at"] = (now + SYNC_INTERVAL).isoformat()
         sync.last_result = json.dumps(result)
         db.commit()
         return result
@@ -278,6 +363,9 @@ def run_scheduled_import(db, force=False, client=None, sleeper=time.sleep, now=N
         sync.last_error = f"{type(error).__name__}: {error}"[:2000]
         db.commit()
         raise
+    finally:
+        if owns_client:
+            client.close()
 
 
 if __name__ == "__main__":

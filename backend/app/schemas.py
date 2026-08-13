@@ -15,7 +15,7 @@ class SpeciesRead(BaseModel):
     peak_months: Optional[str] = None
     elevation_min_ft: Optional[int] = None
     elevation_max_ft: Optional[int] = None
-    utah_regions: Optional[str] = None
+    range_notes: Optional[str] = None
     notes: Optional[str] = None
 
     model_config = {"from_attributes": True}

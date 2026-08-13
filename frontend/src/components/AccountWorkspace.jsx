@@ -28,7 +28,7 @@ function LogbookRow({ item, species, onUpdate, onDelete, busy }) {
     species_id: item.species_id,
     found_on: item.found_on ?? '',
     habitat_type: item.habitat_type ?? '',
-    elevation_ft: item.elevation_ft ?? '',
+    elevation_m: item.elevation_ft == null ? '' : Math.round(item.elevation_ft / 3.28084),
     latitude: item.latitude,
     longitude: item.longitude,
     location_privacy: item.location_privacy,
@@ -37,12 +37,13 @@ function LogbookRow({ item, species, onUpdate, onDelete, busy }) {
 
   async function save(event) {
     event.preventDefault()
+    const { elevation_m, ...fields } = form
     await onUpdate({
       id: item.id,
-      ...form,
+      ...fields,
       found_on: form.found_on || null,
       habitat_type: form.habitat_type || null,
-      elevation_ft: form.elevation_ft === '' ? null : Number(form.elevation_ft),
+      elevation_ft: elevation_m === '' ? null : Number(elevation_m) * 3.28084,
       latitude: Number(form.latitude),
       longitude: Number(form.longitude),
       notes: form.notes || null,
@@ -73,7 +74,7 @@ function LogbookRow({ item, species, onUpdate, onDelete, busy }) {
           <label>Species<select value={form.species_id} onChange={event => setForm({ ...form, species_id: event.target.value })}>{species.map(value => <option key={value.id} value={value.id}>{value.common_name}</option>)}</select></label>
           <div className="paired-fields">
             <label>Date found<input type="date" value={form.found_on} onChange={event => setForm({ ...form, found_on: event.target.value })} /></label>
-            <label>Elevation<input type="number" value={form.elevation_ft} onChange={event => setForm({ ...form, elevation_ft: event.target.value })} /></label>
+            <label>Elevation (m)<input type="number" value={form.elevation_m} onChange={event => setForm({ ...form, elevation_m: event.target.value })} /></label>
           </div>
           <div className="paired-fields">
             <label>Latitude<input type="number" step="any" value={form.latitude} onChange={event => setForm({ ...form, latitude: event.target.value })} /></label>

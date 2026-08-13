@@ -6,11 +6,11 @@ product
 
 ## Users
 
-Utah mushroom foragers, from first-season learners to experienced field naturalists. They use the product on a phone while checking conditions or recording a find, and on a larger screen while planning trips, comparing habitats, and reviewing community knowledge.
+Mushroom foragers worldwide, from first-season learners to experienced field naturalists. They use the product on a phone while checking current field signals or recording a find, and on a larger screen while planning trips, comparing habitats, and reviewing community knowledge.
 
 ## Product Purpose
 
-Utah Forage Map helps people explore public mushroom observations, understand season and habitat patterns, and contribute useful field reports. The public map must deliver value without an account. An account earns its place by unlocking a private logbook, saved places, submissions, and community participation.
+Mushroom Forage Map helps people find recent, reviewed mushroom observations anywhere in the world, understand found-date and habitat patterns, and contribute useful field reports. The public map must deliver value without an account. An account earns its place by unlocking a private logbook, saved places, submissions, and community participation.
 
 ## Brand Personality
 
@@ -31,6 +31,7 @@ Practical, welcoming, trustworthy. The product should feel like a well-kept fiel
 3. Make trust visible. Show review state, source, safety guidance, and privacy expectations where decisions happen.
 4. Work at trailhead speed. Keep common actions obvious, compact, and comfortable on a phone.
 5. Protect the place and the person. Avoid exposing sensitive locations unnecessarily and never imply that map data alone confirms edibility.
+6. Let geography lead. Search, map bounds, found dates, and observed evidence adapt to the user's region instead of assuming one climate or hemisphere.
 
 ## Accessibility & Inclusion
 

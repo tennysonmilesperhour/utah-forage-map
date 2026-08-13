@@ -1,6 +1,6 @@
-# Utah Forage Map
+# Mushroom Forage Map
 
-Utah Forage Map is a public mushroom field desk: anyone can explore reviewed observations, seasonal patterns, habitat, elevation, local events, clubs, and safety resources. Accounts are optional and add a private logbook, saved places, editable submissions, recovery, and session controls.
+Mushroom Forage Map is a worldwide public mushroom field desk: anyone can search a place and explore recent reviewed observations, found dates, habitat, elevation, community knowledge, and safety resources. Accounts are optional and add a private logbook, saved places, editable submissions, recovery, and session controls.
 
 The project takes inspiration from the usefulness of community location catalogues such as Rockhounding.org while treating sensitive biological locations more carefully. Exact coordinates remain in the contributor's logbook by default; the public map receives a stable point shifted roughly 1 to 2.5 miles away.
 
@@ -8,7 +8,7 @@ The project takes inspiration from the usefulness of community location catalogu
 
 ## Product
 
-- Guest-first Mapbox map with species, month, elevation, habitat, source, and reviewed filters
+- Guest-first world map with place search, viewport queries, clustering, recency, species, season, metric elevation, habitat, source, and review filters
 - Email/password accounts using revocable, HTTP-only opaque sessions
 - Email verification, password reset, login rate limits, device sessions, and account deletion
 - Private exact-coordinate logbook with edit and delete controls
@@ -16,8 +16,8 @@ The project takes inspiration from the usefulness of community location catalogu
 - Saved public locations
 - Pending review queue with moderator approve/reject actions
 - Community finds, events, clubs, access guides, and poison-safety resources
-- Biweekly research-grade iNaturalist reconciliation with source provenance
-- Seasonal map defaults based on the month each mushroom was observed
+- Resumable biweekly reconciliation of worldwide, research-grade iNaturalist observations with source provenance
+- A rolling 90-day field signal based on when each mushroom was found, across both hemispheres
 - Alembic migrations for SQLite development and PostgreSQL production
 
 Product and interface decisions are documented in [PRODUCT.md](PRODUCT.md) and [DESIGN.md](DESIGN.md).
@@ -88,13 +88,15 @@ cd backend
 python -m crawler.inaturalist
 ```
 
-Only research-grade, wild, geolocated Utah observations matching catalogue species are imported. Each run reconciles the complete matching iNaturalist result set: new observations are inserted, changed locations and found dates are updated, and records that lose research-grade status are retired from the public map. `crawled_sources.source_url` is unique, making repeat runs safe. Imported map points still use public approximation.
+Only research-grade, wild, geolocated worldwide observations from the rolling 90-day window and matching catalogue species are imported. Each cycle reconciles the complete matching iNaturalist result set: new observations are inserted, changed locations and found dates are updated, and records that leave the current research-grade window are retired from the public map. `crawled_sources.source_url` is unique, making repeat runs safe. Imported map points still use public approximation.
 
-The production cron calls `GET /api/cron/inaturalist` with `Authorization: Bearer $CRON_SECRET` once daily. Persisted sync state makes the endpoint contact iNaturalist only when 14 days have elapsed; daily wake-ups allow automatic retry after a failed run. The importer follows iNaturalist's recommended 200-record pages, one request per second, and identifying user agent.
+The production cron calls `GET /api/cron/inaturalist` with `Authorization: Bearer $CRON_SECRET` once daily. Persisted sync state starts a new cycle only when 14 days have elapsed, processes at most 3,600 records per invocation, and resumes the following day until the worldwide result set is complete. This keeps each invocation bounded and allows retry after failure. The importer follows iNaturalist's recommended 200-record pages, one request per second, cursor pagination, and identifying user agent.
 
 ## Production
 
 The intended deployment is two Vercel projects:
+
+The existing Vercel project names and URLs remain stable during the global transition:
 
 1. `utah-forage-api` uses `backend/`, FastAPI zero configuration, a Vercel-managed Neon PostgreSQL database, and the scheduled import.
 2. `utah-forage-map` uses `frontend/` and rewrites `/api/*` to the backend project, preserving first-party session cookies.
@@ -130,7 +132,7 @@ Public:
 
 - `GET /health`
 - `GET /api/species`
-- `GET /api/sightings`
+- `GET /api/sightings` (supports recency and world-coordinate bounds)
 - `GET /api/community/finds`
 - `GET /api/community/events`
 - `GET /api/community/clubs`

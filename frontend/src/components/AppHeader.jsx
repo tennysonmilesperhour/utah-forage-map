@@ -18,8 +18,8 @@ export default function AppHeader({
       <div className="brand-lockup">
         <div className="brand-mark"><Leaf size={21} strokeWidth={2.2} aria-hidden="true" /></div>
         <div className="brand-copy">
-          <h1>Utah Forage Map</h1>
-          <p>Community field knowledge</p>
+          <h1><span className="brand-name-full">Mushroom Forage Map</span><span className="brand-name-short">Forage Map</span></h1>
+          <p>Worldwide field knowledge</p>
         </div>
       </div>
 

@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 import os
 from typing import Optional
 from uuid import UUID
@@ -26,7 +26,7 @@ from app.schemas import (
 from app.security import DEFAULT_SECRET_KEY, SECRET_KEY, hash_identifier, hash_token, new_token, passwords
 
 
-app = FastAPI(title="Utah Forage Map API")
+app = FastAPI(title="Mushroom Forage Map API")
 SESSION_COOKIE = "ufm_session"
 SESSION_DAYS = int(os.getenv("SESSION_DAYS", "30"))
 ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
@@ -56,7 +56,7 @@ def create_dev_tables():
 @app.get("/health")
 def health(db: Session = Depends(get_db)):
     db.query(User.id).limit(1).all()
-    return {"status": "ok", "project": "utah-forage-map", "email_configured": bool(os.getenv("RESEND_API_KEY"))}
+    return {"status": "ok", "project": "mushroom-forage-map", "email_configured": bool(os.getenv("RESEND_API_KEY"))}
 
 
 def now() -> datetime:
@@ -206,7 +206,7 @@ def register(
     background_tasks.add_task(
         send_account_email,
         user.email,
-        "Verify your Utah Forage Map email",
+        "Verify your Mushroom Forage Map email",
         "Verify your field account",
         "Confirm this email so you can always recover your logbook.",
         "Verify email",
@@ -283,7 +283,7 @@ def resend_verification(
     background_tasks.add_task(
         send_account_email,
         user.email,
-        "Verify your Utah Forage Map email",
+        "Verify your Mushroom Forage Map email",
         "Verify your field account",
         "Confirm this email so you can always recover your logbook.",
         "Verify email",
@@ -308,7 +308,7 @@ def forgot_password(
         background_tasks.add_task(
             send_account_email,
             user.email,
-            "Reset your Utah Forage Map password",
+            "Reset your Mushroom Forage Map password",
             "Reset your password",
             "Use this link to choose a new password for your field account.",
             "Reset password",
@@ -439,7 +439,12 @@ def list_sightings(
     habitat_type: Optional[str] = Query(None),
     source: Optional[str] = Query(None),
     verified_only: Optional[bool] = Query(None),
-    limit: int = Query(500, le=2000),
+    found_after: Optional[date] = Query(None),
+    west: Optional[float] = Query(None, ge=-180, le=180),
+    south: Optional[float] = Query(None, ge=-90, le=90),
+    east: Optional[float] = Query(None, ge=-180, le=180),
+    north: Optional[float] = Query(None, ge=-90, le=90),
+    limit: int = Query(2000, le=4000),
     db: Session = Depends(get_db),
 ):
     query = db.query(Sighting).options(joinedload(Sighting.species)).filter(
@@ -461,6 +466,19 @@ def list_sightings(
         query = query.filter(Sighting.source == source)
     if verified_only:
         query = query.filter(Sighting.verified == True)
+    if found_after:
+        query = query.filter(Sighting.found_on >= found_after)
+    bounds = (west, south, east, north)
+    if any(value is not None for value in bounds):
+        if any(value is None for value in bounds):
+            raise HTTPException(status_code=422, detail="west, south, east, and north must be provided together")
+        if south >= north:
+            raise HTTPException(status_code=422, detail="south must be less than north")
+        query = query.filter(Sighting.latitude.between(south, north))
+        if west <= east:
+            query = query.filter(Sighting.longitude.between(west, east))
+        else:
+            query = query.filter(or_(Sighting.longitude >= west, Sighting.longitude <= east))
     query = query.order_by(Sighting.found_on.is_(None), Sighting.found_on.desc(), Sighting.created_at.desc())
     return [public_sighting(item) for item in query.limit(limit).all()]
 

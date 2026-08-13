@@ -21,20 +21,10 @@ export default function Sidebar({
   onClose,
 }) {
   const idPrefix = variant === 'mobile' ? 'mobile' : 'desktop'
-  const currentMonth = new Date().getMonth() + 1
-  const showingCurrentMonth = filters.month_min === currentMonth && filters.month_max === currentMonth
   const activeFilterCount = Object.values(filters).filter(value => value !== undefined && value !== '').length
 
   function set(key, value) {
     onChange({ ...filters, [key]: value })
-  }
-
-  function setCurrentMonth(enabled) {
-    onChange({
-      ...filters,
-      month_min: enabled ? currentMonth : undefined,
-      month_max: enabled ? currentMonth : undefined,
-    })
   }
 
   return (
@@ -43,7 +33,7 @@ export default function Sidebar({
         <div>
           <div className="panel-title-row">
             <SlidersHorizontal size={18} aria-hidden="true" />
-            <h2>Explore Utah</h2>
+            <h2>Explore the world</h2>
           </div>
           <p>{loading ? 'Loading observations...' : `${sightingCount ?? 0} public observations on the map`}</p>
         </div>
@@ -67,6 +57,22 @@ export default function Sidebar({
               <option key={item.id} value={item.id}>{item.common_name}</option>
             ))}
           </select>
+        </div>
+
+        <div className="filter-group">
+          <label htmlFor={`${idPrefix}-recency`}>Observation recency</label>
+          <select
+            id={`${idPrefix}-recency`}
+            value={filters.recent_days ?? ''}
+            onChange={event => set('recent_days', event.target.value ? Number(event.target.value) : undefined)}
+          >
+            <option value="14">Past 14 days</option>
+            <option value="30">Past 30 days</option>
+            <option value="60">Past 60 days</option>
+            <option value="90">Past 90 days</option>
+            <option value="">All available dates</option>
+          </select>
+          <p className="field-help">Found dates, not upload dates</p>
         </div>
 
         <div className="filter-group">
@@ -99,19 +105,6 @@ export default function Sidebar({
           </div>
         </div>
 
-        <label className="check-control" htmlFor={`${idPrefix}-current-month`}>
-          <input
-            id={`${idPrefix}-current-month`}
-            type="checkbox"
-            checked={showingCurrentMonth}
-            onChange={event => setCurrentMonth(event.target.checked)}
-          />
-          <span>
-            <strong>Observed this month</strong>
-            <small>Show reviewed {MONTHS[currentMonth - 1]} records from any year</small>
-          </span>
-        </label>
-
         <div className="filter-group">
           <span className="field-label">Elevation range</span>
           <div className="paired-fields">
@@ -121,8 +114,8 @@ export default function Sidebar({
                 type="number"
                 inputMode="numeric"
                 placeholder="Any"
-                value={filters.elev_min ?? ''}
-                onChange={event => set('elev_min', event.target.value ? Number(event.target.value) : undefined)}
+                value={filters.elev_min_m ?? ''}
+                onChange={event => set('elev_min_m', event.target.value ? Number(event.target.value) : undefined)}
               />
             </label>
             <label>
@@ -131,12 +124,12 @@ export default function Sidebar({
                 type="number"
                 inputMode="numeric"
                 placeholder="Any"
-                value={filters.elev_max ?? ''}
-                onChange={event => set('elev_max', event.target.value ? Number(event.target.value) : undefined)}
+                value={filters.elev_max_m ?? ''}
+                onChange={event => set('elev_max_m', event.target.value ? Number(event.target.value) : undefined)}
               />
             </label>
           </div>
-          <p className="field-help">Feet above sea level</p>
+          <p className="field-help">Meters above sea level</p>
         </div>
 
         <div className="filter-group">

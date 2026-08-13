@@ -5,6 +5,7 @@ import AppHeader from './components/AppHeader'
 import AuthDialog from './components/AuthDialog'
 import CommunityPanel from './components/CommunityPanel'
 import GuestPrompt from './components/GuestPrompt'
+import PlaceSearch from './components/PlaceSearch'
 import Sidebar from './components/Sidebar'
 import SubmitDrawer from './components/SubmitDrawer'
 import { useCurrentUser, useLogout, useVerifyEmail } from './hooks/useAuth'
@@ -12,8 +13,6 @@ import { useSaveLocation } from './hooks/useAccount'
 import { useCommunityPortal, useCreateSighting, useSightings, useSpecies } from './hooks/useSightings'
 
 const MapView = lazy(() => import('./components/MapView'))
-const CURRENT_MONTH = new Date().getMonth() + 1
-
 function foundDateLabel(value) {
   if (!value) return 'Unknown'
   return new Date(`${value}T12:00:00`).toLocaleDateString(undefined, {
@@ -21,13 +20,20 @@ function foundDateLabel(value) {
   })
 }
 
+function elevationLabel(feet) {
+  if (feet == null) return 'Unknown'
+  const meters = Math.round(feet / 3.28084)
+  return `${meters.toLocaleString()} m / ${Math.round(feet).toLocaleString()} ft`
+}
+
 export default function App() {
   const initialParams = new URLSearchParams(window.location.search)
   const [filters, setFilters] = useState({
-    month_min: CURRENT_MONTH,
-    month_max: CURRENT_MONTH,
+    recent_days: 90,
     verified_only: true,
   })
+  const [viewport, setViewport] = useState(null)
+  const [flyTarget, setFlyTarget] = useState(null)
   const [selected, setSelected] = useState(null)
   const [draftLocation, setDraftLocation] = useState(null)
   const [authMode, setAuthMode] = useState(initialParams.get('reset') ? 'reset' : null)
@@ -46,7 +52,7 @@ export default function App() {
   const logout = useLogout()
   const verifyEmail = useVerifyEmail()
   const saveLocation = useSaveLocation()
-  const { data: sightings = [], isLoading } = useSightings(filters)
+  const { data: sightings = [], isLoading } = useSightings(filters, viewport)
   const { data: species = [] } = useSpecies()
   const { data: portal = {}, isLoading: portalLoading } = useCommunityPortal()
   const createSighting = useCreateSighting()
@@ -87,6 +93,11 @@ export default function App() {
     }
     setSelected(null)
     setSubmissionOpen(true)
+  }
+
+  function goToPlace(target) {
+    setSelected(null)
+    setFlyTarget({ ...target, selectedAt: Date.now() })
   }
 
   function handleAuthenticated() {
@@ -151,11 +162,13 @@ export default function App() {
           species={species}
         />
 
-        <section className={`map-stage ${submissionOpen ? 'is-picking' : ''}`} aria-label="Utah mushroom observations map">
+        <section className={`map-stage ${submissionOpen ? 'is-picking' : ''}`} aria-label="Worldwide mushroom observations map">
           <Suspense fallback={<div className="map-loading" role="status"><span>Loading map...</span></div>}>
             <MapView
               sightings={sightings}
               onSightingClick={setSelected}
+              onBoundsChange={setViewport}
+              flyTarget={flyTarget}
               draftLocation={draftLocation}
               onMapClick={submissionOpen ? setDraftLocation : undefined}
               isPickingLocation={submissionOpen}
@@ -163,6 +176,7 @@ export default function App() {
           </Suspense>
 
           <div className="map-toolbar">
+            <PlaceSearch onSelect={goToPlace} />
             <button className="map-filter-button" type="button" onClick={() => setFiltersOpen(true)}>
               <Filter size={17} aria-hidden="true" /> Filters
             </button>
@@ -181,9 +195,7 @@ export default function App() {
           </div>
 
           <div className="map-legend" aria-label={`${sourceCount} observation sources`}>
-            <span><i className="legend-dot community" /> Community</span>
-            <span><i className="legend-dot inaturalist" /> iNaturalist</span>
-            <span><i className="legend-dot gbif" /> GBIF</span>
+            <span><i className="legend-dot recent" /> Recent, reviewed field observations</span>
           </div>
 
           {!authLoading && !user && guestPromptVisible && !submissionOpen && !selected && (
@@ -217,7 +229,7 @@ export default function App() {
               <dl>
                 <div><dt>Found</dt><dd>{foundDateLabel(selected.found_on)}</dd></div>
                 <div><dt>Source</dt><dd>{selected.source}</dd></div>
-                <div><dt>Elevation</dt><dd>{selected.elevation_ft ? `${Math.round(selected.elevation_ft).toLocaleString()} ft` : 'Unknown'}</dd></div>
+                <div><dt>Elevation</dt><dd>{elevationLabel(selected.elevation_ft)}</dd></div>
                 <div><dt>Habitat</dt><dd>{selected.habitat_type ?? 'Unknown'}</dd></div>
               </dl>
               <button className="button button-secondary save-place-button" type="button" onClick={() => saveSelected()} disabled={saveLocation.isPending}>
