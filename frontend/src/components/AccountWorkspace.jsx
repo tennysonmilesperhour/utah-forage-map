@@ -28,6 +28,7 @@ function LogbookRow({ item, species, onUpdate, onDelete, busy }) {
     species_id: item.species_id,
     found_on: item.found_on ?? '',
     habitat_type: item.habitat_type ?? '',
+    place_name: item.place_name ?? '',
     elevation_m: item.elevation_ft == null ? '' : Math.round(item.elevation_ft / 3.28084),
     latitude: item.latitude,
     longitude: item.longitude,
@@ -43,6 +44,7 @@ function LogbookRow({ item, species, onUpdate, onDelete, busy }) {
       ...fields,
       found_on: form.found_on || null,
       habitat_type: form.habitat_type || null,
+      place_name: form.place_name.trim() || null,
       elevation_ft: elevation_m === '' ? null : Number(elevation_m) * 3.28084,
       latitude: Number(form.latitude),
       longitude: Number(form.longitude),
@@ -82,6 +84,7 @@ function LogbookRow({ item, species, onUpdate, onDelete, busy }) {
           </div>
           <label>Public location<select value={form.location_privacy} onChange={event => setForm({ ...form, location_privacy: event.target.value })}><option value="approximate">Approximate within 1-2.5 miles</option><option value="private">Private, logbook only</option><option value="exact">Exact point</option></select></label>
           <label>Habitat<input value={form.habitat_type} onChange={event => setForm({ ...form, habitat_type: event.target.value })} /></label>
+          <label>Nearest place<input maxLength={160} value={form.place_name} onChange={event => setForm({ ...form, place_name: event.target.value })} /></label>
           <label>Notes<textarea rows="3" value={form.notes} onChange={event => setForm({ ...form, notes: event.target.value })} /></label>
           <button className="button button-primary" disabled={busy}><Save size={16} aria-hidden="true" /> Save and resubmit</button>
         </form>

@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { MapPin, RotateCcw, ShieldCheck, SlidersHorizontal, X } from 'lucide-react'
 
 const HABITAT_TYPES = [
@@ -11,6 +12,8 @@ const MONTHS = [
   'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
 ]
 
+const PLACE_DEBOUNCE_MS = 400
+
 export default function Sidebar({
   filters,
   onChange,
@@ -22,10 +25,19 @@ export default function Sidebar({
 }) {
   const idPrefix = variant === 'mobile' ? 'mobile' : 'desktop'
   const activeFilterCount = Object.values(filters).filter(value => value !== undefined && value !== '').length
+  const [placeText, setPlaceText] = useState(filters.place ?? '')
 
   function set(key, value) {
     onChange({ ...filters, [key]: value })
   }
+
+  // Typing a country should not fire a request per keystroke.
+  useEffect(() => {
+    const term = placeText.trim()
+    if (term === (filters.place ?? '')) return undefined
+    const timer = window.setTimeout(() => onChange({ ...filters, place: term || undefined }), PLACE_DEBOUNCE_MS)
+    return () => window.clearTimeout(timer)
+  }, [placeText, filters, onChange])
 
   return (
     <aside className={`filter-panel filter-panel-${variant}`} aria-label="Map filters">
@@ -57,6 +69,18 @@ export default function Sidebar({
               <option key={item.id} value={item.id}>{item.common_name}</option>
             ))}
           </select>
+        </div>
+
+        <div className="filter-group">
+          <label htmlFor={`${idPrefix}-place`}>Country or region</label>
+          <input
+            id={`${idPrefix}-place`}
+            type="search"
+            placeholder="Any place"
+            value={placeText}
+            onChange={event => setPlaceText(event.target.value)}
+          />
+          <p className="field-help">Matches the recorded locality, for example Chile or Bavaria</p>
         </div>
 
         <div className="filter-group">

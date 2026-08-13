@@ -231,6 +231,7 @@ export default function App() {
                 <div><dt>Source</dt><dd>{selected.source}</dd></div>
                 <div><dt>Elevation</dt><dd>{elevationLabel(selected.elevation_ft)}</dd></div>
                 <div><dt>Habitat</dt><dd>{selected.habitat_type ?? 'Unknown'}</dd></div>
+                <div><dt>Place</dt><dd>{selected.place_name ?? 'Not recorded'}</dd></div>
               </dl>
               <button className="button button-secondary save-place-button" type="button" onClick={() => saveSelected()} disabled={saveLocation.isPending}>
                 <Bookmark size={17} aria-hidden="true" /> {saveLocation.isPending ? 'Saving...' : 'Save place'}

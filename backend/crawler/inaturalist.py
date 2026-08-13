@@ -113,6 +113,7 @@ def compact_observation(observation):
         "coordinates": (observation.get("geojson") or {}).get("coordinates"),
         "taxon_id": taxon.get("id"),
         "photo_url": ((observation.get("photos") or [{}])[0].get("url")),
+        "place_guess": observation.get("place_guess"),
         "uri": observation.get("uri"),
     }, default=str, separators=(",", ":"))
 
@@ -156,6 +157,7 @@ def import_observation_batch(db, observations, species_by_taxon_id, crawled_at):
             "longitude": coordinates[0],
             "found_on": found_on,
             "month": found_on.month if found_on else None,
+            "place_name": (observation.get("place_guess") or "").strip()[:160] or None,
             "notes": f"Research-grade iNaturalist observation {observation_id}",
             "photo_url": photo_url,
             "source": SOURCE_NAME,

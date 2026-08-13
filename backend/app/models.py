@@ -90,6 +90,7 @@ class Sighting(Base):
     month = Column(Integer)
     habitat_type = Column(String)
     substrate = Column(String)
+    place_name = Column(String(160))  # coarse locality, e.g. "Bavaria, Germany"
     notes = Column(Text)
     photo_url = Column(String)
     source = Column(String, default="community")
