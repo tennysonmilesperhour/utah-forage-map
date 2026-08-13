@@ -5,6 +5,7 @@ from datetime import date, datetime, timedelta
 
 import httpx
 from sqlalchemy import func
+from sqlalchemy.orm import joinedload
 
 from app.models import CrawledSource, Sighting, SourceSync, Species, User
 from app.security import new_token, passwords
@@ -120,7 +121,10 @@ def import_observations(db, per_page=PAGE_SIZE, client=None, sleeper=time.sleep,
     importer = crawler_user(db)
     existing_sources = {
         item.source_url: item
-        for item in db.query(CrawledSource).filter(CrawledSource.source_name == SOURCE_NAME).all()
+        for item in db.query(CrawledSource)
+        .options(joinedload(CrawledSource.sighting))
+        .filter(CrawledSource.source_name == SOURCE_NAME)
+        .all()
     }
     seen_urls = set()
     imported = 0
@@ -172,17 +176,20 @@ def import_observations(db, per_page=PAGE_SIZE, client=None, sleeper=time.sleep,
             db.add(source)
             existing_sources[source_url] = source
             imported += 1
+            source.raw_data = json.dumps(observation, default=str)
+            source.crawled_at = crawled_at
         else:
-            changed = any(getattr(sighting, key) != value for key, value in values.items())
+            sighting_changed = any(getattr(sighting, key) != value for key, value in values.items())
             for key, value in values.items():
                 setattr(sighting, key, value)
-            if changed:
+            raw_data = json.dumps(observation, default=str)
+            source_changed = source.raw_data != raw_data
+            if sighting_changed or source_changed:
+                source.raw_data = raw_data
+                source.crawled_at = crawled_at
                 updated += 1
             else:
                 unchanged += 1
-
-        source.raw_data = json.dumps(observation, default=str)
-        source.crawled_at = crawled_at
 
     if complete and len(existing_sources) >= 20 and len(seen_urls) < len(existing_sources) / 2:
         raise RuntimeError(
