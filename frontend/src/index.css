@@ -854,7 +854,7 @@ button:disabled {
 
 .sighting-detail dl {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 1px;
   margin: 14px 0 0;
   overflow: hidden;

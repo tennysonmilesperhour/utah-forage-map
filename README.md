@@ -16,8 +16,8 @@ The project takes inspiration from the usefulness of community location catalogu
 - Saved public locations
 - Pending review queue with moderator approve/reject actions
 - Community finds, events, clubs, access guides, and poison-safety resources
-- Idempotent research-grade iNaturalist imports with source provenance
-- Daily production import through a credentialed Vercel cron
+- Biweekly research-grade iNaturalist reconciliation with source provenance
+- Seasonal map defaults based on the month each mushroom was observed
 - Alembic migrations for SQLite development and PostgreSQL production
 
 Product and interface decisions are documented in [PRODUCT.md](PRODUCT.md) and [DESIGN.md](DESIGN.md).
@@ -73,10 +73,11 @@ npm audit
 
 cd ../backend
 python -m scripts.auth_smoke
+python -m scripts.import_smoke
 python -m compileall app crawler scripts
 ```
 
-The API smoke test covers registration, verification, private/public coordinate separation, moderation, saving, recovery, session revocation, owner edits, and account deletion.
+The API smoke tests cover registration, verification, private/public coordinate separation, moderation, saving, recovery, session revocation, owner edits, account deletion, import updates, and retired source records.
 
 ## Imports
 
@@ -87,9 +88,9 @@ cd backend
 python -m crawler.inaturalist
 ```
 
-Only research-grade, geolocated Utah observations matching catalogue species are imported. `crawled_sources.source_url` is unique, making repeat runs safe. Imported map points still use public approximation.
+Only research-grade, wild, geolocated Utah observations matching catalogue species are imported. Each run reconciles the complete matching iNaturalist result set: new observations are inserted, changed locations and found dates are updated, and records that lose research-grade status are retired from the public map. `crawled_sources.source_url` is unique, making repeat runs safe. Imported map points still use public approximation.
 
-The production cron calls `GET /api/cron/inaturalist` with `Authorization: Bearer $CRON_SECRET` once daily.
+The production cron calls `GET /api/cron/inaturalist` with `Authorization: Bearer $CRON_SECRET` once daily. Persisted sync state makes the endpoint contact iNaturalist only when 14 days have elapsed; daily wake-ups allow automatic retry after a failed run. The importer follows iNaturalist's recommended 200-record pages, one request per second, and identifying user agent.
 
 ## Production
 
