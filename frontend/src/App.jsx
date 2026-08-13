@@ -11,6 +11,8 @@ import SubmitDrawer from './components/SubmitDrawer'
 import { useCurrentUser, useLogout, useVerifyEmail } from './hooks/useAuth'
 import { useSaveLocation } from './hooks/useAccount'
 import { useCommunityPortal, useCreateSighting, useSightings, useSpecies } from './hooks/useSightings'
+import { useUnitSystem } from './hooks/useUnits'
+import { formatElevation } from './lib/units'
 
 const MapView = lazy(() => import('./components/MapView'))
 function foundDateLabel(value) {
@@ -18,12 +20,6 @@ function foundDateLabel(value) {
   return new Date(`${value}T12:00:00`).toLocaleDateString(undefined, {
     year: 'numeric', month: 'short', day: 'numeric',
   })
-}
-
-function elevationLabel(feet) {
-  if (feet == null) return 'Unknown'
-  const meters = Math.round(feet / 3.28084)
-  return `${meters.toLocaleString()} m / ${Math.round(feet).toLocaleString()} ft`
 }
 
 export default function App() {
@@ -48,6 +44,7 @@ export default function App() {
     () => window.localStorage.getItem('ufm:onboarding:guest-message:v1') !== 'true',
   )
 
+  const { system: unitSystem } = useUnitSystem()
   const { data: user = null, isLoading: authLoading } = useCurrentUser()
   const logout = useLogout()
   const verifyEmail = useVerifyEmail()
@@ -229,8 +226,9 @@ export default function App() {
               <dl>
                 <div><dt>Found</dt><dd>{foundDateLabel(selected.found_on)}</dd></div>
                 <div><dt>Source</dt><dd>{selected.source}</dd></div>
-                <div><dt>Elevation</dt><dd>{elevationLabel(selected.elevation_ft)}</dd></div>
+                <div><dt>Elevation</dt><dd>{formatElevation(selected.elevation_ft, unitSystem)}</dd></div>
                 <div><dt>Habitat</dt><dd>{selected.habitat_type ?? 'Unknown'}</dd></div>
+                <div><dt>Place</dt><dd>{selected.place_name ?? 'Not recorded'}</dd></div>
               </dl>
               <button className="button button-secondary save-place-button" type="button" onClick={() => saveSelected()} disabled={saveLocation.isPending}>
                 <Bookmark size={17} aria-hidden="true" /> {saveLocation.isPending ? 'Saving...' : 'Save place'}

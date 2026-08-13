@@ -1,4 +1,7 @@
+import { useEffect, useState } from 'react'
 import { MapPin, RotateCcw, ShieldCheck, SlidersHorizontal, X } from 'lucide-react'
+import { useUnitSystem } from '../hooks/useUnits'
+import { displayToMetres, metresToDisplay } from '../lib/units'
 
 const HABITAT_TYPES = [
   'forest', 'meadow', 'riparian', 'alpine', 'desert', 'scrubland', 'wetland',
@@ -11,6 +14,41 @@ const MONTHS = [
   'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
 ]
 
+const PLACE_DEBOUNCE_MS = 400
+
+function ElevationInput({ label, metres, unitSystem, onChangeMetres }) {
+  const asText = value => {
+    const converted = metresToDisplay(value, unitSystem)
+    return converted == null ? '' : String(Math.round(converted))
+  }
+  const [text, setText] = useState(() => asText(metres))
+  const [synced, setSynced] = useState({ metres, unitSystem })
+
+  // Adjusted during render rather than in an effect: the field follows the filter when it is
+  // cleared or the units change, but keeps what the reader is part-way through typing.
+  if (synced.metres !== metres || synced.unitSystem !== unitSystem) {
+    setSynced({ metres, unitSystem })
+    const next = asText(metres)
+    if (text === '' || Number(text) !== Number(next)) setText(next)
+  }
+
+  return (
+    <label>
+      <span>{label}</span>
+      <input
+        type="number"
+        inputMode="numeric"
+        placeholder="Any"
+        value={text}
+        onChange={event => {
+          setText(event.target.value)
+          onChangeMetres(displayToMetres(event.target.value, unitSystem))
+        }}
+      />
+    </label>
+  )
+}
+
 export default function Sidebar({
   filters,
   onChange,
@@ -22,10 +60,20 @@ export default function Sidebar({
 }) {
   const idPrefix = variant === 'mobile' ? 'mobile' : 'desktop'
   const activeFilterCount = Object.values(filters).filter(value => value !== undefined && value !== '').length
+  const [placeText, setPlaceText] = useState(filters.place ?? '')
+  const { system: unitSystem, setSystem } = useUnitSystem()
 
   function set(key, value) {
     onChange({ ...filters, [key]: value })
   }
+
+  // Typing a country should not fire a request per keystroke.
+  useEffect(() => {
+    const term = placeText.trim()
+    if (term === (filters.place ?? '')) return undefined
+    const timer = window.setTimeout(() => onChange({ ...filters, place: term || undefined }), PLACE_DEBOUNCE_MS)
+    return () => window.clearTimeout(timer)
+  }, [placeText, filters, onChange])
 
   return (
     <aside className={`filter-panel filter-panel-${variant}`} aria-label="Map filters">
@@ -57,6 +105,18 @@ export default function Sidebar({
               <option key={item.id} value={item.id}>{item.common_name}</option>
             ))}
           </select>
+        </div>
+
+        <div className="filter-group">
+          <label htmlFor={`${idPrefix}-place`}>Country or region</label>
+          <input
+            id={`${idPrefix}-place`}
+            type="search"
+            placeholder="Any place"
+            value={placeText}
+            onChange={event => setPlaceText(event.target.value)}
+          />
+          <p className="field-help">Matches the recorded locality, for example Chile or Bavaria</p>
         </div>
 
         <div className="filter-group">
@@ -106,30 +166,42 @@ export default function Sidebar({
         </div>
 
         <div className="filter-group">
-          <span className="field-label">Elevation range</span>
-          <div className="paired-fields">
-            <label>
-              <span>Minimum</span>
-              <input
-                type="number"
-                inputMode="numeric"
-                placeholder="Any"
-                value={filters.elev_min_m ?? ''}
-                onChange={event => set('elev_min_m', event.target.value ? Number(event.target.value) : undefined)}
-              />
-            </label>
-            <label>
-              <span>Maximum</span>
-              <input
-                type="number"
-                inputMode="numeric"
-                placeholder="Any"
-                value={filters.elev_max_m ?? ''}
-                onChange={event => set('elev_max_m', event.target.value ? Number(event.target.value) : undefined)}
-              />
-            </label>
+          <div className="field-label-row">
+            <span className="field-label">Elevation range</span>
+            <div className="unit-toggle" role="group" aria-label="Elevation units">
+              <button
+                type="button"
+                className={unitSystem === 'metric' ? 'active' : ''}
+                aria-pressed={unitSystem === 'metric'}
+                onClick={() => setSystem('metric')}
+              >
+                m
+              </button>
+              <button
+                type="button"
+                className={unitSystem === 'imperial' ? 'active' : ''}
+                aria-pressed={unitSystem === 'imperial'}
+                onClick={() => setSystem('imperial')}
+              >
+                ft
+              </button>
+            </div>
           </div>
-          <p className="field-help">Meters above sea level</p>
+          <div className="paired-fields">
+            <ElevationInput
+              label="Minimum"
+              metres={filters.elev_min_m}
+              unitSystem={unitSystem}
+              onChangeMetres={value => set('elev_min_m', value)}
+            />
+            <ElevationInput
+              label="Maximum"
+              metres={filters.elev_max_m}
+              unitSystem={unitSystem}
+              onChangeMetres={value => set('elev_max_m', value)}
+            />
+          </div>
+          <p className="field-help">{unitSystem === 'imperial' ? 'Feet' : 'Meters'} above sea level</p>
         </div>
 
         <div className="filter-group">

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react'
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
+import { useUnitSystem } from '../hooks/useUnits'
 
 const WORLD_CENTER = [0, 20]
 const WORLD_ZOOM = 1.35
@@ -58,6 +59,8 @@ export default function MapView({
 }) {
   const containerRef = useRef(null)
   const mapRef = useRef(null)
+  const scaleRef = useRef(null)
+  const { system: unitSystem } = useUnitSystem()
   const draftMarkerRef = useRef(null)
   const sightingsRef = useRef(sightings)
   const onSightingClickRef = useRef(onSightingClick)
@@ -98,7 +101,8 @@ export default function MapView({
       trackUserLocation: true,
       showUserHeading: true,
     }), 'top-right')
-    map.addControl(new mapboxgl.ScaleControl({ unit: 'metric' }), 'bottom-right')
+    scaleRef.current = new mapboxgl.ScaleControl({ unit: 'metric' })
+    map.addControl(scaleRef.current, 'bottom-right')
 
     map.on('load', () => {
       map.addSource(SOURCE_ID, {
@@ -183,8 +187,13 @@ export default function MapView({
     return () => {
       map.remove()
       mapRef.current = null
+      scaleRef.current = null
     }
   }, [])
+
+  useEffect(() => {
+    scaleRef.current?.setUnit(unitSystem)
+  }, [unitSystem])
 
   useEffect(() => { syncSource() }, [sightings, syncSource])
 

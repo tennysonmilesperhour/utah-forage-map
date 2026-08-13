@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import math
 from datetime import date, datetime, timedelta
 import os
 from typing import Optional
@@ -15,7 +16,7 @@ from app.models import (
     AccountToken, CommunityEvent, CommunityFind, ForageClub, RateLimitEvent,
     ResourceGuide, SavedLocation, Sighting, Species, User, UserSession,
 )
-from app.privacy import public_sighting
+from app.privacy import MAX_OFFSET_MILES, MILES_PER_DEGREE, normalize_longitude, public_sighting
 from app.schemas import (
     CommunityEventRead, CommunityFindRead, EmailRequest, ForageClubRead,
     OwnerSightingRead, PasswordConfirm, PasswordResetConfirm, ResourceGuideRead,
@@ -438,6 +439,7 @@ def list_sightings(
     elev_max: Optional[float] = Query(None),
     habitat_type: Optional[str] = Query(None),
     source: Optional[str] = Query(None),
+    place: Optional[str] = Query(None, max_length=120),
     verified_only: Optional[bool] = Query(None),
     found_after: Optional[date] = Query(None),
     west: Optional[float] = Query(None, ge=-180, le=180),
@@ -464,6 +466,8 @@ def list_sightings(
         query = query.filter(Sighting.habitat_type == habitat_type)
     if source:
         query = query.filter(Sighting.source == source)
+    if place:
+        query = query.filter(Sighting.place_name.ilike(f"%{place.strip()}%"))
     if verified_only:
         query = query.filter(Sighting.verified == True)
     if found_after:
@@ -474,11 +478,25 @@ def list_sightings(
             raise HTTPException(status_code=422, detail="west, south, east, and north must be provided together")
         if south >= north:
             raise HTTPException(status_code=422, detail="south must be less than north")
-        query = query.filter(Sighting.latitude.between(south, north))
-        if west <= east:
-            query = query.filter(Sighting.longitude.between(west, east))
+        # The published point sits up to MAX_OFFSET_MILES from the stored one, so the box is
+        # padded to keep edge observations from blinking out as the map is panned. A degree of
+        # longitude covers less ground near the poles, so that pad grows with latitude.
+        lat_pad = MAX_OFFSET_MILES / MILES_PER_DEGREE
+        edge_lat = min(max(abs(south), abs(north)), 89.0)
+        lng_pad = min(lat_pad / max(math.cos(math.radians(edge_lat)), 0.05), 20.0)
+        query = query.filter(Sighting.latitude.between(
+            max(-90.0, south - lat_pad), min(90.0, north + lat_pad)
+        ))
+        padded_west = normalize_longitude(west - lng_pad)
+        padded_east = normalize_longitude(east + lng_pad)
+        if (east + lng_pad) - (west - lng_pad) >= 360.0:
+            pass
+        elif padded_west <= padded_east:
+            query = query.filter(Sighting.longitude.between(padded_west, padded_east))
         else:
-            query = query.filter(or_(Sighting.longitude >= west, Sighting.longitude <= east))
+            query = query.filter(or_(
+                Sighting.longitude >= padded_west, Sighting.longitude <= padded_east
+            ))
     query = query.order_by(Sighting.found_on.is_(None), Sighting.found_on.desc(), Sighting.created_at.desc())
     return [public_sighting(item) for item in query.limit(limit).all()]
 

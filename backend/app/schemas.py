@@ -80,6 +80,7 @@ class SightingCreate(BaseModel):
     month: Optional[int] = Field(default=None, ge=1, le=12)
     habitat_type: Optional[str] = Field(default=None, max_length=80)
     substrate: Optional[str] = Field(default=None, max_length=120)
+    place_name: Optional[str] = Field(default=None, max_length=160)
     notes: Optional[str] = Field(default=None, max_length=2000)
     photo_url: Optional[str] = Field(default=None, max_length=1000)
     location_privacy: Literal["approximate", "exact", "private"] = "approximate"
@@ -93,6 +94,7 @@ class SightingUpdate(BaseModel):
     found_on: Optional[date] = None
     habitat_type: Optional[str] = Field(default=None, max_length=80)
     substrate: Optional[str] = Field(default=None, max_length=120)
+    place_name: Optional[str] = Field(default=None, max_length=160)
     notes: Optional[str] = Field(default=None, max_length=2000)
     photo_url: Optional[str] = Field(default=None, max_length=1000)
     location_privacy: Optional[Literal["approximate", "exact", "private"]] = None
@@ -114,6 +116,7 @@ class SightingRead(BaseModel):
     month: Optional[int] = None
     habitat_type: Optional[str] = None
     substrate: Optional[str] = None
+    place_name: Optional[str] = None
     notes: Optional[str] = None
     photo_url: Optional[str] = None
     source: str
