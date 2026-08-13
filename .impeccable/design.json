@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "generatedAt": "2026-08-11T00:00:00-06:00",
-  "title": "Design System: Utah Forage Map",
+  "title": "Design System: Forage Map",
   "extensions": {
     "colorMeta": {
       "field-pine": { "role": "primary", "displayName": "Field Pine", "canonical": "#184A3B", "tonalRamp": ["#0C231C", "#123B2F", "#184A3B", "#2D6654", "#5A8B79", "#91B4A7", "#C8DCD4", "#EDF4F1"] },

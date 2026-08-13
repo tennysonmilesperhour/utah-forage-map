@@ -13,7 +13,11 @@ export function useSightings(filters = {}) {
       if (filters.elev_max != null) params.elev_max = filters.elev_max
       if (filters.habitat_type) params.habitat_type = filters.habitat_type
       if (filters.source) params.source = filters.source
+      if (filters.place) params.place = filters.place
       if (filters.verified_only) params.verified_only = true
+      for (const key of ['min_lat', 'max_lat', 'min_lng', 'max_lng']) {
+        if (filters[key] != null) params[key] = filters[key]
+      }
 
       const { data } = await axios.get('/api/sightings', { params })
       return data

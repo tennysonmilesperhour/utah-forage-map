@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime, timedelta
+import math
 import os
 from typing import Optional
 from uuid import UUID
@@ -26,12 +27,13 @@ from app.schemas import (
 from app.security import DEFAULT_SECRET_KEY, SECRET_KEY, hash_identifier, hash_token, new_token, passwords
 
 
-app = FastAPI(title="Utah Forage Map API")
-SESSION_COOKIE = "ufm_session"
+app = FastAPI(title="Forage Map API")
+SESSION_COOKIE = "forage_session"
 SESSION_DAYS = int(os.getenv("SESSION_DAYS", "30"))
 ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
 ADMIN_EMAILS = {value.strip().lower() for value in os.getenv("ADMIN_EMAILS", "").split(",") if value.strip()}
 CRON_SECRET = os.getenv("CRON_SECRET")
+VIEWPORT_PAD_DEG = 0.1  # covers the public location offset at any latitude the map shows
 
 if ENVIRONMENT == "production" and SECRET_KEY == DEFAULT_SECRET_KEY:
     raise RuntimeError("SECRET_KEY must be set in production")
@@ -56,7 +58,7 @@ def create_dev_tables():
 @app.get("/health")
 def health(db: Session = Depends(get_db)):
     db.query(User.id).limit(1).all()
-    return {"status": "ok", "project": "utah-forage-map", "email_configured": bool(os.getenv("RESEND_API_KEY"))}
+    return {"status": "ok", "project": "forage-map", "email_configured": bool(os.getenv("RESEND_API_KEY"))}
 
 
 def now() -> datetime:
@@ -206,7 +208,7 @@ def register(
     background_tasks.add_task(
         send_account_email,
         user.email,
-        "Verify your Utah Forage Map email",
+        "Verify your Forage Map email",
         "Verify your field account",
         "Confirm this email so you can always recover your logbook.",
         "Verify email",
@@ -283,7 +285,7 @@ def resend_verification(
     background_tasks.add_task(
         send_account_email,
         user.email,
-        "Verify your Utah Forage Map email",
+        "Verify your Forage Map email",
         "Verify your field account",
         "Confirm this email so you can always recover your logbook.",
         "Verify email",
@@ -308,7 +310,7 @@ def forgot_password(
         background_tasks.add_task(
             send_account_email,
             user.email,
-            "Reset your Utah Forage Map password",
+            "Reset your Forage Map password",
             "Reset your password",
             "Use this link to choose a new password for your field account.",
             "Reset password",
@@ -429,6 +431,34 @@ def list_resource_guides(limit: int = Query(8, le=50), db: Session = Depends(get
     ).limit(limit).all()
 
 
+def apply_viewport(query, min_lat, max_lat, min_lng, max_lng):
+    """Restrict a sighting query to a map viewport.
+
+    Public points are shifted up to VIEWPORT_PAD_DEG from the stored coordinate, so the
+    box is padded to keep edge observations from disappearing as the map is panned.
+    A west edge greater than the east edge means the viewport crosses the antimeridian.
+    """
+    if min_lat is not None:
+        query = query.filter(Sighting.latitude >= max(-90.0, min_lat - VIEWPORT_PAD_DEG))
+    if max_lat is not None:
+        query = query.filter(Sighting.latitude <= min(90.0, max_lat + VIEWPORT_PAD_DEG))
+    if min_lng is None or max_lng is None:
+        return query
+
+    # A fixed distance spans more longitude near the poles, so widen the pad accordingly.
+    edge_lat = max(abs(min_lat or 0.0), abs(max_lat or 0.0))
+    lng_pad = min(VIEWPORT_PAD_DEG / max(math.cos(math.radians(edge_lat)), 0.05), 20.0)
+    west = min_lng - lng_pad
+    east = max_lng + lng_pad
+    if east - west >= 360.0:
+        return query
+    west = (west + 180.0) % 360.0 - 180.0
+    east = (east + 180.0) % 360.0 - 180.0
+    if west <= east:
+        return query.filter(Sighting.longitude >= west, Sighting.longitude <= east)
+    return query.filter(or_(Sighting.longitude >= west, Sighting.longitude <= east))
+
+
 @app.get("/api/sightings", response_model=list[SightingRead])
 def list_sightings(
     species_id: Optional[str] = Query(None),
@@ -438,6 +468,11 @@ def list_sightings(
     elev_max: Optional[float] = Query(None),
     habitat_type: Optional[str] = Query(None),
     source: Optional[str] = Query(None),
+    place: Optional[str] = Query(None, max_length=120),
+    min_lat: Optional[float] = Query(None, ge=-90, le=90),
+    max_lat: Optional[float] = Query(None, ge=-90, le=90),
+    min_lng: Optional[float] = Query(None, ge=-180, le=180),
+    max_lng: Optional[float] = Query(None, ge=-180, le=180),
     verified_only: Optional[bool] = Query(None),
     limit: int = Query(500, le=2000),
     db: Session = Depends(get_db),
@@ -459,9 +494,12 @@ def list_sightings(
         query = query.filter(Sighting.habitat_type == habitat_type)
     if source:
         query = query.filter(Sighting.source == source)
+    if place:
+        query = query.filter(Sighting.place_name.ilike(f"%{place.strip()}%"))
+    query = apply_viewport(query, min_lat, max_lat, min_lng, max_lng)
     if verified_only:
         query = query.filter(Sighting.verified == True)
-    return [public_sighting(item) for item in query.limit(limit).all()]
+    return [public_sighting(item) for item in query.order_by(Sighting.created_at.desc()).limit(limit).all()]
 
 
 @app.post("/api/sightings", response_model=OwnerSightingRead, status_code=201)

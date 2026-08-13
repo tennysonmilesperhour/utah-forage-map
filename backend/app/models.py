@@ -67,10 +67,10 @@ class Species(Base):
     edibility = Column(String)
     look_alikes = Column(Text)
     habitat_notes = Column(Text)
-    peak_months = Column(String)  # comma-separated ints e.g. "4,5,6"
+    peak_months = Column(String)  # comma-separated ints e.g. "4,5,6", northern-hemisphere reference
     elevation_min_ft = Column(Integer)
     elevation_max_ft = Column(Integer)
-    utah_regions = Column(String)
+    regions = Column(String)  # world regions where the species is recorded
     notes = Column(Text)
 
     sightings = relationship("Sighting", back_populates="species")
@@ -89,6 +89,7 @@ class Sighting(Base):
     month = Column(Integer)
     habitat_type = Column(String)
     substrate = Column(String)
+    place_name = Column(String(160))  # coarse locality, e.g. "Bavaria, Germany"
     notes = Column(Text)
     photo_url = Column(String)
     source = Column(String, default="community")

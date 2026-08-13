@@ -1,13 +1,19 @@
 import { useState } from 'react'
 import { Crosshair, MapPin, ShieldCheck, X } from 'lucide-react'
 import { getApiError } from '../hooks/useAuth'
+import { HABITAT_TYPES, habitatLabel } from '../lib/habitats'
+import { useUnitSystem } from '../hooks/useUnits'
+import { approximateOffsetLabel, displayToFeet, elevationLabel } from '../lib/units'
 
-const HABITAT_TYPES = ['forest', 'meadow', 'riparian', 'alpine', 'desert', 'scrubland', 'wetland']
-const EMPTY_FORM = { species_id: '', found_on: '', habitat_type: '', elevation_ft: '', notes: '', location_privacy: 'approximate' }
+const EMPTY_FORM = {
+  species_id: '', found_on: '', habitat_type: '', elevation: '',
+  place_name: '', notes: '', location_privacy: 'approximate',
+}
 
 export default function SubmitDrawer({ species = [], location, onSubmit, onClose, creating }) {
   const [form, setForm] = useState(EMPTY_FORM)
   const [error, setError] = useState('')
+  const { system: unitSystem } = useUnitSystem()
 
   async function submit(event) {
     event.preventDefault()
@@ -22,7 +28,8 @@ export default function SubmitDrawer({ species = [], location, onSubmit, onClose
         found_on: form.found_on || undefined,
         month: form.found_on ? Number(form.found_on.slice(5, 7)) : undefined,
         habitat_type: form.habitat_type || undefined,
-        elevation_ft: form.elevation_ft ? Number(form.elevation_ft) : undefined,
+        elevation_ft: displayToFeet(form.elevation, unitSystem),
+        place_name: form.place_name.trim() || undefined,
         notes: form.notes || undefined,
         location_privacy: form.location_privacy,
       })
@@ -75,19 +82,30 @@ export default function SubmitDrawer({ species = [], location, onSubmit, onClose
             <input
               type="number"
               inputMode="numeric"
-              placeholder="Feet"
-              value={form.elevation_ft}
-              onChange={event => setForm({ ...form, elevation_ft: event.target.value })}
+              placeholder={elevationLabel(unitSystem) === 'm' ? 'Metres' : 'Feet'}
+              value={form.elevation}
+              onChange={event => setForm({ ...form, elevation: event.target.value })}
             />
           </label>
         </div>
+
+        <label>
+          Nearest place
+          <input
+            type="text"
+            maxLength={160}
+            placeholder="Region and country, for example Bavaria, Germany"
+            value={form.place_name}
+            onChange={event => setForm({ ...form, place_name: event.target.value })}
+          />
+        </label>
 
         <label>
           Habitat
           <select value={form.habitat_type} onChange={event => setForm({ ...form, habitat_type: event.target.value })}>
             <option value="">Choose a habitat</option>
             {HABITAT_TYPES.map(habitat => (
-              <option key={habitat} value={habitat}>{habitat.charAt(0).toUpperCase() + habitat.slice(1)}</option>
+              <option key={habitat} value={habitat}>{habitatLabel(habitat)}</option>
             ))}
           </select>
         </label>
@@ -106,7 +124,7 @@ export default function SubmitDrawer({ species = [], location, onSubmit, onClose
         <label>
           Public location
           <select value={form.location_privacy} onChange={event => setForm({ ...form, location_privacy: event.target.value })}>
-            <option value="approximate">Approximate within 1-2.5 miles</option>
+            <option value="approximate">Approximate within {approximateOffsetLabel(unitSystem)}</option>
             <option value="private">Private, logbook only</option>
             <option value="exact">Exact point</option>
           </select>

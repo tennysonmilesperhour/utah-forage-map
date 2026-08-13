@@ -4,6 +4,8 @@ import {
   Settings, ShieldCheck, Trash2, X, XCircle,
 } from 'lucide-react'
 import { getApiError, useResendVerification } from '../hooks/useAuth'
+import { useUnitSystem } from '../hooks/useUnits'
+import { approximateOffsetLabel, displayToFeet, elevationLabel, feetToDisplay } from '../lib/units'
 import {
   useDeleteAccount, useDeleteLogbook, useDeleteSavedLocation, useLogbook,
   useModerationQueue, useReviewSighting, useRevokeOtherSessions,
@@ -24,25 +26,32 @@ function dateLabel(value) {
 
 function LogbookRow({ item, species, onUpdate, onDelete, busy }) {
   const [editing, setEditing] = useState(false)
-  const [form, setForm] = useState({
-    species_id: item.species_id,
-    found_on: item.found_on ?? '',
-    habitat_type: item.habitat_type ?? '',
-    elevation_ft: item.elevation_ft ?? '',
-    latitude: item.latitude,
-    longitude: item.longitude,
-    location_privacy: item.location_privacy,
-    notes: item.notes ?? '',
+  const { system: unitSystem } = useUnitSystem()
+  const [form, setForm] = useState(() => {
+    const elevation = feetToDisplay(item.elevation_ft, unitSystem)
+    return {
+      species_id: item.species_id,
+      found_on: item.found_on ?? '',
+      habitat_type: item.habitat_type ?? '',
+      elevation: elevation == null ? '' : String(Math.round(elevation)),
+      place_name: item.place_name ?? '',
+      latitude: item.latitude,
+      longitude: item.longitude,
+      location_privacy: item.location_privacy,
+      notes: item.notes ?? '',
+    }
   })
 
   async function save(event) {
     event.preventDefault()
+    const { elevation, ...rest } = form
     await onUpdate({
       id: item.id,
-      ...form,
+      ...rest,
       found_on: form.found_on || null,
       habitat_type: form.habitat_type || null,
-      elevation_ft: form.elevation_ft === '' ? null : Number(form.elevation_ft),
+      elevation_ft: elevation === '' ? null : displayToFeet(elevation, unitSystem),
+      place_name: form.place_name.trim() || null,
       latitude: Number(form.latitude),
       longitude: Number(form.longitude),
       notes: form.notes || null,
@@ -73,13 +82,14 @@ function LogbookRow({ item, species, onUpdate, onDelete, busy }) {
           <label>Species<select value={form.species_id} onChange={event => setForm({ ...form, species_id: event.target.value })}>{species.map(value => <option key={value.id} value={value.id}>{value.common_name}</option>)}</select></label>
           <div className="paired-fields">
             <label>Date found<input type="date" value={form.found_on} onChange={event => setForm({ ...form, found_on: event.target.value })} /></label>
-            <label>Elevation<input type="number" value={form.elevation_ft} onChange={event => setForm({ ...form, elevation_ft: event.target.value })} /></label>
+            <label>Elevation ({elevationLabel(unitSystem)})<input type="number" value={form.elevation} onChange={event => setForm({ ...form, elevation: event.target.value })} /></label>
           </div>
           <div className="paired-fields">
             <label>Latitude<input type="number" step="any" value={form.latitude} onChange={event => setForm({ ...form, latitude: event.target.value })} /></label>
             <label>Longitude<input type="number" step="any" value={form.longitude} onChange={event => setForm({ ...form, longitude: event.target.value })} /></label>
           </div>
-          <label>Public location<select value={form.location_privacy} onChange={event => setForm({ ...form, location_privacy: event.target.value })}><option value="approximate">Approximate within 1-2.5 miles</option><option value="private">Private, logbook only</option><option value="exact">Exact point</option></select></label>
+          <label>Nearest place<input maxLength={160} value={form.place_name} onChange={event => setForm({ ...form, place_name: event.target.value })} /></label>
+          <label>Public location<select value={form.location_privacy} onChange={event => setForm({ ...form, location_privacy: event.target.value })}><option value="approximate">Approximate within {approximateOffsetLabel(unitSystem)}</option><option value="private">Private, logbook only</option><option value="exact">Exact point</option></select></label>
           <label>Habitat<input value={form.habitat_type} onChange={event => setForm({ ...form, habitat_type: event.target.value })} /></label>
           <label>Notes<textarea rows="3" value={form.notes} onChange={event => setForm({ ...form, notes: event.target.value })} /></label>
           <button className="button button-primary" disabled={busy}><Save size={16} aria-hidden="true" /> Save and resubmit</button>

@@ -10,12 +10,16 @@ import SubmitDrawer from './components/SubmitDrawer'
 import { useCurrentUser, useLogout, useVerifyEmail } from './hooks/useAuth'
 import { useSaveLocation } from './hooks/useAccount'
 import { useCommunityPortal, useCreateSighting, useSightings, useSpecies } from './hooks/useSightings'
+import { useUnitSystem } from './hooks/useUnits'
+import { formatElevation } from './lib/units'
 
 const MapView = lazy(() => import('./components/MapView'))
 
 export default function App() {
   const initialParams = new URLSearchParams(window.location.search)
   const [filters, setFilters] = useState({})
+  const [viewport, setViewport] = useState(null)
+  const [fitToken, setFitToken] = useState(1)
   const [selected, setSelected] = useState(null)
   const [draftLocation, setDraftLocation] = useState(null)
   const [authMode, setAuthMode] = useState(initialParams.get('reset') ? 'reset' : null)
@@ -27,14 +31,15 @@ export default function App() {
   const [accountOpen, setAccountOpen] = useState(false)
   const [toast, setToast] = useState('')
   const [guestPromptVisible, setGuestPromptVisible] = useState(
-    () => window.localStorage.getItem('ufm:onboarding:guest-message:v1') !== 'true',
+    () => window.localStorage.getItem('forage:onboarding:guest-message:v1') !== 'true',
   )
 
   const { data: user = null, isLoading: authLoading } = useCurrentUser()
   const logout = useLogout()
   const verifyEmail = useVerifyEmail()
   const saveLocation = useSaveLocation()
-  const { data: sightings = [], isLoading } = useSightings(filters)
+  const { system: unitSystem } = useUnitSystem()
+  const { data: sightings = [], isLoading } = useSightings({ ...filters, ...viewport })
   const { data: species = [] } = useSpecies()
   const { data: portal = {}, isLoading: portalLoading } = useCommunityPortal()
   const createSighting = useCreateSighting()
@@ -60,7 +65,14 @@ export default function App() {
 
   function dismissGuestPrompt() {
     setGuestPromptVisible(false)
-    window.localStorage.setItem('ufm:onboarding:guest-message:v1', 'true')
+    window.localStorage.setItem('forage:onboarding:guest-message:v1', 'true')
+  }
+
+  // Changing a filter searches the whole world again, then reframes the map on what came back.
+  function changeFilters(next) {
+    setFilters(next)
+    setViewport(null)
+    setFitToken(token => token + 1)
   }
 
   function openAuth(mode, action = null) {
@@ -133,13 +145,13 @@ export default function App() {
       <main className="workspace">
         <Sidebar
           filters={filters}
-          onChange={setFilters}
+          onChange={changeFilters}
           sightingCount={sightings.length}
           loading={isLoading}
           species={species}
         />
 
-        <section className={`map-stage ${submissionOpen ? 'is-picking' : ''}`} aria-label="Utah mushroom observations map">
+        <section className={`map-stage ${submissionOpen ? 'is-picking' : ''}`} aria-label="Worldwide mushroom observations map">
           <Suspense fallback={<div className="map-loading" role="status"><span>Loading map...</span></div>}>
             <MapView
               sightings={sightings}
@@ -147,6 +159,8 @@ export default function App() {
               draftLocation={draftLocation}
               onMapClick={submissionOpen ? setDraftLocation : undefined}
               isPickingLocation={submissionOpen}
+              onViewportChange={setViewport}
+              fitToken={fitToken}
             />
           </Suspense>
 
@@ -168,10 +182,12 @@ export default function App() {
             </button>
           </div>
 
-          <div className="map-legend" aria-label={`${sourceCount} observation sources`}>
+          <div className="map-legend" aria-label={`Marker key, ${sourceCount} observation sources in view`}>
+            <span className="legend-caption">Outline shows source</span>
             <span><i className="legend-dot community" /> Community</span>
             <span><i className="legend-dot inaturalist" /> iNaturalist</span>
             <span><i className="legend-dot gbif" /> GBIF</span>
+            <span><i className="legend-dot fielddesk" /> Field desk</span>
           </div>
 
           {!authLoading && !user && guestPromptVisible && !submissionOpen && !selected && (
@@ -204,8 +220,9 @@ export default function App() {
               {selected.notes && <p className="sighting-notes">{selected.notes}</p>}
               <dl>
                 <div><dt>Source</dt><dd>{selected.source}</dd></div>
-                <div><dt>Elevation</dt><dd>{selected.elevation_ft ? `${Math.round(selected.elevation_ft).toLocaleString()} ft` : 'Unknown'}</dd></div>
+                <div><dt>Elevation</dt><dd>{formatElevation(selected.elevation_ft, unitSystem) ?? 'Unknown'}</dd></div>
                 <div><dt>Habitat</dt><dd>{selected.habitat_type ?? 'Unknown'}</dd></div>
+                <div><dt>Place</dt><dd>{selected.place_name ?? 'Not recorded'}</dd></div>
               </dl>
               <button className="button button-secondary save-place-button" type="button" onClick={() => saveSelected()} disabled={saveLocation.isPending}>
                 <Bookmark size={17} aria-hidden="true" /> {saveLocation.isPending ? 'Saving...' : 'Save place'}
@@ -220,7 +237,7 @@ export default function App() {
           <button className="drawer-backdrop" type="button" onClick={() => setFiltersOpen(false)} aria-label="Close filters" />
           <Sidebar
             filters={filters}
-            onChange={setFilters}
+            onChange={changeFilters}
             sightingCount={sightings.length}
             loading={isLoading}
             species={species}

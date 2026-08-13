@@ -5,7 +5,7 @@ import httpx
 
 
 APP_URL = os.getenv("APP_URL", "http://127.0.0.1:5173").rstrip("/")
-EMAIL_FROM = os.getenv("EMAIL_FROM", "Utah Forage Map <accounts@updates.utahforagemap.org>")
+EMAIL_FROM = os.getenv("EMAIL_FROM", "Forage Map <accounts@updates.foragemap.org>")
 RESEND_API_KEY = os.getenv("RESEND_API_KEY")
 
 

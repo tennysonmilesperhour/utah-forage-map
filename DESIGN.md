@@ -1,6 +1,6 @@
 ---
-name: Utah Forage Map
-description: A calm, map-first field tool for Utah's mushroom community.
+name: Forage Map
+description: A calm, map-first field tool for the worldwide mushroom community.
 colors:
   field-pine: "#184A3B"
   field-pine-deep: "#123B2F"
@@ -66,7 +66,7 @@ components:
     padding: "10px 12px"
 ---
 
-# Design System: Utah Forage Map
+# Design System: Forage Map
 
 ## 1. Overview
 
