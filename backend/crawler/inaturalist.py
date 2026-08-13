@@ -173,16 +173,14 @@ def import_observation_batch(db, observations, species_by_taxon_id, crawled_at):
 
         if sighting is None:
             sighting = Sighting(user_id=importer.id, **values)
-            db.add(sighting)
-            db.flush()
             source = CrawledSource(
-                sighting_id=sighting.id,
+                sighting=sighting,
                 source_name=SOURCE_NAME,
                 source_url=source_url,
                 raw_data=raw_data,
                 crawled_at=crawled_at,
             )
-            db.add(source)
+            db.add_all([sighting, source])
             imported += 1
             continue
 
