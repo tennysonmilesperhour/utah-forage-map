@@ -461,6 +461,7 @@ def list_sightings(
         query = query.filter(Sighting.source == source)
     if verified_only:
         query = query.filter(Sighting.verified == True)
+    query = query.order_by(Sighting.found_on.is_(None), Sighting.found_on.desc(), Sighting.created_at.desc())
     return [public_sighting(item) for item in query.limit(limit).all()]
 
 
@@ -600,6 +601,6 @@ def import_inaturalist(
     provided = authorization.removeprefix("Bearer ") if authorization else x_cron_secret
     if not CRON_SECRET or provided != CRON_SECRET:
         raise HTTPException(status_code=401, detail="Invalid cron credential")
-    from crawler.inaturalist import import_observations
+    from crawler.inaturalist import run_scheduled_import
 
-    return import_observations(db)
+    return run_scheduled_import(db)

@@ -40,4 +40,5 @@ jobs:
       - run: alembic upgrade head
       - run: python -m scripts.seed
       - run: python -m scripts.auth_smoke
+      - run: python -m scripts.import_smoke
       - run: python -m compileall app crawler scripts

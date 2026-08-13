@@ -12,10 +12,22 @@ import { useSaveLocation } from './hooks/useAccount'
 import { useCommunityPortal, useCreateSighting, useSightings, useSpecies } from './hooks/useSightings'
 
 const MapView = lazy(() => import('./components/MapView'))
+const CURRENT_MONTH = new Date().getMonth() + 1
+
+function foundDateLabel(value) {
+  if (!value) return 'Unknown'
+  return new Date(`${value}T12:00:00`).toLocaleDateString(undefined, {
+    year: 'numeric', month: 'short', day: 'numeric',
+  })
+}
 
 export default function App() {
   const initialParams = new URLSearchParams(window.location.search)
-  const [filters, setFilters] = useState({})
+  const [filters, setFilters] = useState({
+    month_min: CURRENT_MONTH,
+    month_max: CURRENT_MONTH,
+    verified_only: true,
+  })
   const [selected, setSelected] = useState(null)
   const [draftLocation, setDraftLocation] = useState(null)
   const [authMode, setAuthMode] = useState(initialParams.get('reset') ? 'reset' : null)
@@ -203,6 +215,7 @@ export default function App() {
               </div>
               {selected.notes && <p className="sighting-notes">{selected.notes}</p>}
               <dl>
+                <div><dt>Found</dt><dd>{foundDateLabel(selected.found_on)}</dd></div>
                 <div><dt>Source</dt><dd>{selected.source}</dd></div>
                 <div><dt>Elevation</dt><dd>{selected.elevation_ft ? `${Math.round(selected.elevation_ft).toLocaleString()} ft` : 'Unknown'}</dd></div>
                 <div><dt>Habitat</dt><dd>{selected.habitat_type ?? 'Unknown'}</dd></div>

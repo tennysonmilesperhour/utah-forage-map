@@ -21,10 +21,20 @@ export default function Sidebar({
   onClose,
 }) {
   const idPrefix = variant === 'mobile' ? 'mobile' : 'desktop'
+  const currentMonth = new Date().getMonth() + 1
+  const showingCurrentMonth = filters.month_min === currentMonth && filters.month_max === currentMonth
   const activeFilterCount = Object.values(filters).filter(value => value !== undefined && value !== '').length
 
   function set(key, value) {
     onChange({ ...filters, [key]: value })
+  }
+
+  function setCurrentMonth(enabled) {
+    onChange({
+      ...filters,
+      month_min: enabled ? currentMonth : undefined,
+      month_max: enabled ? currentMonth : undefined,
+    })
   }
 
   return (
@@ -88,6 +98,19 @@ export default function Sidebar({
             </label>
           </div>
         </div>
+
+        <label className="check-control" htmlFor={`${idPrefix}-current-month`}>
+          <input
+            id={`${idPrefix}-current-month`}
+            type="checkbox"
+            checked={showingCurrentMonth}
+            onChange={event => setCurrentMonth(event.target.checked)}
+          />
+          <span>
+            <strong>Observed this month</strong>
+            <small>Show reviewed {MONTHS[currentMonth - 1]} records from any year</small>
+          </span>
+        </label>
 
         <div className="filter-group">
           <span className="field-label">Elevation range</span>

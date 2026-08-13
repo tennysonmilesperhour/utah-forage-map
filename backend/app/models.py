@@ -64,6 +64,7 @@ class Species(Base):
     id = Column(GUID(), primary_key=True, default=uuid.uuid4)
     common_name = Column(String, nullable=False)
     latin_name = Column(String, nullable=False)
+    inaturalist_taxon_id = Column(Integer, unique=True)
     edibility = Column(String)
     look_alikes = Column(Text)
     habitat_notes = Column(Text)
@@ -135,6 +136,16 @@ class CrawledSource(Base):
     crawled_at = Column(DateTime, default=datetime.utcnow)
 
     sighting = relationship("Sighting", back_populates="crawled_sources")
+
+
+class SourceSync(Base):
+    __tablename__ = "source_syncs"
+
+    source_name = Column(String, primary_key=True)
+    last_started_at = Column(DateTime)
+    last_succeeded_at = Column(DateTime)
+    last_result = Column(Text)
+    last_error = Column(Text)
 
 
 class UserSession(Base):
