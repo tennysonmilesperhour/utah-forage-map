@@ -5,7 +5,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://forage-map-api.vercel.app/api/:path*"
+      "destination": "https://utah-forage-api.vercel.app/api/:path*"
     }
   ]
 }

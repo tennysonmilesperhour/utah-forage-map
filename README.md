@@ -111,10 +111,12 @@ The production cron calls `GET /api/cron/inaturalist` with `Authorization: Beare
 
 ## Production
 
-The intended deployment is two Vercel projects:
+The deployment is two Vercel projects:
 
-1. `forage-map-api` uses `backend/`, FastAPI zero configuration, a Vercel-managed Neon PostgreSQL database, and the scheduled import.
-2. `forage-map` uses `frontend/` and rewrites `/api/*` to the backend project, preserving first-party session cookies.
+1. `utah-forage-api` uses `backend/`, FastAPI zero configuration, a Vercel-managed Neon PostgreSQL database, and the scheduled import.
+2. `utah-forage-map` uses `frontend/` and rewrites `/api/*` to the backend project, preserving first-party session cookies.
+
+The project names predate the global rename and are left alone so the existing deployments keep working. Renaming them means updating the rewrite destination in `frontend/vercel.json` at the same time.
 
 Required backend variables:
 
