@@ -3,7 +3,7 @@ import { Crosshair, MapPin, ShieldCheck, X } from 'lucide-react'
 import { getApiError } from '../hooks/useAuth'
 
 const HABITAT_TYPES = ['forest', 'meadow', 'riparian', 'alpine', 'desert', 'scrubland', 'wetland']
-const EMPTY_FORM = { species_id: '', found_on: '', habitat_type: '', elevation_ft: '', notes: '', location_privacy: 'approximate' }
+const EMPTY_FORM = { species_id: '', found_on: '', habitat_type: '', elevation_m: '', notes: '', location_privacy: 'approximate' }
 
 export default function SubmitDrawer({ species = [], location, onSubmit, onClose, creating }) {
   const [form, setForm] = useState(EMPTY_FORM)
@@ -22,7 +22,7 @@ export default function SubmitDrawer({ species = [], location, onSubmit, onClose
         found_on: form.found_on || undefined,
         month: form.found_on ? Number(form.found_on.slice(5, 7)) : undefined,
         habitat_type: form.habitat_type || undefined,
-        elevation_ft: form.elevation_ft ? Number(form.elevation_ft) : undefined,
+        elevation_ft: form.elevation_m ? Number(form.elevation_m) * 3.28084 : undefined,
         notes: form.notes || undefined,
         location_privacy: form.location_privacy,
       })
@@ -75,9 +75,9 @@ export default function SubmitDrawer({ species = [], location, onSubmit, onClose
             <input
               type="number"
               inputMode="numeric"
-              placeholder="Feet"
-              value={form.elevation_ft}
-              onChange={event => setForm({ ...form, elevation_ft: event.target.value })}
+              placeholder="Meters"
+              value={form.elevation_m}
+              onChange={event => setForm({ ...form, elevation_m: event.target.value })}
             />
           </label>
         </div>

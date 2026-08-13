@@ -18,7 +18,7 @@ export default function CommunityPanel({ portal = {}, loading, onClose }) {
         <div className="drawer-heading">
           <div>
             <p>Community field desk</p>
-            <h2>What Utah foragers are seeing</h2>
+            <h2>What foragers are seeing</h2>
           </div>
           <button className="icon-button" type="button" onClick={onClose} aria-label="Close community panel">
             <X size={20} aria-hidden="true" />

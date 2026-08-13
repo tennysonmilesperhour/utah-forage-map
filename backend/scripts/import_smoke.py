@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -53,12 +53,37 @@ def main():
     fetched, total, complete = fetch_observations(
         pagination_client,
         [48701],
+        window_start=date(2026, 5, 14),
         sleeper=sleeps.append,
-    )
+    )[:3]
     assert len(fetched) == total == 201
     assert complete is True
     assert pagination_client.calls == 2
     assert len(sleeps) == 1
+
+    partial_client = FakeClient([
+        {**observation(), "id": observation_id}
+        for observation_id in range(1, 3602)
+    ])
+    partial, _, partial_complete, cursor = fetch_observations(
+        partial_client,
+        [48701],
+        window_start=date(2026, 5, 14),
+        sleeper=lambda _seconds: None,
+    )
+    assert len(partial) == 3600
+    assert partial_complete is False
+    assert cursor == 3600
+    remainder, _, remainder_complete, cursor = fetch_observations(
+        partial_client,
+        [48701],
+        window_start=date(2026, 5, 14),
+        cursor=cursor,
+        sleeper=lambda _seconds: None,
+    )
+    assert len(remainder) == 1
+    assert remainder_complete is True
+    assert cursor is None
 
     engine = create_engine(
         "sqlite://",
@@ -128,6 +153,31 @@ def main():
         assert sighting.verified is False
         assert sighting.review_status == "rejected"
         assert session.query(Sighting).count() == 1
+
+        global_observations = [
+            {**observation(latitude=35 + (observation_id % 10), longitude=-170 + (observation_id % 340)), "id": observation_id}
+            for observation_id in range(1, 3602)
+        ]
+        partial_cycle = run_scheduled_import(
+            session,
+            force=True,
+            client=FakeClient(global_observations),
+            sleeper=lambda _seconds: None,
+            now=started_at + timedelta(days=42),
+        )
+        assert partial_cycle["status"] == "in_progress"
+        assert partial_cycle["fetched"] == 3600
+
+        completed_cycle = run_scheduled_import(
+            session,
+            client=FakeClient(global_observations),
+            sleeper=lambda _seconds: None,
+            now=started_at + timedelta(days=43),
+        )
+        assert completed_cycle["status"] == "ok"
+        assert completed_cycle["fetched"] == 3601
+        assert completed_cycle["complete"] is True
+        assert session.query(Sighting).filter(Sighting.review_status == "approved").count() == 3601
         print("Import smoke test passed")
     finally:
         session.close()

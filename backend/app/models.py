@@ -71,7 +71,7 @@ class Species(Base):
     peak_months = Column(String)  # comma-separated ints e.g. "4,5,6"
     elevation_min_ft = Column(Integer)
     elevation_max_ft = Column(Integer)
-    utah_regions = Column(String)
+    range_notes = Column(String)
     notes = Column(Text)
 
     sightings = relationship("Sighting", back_populates="species")

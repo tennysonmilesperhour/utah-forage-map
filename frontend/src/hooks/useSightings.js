@@ -1,19 +1,29 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 
-export function useSightings(filters = {}) {
+function dateDaysAgo(days) {
+  const value = new Date()
+  value.setHours(12, 0, 0, 0)
+  value.setDate(value.getDate() - days)
+  return value.toISOString().slice(0, 10)
+}
+
+export function useSightings(filters = {}, viewport = null) {
   return useQuery({
-    queryKey: ['sightings', filters],
+    queryKey: ['sightings', filters, viewport],
     queryFn: async () => {
       const params = {}
       if (filters.species_id) params.species_id = filters.species_id
       if (filters.month_min != null) params.month_min = filters.month_min
       if (filters.month_max != null) params.month_max = filters.month_max
-      if (filters.elev_min != null) params.elev_min = filters.elev_min
-      if (filters.elev_max != null) params.elev_max = filters.elev_max
+      if (filters.elev_min_m != null) params.elev_min = Math.round(filters.elev_min_m * 3.28084)
+      if (filters.elev_max_m != null) params.elev_max = Math.round(filters.elev_max_m * 3.28084)
       if (filters.habitat_type) params.habitat_type = filters.habitat_type
       if (filters.source) params.source = filters.source
       if (filters.verified_only) params.verified_only = true
+      if (filters.recent_days) params.found_after = dateDaysAgo(filters.recent_days)
+      if (viewport) Object.assign(params, viewport)
+      params.limit = 4000
 
       const { data } = await axios.get('/api/sightings', { params })
       return data
