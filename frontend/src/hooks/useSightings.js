@@ -65,15 +65,17 @@ export function useCommunityPortal() {
   return useQuery({
     queryKey: ['community-portal'],
     queryFn: async () => {
-      const [finds, events, clubs, resources] = await Promise.all([
-        axios.get('/api/community/finds'),
+      const [activity, summary, events, clubs, resources] = await Promise.all([
+        axios.get('/api/community/activity'),
+        axios.get('/api/community/summary'),
         axios.get('/api/community/events'),
         axios.get('/api/community/clubs'),
         axios.get('/api/resources'),
       ])
 
       return {
-        finds: finds.data,
+        activity: activity.data,
+        summary: summary.data,
         events: events.data,
         clubs: clubs.data,
         resources: resources.data,

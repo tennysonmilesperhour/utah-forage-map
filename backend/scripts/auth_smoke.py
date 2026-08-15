@@ -63,6 +63,7 @@ def main():
             "species_id": species_id,
             "latitude": 40.7,
             "longitude": -111.9,
+            "found_on": "2026-08-14",
             "notes": "Exact test field point",
             "location_privacy": "approximate",
         })
@@ -83,6 +84,16 @@ def main():
         assert len(public) == 1
         assert public[0]["latitude"] != 40.7
         assert "user_id" not in public[0]
+
+        activity = client.get("/api/community/activity")
+        assert activity.status_code == 200, activity.text
+        assert activity.json()[0]["id"] == sighting_id
+        assert activity.json()[0]["latitude"] == public[0]["latitude"]
+        summary = client.get("/api/community/summary")
+        assert summary.status_code == 200, summary.text
+        assert summary.json()["reviewed_observations"] == 1
+        assert summary.json()["species_count"] == 1
+        assert summary.json()["latest_observed_on"] == "2026-08-14"
 
         saved = client.post("/api/account/saved", json={
             "sighting_id": sighting_id,

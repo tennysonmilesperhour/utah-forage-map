@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://utah-forage-map.vercel.app/sitemap.xml

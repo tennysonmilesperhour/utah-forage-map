@@ -177,6 +177,14 @@ class CommunityFindRead(BaseModel):
     model_config = {"from_attributes": True}
 
 
+class CommunitySummaryRead(BaseModel):
+    reviewed_observations: int
+    species_count: int
+    recent_observations: int
+    latest_observed_on: Optional[date] = None
+    last_synced_at: Optional[datetime] = None
+
+
 class CommunityEventRead(BaseModel):
     id: UUID
     title: str
