@@ -4,33 +4,40 @@ import { BookOpen, ChevronDown, Leaf, LogIn, LogOut, Map, NotebookPen, UserPlus,
 export default function AppHeader({
   user,
   authLoading,
+  activeView,
   onCreateAccount,
   onSignIn,
   onSubmitFind,
-  onOpenCommunity,
+  onNavigate,
   onOpenAccount,
   onLogout,
 }) {
   const [accountOpen, setAccountOpen] = useState(false)
 
+  function navigate(event, view) {
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+    event.preventDefault()
+    onNavigate(view)
+  }
+
   return (
     <header className="app-header">
-      <div className="brand-lockup">
+      <a className="brand-lockup" href="/" onClick={event => navigate(event, 'map')} aria-label="Mushroom Forage Map home">
         <div className="brand-mark"><Leaf size={21} strokeWidth={2.2} aria-hidden="true" /></div>
         <div className="brand-copy">
           <h1><span className="brand-name-full">Mushroom Forage Map</span><span className="brand-name-short">Forage Map</span></h1>
           <p>Worldwide field knowledge</p>
         </div>
-      </div>
+      </a>
 
       <nav className="primary-nav" aria-label="Primary navigation">
-        <button className="nav-item active" type="button"><Map size={17} aria-hidden="true" /> Map</button>
-        <button className="nav-item" type="button" onClick={onOpenCommunity}><Users size={17} aria-hidden="true" /> Community</button>
-        <button className="nav-item" type="button" onClick={onOpenCommunity}><BookOpen size={17} aria-hidden="true" /> Field guide</button>
+        <a className={`nav-item ${activeView === 'map' ? 'active' : ''}`} href="/" onClick={event => navigate(event, 'map')} aria-current={activeView === 'map' ? 'page' : undefined}><Map size={17} aria-hidden="true" /> Map</a>
+        <a className={`nav-item ${activeView === 'community' ? 'active' : ''}`} href="/community" onClick={event => navigate(event, 'community')} aria-current={activeView === 'community' ? 'page' : undefined}><Users size={17} aria-hidden="true" /> Community</a>
+        <a className={`nav-item ${activeView === 'guide' ? 'active' : ''}`} href="/field-guide" onClick={event => navigate(event, 'guide')} aria-current={activeView === 'guide' ? 'page' : undefined}><BookOpen size={17} aria-hidden="true" /> Field guide</a>
       </nav>
 
       <div className="header-actions">
-        <button className="icon-button mobile-filter-button" type="button" onClick={onOpenCommunity} aria-label="Open community field desk" title="Community">
+        <button className="icon-button mobile-filter-button" type="button" onClick={() => onNavigate('community')} aria-label="Open community field desk" title="Community">
           <Users size={20} aria-hidden="true" />
         </button>
 

@@ -14,11 +14,11 @@ from app.database import Base, engine, get_db
 from app.email_service import send_account_email
 from app.models import (
     AccountToken, CommunityEvent, CommunityFind, ForageClub, RateLimitEvent,
-    ResourceGuide, SavedLocation, Sighting, Species, User, UserSession,
+    ResourceGuide, SavedLocation, Sighting, SourceSync, Species, User, UserSession,
 )
 from app.privacy import MAX_OFFSET_MILES, MILES_PER_DEGREE, normalize_longitude, public_sighting
 from app.schemas import (
-    CommunityEventRead, CommunityFindRead, EmailRequest, ForageClubRead,
+    CommunityEventRead, CommunityFindRead, CommunitySummaryRead, EmailRequest, ForageClubRead,
     OwnerSightingRead, PasswordConfirm, PasswordResetConfirm, ResourceGuideRead,
     ReviewCreate, SavedLocationCreate, SavedLocationRead, SessionRead,
     SightingCreate, SightingRead, SightingUpdate, SpeciesRead, TokenRequest,
@@ -411,7 +411,9 @@ def list_community_finds(limit: int = Query(6, le=50), db: Session = Depends(get
 
 @app.get("/api/community/events", response_model=list[CommunityEventRead])
 def list_community_events(limit: int = Query(6, le=50), db: Session = Depends(get_db)):
-    return db.query(CommunityEvent).filter(CommunityEvent.published == True).order_by(
+    return db.query(CommunityEvent).filter(
+        CommunityEvent.published == True, CommunityEvent.starts_on >= date.today()
+    ).order_by(
         CommunityEvent.starts_on.asc()
     ).limit(limit).all()
 
@@ -428,6 +430,43 @@ def list_resource_guides(limit: int = Query(8, le=50), db: Session = Depends(get
     return db.query(ResourceGuide).filter(ResourceGuide.published == True).order_by(
         ResourceGuide.priority.asc(), ResourceGuide.title.asc()
     ).limit(limit).all()
+
+
+@app.get("/api/community/activity", response_model=list[SightingRead])
+def list_community_activity(limit: int = Query(12, ge=1, le=50), db: Session = Depends(get_db)):
+    sightings = db.query(Sighting).options(joinedload(Sighting.species)).filter(
+        Sighting.review_status == "approved",
+        Sighting.verified == True,
+        Sighting.location_privacy != "private",
+        Sighting.found_on.is_not(None),
+    ).order_by(
+        Sighting.found_on.desc(), Sighting.created_at.desc()
+    ).limit(limit).all()
+    return [public_sighting(item) for item in sightings]
+
+
+@app.get("/api/community/summary", response_model=CommunitySummaryRead)
+def community_summary(db: Session = Depends(get_db)):
+    public_filters = (
+        Sighting.review_status == "approved",
+        Sighting.verified == True,
+        Sighting.location_privacy != "private",
+    )
+    recent_cutoff = date.today() - timedelta(days=90)
+    reviewed_observations = db.query(func.count(Sighting.id)).filter(*public_filters).scalar() or 0
+    species_count = db.query(func.count(func.distinct(Sighting.species_id))).filter(*public_filters).scalar() or 0
+    recent_observations = db.query(func.count(Sighting.id)).filter(
+        *public_filters, Sighting.found_on >= recent_cutoff
+    ).scalar() or 0
+    latest_observed_on = db.query(func.max(Sighting.found_on)).filter(*public_filters).scalar()
+    last_synced_at = db.query(func.max(SourceSync.last_succeeded_at)).scalar()
+    return {
+        "reviewed_observations": reviewed_observations,
+        "species_count": species_count,
+        "recent_observations": recent_observations,
+        "latest_observed_on": latest_observed_on,
+        "last_synced_at": last_synced_at,
+    }
 
 
 @app.get("/api/sightings", response_model=list[SightingRead])

@@ -6,6 +6,10 @@
     {
       "source": "/api/:path*",
       "destination": "https://utah-forage-api.vercel.app/api/:path*"
+    },
+    {
+      "source": "/:path*",
+      "destination": "/index.html"
     }
   ]
 }

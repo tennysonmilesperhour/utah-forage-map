@@ -12,6 +12,7 @@ import { useCurrentUser, useLogout, useVerifyEmail } from './hooks/useAuth'
 import { useSaveLocation } from './hooks/useAccount'
 import { useCommunityPortal, useCreateSighting, useSightings, useSpecies } from './hooks/useSightings'
 import { useUnitSystem } from './hooks/useUnits'
+import { applyPageMetadata, pathForView, viewFromPathname } from './lib/seo'
 import { formatElevation } from './lib/units'
 
 const MapView = lazy(() => import('./components/MapView'))
@@ -36,7 +37,7 @@ export default function App() {
   const [resetToken] = useState(initialParams.get('reset'))
   const [pendingAction, setPendingAction] = useState(null)
   const [filtersOpen, setFiltersOpen] = useState(false)
-  const [communityOpen, setCommunityOpen] = useState(false)
+  const [activeView, setActiveView] = useState(() => viewFromPathname(window.location.pathname))
   const [submissionOpen, setSubmissionOpen] = useState(false)
   const [accountOpen, setAccountOpen] = useState(false)
   const [toast, setToast] = useState('')
@@ -63,6 +64,18 @@ export default function App() {
   }, [toast])
 
   useEffect(() => {
+    applyPageMetadata(activeView)
+  }, [activeView])
+
+  useEffect(() => {
+    function syncRoute() {
+      setActiveView(viewFromPathname(window.location.pathname))
+    }
+    window.addEventListener('popstate', syncRoute)
+    return () => window.removeEventListener('popstate', syncRoute)
+  }, [])
+
+  useEffect(() => {
     const token = initialParams.get('verify')
     if (!token) return
     verifyEmail.mutateAsync(token)
@@ -83,6 +96,14 @@ export default function App() {
     setAuthMode(mode)
   }
 
+  function navigate(view, { replace = false } = {}) {
+    const path = pathForView(view)
+    if (window.location.pathname !== path) {
+      window.history[replace ? 'replaceState' : 'pushState']({}, '', path)
+    }
+    setActiveView(view)
+  }
+
   function openSubmission() {
     if (!user) {
       openAuth('register', 'submit')
@@ -95,6 +116,22 @@ export default function App() {
   function goToPlace(target) {
     setSelected(null)
     setFlyTarget({ ...target, selectedAt: Date.now() })
+  }
+
+  function viewSightingOnMap(sighting) {
+    navigate('map')
+    setSelected(sighting)
+    setFlyTarget({ center: [sighting.longitude, sighting.latitude], selectedAt: Date.now() })
+  }
+
+  function addFindFromCommunity() {
+    navigate('map')
+    openSubmission()
+  }
+
+  function createAccountFromCommunity() {
+    navigate('map')
+    openAuth('register')
   }
 
   function handleAuthenticated() {
@@ -142,10 +179,11 @@ export default function App() {
       <AppHeader
         user={user}
         authLoading={authLoading}
+        activeView={activeView}
         onCreateAccount={() => openAuth('register')}
         onSignIn={() => openAuth('login')}
         onSubmitFind={openSubmission}
-        onOpenCommunity={() => setCommunityOpen(true)}
+        onNavigate={navigate}
         onOpenAccount={() => setAccountOpen(true)}
         onLogout={signOut}
       />
@@ -253,8 +291,19 @@ export default function App() {
         </div>
       )}
 
-      {communityOpen && (
-        <CommunityPanel portal={portal} loading={portalLoading} onClose={() => setCommunityOpen(false)} />
+      {activeView !== 'map' && (
+        <CommunityPanel
+          key={activeView}
+          portal={portal}
+          loading={portalLoading}
+          initialView={activeView}
+          user={user}
+          onClose={() => navigate('map')}
+          onNavigate={navigate}
+          onViewSighting={viewSightingOnMap}
+          onAddFind={addFindFromCommunity}
+          onCreateAccount={createAccountFromCommunity}
+        />
       )}
 
       {submissionOpen && (
