@@ -28,6 +28,9 @@ What people actually search for, and when:
 7 months by building a templated, science-sourced species wiki (Growth Machine case study). Two
 small map-plus-guide sites — mushroomtracker.ca and fungiatlas.com — already rank with seasonal
 calendars and poisonous-species guides, validating the exact model this site is pursuing.
+(Caveat from the species research: both read as AI content farms — cite them as market evidence
+that these queries are winnable, never as factual sources. Beating them on quality is the
+opportunity.)
 
 ## 2. Strategy in one paragraph
 

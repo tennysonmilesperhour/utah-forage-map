@@ -20,7 +20,7 @@ The project takes inspiration from the usefulness of community location catalogu
 - A rolling 90-day field signal based on when each mushroom was found, across both hemispheres
 - Alembic migrations for SQLite development and PostgreSQL production
 
-Product and interface decisions are documented in [PRODUCT.md](PRODUCT.md) and [DESIGN.md](DESIGN.md).
+Product and interface decisions are documented in [PRODUCT.md](PRODUCT.md) and [DESIGN.md](DESIGN.md). Research and planning for the mushroom identification education section live in [docs/education/](docs/education/PLAN.md).
 
 ## Structure
 
