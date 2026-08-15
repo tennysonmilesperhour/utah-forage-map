@@ -84,6 +84,10 @@ def main():
         assert len(public) == 1
         assert public[0]["latitude"] != 40.7
         assert "user_id" not in public[0]
+        assert len(client.get("/api/sightings?edibility_group=edible").json()) == 1
+        assert client.get("/api/sightings?edibility_group=hazard").json() == []
+        assert client.get("/api/sightings?edibility_group=unknown").status_code == 422
+        assert len(client.get("/api/sightings?month_min=9&month_max=8").json()) == 1
 
         activity = client.get("/api/community/activity")
         assert activity.status_code == 200, activity.text

@@ -479,6 +479,7 @@ def list_sightings(
     habitat_type: Optional[str] = Query(None),
     source: Optional[str] = Query(None),
     place: Optional[str] = Query(None, max_length=120),
+    edibility_group: Optional[str] = Query(None, pattern="^(edible|hazard)$"),
     verified_only: Optional[bool] = Query(None),
     found_after: Optional[date] = Query(None),
     west: Optional[float] = Query(None, ge=-180, le=180),
@@ -493,9 +494,14 @@ def list_sightings(
     )
     if species_id:
         query = query.filter(Sighting.species_id == species_id)
-    if month_min is not None:
+    if month_min is not None and month_max is not None:
+        if month_min <= month_max:
+            query = query.filter(Sighting.month.between(month_min, month_max))
+        else:
+            query = query.filter(or_(Sighting.month >= month_min, Sighting.month <= month_max))
+    elif month_min is not None:
         query = query.filter(Sighting.month >= month_min)
-    if month_max is not None:
+    elif month_max is not None:
         query = query.filter(Sighting.month <= month_max)
     if elev_min is not None:
         query = query.filter(Sighting.elevation_ft >= elev_min)
@@ -507,6 +513,9 @@ def list_sightings(
         query = query.filter(Sighting.source == source)
     if place:
         query = query.filter(Sighting.place_name.ilike(f"%{place.strip()}%"))
+    if edibility_group:
+        values = {"edible", "choice"} if edibility_group == "edible" else {"poisonous", "deadly"}
+        query = query.join(Sighting.species).filter(Species.edibility.in_(values))
     if verified_only:
         query = query.filter(Sighting.verified == True)
     if found_after:
