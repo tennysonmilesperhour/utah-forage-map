@@ -21,7 +21,7 @@ export function useSightings(filters = {}, viewport = null) {
       if (filters.habitat_type) params.habitat_type = filters.habitat_type
       if (filters.source) params.source = filters.source
       if (filters.place) params.place = filters.place
-      if (filters.verified_only) params.verified_only = true
+      if (filters.edibility_group) params.edibility_group = filters.edibility_group
       if (filters.recent_days) params.found_after = dateDaysAgo(filters.recent_days)
       if (viewport) Object.assign(params, viewport)
       params.limit = 4000
