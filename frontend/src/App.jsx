@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
-import { Bookmark, CheckCircle2, Filter, MailCheck, MapPin, NotebookPen, ShieldCheck, X } from 'lucide-react'
+import { Bookmark, CheckCircle2, Filter, MailCheck, MapPin, NotebookPen, SearchX, Sprout, X } from 'lucide-react'
 import AccountWorkspace from './components/AccountWorkspace'
 import AppHeader from './components/AppHeader'
 import AuthDialog from './components/AuthDialog'
@@ -12,6 +12,7 @@ import { useCurrentUser, useLogout, useVerifyEmail } from './hooks/useAuth'
 import { useSaveLocation } from './hooks/useAccount'
 import { useCommunityPortal, useCreateSighting, useSightings, useSpecies } from './hooks/useSightings'
 import { useUnitSystem } from './hooks/useUnits'
+import { countActiveFilters, DEFAULT_FILTERS } from './lib/filters'
 import { applyPageMetadata, pathForView, viewFromPathname } from './lib/seo'
 import { formatElevation } from './lib/units'
 
@@ -25,10 +26,7 @@ function foundDateLabel(value) {
 
 export default function App() {
   const initialParams = new URLSearchParams(window.location.search)
-  const [filters, setFilters] = useState({
-    recent_days: 90,
-    verified_only: true,
-  })
+  const [filters, setFilters] = useState(() => ({ ...DEFAULT_FILTERS }))
   const [viewport, setViewport] = useState(null)
   const [flyTarget, setFlyTarget] = useState(null)
   const [selected, setSelected] = useState(null)
@@ -54,8 +52,9 @@ export default function App() {
   const { data: species = [] } = useSpecies()
   const { data: portal = {}, isLoading: portalLoading } = useCommunityPortal()
   const createSighting = useCreateSighting()
-  const verifiedCount = sightings.filter(item => item.verified).length
+  const displayedSpeciesCount = new Set(sightings.map(item => item.species_id)).size
   const sourceCount = new Set(sightings.map(item => item.source)).size
+  const activeFilterCount = countActiveFilters(filters)
 
   useEffect(() => {
     if (!toast) return undefined
@@ -214,15 +213,16 @@ export default function App() {
             <PlaceSearch onSelect={goToPlace} />
             <button className="map-filter-button" type="button" onClick={() => setFiltersOpen(true)}>
               <Filter size={17} aria-hidden="true" /> Filters
+              {activeFilterCount > 0 && <span className="filter-count" aria-label={`${activeFilterCount} active filters`}>{activeFilterCount}</span>}
             </button>
             <div className="map-results" aria-live="polite">
               <MapPin size={17} aria-hidden="true" />
               <strong>{sightings.length}</strong>
               <span>locations</span>
               <i aria-hidden="true" />
-              <ShieldCheck size={17} aria-hidden="true" />
-              <strong>{verifiedCount}</strong>
-              <span>reviewed</span>
+              <Sprout size={17} aria-hidden="true" />
+              <strong>{displayedSpeciesCount}</strong>
+              <span>species</span>
             </div>
             <button className="button button-primary map-submit-button" type="button" onClick={openSubmission}>
               <NotebookPen size={17} aria-hidden="true" /> Add a find
@@ -233,7 +233,20 @@ export default function App() {
             <span><i className="legend-dot recent" /> Recent, reviewed field observations</span>
           </div>
 
-          {!authLoading && !user && guestPromptVisible && !submissionOpen && !selected && (
+          {!isLoading && sightings.length === 0 && !submissionOpen && (
+            <div className="map-empty-state" role="status">
+              <SearchX size={22} aria-hidden="true" />
+              <div>
+                <strong>No observations match here</strong>
+                <p>{activeFilterCount > 0 ? 'Try clearing a lens or zooming out.' : 'Zoom out or search another place.'}</p>
+              </div>
+              {activeFilterCount > 0 && (
+                <button className="button button-secondary" type="button" onClick={() => setFilters({ ...DEFAULT_FILTERS })}>Clear filters</button>
+              )}
+            </div>
+          )}
+
+          {!authLoading && !user && guestPromptVisible && !submissionOpen && !selected && sightings.length > 0 && (
             <GuestPrompt
               onDismiss={dismissGuestPrompt}
               onCreateAccount={() => openAuth('register')}
