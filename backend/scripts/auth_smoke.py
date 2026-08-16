@@ -37,7 +37,10 @@ def token_from_last_link(name):
 def main():
     with TestClient(main_module.app) as client:
         db = SessionLocal()
-        species = Species(common_name="Morel", latin_name="Morchella esculenta", edibility="choice")
+        species = Species(
+            common_name="Morel", latin_name="Morchella esculenta",
+            inaturalist_taxon_id=58682, edibility="choice",
+        )
         db.add(species)
         db.commit()
         db.refresh(species)
@@ -88,6 +91,10 @@ def main():
         assert client.get("/api/sightings?edibility_group=hazard").json() == []
         assert client.get("/api/sightings?edibility_group=unknown").status_code == 422
         assert len(client.get("/api/sightings?month_min=9&month_max=8").json()) == 1
+        assert len(client.get("/api/sightings?taxon_id=58682").json()) == 1
+        guide_summary = client.get("/api/guide/species")
+        assert guide_summary.status_code == 200, guide_summary.text
+        assert guide_summary.json()[0]["recent_observations"] == 1
 
         activity = client.get("/api/community/activity")
         assert activity.status_code == 200, activity.text

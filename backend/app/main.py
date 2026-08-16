@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import json
 import math
 from datetime import date, datetime, timedelta
 import os
@@ -13,13 +14,13 @@ from sqlalchemy.orm import Session, joinedload
 from app.database import Base, engine, get_db
 from app.email_service import send_account_email
 from app.models import (
-    AccountToken, CommunityEvent, CommunityFind, ForageClub, RateLimitEvent,
+    AccountToken, CommunityEvent, CommunityFind, CrawledSource, ForageClub, RateLimitEvent,
     ResourceGuide, SavedLocation, Sighting, SourceSync, Species, User, UserSession,
 )
 from app.privacy import MAX_OFFSET_MILES, MILES_PER_DEGREE, normalize_longitude, public_sighting
 from app.schemas import (
     CommunityEventRead, CommunityFindRead, CommunitySummaryRead, EmailRequest, ForageClubRead,
-    OwnerSightingRead, PasswordConfirm, PasswordResetConfirm, ResourceGuideRead,
+    GuideSpeciesSummary, OwnerSightingRead, PasswordConfirm, PasswordResetConfirm, ResourceGuideRead,
     ReviewCreate, SavedLocationCreate, SavedLocationRead, SessionRead,
     SightingCreate, SightingRead, SightingUpdate, SpeciesRead, TokenRequest,
     UserCreate, UserLogin, UserRead,
@@ -402,6 +403,48 @@ def list_species(db: Session = Depends(get_db)):
     return db.query(Species).order_by(Species.common_name.asc()).all()
 
 
+@app.get("/api/guide/species", response_model=list[GuideSpeciesSummary])
+def guide_species_summaries(db: Session = Depends(get_db)):
+    cutoff = date.today() - timedelta(days=90)
+    public_filters = (
+        Sighting.review_status == "approved",
+        Sighting.verified == True,
+        Sighting.location_privacy != "private",
+        Sighting.found_on >= cutoff,
+    )
+    summaries = []
+
+    for species in db.query(Species).filter(Species.inaturalist_taxon_id.isnot(None)).all():
+        query = db.query(Sighting).filter(*public_filters, Sighting.species_id == species.id)
+        latest = query.filter(Sighting.photo_url.isnot(None)).order_by(
+            Sighting.found_on.desc(), Sighting.created_at.desc()
+        ).first()
+        source_url = None
+        attribution = None
+
+        if latest:
+            source = db.query(CrawledSource).filter(CrawledSource.sighting_id == latest.id).first()
+            if source:
+                source_url = source.source_url
+                try:
+                    raw_data = json.loads(source.raw_data or "{}")
+                    attribution = ((raw_data.get("photos") or [{}])[0]).get("attribution")
+                except (TypeError, ValueError, json.JSONDecodeError):
+                    attribution = None
+
+        summaries.append({
+            "species_id": species.id,
+            "inaturalist_taxon_id": species.inaturalist_taxon_id,
+            "recent_observations": query.count(),
+            "latest_observed_on": query.with_entities(func.max(Sighting.found_on)).scalar(),
+            "latest_photo_url": latest.photo_url if latest else None,
+            "latest_photo_attribution": attribution,
+            "latest_source_url": source_url,
+        })
+
+    return summaries
+
+
 @app.get("/api/community/finds", response_model=list[CommunityFindRead])
 def list_community_finds(limit: int = Query(6, le=50), db: Session = Depends(get_db)):
     return db.query(CommunityFind).filter(CommunityFind.published == True).order_by(
@@ -472,6 +515,7 @@ def community_summary(db: Session = Depends(get_db)):
 @app.get("/api/sightings", response_model=list[SightingRead])
 def list_sightings(
     species_id: Optional[str] = Query(None),
+    taxon_id: Optional[int] = Query(None, ge=1),
     month_min: Optional[int] = Query(None, ge=1, le=12),
     month_max: Optional[int] = Query(None, ge=1, le=12),
     elev_min: Optional[float] = Query(None),
@@ -494,6 +538,10 @@ def list_sightings(
     )
     if species_id:
         query = query.filter(Sighting.species_id == species_id)
+    if taxon_id or edibility_group:
+        query = query.join(Sighting.species)
+    if taxon_id:
+        query = query.filter(Species.inaturalist_taxon_id == taxon_id)
     if month_min is not None and month_max is not None:
         if month_min <= month_max:
             query = query.filter(Sighting.month.between(month_min, month_max))
@@ -515,7 +563,7 @@ def list_sightings(
         query = query.filter(Sighting.place_name.ilike(f"%{place.strip()}%"))
     if edibility_group:
         values = {"edible", "choice"} if edibility_group == "edible" else {"poisonous", "deadly"}
-        query = query.join(Sighting.species).filter(Species.edibility.in_(values))
+        query = query.filter(Species.edibility.in_(values))
     if verified_only:
         query = query.filter(Sighting.verified == True)
     if found_after:

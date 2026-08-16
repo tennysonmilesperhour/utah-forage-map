@@ -9,6 +9,7 @@ class SpeciesRead(BaseModel):
     id: UUID
     common_name: str
     latin_name: str
+    inaturalist_taxon_id: Optional[int] = None
     edibility: Optional[str] = None
     look_alikes: Optional[str] = None
     habitat_notes: Optional[str] = None
@@ -19,6 +20,16 @@ class SpeciesRead(BaseModel):
     notes: Optional[str] = None
 
     model_config = {"from_attributes": True}
+
+
+class GuideSpeciesSummary(BaseModel):
+    species_id: UUID
+    inaturalist_taxon_id: int
+    recent_observations: int
+    latest_observed_on: Optional[date] = None
+    latest_photo_url: Optional[str] = None
+    latest_photo_attribution: Optional[str] = None
+    latest_source_url: Optional[str] = None
 
 
 class UserCreate(BaseModel):

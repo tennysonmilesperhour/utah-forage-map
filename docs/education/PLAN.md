@@ -13,6 +13,16 @@ documents: [SPECIES_TEMPLATE.md](SPECIES_TEMPLATE.md) (page format and writing g
 3. Reinforce the map: guides feed the map, the map feeds the guides. The live observation data
    is the moat — no static field guide and no AI answer has it.
 
+### Approved implementation scope
+
+The first implementation is intentionally limited to the guide itself: a `/learn` index, pages
+for the current 12-species catalogue, safety and editorial-standard pages, live 90-day evidence,
+map links, prerendered HTML, metadata, and sitemap coverage.
+
+The comparison hubs, seasonal calendar, beginner course, yard guide, glossary, newsletter,
+quiz, printable cards, and catalogue expansion discussed elsewhere in these research notes are
+not approved product scope. They remain research only unless a later visitor need justifies them.
+
 The strongest external validation: a mushroom education brand grew from 1,100 to 62,800 monthly
 visitors in 7 months with exactly this model (templated, science-sourced species wiki), and two
 small map-plus-guide sites (mushroomtracker.ca, fungiatlas.com) already rank with seasonal

@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
-import { Bookmark, CheckCircle2, Filter, MailCheck, MapPin, NotebookPen, SearchX, Sprout, X } from 'lucide-react'
+import { Bookmark, BookOpen, CheckCircle2, Filter, MailCheck, MapPin, NotebookPen, SearchX, Sprout, X } from 'lucide-react'
 import AccountWorkspace from './components/AccountWorkspace'
 import AppHeader from './components/AppHeader'
 import AuthDialog from './components/AuthDialog'
@@ -13,6 +13,7 @@ import { useSaveLocation } from './hooks/useAccount'
 import { useCommunityPortal, useCreateSighting, useSightings, useSpecies } from './hooks/useSightings'
 import { useUnitSystem } from './hooks/useUnits'
 import { countActiveFilters, DEFAULT_FILTERS } from './lib/filters'
+import { speciesPathForTaxon } from './content/species.generated'
 import { applyPageMetadata, pathForView, viewFromPathname } from './lib/seo'
 import { formatElevation } from './lib/units'
 
@@ -26,7 +27,8 @@ function foundDateLabel(value) {
 
 export default function App() {
   const initialParams = new URLSearchParams(window.location.search)
-  const [filters, setFilters] = useState(() => ({ ...DEFAULT_FILTERS }))
+  const initialTaxonId = Number(initialParams.get('taxon')) || undefined
+  const [filters, setFilters] = useState(() => ({ ...DEFAULT_FILTERS, taxon_id: initialTaxonId }))
   const [viewport, setViewport] = useState(null)
   const [flyTarget, setFlyTarget] = useState(null)
   const [selected, setSelected] = useState(null)
@@ -48,13 +50,20 @@ export default function App() {
   const logout = useLogout()
   const verifyEmail = useVerifyEmail()
   const saveLocation = useSaveLocation()
-  const { data: sightings = [], isLoading } = useSightings(filters, viewport)
+  const { data: sightings = [], isLoading } = useSightings(filters, initialTaxonId ? null : viewport)
   const { data: species = [] } = useSpecies()
   const { data: portal = {}, isLoading: portalLoading } = useCommunityPortal()
   const createSighting = useCreateSighting()
   const displayedSpeciesCount = new Set(sightings.map(item => item.species_id)).size
   const sourceCount = new Set(sightings.map(item => item.source)).size
   const activeFilterCount = countActiveFilters(filters)
+
+  useEffect(() => {
+    if (!initialTaxonId || species.length === 0) return
+    const match = species.find(item => item.inaturalist_taxon_id === initialTaxonId)
+    if (!match) return
+    setFilters(current => ({ ...current, taxon_id: undefined, species_id: match.id }))
+  }, [initialTaxonId, species])
 
   useEffect(() => {
     if (!toast) return undefined
@@ -284,6 +293,11 @@ export default function App() {
               <button className="button button-secondary save-place-button" type="button" onClick={() => saveSelected()} disabled={saveLocation.isPending}>
                 <Bookmark size={17} aria-hidden="true" /> {saveLocation.isPending ? 'Saving...' : 'Save place'}
               </button>
+              {speciesPathForTaxon(selected.species?.inaturalist_taxon_id) && (
+                <a className="button button-secondary learn-species-button" href={speciesPathForTaxon(selected.species.inaturalist_taxon_id)}>
+                  <BookOpen size={17} aria-hidden="true" /> Learn to identify
+                </a>
+              )}
             </article>
           )}
         </section>
