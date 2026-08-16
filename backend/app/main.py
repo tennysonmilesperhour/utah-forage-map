@@ -408,7 +408,6 @@ def guide_species_summaries(db: Session = Depends(get_db)):
     cutoff = date.today() - timedelta(days=90)
     public_filters = (
         Sighting.review_status == "approved",
-        Sighting.verified == True,
         Sighting.location_privacy != "private",
         Sighting.found_on >= cutoff,
     )
