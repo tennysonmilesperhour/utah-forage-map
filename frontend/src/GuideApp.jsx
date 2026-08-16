@@ -75,7 +75,7 @@ function SpeciesCard({ species, summary }) {
 }
 
 function GuideRequestPoll() {
-  const { data, isLoading, isError, refetch, vote } = useGuideRequests()
+  const { data, isError, refetch, vote } = useGuideRequests()
   const [choice, setChoice] = useState('')
   const selectedChoice = choice || data?.selection || ''
   const highestVotes = Math.max(1, ...(data?.options.map(option => option.votes) ?? [1]))
@@ -100,7 +100,7 @@ function GuideRequestPoll() {
         </div>
 
         <div className="guide-request-ballot">
-          {isLoading && (
+          {!data && !isError && (
             <div className="poll-skeleton" aria-label="Loading guide requests">
               {Array.from({ length: 6 }, (_, index) => <span key={index} />)}
             </div>
