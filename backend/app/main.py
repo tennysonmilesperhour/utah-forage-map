@@ -14,14 +14,15 @@ from sqlalchemy.orm import Session, joinedload
 from app.database import Base, engine, get_db
 from app.email_service import send_account_email
 from app.models import (
-    AccountToken, CommunityEvent, CommunityFind, CrawledSource, ForageClub, RateLimitEvent,
-    ResourceGuide, SavedLocation, Sighting, SourceSync, Species, User, UserSession,
+    AccountToken, CommunityEvent, CommunityFind, CrawledSource, ForageClub, GuideRequestVote,
+    RateLimitEvent, ResourceGuide, SavedLocation, Sighting, SourceSync, Species, User, UserSession,
 )
 from app.privacy import MAX_OFFSET_MILES, MILES_PER_DEGREE, normalize_longitude, public_sighting
 from app.schemas import (
     CommunityEventRead, CommunityFindRead, CommunitySummaryRead, EmailRequest, ForageClubRead,
-    GuideSpeciesSummary, OwnerSightingRead, PasswordConfirm, PasswordResetConfirm, ResourceGuideRead,
-    ReviewCreate, SavedLocationCreate, SavedLocationRead, SessionRead,
+    GuideRequestPollRead, GuideRequestVoteCreate, GuideSpeciesSummary, OwnerSightingRead,
+    PasswordConfirm, PasswordResetConfirm, ResourceGuideRead, ReviewCreate, SavedLocationCreate,
+    SavedLocationRead, SessionRead,
     SightingCreate, SightingRead, SightingUpdate, SpeciesRead, TokenRequest,
     UserCreate, UserLogin, UserRead,
 )
@@ -34,6 +35,19 @@ SESSION_DAYS = int(os.getenv("SESSION_DAYS", "30"))
 ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
 ADMIN_EMAILS = {value.strip().lower() for value in os.getenv("ADMIN_EMAILS", "").split(",") if value.strip()}
 CRON_SECRET = os.getenv("CRON_SECRET")
+GUIDE_REQUEST_POLL_KEY = "next-species-2026-08"
+GUIDE_REQUEST_QUESTION = "Which mushroom should we add to the guide next?"
+GUIDE_REQUEST_OPTIONS = (
+    {"slug": "reishi", "common_name": "Reishi", "latin_name": "Ganoderma tsugae", "reason": "A varnished woodland conk with widespread supplement interest."},
+    {"slug": "chaga", "common_name": "Chaga", "latin_name": "Inonotus obliquus", "reason": "A birch canker often confused with other dark growths."},
+    {"slug": "wood-ear", "common_name": "Wood Ear", "latin_name": "Auricularia species", "reason": "A globally familiar edible group with a distinctive gelatinous form."},
+    {"slug": "cauliflower-mushroom", "common_name": "Cauliflower Mushroom", "latin_name": "Sparassis species", "reason": "A large, folded woodland mushroom that draws frequent ID requests."},
+    {"slug": "indigo-milk-cap", "common_name": "Indigo Milk Cap", "latin_name": "Lactarius indigo", "reason": "A vivid blue mushroom with blue latex and memorable bruising."},
+    {"slug": "dryads-saddle", "common_name": "Dryad's Saddle", "latin_name": "Cerioporus squamosus", "reason": "A common spring polypore found on hardwood trunks and stumps."},
+    {"slug": "beefsteak-fungus", "common_name": "Beefsteak Fungus", "latin_name": "Fistulina hepatica", "reason": "A red, fleshy bracket fungus associated with mature hardwoods."},
+    {"slug": "candy-cap", "common_name": "Candy Cap", "latin_name": "Lactarius rubidus", "reason": "A small western milk cap known for its maple-like aroma when dried."},
+)
+GUIDE_REQUEST_OPTION_SLUGS = {item["slug"] for item in GUIDE_REQUEST_OPTIONS}
 
 if ENVIRONMENT == "production" and SECRET_KEY == DEFAULT_SECRET_KEY:
     raise RuntimeError("SECRET_KEY must be set in production")
@@ -442,6 +456,75 @@ def guide_species_summaries(db: Session = Depends(get_db)):
         })
 
     return summaries
+
+
+def guide_request_summary(db: Session, voter_token: Optional[str] = None):
+    vote_counts = dict(
+        db.query(GuideRequestVote.choice_slug, func.count(GuideRequestVote.id))
+        .filter(GuideRequestVote.poll_key == GUIDE_REQUEST_POLL_KEY)
+        .group_by(GuideRequestVote.choice_slug)
+        .all()
+    )
+    selection = None
+    if voter_token:
+        try:
+            normalized_token = str(UUID(voter_token))
+        except (TypeError, ValueError):
+            normalized_token = None
+        if normalized_token:
+            vote = db.query(GuideRequestVote).filter(
+                GuideRequestVote.poll_key == GUIDE_REQUEST_POLL_KEY,
+                GuideRequestVote.voter_hash == hash_identifier(normalized_token),
+            ).one_or_none()
+            selection = vote.choice_slug if vote else None
+    options = [{**item, "votes": vote_counts.get(item["slug"], 0)} for item in GUIDE_REQUEST_OPTIONS]
+    return {
+        "poll_key": GUIDE_REQUEST_POLL_KEY,
+        "question": GUIDE_REQUEST_QUESTION,
+        "total_votes": sum(vote_counts.values()),
+        "selection": selection,
+        "options": options,
+    }
+
+
+@app.get("/api/guide/requests", response_model=GuideRequestPollRead)
+def guide_requests(
+    voter_token: Optional[str] = Header(None, alias="X-Guide-Voter"),
+    db: Session = Depends(get_db),
+):
+    return guide_request_summary(db, voter_token)
+
+
+@app.post("/api/guide/requests", response_model=GuideRequestPollRead)
+def vote_for_guide_request(
+    payload: GuideRequestVoteCreate,
+    request: Request,
+    voter_token: str = Header(..., alias="X-Guide-Voter"),
+    db: Session = Depends(get_db),
+):
+    try:
+        normalized_token = str(UUID(voter_token))
+    except (TypeError, ValueError):
+        raise HTTPException(status_code=422, detail="A valid anonymous voter token is required")
+    if payload.choice_slug not in GUIDE_REQUEST_OPTION_SLUGS:
+        raise HTTPException(status_code=422, detail="Choose an available mushroom")
+
+    enforce_rate_limit(db, "guide_vote", f"{request_ip(request)}:{normalized_token}", 20, 60)
+    voter_hash = hash_identifier(normalized_token)
+    vote = db.query(GuideRequestVote).filter(
+        GuideRequestVote.poll_key == GUIDE_REQUEST_POLL_KEY,
+        GuideRequestVote.voter_hash == voter_hash,
+    ).one_or_none()
+    if vote:
+        vote.choice_slug = payload.choice_slug
+    else:
+        db.add(GuideRequestVote(
+            poll_key=GUIDE_REQUEST_POLL_KEY,
+            choice_slug=payload.choice_slug,
+            voter_hash=voter_hash,
+        ))
+    db.commit()
+    return guide_request_summary(db, normalized_token)
 
 
 @app.get("/api/community/finds", response_model=list[CommunityFindRead])

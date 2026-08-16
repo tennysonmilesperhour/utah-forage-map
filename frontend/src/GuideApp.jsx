@@ -1,15 +1,16 @@
 import { useEffect, useMemo, useState } from 'react'
 import {
   ArrowLeft, ArrowRight, Binoculars, BookOpen, CalendarDays, CheckCircle2,
-  ExternalLink, MapPin, Search, ShieldAlert, ShieldCheck, Sprout,
+  ExternalLink, MapPin, Search, ShieldAlert, ShieldCheck, Sprout, Vote,
 } from 'lucide-react'
 import GuideHeader from './components/GuideHeader'
 import { speciesBySlug, speciesGuides } from './content/species.generated'
-import { useGuideSummaries } from './hooks/useGuide'
+import { useGuideRequests, useGuideSummaries } from './hooks/useGuide'
 import { applyGuideMetadata } from './lib/guideSeo'
 
 const EDIBLE_GROUP = new Set(['choice', 'edible'])
 const HAZARD_GROUP = new Set(['poisonous', 'deadly'])
+const CAUTION_GROUP = new Set(['caution'])
 
 function formatDate(value) {
   if (!value) return 'No dated observation'
@@ -23,7 +24,10 @@ function observationImage(url) {
 }
 
 function edibilityLabel(value) {
-  return value === 'choice' ? 'Choice edible' : value.charAt(0).toUpperCase() + value.slice(1)
+  if (value === 'choice') return 'Choice edible'
+  if (value === 'caution') return 'Edible with caution'
+  if (value === 'inedible') return 'Not a food mushroom'
+  return value.charAt(0).toUpperCase() + value.slice(1)
 }
 
 function GuideFooter() {
@@ -70,6 +74,84 @@ function SpeciesCard({ species, summary }) {
   )
 }
 
+function GuideRequestPoll() {
+  const { data, isLoading, isError, refetch, vote } = useGuideRequests()
+  const [choice, setChoice] = useState('')
+  const selectedChoice = choice || data?.selection || ''
+  const highestVotes = Math.max(1, ...(data?.options.map(option => option.votes) ?? [1]))
+
+  function submitVote(event) {
+    event.preventDefault()
+    if (selectedChoice) vote.mutate(selectedChoice)
+  }
+
+  return (
+    <section className="guide-request-poll" aria-labelledby="guide-request-title">
+      <div className="guide-request-inner">
+        <div className="guide-request-intro">
+          <Vote size={24} aria-hidden="true" />
+          <p className="eyebrow">Shape the next release</p>
+          <h2 id="guide-request-title">Choose the next mushroom guide</h2>
+          <p>Vote without an account. Your browser gets one anonymous vote, and you can change it whenever another species matters more.</p>
+          <div className="guide-vote-total" aria-live="polite">
+            <strong>{data?.total_votes ?? 0}</strong>
+            <span>community {data?.total_votes === 1 ? 'vote' : 'votes'}</span>
+          </div>
+        </div>
+
+        <div className="guide-request-ballot">
+          {isLoading && (
+            <div className="poll-skeleton" aria-label="Loading guide requests">
+              {Array.from({ length: 6 }, (_, index) => <span key={index} />)}
+            </div>
+          )}
+          {isError && (
+            <div className="poll-error" role="alert">
+              <p>Voting is temporarily unavailable.</p>
+              <button className="button button-secondary" type="button" onClick={() => refetch()}>Try voting again</button>
+            </div>
+          )}
+          {data && (
+            <form onSubmit={submitVote}>
+              <fieldset disabled={vote.isPending}>
+                <legend className="sr-only">Mushroom guide candidates</legend>
+                <div className="poll-options">
+                  {data.options.map(option => (
+                    <label key={option.slug} className={`poll-option ${selectedChoice === option.slug ? 'selected' : ''}`}>
+                      <input
+                        type="radio"
+                        name="guide-request"
+                        value={option.slug}
+                        checked={selectedChoice === option.slug}
+                        onChange={() => setChoice(option.slug)}
+                      />
+                      <span className="poll-option-copy">
+                        <strong>{option.common_name}</strong>
+                        <em>{option.latin_name}</em>
+                        <small>{option.reason}</small>
+                      </span>
+                      <span className="poll-option-count">{option.votes}</span>
+                      <span className="poll-option-bar" style={{ '--vote-share': `${(option.votes / highestVotes) * 100}%` }} aria-hidden="true" />
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+              {vote.isError && <p className="form-error" role="alert">Your vote could not be saved. Please try again.</p>}
+              <div className="poll-submit-row">
+                <button className="button button-primary" type="submit" disabled={!selectedChoice || vote.isPending}>
+                  <Vote size={16} aria-hidden="true" />
+                  {vote.isPending ? 'Saving vote...' : data.selection ? 'Update vote' : 'Cast vote'}
+                </button>
+                {data.selection && !vote.isPending && <p>Your vote is recorded. Results update immediately.</p>}
+              </div>
+            </form>
+          )}
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function GuideHome({ summaries }) {
   const [query, setQuery] = useState('')
   const [group, setGroup] = useState('all')
@@ -96,7 +178,7 @@ function GuideHome({ summaries }) {
             <h1>Learn the mushroom in front of you</h1>
             <p>Field marks, dangerous lookalike checks, cited safety notes, and recent reviewed observations for the map's current species.</p>
             <div className="hero-actions">
-              <a className="button button-primary" href="#browse-species"><Binoculars size={17} aria-hidden="true" /> Browse 12 species</a>
+              <a className="button button-primary" href="#browse-species"><Binoculars size={17} aria-hidden="true" /> Browse {speciesGuides.length} species</a>
               <a className="button button-inverse" href="/learn/safety"><ShieldAlert size={17} aria-hidden="true" /> Safety rules</a>
             </div>
           </div>
@@ -137,6 +219,7 @@ function GuideHome({ summaries }) {
           <div><h2>Identification is a process, not a picture match</h2><p>Confirm cap, underside, stem, base, interior, spore print, substrate, and habitat. Use multiple reputable sources and a qualified local expert before considering consumption.</p></div>
           <a className="button button-secondary" href="/learn/safety">Read safety rules <ArrowRight size={16} aria-hidden="true" /></a>
         </section>
+        <GuideRequestPoll />
       </main>
     </GuideLayout>
   )
@@ -213,7 +296,7 @@ function SpeciesPage({ species, summary }) {
         </div>
 
         <section className={`species-warning ${HAZARD_GROUP.has(species.edibility) ? 'danger' : ''}`}>
-          <ShieldAlert size={22} aria-hidden="true" /><div><strong>{HAZARD_GROUP.has(species.edibility) ? 'Toxicity warning' : 'Identification warning'}</strong><p>{species.warning}</p></div>
+          <ShieldAlert size={22} aria-hidden="true" /><div><strong>{HAZARD_GROUP.has(species.edibility) || CAUTION_GROUP.has(species.edibility) ? 'Toxicity warning' : 'Identification warning'}</strong><p>{species.warning}</p></div>
         </section>
 
         <dl className="species-quick-facts">

@@ -32,6 +32,26 @@ class GuideSpeciesSummary(BaseModel):
     latest_source_url: Optional[str] = None
 
 
+class GuideRequestOptionRead(BaseModel):
+    slug: str
+    common_name: str
+    latin_name: str
+    reason: str
+    votes: int
+
+
+class GuideRequestPollRead(BaseModel):
+    poll_key: str
+    question: str
+    total_votes: int
+    selection: Optional[str] = None
+    options: list[GuideRequestOptionRead]
+
+
+class GuideRequestVoteCreate(BaseModel):
+    choice_slug: str = Field(min_length=2, max_length=80, pattern=r"^[a-z0-9-]+$")
+
+
 class UserCreate(BaseModel):
     username: str = Field(min_length=2, max_length=40)
     email: EmailStr

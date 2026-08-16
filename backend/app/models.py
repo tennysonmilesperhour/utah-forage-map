@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime, date
 from sqlalchemy import (
     Boolean, Column, Date, DateTime, Float, ForeignKey,
-    Index, Integer, String, Text,
+    Index, Integer, String, Text, UniqueConstraint,
 )
 from sqlalchemy.dialects.postgresql import UUID as PG_UUID
 from sqlalchemy.orm import relationship
@@ -147,6 +147,21 @@ class SourceSync(Base):
     last_succeeded_at = Column(DateTime)
     last_result = Column(Text)
     last_error = Column(Text)
+
+
+class GuideRequestVote(Base):
+    __tablename__ = "guide_request_votes"
+    __table_args__ = (
+        UniqueConstraint("poll_key", "voter_hash", name="uq_guide_request_vote_poll_voter"),
+        Index("ix_guide_request_vote_poll_choice", "poll_key", "choice_slug"),
+    )
+
+    id = Column(GUID(), primary_key=True, default=uuid.uuid4)
+    poll_key = Column(String(64), nullable=False)
+    choice_slug = Column(String(80), nullable=False)
+    voter_hash = Column(String(64), nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
 
 
 class UserSession(Base):

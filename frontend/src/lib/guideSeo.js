@@ -5,7 +5,7 @@ export const GUIDE_SITE_URL = 'https://utah-forage-map.vercel.app'
 const FIXED_METADATA = {
   '/learn': {
     title: 'Mushroom Identification Guide | Field Marks, Lookalikes and Live Finds',
-    description: 'Study 12 mushrooms with concise field marks, dangerous lookalike checks, licensed photos, cited safety guidance, and recent reviewed observations.',
+    description: 'Study 30 mushrooms with concise field marks, dangerous lookalike checks, licensed photos, cited safety guidance, and recent reviewed observations.',
   },
   '/learn/safety': {
     title: 'Wild Mushroom Safety and Poison Response | Mushroom Forage Map',
