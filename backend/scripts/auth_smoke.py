@@ -16,7 +16,7 @@ from fastapi.testclient import TestClient
 
 import app.main as main_module
 from app.database import SessionLocal
-from app.models import Species
+from app.models import Sighting, Species
 
 
 sent_links = []
@@ -95,6 +95,20 @@ def main():
         guide_summary = client.get("/api/guide/species")
         assert guide_summary.status_code == 200, guide_summary.text
         assert guide_summary.json()[0]["recent_observations"] == 1
+
+        db = SessionLocal()
+        sighting = db.query(Sighting).filter(Sighting.id == sighting_id).one()
+        sighting.verified = False
+        db.commit()
+        db.close()
+        assert len(client.get("/api/sightings?taxon_id=58682").json()) == 1
+        assert client.get("/api/guide/species").json()[0]["recent_observations"] == 1
+
+        db = SessionLocal()
+        sighting = db.query(Sighting).filter(Sighting.id == sighting_id).one()
+        sighting.verified = True
+        db.commit()
+        db.close()
 
         activity = client.get("/api/community/activity")
         assert activity.status_code == 200, activity.text
