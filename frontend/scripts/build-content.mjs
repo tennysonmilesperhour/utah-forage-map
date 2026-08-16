@@ -9,13 +9,17 @@ const contentDirectory = path.join(root, 'content', 'species')
 const outputPath = path.join(root, 'src', 'content', 'species.generated.js')
 const requiredFields = [
   'slug', 'common_name', 'latin_name', 'taxon_id', 'summary', 'edibility',
-  'difficulty', 'season', 'habitat', 'underside', 'spore_print', 'image',
+  'difficulty', 'season', 'habitat', 'underside', 'spore_print', 'warning',
+  'author', 'reviewer', 'last_reviewed', 'image',
 ]
+const requiredImageFields = ['url', 'alt', 'credit', 'source']
 
 marked.use({ gfm: true })
 
 const files = (await readdir(contentDirectory)).filter(file => file.endsWith('.md')).sort()
 const guides = []
+const slugs = new Set()
+const taxonIds = new Set()
 
 for (const file of files) {
   const source = await readFile(path.join(contentDirectory, file), 'utf8')
@@ -23,6 +27,15 @@ for (const file of files) {
   const missing = requiredFields.filter(field => data[field] == null)
   if (missing.length) throw new Error(`${file} is missing: ${missing.join(', ')}`)
   if (!Array.isArray(data.lookalikes)) throw new Error(`${file} needs a lookalikes list`)
+  const missingImageFields = requiredImageFields.filter(field => data.image?.[field] == null)
+  if (missingImageFields.length) throw new Error(`${file} image is missing: ${missingImageFields.join(', ')}`)
+  if (data.lookalikes.some(item => !item.name || !item.severity || !item.check)) {
+    throw new Error(`${file} has an incomplete lookalike`)
+  }
+  if (slugs.has(data.slug)) throw new Error(`${file} duplicates slug: ${data.slug}`)
+  if (taxonIds.has(Number(data.taxon_id))) throw new Error(`${file} duplicates taxon_id: ${data.taxon_id}`)
+  slugs.add(data.slug)
+  taxonIds.add(Number(data.taxon_id))
 
   guides.push({
     ...data,
@@ -32,6 +45,14 @@ for (const file of files) {
       : String(data.last_reviewed),
     content_html: await marked.parse(content),
   })
+}
+
+for (const guide of guides) {
+  for (const lookalike of guide.lookalikes) {
+    if (lookalike.slug && !slugs.has(lookalike.slug)) {
+      throw new Error(`${guide.slug} links to missing lookalike slug: ${lookalike.slug}`)
+    }
+  }
 }
 
 await mkdir(path.dirname(outputPath), { recursive: true })

@@ -104,6 +104,21 @@ def main():
         assert len(client.get("/api/sightings?taxon_id=58682").json()) == 1
         assert client.get("/api/guide/species").json()[0]["recent_observations"] == 1
 
+        poll = client.get("/api/guide/requests")
+        assert poll.status_code == 200, poll.text
+        assert poll.json()["total_votes"] == 0
+        assert len(poll.json()["options"]) == 8
+        voter_headers = {"X-Guide-Voter": "00000000-0000-4000-8000-000000000001"}
+        vote = client.post("/api/guide/requests", headers=voter_headers, json={"choice_slug": "reishi"})
+        assert vote.status_code == 200, vote.text
+        assert vote.json()["selection"] == "reishi"
+        assert vote.json()["total_votes"] == 1
+        changed_vote = client.post("/api/guide/requests", headers=voter_headers, json={"choice_slug": "chaga"})
+        assert changed_vote.status_code == 200, changed_vote.text
+        assert changed_vote.json()["selection"] == "chaga"
+        assert changed_vote.json()["total_votes"] == 1
+        assert client.post("/api/guide/requests", headers=voter_headers, json={"choice_slug": "not-listed"}).status_code == 422
+
         db = SessionLocal()
         sighting = db.query(Sighting).filter(Sighting.id == sighting_id).one()
         sighting.verified = True

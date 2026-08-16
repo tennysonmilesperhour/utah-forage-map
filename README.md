@@ -18,7 +18,8 @@ The project takes inspiration from the usefulness of community location catalogu
 - Community finds, events, clubs, access guides, and poison-safety resources
 - Resumable biweekly reconciliation of worldwide, research-grade iNaturalist observations with source provenance
 - A rolling 90-day field signal based on when each mushroom was found, across both hemispheres
-- Prerendered identification guides for the current 12-species catalogue, with cited safety notes, licensed photography, lookalike checks, and map links
+- Prerendered identification guides for a curated 30-species catalogue, with cited safety notes, licensed photography, lookalike checks, and map links
+- An account-free community poll that lets visitors prioritize the next mushroom guide with one changeable anonymous vote per browser
 - Alembic migrations for SQLite development and PostgreSQL production
 
 Product and interface decisions are documented in [PRODUCT.md](PRODUCT.md) and [DESIGN.md](DESIGN.md). Research and planning for the mushroom identification education section live in [docs/education/](docs/education/PLAN.md).

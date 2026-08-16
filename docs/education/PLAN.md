@@ -15,13 +15,13 @@ documents: [SPECIES_TEMPLATE.md](SPECIES_TEMPLATE.md) (page format and writing g
 
 ### Approved implementation scope
 
-The first implementation is intentionally limited to the guide itself: a `/learn` index, pages
-for the current 12-species catalogue, safety and editorial-standard pages, live 90-day evidence,
-map links, prerendered HTML, metadata, and sitemap coverage.
+The approved implementation now includes the guide itself: a `/learn` index, pages for a curated
+30-species catalogue, safety and editorial-standard pages, live 90-day evidence, map links,
+prerendered HTML, metadata, sitemap coverage, and an account-free poll for the next guide.
 
 The comparison hubs, seasonal calendar, beginner course, yard guide, glossary, newsletter,
-quiz, printable cards, and catalogue expansion discussed elsewhere in these research notes are
-not approved product scope. They remain research only unless a later visitor need justifies them.
+quiz, and printable cards discussed elsewhere in these research notes are not approved product
+scope. They remain research only unless a later visitor need justifies them.
 
 The strongest external validation: a mushroom education brand grew from 1,100 to 62,800 monthly
 visitors in 7 months with exactly this model (templated, science-sourced species wiki), and two
@@ -134,7 +134,8 @@ The user-stated worry is verbosity. The guardrails:
 **Phase 1 — Foundation (make guide pages exist and rank):**
 prerendering for `/learn/*`; the trust pages (/about, /disclaimer, how-we-verify); the species
 page template component; first 12 species pages from the existing catalogue (content compiled in
-SPECIES_CONTENT.md); `slug` column + map-popup links; sitemap + structured data.
+SPECIES_CONTENT.md); `slug` column + map-popup links; sitemap + structured data. The catalogue was
+then expanded to 30 species with a public request poll.
 
 **Phase 2 — The traffic engines:**
 seasonal calendar driven by live data; lookalike comparison pages (morel vs false morel first —
