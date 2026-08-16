@@ -17,6 +17,8 @@ venv/
 # Build output
 dist/
 .vite/
+.ssr/
+frontend/src/content/species.generated.js
 
 # Database
 *.sqlite3

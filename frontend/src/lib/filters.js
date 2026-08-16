@@ -6,7 +6,7 @@ function isSet(value) {
 
 export function countActiveFilters(filters = {}) {
   let count = 0
-  if (isSet(filters.species_id)) count += 1
+  if (isSet(filters.species_id) || isSet(filters.taxon_id)) count += 1
   if (isSet(filters.place)) count += 1
   if (isSet(filters.recent_days) && filters.recent_days !== DEFAULT_FILTERS.recent_days) count += 1
   if (isSet(filters.month_min) || isSet(filters.month_max)) count += 1

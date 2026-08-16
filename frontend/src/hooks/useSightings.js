@@ -14,6 +14,7 @@ export function useSightings(filters = {}, viewport = null) {
     queryFn: async () => {
       const params = {}
       if (filters.species_id) params.species_id = filters.species_id
+      if (filters.taxon_id) params.taxon_id = filters.taxon_id
       if (filters.month_min != null) params.month_min = filters.month_min
       if (filters.month_max != null) params.month_max = filters.month_max
       if (filters.elev_min_m != null) params.elev_min = Math.round(filters.elev_min_m * 3.28084)

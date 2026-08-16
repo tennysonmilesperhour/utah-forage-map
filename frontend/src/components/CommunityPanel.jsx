@@ -70,7 +70,7 @@ export default function CommunityPanel({
             <Users size={16} aria-hidden="true" /> Events & groups
           </button>
           <a className={section === 'guide' ? 'active' : ''} href="/field-guide" onClick={event => openRoute(event, 'guide')} aria-current={section === 'guide' ? 'page' : undefined}>
-            <BookOpen size={16} aria-hidden="true" /> Field guide
+            <BookOpen size={16} aria-hidden="true" /> Map guide
           </a>
         </nav>
 
