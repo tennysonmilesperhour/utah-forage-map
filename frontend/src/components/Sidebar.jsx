@@ -99,9 +99,9 @@ export default function Sidebar({
         <div>
           <div className="panel-title-row">
             <SlidersHorizontal size={18} aria-hidden="true" />
-            <h2>Explore the world</h2>
+            <h2>Explore the archive</h2>
           </div>
-          <p>{loading ? 'Loading observations...' : `${sightingCount ?? 0} public observations on the map`}</p>
+          <p>{loading ? 'Loading field records...' : `${sightingCount ?? 0} public field records on the map`}</p>
         </div>
         {onClose && (
           <button className="icon-button" type="button" onClick={onClose} aria-label="Close filters">

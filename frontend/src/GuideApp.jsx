@@ -33,7 +33,7 @@ function edibilityLabel(value) {
 function GuideFooter() {
   return (
     <footer className="learn-footer">
-      <div><strong>Mushroom Forage Map</strong><span>Observation is not identification.</span></div>
+      <div><strong>The Living Fungi Archive</strong><span>A Mushroom Forage Map collection. Observation is not identification.</span></div>
       <nav aria-label="Guide information">
         <a href="/learn/safety">Safety</a>
         <a href="/about">Editorial standards</a>
@@ -174,11 +174,11 @@ function GuideHome({ summaries }) {
           <img src={speciesBySlug.morel.image.url} alt="Morel mushroom among spring leaf litter" />
           <div className="learn-hero-overlay" />
           <div className="learn-hero-content">
-            <p className="eyebrow"><BookOpen size={16} aria-hidden="true" /> Mushroom identification guide</p>
-            <h1>Learn the mushroom in front of you</h1>
+            <p className="eyebrow"><BookOpen size={16} aria-hidden="true" /> Field collection · {speciesGuides.length} species</p>
+            <h1>The living fungi archive</h1>
             <p>Field marks, dangerous lookalike checks, cited safety notes, and recent reviewed observations for the map's current species.</p>
             <div className="hero-actions">
-              <a className="button button-primary" href="#browse-species"><Binoculars size={17} aria-hidden="true" /> Browse {speciesGuides.length} species</a>
+              <a className="button button-primary" href="#browse-species"><Binoculars size={17} aria-hidden="true" /> Browse the collection</a>
               <a className="button button-inverse" href="/learn/safety"><ShieldAlert size={17} aria-hidden="true" /> Safety rules</a>
             </div>
           </div>
