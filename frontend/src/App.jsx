@@ -273,8 +273,15 @@ export default function App() {
               <button className="icon-button sighting-close" type="button" onClick={() => setSelected(null)} aria-label="Close observation details">
                 <X size={18} aria-hidden="true" />
               </button>
+              {selected.photo_url && (
+                <figure className="sighting-photo">
+                  <img src={selected.photo_url} alt={`${selected.species?.common_name ?? 'Mushroom'} field observation`} />
+                  <figcaption>Public field photograph · {selected.source}</figcaption>
+                </figure>
+              )}
               <div className="sighting-heading">
                 <div>
+                  <span className="sighting-accession">Field record {String(selected.id).slice(0, 8).toUpperCase()}</span>
                   <span className={selected.verified ? 'status-reviewed' : 'status-pending'}>
                     {selected.verified ? 'Reviewed' : 'Pending review'}
                   </span>
@@ -291,7 +298,7 @@ export default function App() {
                 <div><dt>Place</dt><dd>{selected.place_name ?? 'Not recorded'}</dd></div>
               </dl>
               <button className="button button-secondary save-place-button" type="button" onClick={() => saveSelected()} disabled={saveLocation.isPending}>
-                <Bookmark size={17} aria-hidden="true" /> {saveLocation.isPending ? 'Saving...' : 'Save place'}
+                <Bookmark size={17} aria-hidden="true" /> {saveLocation.isPending ? 'Saving...' : 'Save to collection'}
               </button>
               {speciesPathForTaxon(selected.species?.inaturalist_taxon_id) && (
                 <a className="button button-secondary learn-species-button" href={speciesPathForTaxon(selected.species.inaturalist_taxon_id)}>

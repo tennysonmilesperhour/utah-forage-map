@@ -11,11 +11,12 @@ const CLUSTER_COUNT_LAYER = 'observation-cluster-count'
 const POINT_LAYER = 'observation-points'
 
 const EDIBILITY_COLORS = {
-  edible: '#16a34a',
-  choice: '#15803d',
-  inedible: '#7b8680',
-  poisonous: '#dc2626',
-  deadly: '#7f1d1d',
+  edible: '#8da67f',
+  choice: '#a7b991',
+  caution: '#d3a95c',
+  inedible: '#8f8981',
+  poisonous: '#d5664e',
+  deadly: '#a8332b',
 }
 
 function geojson(sightings) {
@@ -87,7 +88,7 @@ export default function MapView({
     const compactViewport = containerRef.current.clientWidth < 600
     const map = new mapboxgl.Map({
       container: containerRef.current,
-      style: 'mapbox://styles/mapbox/outdoors-v12',
+      style: 'mapbox://styles/mapbox/dark-v11',
       center: WORLD_CENTER,
       zoom: compactViewport ? 0.45 : WORLD_ZOOM,
       minZoom: 0.3,
@@ -118,10 +119,10 @@ export default function MapView({
         source: SOURCE_ID,
         filter: ['has', 'point_count'],
         paint: {
-          'circle-color': ['step', ['get', 'point_count'], '#2e6f5e', 50, '#1f5a49', 250, '#123b2f'],
+          'circle-color': ['step', ['get', 'point_count'], '#b75c42', 50, '#96432f', 250, '#713124'],
           'circle-radius': ['step', ['get', 'point_count'], 17, 50, 21, 250, 26],
           'circle-stroke-width': 2,
-          'circle-stroke-color': '#ffffff',
+          'circle-stroke-color': '#f1ebe2',
           'circle-opacity': 0.92,
         },
       })
@@ -134,7 +135,7 @@ export default function MapView({
           'text-field': ['get', 'point_count_abbreviated'],
           'text-size': 12,
         },
-        paint: { 'text-color': '#ffffff' },
+        paint: { 'text-color': '#fffaf2' },
       })
       map.addLayer({
         id: POINT_LAYER,
@@ -147,13 +148,14 @@ export default function MapView({
             'match', ['get', 'edibility'],
             'choice', EDIBILITY_COLORS.choice,
             'edible', EDIBILITY_COLORS.edible,
+            'caution', EDIBILITY_COLORS.caution,
             'poisonous', EDIBILITY_COLORS.poisonous,
             'deadly', EDIBILITY_COLORS.deadly,
             'inedible', EDIBILITY_COLORS.inedible,
-            '#d97706',
+            '#d3a95c',
           ],
           'circle-stroke-width': 2,
-          'circle-stroke-color': '#ffffff',
+          'circle-stroke-color': '#f1ebe2',
         },
       })
       onBoundsChangeRef.current?.(roundedBounds(map))

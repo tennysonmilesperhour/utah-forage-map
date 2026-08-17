@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { BookOpen, ChevronDown, Leaf, LogIn, LogOut, Map, NotebookPen, UserPlus, Users } from 'lucide-react'
+import { BookOpen, ChevronDown, Library, LogIn, LogOut, Map, NotebookPen, UserPlus, Users } from 'lucide-react'
 
 export default function AppHeader({
   user,
@@ -23,17 +23,17 @@ export default function AppHeader({
   return (
     <header className="app-header">
       <a className="brand-lockup" href="/" onClick={event => navigate(event, 'map')} aria-label="Mushroom Forage Map home">
-        <div className="brand-mark"><Leaf size={21} strokeWidth={2.2} aria-hidden="true" /></div>
+        <div className="brand-mark"><Library size={21} strokeWidth={1.8} aria-hidden="true" /></div>
         <div className="brand-copy">
-          <h1><span className="brand-name-full">Mushroom Forage Map</span><span className="brand-name-short">Forage Map</span></h1>
-          <p>Worldwide field knowledge</p>
+          <h1><span className="brand-name-full">The Living Fungi Archive</span><span className="brand-name-short">Fungi Archive</span></h1>
+          <p>Mushroom Forage Map</p>
         </div>
       </a>
 
       <nav className="primary-nav" aria-label="Primary navigation">
-        <a className={`nav-item ${activeView === 'map' ? 'active' : ''}`} href="/" onClick={event => navigate(event, 'map')} aria-current={activeView === 'map' ? 'page' : undefined}><Map size={17} aria-hidden="true" /> Map</a>
+        <a className={`nav-item ${activeView === 'map' ? 'active' : ''}`} href="/" onClick={event => navigate(event, 'map')} aria-current={activeView === 'map' ? 'page' : undefined}><Map size={17} aria-hidden="true" /> Field map</a>
         <a className={`nav-item ${activeView === 'community' ? 'active' : ''}`} href="/community" onClick={event => navigate(event, 'community')} aria-current={activeView === 'community' ? 'page' : undefined}><Users size={17} aria-hidden="true" /> Community</a>
-        <a className="nav-item" href="/learn"><BookOpen size={17} aria-hidden="true" /> Mushroom guide</a>
+        <a className="nav-item" href="/learn"><BookOpen size={17} aria-hidden="true" /> Species archive</a>
       </nav>
 
       <div className="header-actions">
@@ -59,7 +59,7 @@ export default function AppHeader({
           <>
             <button className="button button-primary submit-header-button" type="button" onClick={onSubmitFind} aria-label="Add a find" title="Add a find">
               <NotebookPen size={17} aria-hidden="true" />
-              <span>Add a find</span>
+              <span>Record a find</span>
             </button>
             <div className="account-menu-wrap">
               <button
