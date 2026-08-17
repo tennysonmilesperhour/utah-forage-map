@@ -25,6 +25,17 @@ function foundDateLabel(value) {
   })
 }
 
+function observationPhotoUrl(value) {
+  if (!value) return ''
+  try {
+    const url = new URL(value)
+    url.pathname = url.pathname.replace(/\/square(\.[^./]+)$/i, '/medium$1')
+    return url.toString()
+  } catch {
+    return value
+  }
+}
+
 export default function App() {
   const initialParams = new URLSearchParams(window.location.search)
   const initialTaxonId = Number(initialParams.get('taxon')) || undefined
@@ -275,7 +286,7 @@ export default function App() {
               </button>
               {selected.photo_url && (
                 <figure className="sighting-photo">
-                  <img src={selected.photo_url} alt={`${selected.species?.common_name ?? 'Mushroom'} field observation`} />
+                  <img src={observationPhotoUrl(selected.photo_url)} alt={`${selected.species?.common_name ?? 'Mushroom'} field observation`} />
                   <figcaption>Public field photograph · {selected.source}</figcaption>
                 </figure>
               )}
