@@ -302,6 +302,8 @@ class AlertSubscriptionRead(BaseModel):
     enabled: bool
     created_at: datetime
     last_sent_at: Optional[datetime] = None
+    recent_observations_7d: int = 0
+    latest_observed_on: Optional[date] = None
 
 
 class RegionSummaryRead(BaseModel):

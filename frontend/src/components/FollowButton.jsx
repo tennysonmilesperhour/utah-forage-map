@@ -16,14 +16,6 @@ export default function FollowButton({ user, kind, taxonId, regionSlug, label, o
     )
   }
 
-  if (!user.email_verified) {
-    return (
-      <a className="button button-secondary follow-button" href={`/?follow=${handoff}`}>
-        <Bell size={16} aria-hidden="true" /> Verify email to follow
-      </a>
-    )
-  }
-
   async function follow() {
     if (following || createAlert.isPending) return
     try {

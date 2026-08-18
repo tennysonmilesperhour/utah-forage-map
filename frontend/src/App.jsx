@@ -95,13 +95,6 @@ export default function App() {
       setAuthMode('register')
       return
     }
-    if (!user.email_verified) {
-      setAccountInitialTab('settings')
-      setAccountOpen(true)
-      setToast('Verify your email before turning on field bulletins.')
-      setFollowHandled(true)
-      return
-    }
     const [kind, value] = followTarget.split(':')
     const payload = kind === 'species'
       ? { kind, species_taxon_id: Number(value) }
