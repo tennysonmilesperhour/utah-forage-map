@@ -9,7 +9,7 @@ const dist = path.join(root, 'dist')
 const template = await readFile(path.join(dist, 'index.html'), 'utf8')
 const renderer = await import(pathToFileURL(path.join(root, '.ssr', 'ssr.js')).href)
 const routes = renderer.guideRoutes()
-const siteUrl = 'https://utah-forage-map.vercel.app'
+const siteUrl = 'https://worldmushroomforaging.org'
 const appRoutes = ['/community', '/field-guide']
 
 function escapeXml(value) {

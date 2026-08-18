@@ -1,4 +1,4 @@
-export const SITE_URL = 'https://utah-forage-map.vercel.app'
+export const SITE_URL = 'https://worldmushroomforaging.org'
 
 const PAGE_METADATA = {
   map: {

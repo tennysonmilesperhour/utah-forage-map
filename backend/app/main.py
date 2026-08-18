@@ -57,7 +57,7 @@ INATURALIST_HISTOGRAM_URL = "https://api.inaturalist.org/v1/observations/histogr
 INATURALIST_FUNGI_TAXON_ID = 47170
 INATURALIST_HEADERS = {
     "Accept": "application/json",
-    "User-Agent": "MushroomForageMap/2.1 (https://utah-forage-map.vercel.app)",
+    "User-Agent": "MushroomForageMap/2.1 (https://worldmushroomforaging.org)",
 }
 
 if ENVIRONMENT == "production" and SECRET_KEY == DEFAULT_SECRET_KEY:

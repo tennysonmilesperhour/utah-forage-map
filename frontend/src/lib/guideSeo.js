@@ -1,7 +1,7 @@
 import { speciesBySlug, speciesGuides } from '../content/species.generated'
 import { regionBySlug, regions } from '../data/regions'
 
-export const GUIDE_SITE_URL = 'https://utah-forage-map.vercel.app'
+export const GUIDE_SITE_URL = 'https://worldmushroomforaging.org'
 
 const FIXED_METADATA = {
   '/learn': {
