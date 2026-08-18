@@ -138,8 +138,21 @@ def sync_photo_urls(sighting: Sighting, urls: list[str]):
     sighting.photo_url = unique_urls[0] if unique_urls else None
 
 
-def alert_subscription_read(subscription: AlertSubscription):
+def alert_subscription_read(subscription: AlertSubscription, db: Session):
     region = get_region(subscription.region_slug) if subscription.region_slug else None
+    activity = db.query(Sighting).filter(
+        Sighting.review_status == "approved",
+        Sighting.location_privacy != "private",
+        Sighting.found_on >= date.today() - timedelta(days=7),
+    )
+    if subscription.kind == "species":
+        activity = activity.filter(Sighting.species_id == subscription.species_id)
+    elif region:
+        west, south, east, north = region["bounds"]
+        activity = activity.filter(
+            Sighting.latitude.between(south, north),
+            Sighting.longitude.between(west, east),
+        )
     return {
         "id": subscription.id,
         "kind": subscription.kind,
@@ -151,6 +164,8 @@ def alert_subscription_read(subscription: AlertSubscription):
         "enabled": subscription.enabled,
         "created_at": subscription.created_at,
         "last_sent_at": subscription.last_sent_at,
+        "recent_observations_7d": activity.count(),
+        "latest_observed_on": activity.with_entities(func.max(Sighting.found_on)).scalar(),
     }
 
 
@@ -1121,7 +1136,7 @@ def list_alerts(user: User = Depends(get_current_user), db: Session = Depends(ge
     subscriptions = db.query(AlertSubscription).options(joinedload(AlertSubscription.species)).filter(
         AlertSubscription.user_id == user.id
     ).order_by(AlertSubscription.created_at.desc()).all()
-    return [alert_subscription_read(item) for item in subscriptions]
+    return [alert_subscription_read(item, db) for item in subscriptions]
 
 
 @app.post("/api/account/alerts", response_model=AlertSubscriptionRead, status_code=201)
@@ -1130,8 +1145,6 @@ def create_alert(
     user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    if not user.email_verified:
-        raise HTTPException(status_code=403, detail="Verify your email before creating alerts")
     species = None
     region_slug = None
     if payload.kind == "species":
@@ -1166,7 +1179,7 @@ def create_alert(
     subscription = db.query(AlertSubscription).options(joinedload(AlertSubscription.species)).filter(
         AlertSubscription.id == subscription.id
     ).one()
-    return alert_subscription_read(subscription)
+    return alert_subscription_read(subscription, db)
 
 
 @app.patch("/api/account/alerts/{subscription_id}", response_model=AlertSubscriptionRead)
@@ -1185,7 +1198,7 @@ def update_alert(
     subscription.enabled = payload.enabled
     db.commit()
     db.refresh(subscription)
-    return alert_subscription_read(subscription)
+    return alert_subscription_read(subscription, db)
 
 
 @app.delete("/api/account/alerts/{subscription_id}", status_code=204)

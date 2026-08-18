@@ -14,7 +14,7 @@ The project takes inspiration from the usefulness of community location catalogu
 - Private exact-coordinate field notebook with edit, delete, and CSV export controls
 - Public location modes: approximate, private, or contributor-approved exact
 - Saved public locations with notes and planned revisit dates
-- Species and region follows with a weekly recent-activity email
+- Species and region follows with an in-app seven-day activity watchlist and optional weekly email delivery
 - Structured community verification across cap, underside, stem, base, interior, substrate, and lookalike evidence
 - Multi-photo observation records with source links, attribution, substrate, recent weather, and verification summaries
 - Ten regional field collections with recent activity outlooks and public observation lists
