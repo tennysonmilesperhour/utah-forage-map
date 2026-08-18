@@ -18,7 +18,7 @@ PAGE_SIZE = 200
 MAX_PAGES_PER_RUN = 18
 REQUEST_HEADERS = {
     "Accept": "application/json",
-    "User-Agent": "MushroomForageMap/2.0 (https://utah-forage-map.vercel.app)",
+    "User-Agent": "MushroomForageMap/2.0 (https://worldmushroomforaging.org)",
 }
 
 

@@ -2,6 +2,30 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
+  "redirects": [
+    {
+      "source": "/:path((?!googlef197a076bc0cd35a\\.html|BingSiteAuth\\.xml).*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "utah-forage-map.vercel.app"
+        }
+      ],
+      "destination": "https://worldmushroomforaging.org/:path",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.worldmushroomforaging.org"
+        }
+      ],
+      "destination": "https://worldmushroomforaging.org/:path*",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/api/:path*",
