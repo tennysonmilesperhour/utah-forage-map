@@ -56,6 +56,7 @@ class User(Base):
     sessions = relationship("UserSession", back_populates="user", cascade="all, delete-orphan")
     account_tokens = relationship("AccountToken", back_populates="user", cascade="all, delete-orphan")
     saved_locations = relationship("SavedLocation", back_populates="user", cascade="all, delete-orphan")
+    alert_subscriptions = relationship("AlertSubscription", back_populates="user", cascade="all, delete-orphan")
 
 
 class Species(Base):
@@ -75,6 +76,7 @@ class Species(Base):
     notes = Column(Text)
 
     sightings = relationship("Sighting", back_populates="species")
+    alert_subscriptions = relationship("AlertSubscription", back_populates="species")
 
 
 class Sighting(Base):
@@ -90,6 +92,7 @@ class Sighting(Base):
     month = Column(Integer)
     habitat_type = Column(String)
     substrate = Column(String)
+    weather_notes = Column(String(240))
     place_name = Column(String(160))  # coarse locality, e.g. "Bavaria, Germany"
     notes = Column(Text)
     photo_url = Column(String)
@@ -108,22 +111,52 @@ class Sighting(Base):
     reviewer = relationship("User", foreign_keys=[reviewer_id])
     species = relationship("Species", back_populates="sightings")
     verifications = relationship("Verification", back_populates="sighting")
+    photos = relationship("ObservationPhoto", back_populates="sighting", cascade="all, delete-orphan", order_by="ObservationPhoto.position")
     crawled_sources = relationship("CrawledSource", back_populates="sighting")
     saved_by = relationship("SavedLocation", back_populates="sighting")
 
 
 class Verification(Base):
     __tablename__ = "verifications"
+    __table_args__ = (
+        UniqueConstraint("sighting_id", "verifier_id", name="uq_verification_sighting_verifier"),
+    )
 
     id = Column(GUID(), primary_key=True, default=uuid.uuid4)
     sighting_id = Column(GUID(), ForeignKey("sightings.id"), nullable=False)
     verifier_id = Column(GUID(), ForeignKey("users.id"), nullable=False)
     confirmed = Column(Boolean, nullable=False)
+    conclusion = Column(String(20), default="supports", nullable=False)
+    confidence = Column(String(20), default="likely", nullable=False)
+    cap_checked = Column(Boolean, default=False, nullable=False)
+    underside_checked = Column(Boolean, default=False, nullable=False)
+    stem_checked = Column(Boolean, default=False, nullable=False)
+    base_checked = Column(Boolean, default=False, nullable=False)
+    interior_checked = Column(Boolean, default=False, nullable=False)
+    substrate_checked = Column(Boolean, default=False, nullable=False)
+    lookalikes_checked = Column(Boolean, default=False, nullable=False)
     notes = Column(Text)
     verified_at = Column(DateTime, default=datetime.utcnow)
 
     sighting = relationship("Sighting", back_populates="verifications")
     verifier = relationship("User", back_populates="verifications")
+
+
+class ObservationPhoto(Base):
+    __tablename__ = "observation_photos"
+    __table_args__ = (
+        UniqueConstraint("sighting_id", "url", name="uq_observation_photo_sighting_url"),
+    )
+
+    id = Column(GUID(), primary_key=True, default=uuid.uuid4)
+    sighting_id = Column(GUID(), ForeignKey("sightings.id", ondelete="CASCADE"), nullable=False, index=True)
+    url = Column(String(1000), nullable=False)
+    attribution = Column(String(300))
+    source_url = Column(String(1000))
+    position = Column(Integer, default=0, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+
+    sighting = relationship("Sighting", back_populates="photos")
 
 
 class CrawledSource(Base):
@@ -214,10 +247,41 @@ class SavedLocation(Base):
     notes = Column(Text)
     latitude = Column(Float, nullable=False)
     longitude = Column(Float, nullable=False)
+    revisit_on = Column(Date)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
 
     user = relationship("User", back_populates="saved_locations")
     sighting = relationship("Sighting", back_populates="saved_by")
+
+
+class AlertSubscription(Base):
+    __tablename__ = "alert_subscriptions"
+    __table_args__ = (
+        UniqueConstraint("user_id", "target_key", name="uq_alert_subscription_user_target"),
+        Index("ix_alert_subscription_enabled", "enabled", "last_sent_at"),
+    )
+
+    id = Column(GUID(), primary_key=True, default=uuid.uuid4)
+    user_id = Column(GUID(), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    target_key = Column(String(120), nullable=False)
+    kind = Column(String(20), nullable=False)
+    species_id = Column(GUID(), ForeignKey("species.id", ondelete="CASCADE"))
+    region_slug = Column(String(80))
+    enabled = Column(Boolean, default=True, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    last_sent_at = Column(DateTime)
+
+    user = relationship("User", back_populates="alert_subscriptions")
+    species = relationship("Species", back_populates="alert_subscriptions")
+
+
+class SeasonalityCache(Base):
+    __tablename__ = "seasonality_cache"
+
+    cache_key = Column(String(160), primary_key=True)
+    counts_json = Column(Text, nullable=False)
+    sample_size = Column(Integer, default=0, nullable=False)
+    synced_at = Column(DateTime, default=datetime.utcnow, nullable=False)
 
 
 class CommunityFind(Base):

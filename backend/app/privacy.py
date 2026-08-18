@@ -45,6 +45,7 @@ def public_sighting(sighting) -> dict:
         "month": sighting.month,
         "habitat_type": sighting.habitat_type,
         "substrate": sighting.substrate,
+        "weather_notes": sighting.weather_notes,
         "place_name": sighting.place_name,
         "notes": sighting.notes,
         "photo_url": sighting.photo_url,

@@ -1,44 +1,29 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
-import { Bookmark, BookOpen, CheckCircle2, Filter, MailCheck, MapPin, NotebookPen, SearchX, Sprout, X } from 'lucide-react'
+import { CheckCircle2, Filter, MailCheck, MapPin, NotebookPen, SearchX, Sprout } from 'lucide-react'
 import AccountWorkspace from './components/AccountWorkspace'
 import AppHeader from './components/AppHeader'
 import AuthDialog from './components/AuthDialog'
 import CommunityPanel from './components/CommunityPanel'
 import GuestPrompt from './components/GuestPrompt'
+import ObservationRecord from './components/ObservationRecord'
 import PlaceSearch from './components/PlaceSearch'
 import Sidebar from './components/Sidebar'
 import SubmitDrawer from './components/SubmitDrawer'
 import { useCurrentUser, useLogout, useVerifyEmail } from './hooks/useAuth'
 import { useSaveLocation } from './hooks/useAccount'
+import { useCreateAlert } from './hooks/useCompanion'
 import { useCommunityPortal, useCreateSighting, useSightings, useSpecies } from './hooks/useSightings'
 import { useUnitSystem } from './hooks/useUnits'
 import { countActiveFilters, DEFAULT_FILTERS } from './lib/filters'
-import { speciesPathForTaxon } from './content/species.generated'
+import { regionBySlug } from './data/regions'
 import { applyPageMetadata, pathForView, viewFromPathname } from './lib/seo'
-import { formatElevation } from './lib/units'
 
 const MapView = lazy(() => import('./components/MapView'))
-function foundDateLabel(value) {
-  if (!value) return 'Unknown'
-  return new Date(`${value}T12:00:00`).toLocaleDateString(undefined, {
-    year: 'numeric', month: 'short', day: 'numeric',
-  })
-}
-
-function observationPhotoUrl(value) {
-  if (!value) return ''
-  try {
-    const url = new URL(value)
-    url.pathname = url.pathname.replace(/\/square(\.[^./]+)$/i, '/medium$1')
-    return url.toString()
-  } catch {
-    return value
-  }
-}
-
 export default function App() {
   const initialParams = new URLSearchParams(window.location.search)
   const initialTaxonId = Number(initialParams.get('taxon')) || undefined
+  const initialRegion = regionBySlug[initialParams.get('region')]
+  const initialObservationId = initialParams.get('observation')
   const [filters, setFilters] = useState(() => ({ ...DEFAULT_FILTERS, taxon_id: initialTaxonId }))
   const [viewport, setViewport] = useState(null)
   const [flyTarget, setFlyTarget] = useState(null)
@@ -47,10 +32,15 @@ export default function App() {
   const [authMode, setAuthMode] = useState(initialParams.get('reset') ? 'reset' : null)
   const [resetToken] = useState(initialParams.get('reset'))
   const [pendingAction, setPendingAction] = useState(null)
+  const [pendingSaveTarget, setPendingSaveTarget] = useState(null)
   const [filtersOpen, setFiltersOpen] = useState(false)
   const [activeView, setActiveView] = useState(() => viewFromPathname(window.location.pathname))
   const [submissionOpen, setSubmissionOpen] = useState(false)
   const [accountOpen, setAccountOpen] = useState(false)
+  const [accountInitialTab, setAccountInitialTab] = useState(() => initialParams.get('tab') || 'logbook')
+  const [followTarget] = useState(initialParams.get('follow'))
+  const [followHandled, setFollowHandled] = useState(false)
+  const [observationHandled, setObservationHandled] = useState(false)
   const [toast, setToast] = useState('')
   const [guestPromptVisible, setGuestPromptVisible] = useState(
     () => window.localStorage.getItem('ufm:onboarding:guest-message:v1') !== 'true',
@@ -61,6 +51,7 @@ export default function App() {
   const logout = useLogout()
   const verifyEmail = useVerifyEmail()
   const saveLocation = useSaveLocation()
+  const createAlert = useCreateAlert()
   const { data: sightings = [], isLoading } = useSightings(filters, initialTaxonId ? null : viewport)
   const { data: species = [] } = useSpecies()
   const { data: portal = {}, isLoading: portalLoading } = useCommunityPortal()
@@ -77,10 +68,66 @@ export default function App() {
   }, [initialTaxonId, species])
 
   useEffect(() => {
+    if (!initialObservationId || observationHandled) return
+    const match = sightings.find(item => item.id === initialObservationId)
+    setSelected(match ?? { id: initialObservationId })
+    setObservationHandled(true)
+    if (match) setFlyTarget({ center: [match.longitude, match.latitude], selectedAt: Date.now() })
+  }, [initialObservationId, observationHandled, sightings])
+
+  useEffect(() => {
+    if (!initialRegion) return
+    setFlyTarget({ bbox: initialRegion.bounds, selectedAt: Date.now() })
+    // Regional handoff is interpreted once when the map starts.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
     if (!toast) return undefined
     const timeout = window.setTimeout(() => setToast(''), 3500)
     return () => window.clearTimeout(timeout)
   }, [toast])
+
+  useEffect(() => {
+    if (authLoading || followHandled || !followTarget) return
+    if (!user) {
+      setPendingAction('follow')
+      setAuthMode('register')
+      return
+    }
+    if (!user.email_verified) {
+      setAccountInitialTab('settings')
+      setAccountOpen(true)
+      setToast('Verify your email before turning on field bulletins.')
+      setFollowHandled(true)
+      return
+    }
+    const [kind, value] = followTarget.split(':')
+    const payload = kind === 'species'
+      ? { kind, species_taxon_id: Number(value) }
+      : { kind, region_slug: value }
+    createAlert.mutateAsync(payload)
+      .then(() => setToast('Weekly field bulletins are on.'))
+      .catch(() => setToast('That field bulletin could not be created.'))
+      .finally(() => {
+        setFollowHandled(true)
+        window.history.replaceState({}, '', '/')
+      })
+    // The handoff is consumed once after authentication resolves.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authLoading, followHandled, followTarget, user])
+
+  useEffect(() => {
+    if (authLoading || window.location.pathname !== '/account') return
+    if (user) {
+      setAccountInitialTab(initialParams.get('tab') || 'logbook')
+      setAccountOpen(true)
+    } else {
+      setAuthMode('login')
+    }
+    // Account links are interpreted once on load.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authLoading, user])
 
   useEffect(() => {
     applyPageMetadata(activeView)
@@ -113,6 +160,11 @@ export default function App() {
   function openAuth(mode, action = null) {
     setPendingAction(action)
     setAuthMode(mode)
+  }
+
+  function openAccount(tab = 'logbook') {
+    setAccountInitialTab(tab)
+    setAccountOpen(true)
   }
 
   function navigate(view, { replace = false } = {}) {
@@ -156,21 +208,23 @@ export default function App() {
   function handleAuthenticated() {
     setAuthMode(null)
     if (pendingAction === 'submit') setSubmissionOpen(true)
-    if (pendingAction === 'save' && selected) saveSelected(true)
+    if (pendingAction === 'save' && pendingSaveTarget) saveSelected(true, pendingSaveTarget)
     setPendingAction(null)
+    setPendingSaveTarget(null)
   }
 
-  async function saveSelected(skipAuthCheck = false) {
-    if (!selected) return
+  async function saveSelected(skipAuthCheck = false, target = selected) {
+    if (!target) return
     if (!user && !skipAuthCheck) {
+      setPendingSaveTarget(target)
       openAuth('register', 'save')
       return
     }
     await saveLocation.mutateAsync({
-      sighting_id: selected.id,
-      title: selected.species?.common_name ?? 'Saved observation',
-      latitude: selected.latitude,
-      longitude: selected.longitude,
+      sighting_id: target.id,
+      title: target.species?.common_name ?? 'Saved observation',
+      latitude: target.latitude,
+      longitude: target.longitude,
     })
     setToast('Place saved to your field desk.')
   }
@@ -203,7 +257,7 @@ export default function App() {
         onSignIn={() => openAuth('login')}
         onSubmitFind={openSubmission}
         onNavigate={navigate}
-        onOpenAccount={() => setAccountOpen(true)}
+        onOpenAccount={() => openAccount()}
         onLogout={signOut}
       />
 
@@ -279,45 +333,17 @@ export default function App() {
             </button>
           )}
 
-          {selected && (
-            <article className="sighting-detail" aria-label="Selected observation">
-              <button className="icon-button sighting-close" type="button" onClick={() => setSelected(null)} aria-label="Close observation details">
-                <X size={18} aria-hidden="true" />
-              </button>
-              {selected.photo_url && (
-                <figure className="sighting-photo">
-                  <img src={observationPhotoUrl(selected.photo_url)} alt={`${selected.species?.common_name ?? 'Mushroom'} field observation`} />
-                  <figcaption>Public field photograph · {selected.source}</figcaption>
-                </figure>
-              )}
-              <div className="sighting-heading">
-                <div>
-                  <span className="sighting-accession">Field record {String(selected.id).slice(0, 8).toUpperCase()}</span>
-                  <span className={selected.verified ? 'status-reviewed' : 'status-pending'}>
-                    {selected.verified ? 'Reviewed' : 'Pending review'}
-                  </span>
-                  <h2>{selected.species?.common_name ?? 'Unknown species'}</h2>
-                  {selected.species?.latin_name && <p>{selected.species.latin_name}</p>}
-                </div>
-              </div>
-              {selected.notes && <p className="sighting-notes">{selected.notes}</p>}
-              <dl>
-                <div><dt>Found</dt><dd>{foundDateLabel(selected.found_on)}</dd></div>
-                <div><dt>Source</dt><dd>{selected.source}</dd></div>
-                <div><dt>Elevation</dt><dd>{formatElevation(selected.elevation_ft, unitSystem)}</dd></div>
-                <div><dt>Habitat</dt><dd>{selected.habitat_type ?? 'Unknown'}</dd></div>
-                <div><dt>Place</dt><dd>{selected.place_name ?? 'Not recorded'}</dd></div>
-              </dl>
-              <button className="button button-secondary save-place-button" type="button" onClick={() => saveSelected()} disabled={saveLocation.isPending}>
-                <Bookmark size={17} aria-hidden="true" /> {saveLocation.isPending ? 'Saving...' : 'Save to collection'}
-              </button>
-              {speciesPathForTaxon(selected.species?.inaturalist_taxon_id) && (
-                <a className="button button-secondary learn-species-button" href={speciesPathForTaxon(selected.species.inaturalist_taxon_id)}>
-                  <BookOpen size={17} aria-hidden="true" /> Learn to identify
-                </a>
-              )}
-            </article>
-          )}
+          {selected && <ObservationRecord
+            sighting={selected}
+            user={user}
+            unitSystem={unitSystem}
+            onClose={() => setSelected(null)}
+            onSave={target => saveSelected(false, target)}
+            saving={saveLocation.isPending}
+            onCreateAccount={action => openAuth('register', action)}
+            onOpenAccount={() => openAccount('settings')}
+            onToast={setToast}
+          />}
         </section>
       </main>
 
@@ -363,8 +389,10 @@ export default function App() {
 
       {accountOpen && user && (
         <AccountWorkspace
+          key={accountInitialTab}
           user={user}
           species={species}
+          initialTab={accountInitialTab}
           onClose={() => setAccountOpen(false)}
           onDeleted={() => { setAccountOpen(false); setToast('Your account has been deleted.') }}
           onToast={setToast}

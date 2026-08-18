@@ -30,6 +30,14 @@ def capture_email(_to, _subject, _heading, _message, _action, path):
 main_module.send_account_email = capture_email
 
 
+class HistogramResponse:
+    def raise_for_status(self):
+        return None
+
+    def json(self):
+        return {"results": {"month_of_year": {"4": 12, "5": 28, "6": 4}}}
+
+
 def token_from_last_link(name):
     return parse_qs(urlparse(sent_links[-1]).query)[name][0]
 
@@ -68,6 +76,12 @@ def main():
             "longitude": -111.9,
             "found_on": "2026-08-14",
             "notes": "Exact test field point",
+            "substrate": "Cottonwood duff",
+            "weather_notes": "Rain two days earlier",
+            "photo_urls": [
+                "https://example.com/cap.jpg",
+                "https://example.com/underside.jpg",
+            ],
             "location_privacy": "approximate",
         })
         assert submission.status_code == 201, submission.text
@@ -92,6 +106,71 @@ def main():
         assert client.get("/api/sightings?edibility_group=unknown").status_code == 422
         assert len(client.get("/api/sightings?month_min=9&month_max=8").json()) == 1
         assert len(client.get("/api/sightings?taxon_id=58682").json()) == 1
+        record = client.get(f"/api/sightings/{sighting_id}/record")
+        assert record.status_code == 200, record.text
+        assert len(record.json()["photos"]) == 2
+        assert record.json()["weather_notes"] == "Rain two days earlier"
+        assert record.json()["verification"]["total"] == 1
+        assert client.post(f"/api/sightings/{sighting_id}/verifications", json={
+            "conclusion": "supports",
+            "cap_checked": True,
+            "underside_checked": True,
+            "stem_checked": True,
+        }).status_code == 403
+
+        with TestClient(main_module.app) as reviewer:
+            registration = reviewer.post("/api/auth/register", json={
+                "username": "Second Reviewer",
+                "email": "reviewer@example.com",
+                "password": "review-notes-2026",
+            })
+            assert registration.status_code == 201, registration.text
+            verification = reviewer.post(
+                "/api/auth/verify-email", json={"token": token_from_last_link("verify")}
+            )
+            assert verification.status_code == 200, verification.text
+            support = reviewer.post(f"/api/sightings/{sighting_id}/verifications", json={
+                "conclusion": "supports",
+                "confidence": "confident",
+                "cap_checked": True,
+                "underside_checked": True,
+                "stem_checked": True,
+                "notes": "Cap, pores, and stem agree with the proposed identification.",
+            })
+            assert support.status_code == 200, support.text
+            assert support.json()["verification"]["supports"] == 1
+
+        species_alert = client.post("/api/account/alerts", json={
+            "kind": "species", "species_taxon_id": 58682,
+        })
+        assert species_alert.status_code == 201, species_alert.text
+        assert species_alert.json()["species_name"] == "Morel"
+        duplicate_alert = client.post("/api/account/alerts", json={
+            "kind": "species", "species_taxon_id": 58682,
+        })
+        assert duplicate_alert.status_code == 201, duplicate_alert.text
+        assert len(client.get("/api/account/alerts").json()) == 1
+        alert_id = species_alert.json()["id"]
+        paused = client.patch(f"/api/account/alerts/{alert_id}", json={"enabled": False})
+        assert paused.status_code == 200 and paused.json()["enabled"] is False
+
+        region_alert = client.post("/api/account/alerts", json={
+            "kind": "region", "region_slug": "rocky-mountains",
+        })
+        assert region_alert.status_code == 201, region_alert.text
+        regions = client.get("/api/regions")
+        assert regions.status_code == 200, regions.text
+        rocky = next(item for item in regions.json() if item["slug"] == "rocky-mountains")
+        assert rocky["observations_14d"] == 1
+        region_detail = client.get("/api/regions/rocky-mountains")
+        assert region_detail.status_code == 200, region_detail.text
+        assert region_detail.json()["recent_observations"][0]["id"] == sighting_id
+
+        main_module.httpx.get = lambda *_args, **_kwargs: HistogramResponse()
+        seasonal = client.get("/api/seasonality?taxon_id=58682&region_slug=rocky-mountains")
+        assert seasonal.status_code == 200, seasonal.text
+        assert seasonal.json()["counts"][4] == 28
+        assert seasonal.json()["sample_size"] == 44
         guide_summary = client.get("/api/guide/species")
         assert guide_summary.status_code == 200, guide_summary.text
         assert guide_summary.json()[0]["recent_observations"] == 1
@@ -143,6 +222,11 @@ def main():
         })
         assert saved.status_code == 201, saved.text
         assert len(client.get("/api/account/saved").json()) == 1
+        revisit = client.patch(f"/api/account/saved/{saved.json()['id']}", json={
+            "revisit_on": "2026-09-01", "notes": "Check after the next cool rain.",
+        })
+        assert revisit.status_code == 200, revisit.text
+        assert revisit.json()["revisit_on"] == "2026-09-01"
 
         sessions = client.get("/api/account/sessions")
         assert sessions.status_code == 200 and sessions.json()[0]["current"]

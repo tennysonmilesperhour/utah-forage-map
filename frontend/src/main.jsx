@@ -16,7 +16,7 @@ const queryClient = new QueryClient({
 
 const root = document.getElementById('root')
 const pathname = window.location.pathname
-const isGuidePath = pathname === '/learn' || pathname.startsWith('/learn/') || pathname === '/about' || pathname === '/disclaimer'
+const isGuidePath = pathname === '/learn' || pathname.startsWith('/learn/') || pathname === '/regions' || pathname.startsWith('/regions/') || pathname === '/about' || pathname === '/disclaimer'
 const content = (
   <StrictMode>
     <QueryClientProvider client={queryClient}>

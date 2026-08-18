@@ -16,6 +16,14 @@
       "destination": "/learn/:path*/index.html"
     },
     {
+      "source": "/regions",
+      "destination": "/regions/index.html"
+    },
+    {
+      "source": "/regions/:path*",
+      "destination": "/regions/:path*/index.html"
+    },
+    {
       "source": "/about",
       "destination": "/about/index.html"
     },

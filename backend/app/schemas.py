@@ -2,7 +2,7 @@ from datetime import date, datetime
 from typing import Literal, Optional
 from uuid import UUID
 
-from pydantic import BaseModel, EmailStr, Field, model_validator
+from pydantic import BaseModel, EmailStr, Field, field_validator, model_validator
 
 
 class SpeciesRead(BaseModel):
@@ -111,10 +111,20 @@ class SightingCreate(BaseModel):
     month: Optional[int] = Field(default=None, ge=1, le=12)
     habitat_type: Optional[str] = Field(default=None, max_length=80)
     substrate: Optional[str] = Field(default=None, max_length=120)
+    weather_notes: Optional[str] = Field(default=None, max_length=240)
     place_name: Optional[str] = Field(default=None, max_length=160)
     notes: Optional[str] = Field(default=None, max_length=2000)
     photo_url: Optional[str] = Field(default=None, max_length=1000)
+    photo_urls: list[str] = Field(default_factory=list, max_length=6)
     location_privacy: Literal["approximate", "exact", "private"] = "approximate"
+
+    @field_validator("photo_urls")
+    @classmethod
+    def validate_photo_urls(cls, values):
+        for value in values:
+            if not value.startswith(("https://", "http://")) or len(value) > 1000:
+                raise ValueError("Photo links must be valid http or https URLs")
+        return list(dict.fromkeys(values))
 
 
 class SightingUpdate(BaseModel):
@@ -125,9 +135,11 @@ class SightingUpdate(BaseModel):
     found_on: Optional[date] = None
     habitat_type: Optional[str] = Field(default=None, max_length=80)
     substrate: Optional[str] = Field(default=None, max_length=120)
+    weather_notes: Optional[str] = Field(default=None, max_length=240)
     place_name: Optional[str] = Field(default=None, max_length=160)
     notes: Optional[str] = Field(default=None, max_length=2000)
     photo_url: Optional[str] = Field(default=None, max_length=1000)
+    photo_urls: Optional[list[str]] = Field(default=None, max_length=6)
     location_privacy: Optional[Literal["approximate", "exact", "private"]] = None
 
     @model_validator(mode="after")
@@ -135,6 +147,16 @@ class SightingUpdate(BaseModel):
         if (self.latitude is None) != (self.longitude is None):
             raise ValueError("Latitude and longitude must be updated together")
         return self
+
+    @field_validator("photo_urls")
+    @classmethod
+    def validate_photo_urls(cls, values):
+        if values is None:
+            return values
+        for value in values:
+            if not value.startswith(("https://", "http://")) or len(value) > 1000:
+                raise ValueError("Photo links must be valid http or https URLs")
+        return list(dict.fromkeys(values))
 
 
 class SightingRead(BaseModel):
@@ -147,6 +169,7 @@ class SightingRead(BaseModel):
     month: Optional[int] = None
     habitat_type: Optional[str] = None
     substrate: Optional[str] = None
+    weather_notes: Optional[str] = None
     place_name: Optional[str] = None
     notes: Optional[str] = None
     photo_url: Optional[str] = None
@@ -167,9 +190,65 @@ class OwnerSightingRead(SightingRead):
     updated_at: datetime
 
 
-class ReviewCreate(BaseModel):
+class ObservationPhotoRead(BaseModel):
+    id: UUID
+    url: str
+    attribution: Optional[str] = None
+    source_url: Optional[str] = None
+    position: int
+
+    model_config = {"from_attributes": True}
+
+
+class VerificationChecks(BaseModel):
+    conclusion: Literal["supports", "uncertain", "disagrees"] = "uncertain"
+    confidence: Literal["uncertain", "likely", "confident"] = "likely"
+    cap_checked: bool = False
+    underside_checked: bool = False
+    stem_checked: bool = False
+    base_checked: bool = False
+    interior_checked: bool = False
+    substrate_checked: bool = False
+    lookalikes_checked: bool = False
+    notes: Optional[str] = Field(default=None, max_length=1200)
+
+    @model_validator(mode="after")
+    def require_evidence(self):
+        checked = sum((
+            self.cap_checked, self.underside_checked, self.stem_checked,
+            self.base_checked, self.interior_checked, self.substrate_checked,
+            self.lookalikes_checked,
+        ))
+        if self.conclusion == "supports" and checked < 3:
+            raise ValueError("Supporting an identification requires at least three checked field marks")
+        return self
+
+
+class VerificationRead(VerificationChecks):
+    id: UUID
+    verified_at: datetime
+
+    model_config = {"from_attributes": True}
+
+
+class VerificationSummaryRead(BaseModel):
+    total: int
+    supports: int
+    uncertain: int
+    disagrees: int
+    field_mark_coverage: dict[str, int]
+    recent: list[VerificationRead]
+
+
+class SightingRecordRead(SightingRead):
+    photos: list[ObservationPhotoRead]
+    source_url: Optional[str] = None
+    source_attribution: Optional[str] = None
+    verification: VerificationSummaryRead
+
+
+class ReviewCreate(VerificationChecks):
     status: Literal["approved", "rejected"]
-    notes: Optional[str] = Field(default=None, max_length=2000)
 
 
 class SavedLocationCreate(BaseModel):
@@ -178,6 +257,7 @@ class SavedLocationCreate(BaseModel):
     notes: Optional[str] = Field(default=None, max_length=1000)
     latitude: float = Field(ge=-90, le=90)
     longitude: float = Field(ge=-180, le=180)
+    revisit_on: Optional[date] = None
 
 
 class SavedLocationRead(SavedLocationCreate):
@@ -187,10 +267,80 @@ class SavedLocationRead(SavedLocationCreate):
     model_config = {"from_attributes": True}
 
 
-class VerificationCreate(BaseModel):
-    sighting_id: UUID
-    confirmed: bool
-    notes: Optional[str] = None
+class SavedLocationUpdate(BaseModel):
+    title: Optional[str] = Field(default=None, min_length=1, max_length=120)
+    notes: Optional[str] = Field(default=None, max_length=1000)
+    revisit_on: Optional[date] = None
+
+
+class AlertSubscriptionCreate(BaseModel):
+    kind: Literal["species", "region"]
+    species_taxon_id: Optional[int] = Field(default=None, ge=1)
+    region_slug: Optional[str] = Field(default=None, max_length=80, pattern=r"^[a-z0-9-]+$")
+
+    @model_validator(mode="after")
+    def one_target(self):
+        if self.kind == "species" and not self.species_taxon_id:
+            raise ValueError("Choose a species")
+        if self.kind == "region" and not self.region_slug:
+            raise ValueError("Choose a region")
+        return self
+
+
+class AlertSubscriptionUpdate(BaseModel):
+    enabled: bool
+
+
+class AlertSubscriptionRead(BaseModel):
+    id: UUID
+    kind: str
+    target_key: str
+    species_taxon_id: Optional[int] = None
+    species_name: Optional[str] = None
+    region_slug: Optional[str] = None
+    region_name: Optional[str] = None
+    enabled: bool
+    created_at: datetime
+    last_sent_at: Optional[datetime] = None
+
+
+class RegionSummaryRead(BaseModel):
+    slug: str
+    name: str
+    description: str
+    bounds: tuple[float, float, float, float]
+    center: tuple[float, float]
+    hemisphere: str
+    observations_90d: int
+    observations_14d: int
+    species_count: int
+    latest_observed_on: Optional[date] = None
+
+
+class OutlookSpeciesRead(BaseModel):
+    species: SpeciesRead
+    status: Literal["likely", "starting", "ending"]
+    confidence: Literal["low", "medium", "high"]
+    observations_14d: int
+    observations_30d: int
+    previous_30d: int
+    latest_observed_on: Optional[date] = None
+
+
+class RegionDetailRead(RegionSummaryRead):
+    outlook: list[OutlookSpeciesRead]
+    recent_observations: list[SightingRead]
+
+
+class SeasonalityRead(BaseModel):
+    key: str
+    taxon_id: Optional[int] = None
+    region_slug: Optional[str] = None
+    hemisphere: Optional[str] = None
+    counts: list[int]
+    sample_size: int
+    synced_at: datetime
+    source: str
 
 
 class CommunityFindRead(BaseModel):

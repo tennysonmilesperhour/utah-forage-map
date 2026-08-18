@@ -61,6 +61,13 @@ export function useDeleteSavedLocation() {
   )
 }
 
+export function useUpdateSavedLocation() {
+  return useInvalidatingMutation(
+    async ({ id, ...payload }) => (await axios.patch(`/api/account/saved/${id}`, payload)).data,
+    ['saved-locations'],
+  )
+}
+
 export function useRevokeSession() {
   return useInvalidatingMutation(
     async id => axios.delete(`/api/account/sessions/${id}`),
@@ -85,7 +92,7 @@ export function useDeleteAccount() {
 
 export function useReviewSighting() {
   return useInvalidatingMutation(
-    async ({ id, status, notes }) => (await axios.patch(`/api/moderation/sightings/${id}`, { status, notes })).data,
-    ['moderation-queue', 'sightings'],
+    async ({ id, ...payload }) => (await axios.patch(`/api/moderation/sightings/${id}`, payload)).data,
+    ['moderation-queue', 'sightings', 'observation-record'],
   )
 }
