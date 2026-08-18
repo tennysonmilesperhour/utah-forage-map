@@ -15,14 +15,14 @@
       "permanent": true
     },
     {
-      "source": "/:path*",
+      "source": "/:path(.*)",
       "has": [
         {
           "type": "host",
           "value": "www.worldmushroomforaging.org"
         }
       ],
-      "destination": "https://worldmushroomforaging.org/:path*",
+      "destination": "https://worldmushroomforaging.org/:path",
       "permanent": true
     }
   ],
