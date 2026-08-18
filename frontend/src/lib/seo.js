@@ -1,4 +1,4 @@
-const SITE_URL = 'https://utah-forage-map.vercel.app'
+export const SITE_URL = 'https://utah-forage-map.vercel.app'
 
 const PAGE_METADATA = {
   map: {
@@ -26,6 +26,10 @@ export function viewFromPathname(pathname) {
 
 export function pathForView(view) {
   return PAGE_METADATA[view]?.path ?? '/'
+}
+
+export function pageMetadataForPath(pathname) {
+  return PAGE_METADATA[viewFromPathname(pathname)] ?? PAGE_METADATA.map
 }
 
 function setMeta(selector, attribute, value) {

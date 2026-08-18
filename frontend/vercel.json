@@ -8,6 +8,14 @@
       "destination": "https://utah-forage-api.vercel.app/api/:path*"
     },
     {
+      "source": "/community",
+      "destination": "/community/index.html"
+    },
+    {
+      "source": "/field-guide",
+      "destination": "/field-guide/index.html"
+    },
+    {
       "source": "/learn",
       "destination": "/learn/index.html"
     },
