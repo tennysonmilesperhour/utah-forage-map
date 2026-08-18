@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
 from app.database import Base
-from app.models import CrawledSource, Sighting, Species
+from app.models import CrawledSource, ObservationPhoto, Sighting, Species
 from crawler.inaturalist import fetch_observations, run_scheduled_import
 
 
@@ -40,7 +40,10 @@ def observation(found_on="2026-08-10", latitude=40.70, longitude=-110.90):
         "quality_grade": "research",
         "geojson": {"coordinates": [longitude, latitude]},
         "taxon": {"id": 48701, "ancestor_ids": [47170]},
-        "photos": [{"url": "https://static.inaturalist.org/photo.jpg"}],
+        "photos": [
+            {"url": "https://static.inaturalist.org/photo.jpg", "attribution": "Field Observer"},
+            {"url": "https://static.inaturalist.org/photo-2.jpg", "attribution": "Field Observer"},
+        ],
     }
 
 
@@ -112,6 +115,8 @@ def main():
         assert first["updated"] == 0
         assert session.query(Sighting).count() == 1
         assert session.query(CrawledSource).count() == 1
+        assert session.query(ObservationPhoto).count() == 2
+        assert session.query(ObservationPhoto).order_by(ObservationPhoto.position).first().attribution == "Field Observer"
 
         due_client = FakeClient([observation()])
         not_due = run_scheduled_import(

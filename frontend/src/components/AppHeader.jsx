@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { BookOpen, ChevronDown, Library, LogIn, LogOut, Map, NotebookPen, UserPlus, Users } from 'lucide-react'
+import { BookOpen, ChevronDown, Globe2, Library, LogIn, LogOut, Map, NotebookPen, UserPlus, Users } from 'lucide-react'
 
 export default function AppHeader({
   user,
@@ -33,6 +33,7 @@ export default function AppHeader({
       <nav className="primary-nav" aria-label="Primary navigation">
         <a className={`nav-item ${activeView === 'map' ? 'active' : ''}`} href="/" onClick={event => navigate(event, 'map')} aria-current={activeView === 'map' ? 'page' : undefined}><Map size={17} aria-hidden="true" /> Field map</a>
         <a className={`nav-item ${activeView === 'community' ? 'active' : ''}`} href="/community" onClick={event => navigate(event, 'community')} aria-current={activeView === 'community' ? 'page' : undefined}><Users size={17} aria-hidden="true" /> Community</a>
+        <a className="nav-item" href="/regions"><Globe2 size={17} aria-hidden="true" /> Regions</a>
         <a className="nav-item" href="/learn"><BookOpen size={17} aria-hidden="true" /> Species archive</a>
       </nav>
 

@@ -1,6 +1,6 @@
 # Mushroom Forage Map
 
-Mushroom Forage Map is a worldwide public mushroom field desk: anyone can search a place and explore recent reviewed observations, found dates, habitat, elevation, community knowledge, and safety resources. Accounts are optional and add a private logbook, saved places, editable submissions, recovery, and session controls.
+Mushroom Forage Map is a worldwide public mushroom field desk: anyone can search a place and explore recent reviewed observations, found dates, habitat, elevation, community knowledge, seasonal evidence, and safety resources. Accounts are optional and add a private notebook, saved places, weekly field bulletins, editable submissions, recovery, and session controls.
 
 The project takes inspiration from the usefulness of community location catalogues such as Rockhounding.org while treating sensitive biological locations more carefully. Exact coordinates remain in the contributor's logbook by default; the public map receives a stable point shifted roughly 1 to 2.5 miles away.
 
@@ -11,10 +11,15 @@ The project takes inspiration from the usefulness of community location catalogu
 - Guest-first world map with place search, viewport queries, clustering, recency, species, season, metric elevation, habitat, source, and review filters
 - Email/password accounts using revocable, HTTP-only opaque sessions
 - Email verification, password reset, login rate limits, device sessions, and account deletion
-- Private exact-coordinate logbook with edit and delete controls
+- Private exact-coordinate field notebook with edit, delete, and CSV export controls
 - Public location modes: approximate, private, or contributor-approved exact
-- Saved public locations
-- Pending review queue with moderator approve/reject actions
+- Saved public locations with notes and planned revisit dates
+- Species and region follows with a weekly recent-activity email
+- Structured community verification across cap, underside, stem, base, interior, substrate, and lookalike evidence
+- Multi-photo observation records with source links, attribution, substrate, recent weather, and verification summaries
+- Ten regional field collections with recent activity outlooks and public observation lists
+- Cached monthly seasonality charts sourced from research-grade iNaturalist observations
+- Pending review queue with an evidence checklist and moderator decisions
 - Community finds, events, clubs, access guides, and poison-safety resources
 - Resumable biweekly reconciliation of worldwide, research-grade iNaturalist observations with source provenance
 - A rolling 90-day field signal based on when each mushroom was found, across both hemispheres
@@ -79,7 +84,7 @@ python -m scripts.import_smoke
 python -m compileall app crawler scripts
 ```
 
-The API smoke tests cover registration, verification, private/public coordinate separation, moderation, saving, recovery, session revocation, owner edits, account deletion, import updates, and retired source records.
+The API smoke tests cover registration, verification, private/public coordinate separation, multi-photo records, structured review, follows, regional summaries, seasonal caching, saved-place revisits, recovery, session revocation, owner edits, account deletion, import updates, and retired source records.
 
 ## Imports
 
@@ -135,6 +140,9 @@ Public:
 - `GET /health`
 - `GET /api/species`
 - `GET /api/sightings` (supports recency and world-coordinate bounds)
+- `GET /api/sightings/{id}/record`
+- `GET /api/regions`, `/api/regions/{slug}`
+- `GET /api/seasonality`
 - `GET /api/community/finds`
 - `GET /api/community/events`
 - `GET /api/community/clubs`
@@ -146,15 +154,17 @@ Accounts:
 - `GET /api/auth/me`
 - `POST /api/auth/verify-email`, `/verification/resend`
 - `POST /api/auth/password/forgot`, `/password/reset`
-- `GET /api/account/logbook`, `/saved`, `/sessions`
+- `GET /api/account/logbook`, `/saved`, `/alerts`, `/sessions`
 - `PATCH|DELETE /api/account/logbook/{id}`
-- `POST|DELETE /api/account/saved`
+- `POST|PATCH|DELETE /api/account/saved`
+- `POST|PATCH|DELETE /api/account/alerts`
 - `DELETE /api/account`
 
 Contribution and moderation:
 
 - `POST /api/sightings`
+- `POST /api/sightings/{id}/verifications`
 - `GET|PATCH /api/moderation/sightings`
-- `GET /api/cron/inaturalist`
+- `GET /api/cron/inaturalist`, `/api/cron/alerts`
 
 Public sighting responses omit owner IDs, hide private observations, exclude unreviewed community submissions, and transform approximate coordinates deterministically.

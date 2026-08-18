@@ -6,25 +6,29 @@ import os
 from typing import Optional
 from uuid import UUID
 
+import httpx
 from fastapi import BackgroundTasks, Cookie, Depends, FastAPI, Header, HTTPException, Query, Request, Response, status
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import func, or_
 from sqlalchemy.orm import Session, joinedload
 
 from app.database import Base, engine, get_db
-from app.email_service import send_account_email
+from app.email_service import send_account_email, send_digest_email
 from app.models import (
-    AccountToken, CommunityEvent, CommunityFind, CrawledSource, ForageClub, GuideRequestVote,
-    RateLimitEvent, ResourceGuide, SavedLocation, Sighting, SourceSync, Species, User, UserSession,
+    AccountToken, AlertSubscription, CommunityEvent, CommunityFind, CrawledSource, ForageClub,
+    GuideRequestVote, ObservationPhoto, RateLimitEvent, ResourceGuide, SavedLocation,
+    SeasonalityCache, Sighting, SourceSync, Species, User, UserSession, Verification,
 )
 from app.privacy import MAX_OFFSET_MILES, MILES_PER_DEGREE, normalize_longitude, public_sighting
+from app.regions import REGIONS, get_region
 from app.schemas import (
-    CommunityEventRead, CommunityFindRead, CommunitySummaryRead, EmailRequest, ForageClubRead,
-    GuideRequestPollRead, GuideRequestVoteCreate, GuideSpeciesSummary, OwnerSightingRead,
-    PasswordConfirm, PasswordResetConfirm, ResourceGuideRead, ReviewCreate, SavedLocationCreate,
-    SavedLocationRead, SessionRead,
-    SightingCreate, SightingRead, SightingUpdate, SpeciesRead, TokenRequest,
-    UserCreate, UserLogin, UserRead,
+    AlertSubscriptionCreate, AlertSubscriptionRead, AlertSubscriptionUpdate, CommunityEventRead,
+    CommunityFindRead, CommunitySummaryRead, EmailRequest, ForageClubRead, GuideRequestPollRead,
+    GuideRequestVoteCreate, GuideSpeciesSummary, OwnerSightingRead, PasswordConfirm,
+    PasswordResetConfirm, RegionDetailRead, RegionSummaryRead, ResourceGuideRead, ReviewCreate,
+    SavedLocationCreate, SavedLocationRead, SavedLocationUpdate, SeasonalityRead, SessionRead,
+    SightingCreate, SightingRead, SightingRecordRead, SightingUpdate, SpeciesRead, TokenRequest,
+    UserCreate, UserLogin, UserRead, VerificationChecks, VerificationRead,
 )
 from app.security import DEFAULT_SECRET_KEY, SECRET_KEY, hash_identifier, hash_token, new_token, passwords
 
@@ -48,6 +52,13 @@ GUIDE_REQUEST_OPTIONS = (
     {"slug": "candy-cap", "common_name": "Candy Cap", "latin_name": "Lactarius rubidus", "reason": "A small western milk cap known for its maple-like aroma when dried."},
 )
 GUIDE_REQUEST_OPTION_SLUGS = {item["slug"] for item in GUIDE_REQUEST_OPTIONS}
+SEASONALITY_MAX_AGE = timedelta(days=14)
+INATURALIST_HISTOGRAM_URL = "https://api.inaturalist.org/v1/observations/histogram"
+INATURALIST_FUNGI_TAXON_ID = 47170
+INATURALIST_HEADERS = {
+    "Accept": "application/json",
+    "User-Agent": "MushroomForageMap/2.1 (https://utah-forage-map.vercel.app)",
+}
 
 if ENVIRONMENT == "production" and SECRET_KEY == DEFAULT_SECRET_KEY:
     raise RuntimeError("SECRET_KEY must be set in production")
@@ -77,6 +88,115 @@ def health(db: Session = Depends(get_db)):
 
 def now() -> datetime:
     return datetime.utcnow()
+
+
+def region_sighting_query(db: Session, region, include_historical: bool = False):
+    west, south, east, north = region["bounds"]
+    query = db.query(Sighting).options(joinedload(Sighting.species)).filter(
+        Sighting.latitude.between(south, north),
+        Sighting.longitude.between(west, east),
+        Sighting.location_privacy != "private",
+    )
+    if not include_historical:
+        query = query.filter(Sighting.review_status == "approved")
+    else:
+        query = query.filter(or_(Sighting.source == "iNaturalist", Sighting.review_status == "approved"))
+    return query
+
+
+def verification_values(payload: VerificationChecks):
+    values = payload.model_dump(exclude={"status"})
+    values["confirmed"] = payload.conclusion == "supports"
+    return values
+
+
+def verification_summary(sighting: Sighting):
+    verifications = sorted(sighting.verifications, key=lambda item: item.verified_at, reverse=True)
+    coverage_fields = (
+        "cap_checked", "underside_checked", "stem_checked", "base_checked",
+        "interior_checked", "substrate_checked", "lookalikes_checked",
+    )
+    return {
+        "total": len(verifications),
+        "supports": sum(item.conclusion == "supports" for item in verifications),
+        "uncertain": sum(item.conclusion == "uncertain" for item in verifications),
+        "disagrees": sum(item.conclusion == "disagrees" for item in verifications),
+        "field_mark_coverage": {
+            field.removesuffix("_checked"): sum(bool(getattr(item, field)) for item in verifications)
+            for field in coverage_fields
+        },
+        "recent": verifications[:5],
+    }
+
+
+def sync_photo_urls(sighting: Sighting, urls: list[str]):
+    unique_urls = list(dict.fromkeys(value for value in urls if value))
+    existing = {item.url: item for item in sighting.photos}
+    sighting.photos[:] = [existing.get(url) or ObservationPhoto(url=url) for url in unique_urls]
+    for index, photo in enumerate(sighting.photos):
+        photo.position = index
+    sighting.photo_url = unique_urls[0] if unique_urls else None
+
+
+def alert_subscription_read(subscription: AlertSubscription):
+    region = get_region(subscription.region_slug) if subscription.region_slug else None
+    return {
+        "id": subscription.id,
+        "kind": subscription.kind,
+        "target_key": subscription.target_key,
+        "species_taxon_id": subscription.species.inaturalist_taxon_id if subscription.species else None,
+        "species_name": subscription.species.common_name if subscription.species else None,
+        "region_slug": subscription.region_slug,
+        "region_name": region["name"] if region else None,
+        "enabled": subscription.enabled,
+        "created_at": subscription.created_at,
+        "last_sent_at": subscription.last_sent_at,
+    }
+
+
+def public_record(sighting: Sighting):
+    source = sighting.crawled_sources[0] if sighting.crawled_sources else None
+    source_attribution = next((item.attribution for item in sighting.photos if item.attribution), None)
+    photos = list(sighting.photos)
+    if not photos and sighting.photo_url:
+        photos = [{
+            "id": sighting.id,
+            "url": sighting.photo_url,
+            "attribution": source_attribution,
+            "source_url": source.source_url if source else None,
+            "position": 0,
+        }]
+    return {
+        **public_sighting(sighting),
+        "photos": photos,
+        "source_url": source.source_url if source else None,
+        "source_attribution": source_attribution,
+        "verification": verification_summary(sighting),
+    }
+
+
+def region_summary(db: Session, region):
+    today = date.today()
+    query = region_sighting_query(db, region)
+    observations_90d = query.filter(Sighting.found_on >= today - timedelta(days=90)).count()
+    observations_14d = query.filter(Sighting.found_on >= today - timedelta(days=14)).count()
+    species_count = query.filter(Sighting.found_on >= today - timedelta(days=90)).with_entities(
+        func.count(func.distinct(Sighting.species_id))
+    ).scalar() or 0
+    latest_observed_on = query.with_entities(func.max(Sighting.found_on)).scalar()
+    return {
+        **region,
+        "observations_90d": observations_90d,
+        "observations_14d": observations_14d,
+        "species_count": species_count,
+        "latest_observed_on": latest_observed_on,
+    }
+
+
+def require_cron(authorization: Optional[str], x_cron_secret: Optional[str]):
+    provided = authorization.removeprefix("Bearer ") if authorization else x_cron_secret
+    if not CRON_SECRET or provided != CRON_SECRET:
+        raise HTTPException(status_code=401, detail="Invalid cron credential")
 
 
 def request_ip(request: Request) -> str:
@@ -404,6 +524,7 @@ def delete_account(
     db.query(UserSession).filter(UserSession.user_id == auth.user.id).update({"revoked_at": now()})
     db.query(AccountToken).filter(AccountToken.user_id == auth.user.id).delete()
     db.query(SavedLocation).filter(SavedLocation.user_id == auth.user.id).delete()
+    db.query(AlertSubscription).filter(AlertSubscription.user_id == auth.user.id).delete()
     db.query(Sighting).filter(
         Sighting.user_id == auth.user.id,
         or_(Sighting.location_privacy == "private", Sighting.review_status != "approved"),
@@ -594,6 +715,153 @@ def community_summary(db: Session = Depends(get_db)):
     }
 
 
+@app.get("/api/regions", response_model=list[RegionSummaryRead])
+def list_regions(db: Session = Depends(get_db)):
+    return [region_summary(db, region) for region in REGIONS]
+
+
+@app.get("/api/regions/{region_slug}", response_model=RegionDetailRead)
+def get_region_detail(region_slug: str, db: Session = Depends(get_db)):
+    region = get_region(region_slug)
+    if region is None:
+        raise HTTPException(status_code=404, detail="Region not found")
+    today = date.today()
+    observations = region_sighting_query(db, region).filter(
+        Sighting.found_on >= today - timedelta(days=60)
+    ).order_by(Sighting.found_on.desc()).all()
+    by_species = {}
+    for sighting in observations:
+        item = by_species.setdefault(sighting.species_id, {
+            "species": sighting.species,
+            "observations_14d": 0,
+            "observations_30d": 0,
+            "previous_30d": 0,
+            "latest_observed_on": sighting.found_on,
+        })
+        if sighting.found_on >= today - timedelta(days=14):
+            item["observations_14d"] += 1
+        if sighting.found_on >= today - timedelta(days=30):
+            item["observations_30d"] += 1
+        else:
+            item["previous_30d"] += 1
+
+    outlook = []
+    for item in by_species.values():
+        recent = item["observations_14d"]
+        current = item["observations_30d"]
+        previous = item["previous_30d"]
+        if recent == 0 and previous > 0:
+            outlook_status = "ending"
+        elif recent > 0 and (previous == 0 or current >= max(2, previous * 1.5)):
+            outlook_status = "starting"
+        else:
+            outlook_status = "likely"
+        sample = current + previous
+        confidence = "high" if sample >= 10 else "medium" if sample >= 3 else "low"
+        outlook.append({**item, "status": outlook_status, "confidence": confidence})
+    outlook.sort(key=lambda item: (
+        {"starting": 0, "likely": 1, "ending": 2}[item["status"]],
+        -item["observations_14d"],
+        item["species"].common_name,
+    ))
+    recent_observations = [public_sighting(item) for item in observations[:18]]
+    return {
+        **region_summary(db, region),
+        "outlook": outlook[:12],
+        "recent_observations": recent_observations,
+    }
+
+
+@app.get("/api/seasonality", response_model=SeasonalityRead)
+def get_seasonality(
+    taxon_id: Optional[int] = Query(None, ge=1),
+    region_slug: Optional[str] = Query(None, pattern=r"^[a-z0-9-]+$"),
+    hemisphere: Optional[str] = Query(None, pattern="^(north|south)$"),
+    db: Session = Depends(get_db),
+):
+    if taxon_id and not db.query(Species.id).filter(Species.inaturalist_taxon_id == taxon_id).first():
+        raise HTTPException(status_code=404, detail="Species not found")
+    region = get_region(region_slug) if region_slug else None
+    if region_slug and region is None:
+        raise HTTPException(status_code=404, detail="Region not found")
+    if region and hemisphere:
+        raise HTTPException(status_code=422, detail="Choose a region or a hemisphere, not both")
+    if not region:
+        hemisphere = hemisphere or "north"
+    scope = f"region:{region['slug']}" if region else f"hemisphere:{hemisphere}"
+    key = f"taxon:{taxon_id or 'all'}:{scope}"
+    cached = db.get(SeasonalityCache, key)
+    if cached and cached.synced_at >= now() - SEASONALITY_MAX_AGE:
+        return {
+            "key": key,
+            "taxon_id": taxon_id,
+            "region_slug": region["slug"] if region else None,
+            "hemisphere": hemisphere if not region else None,
+            "counts": json.loads(cached.counts_json),
+            "sample_size": cached.sample_size,
+            "synced_at": cached.synced_at,
+            "source": "iNaturalist research-grade observations",
+        }
+
+    west, south, east, north = region["bounds"] if region else (
+        -180.0, 0.0 if hemisphere == "north" else -90.0,
+        180.0, 90.0 if hemisphere == "north" else 0.0,
+    )
+    params = {
+        "taxon_id": taxon_id or INATURALIST_FUNGI_TAXON_ID,
+        "quality_grade": "research",
+        "captive": "false",
+        "date_field": "observed",
+        "interval": "month_of_year",
+        "verifiable": "true",
+        "swlat": south,
+        "swlng": west,
+        "nelat": north,
+        "nelng": east,
+    }
+    try:
+        response = httpx.get(
+            INATURALIST_HISTOGRAM_URL,
+            params=params,
+            headers=INATURALIST_HEADERS,
+            timeout=20,
+        )
+        response.raise_for_status()
+        histogram = response.json().get("results", {}).get("month_of_year", {})
+        counts = [int(histogram.get(str(month), 0)) for month in range(1, 13)]
+    except (httpx.HTTPError, TypeError, ValueError):
+        if cached:
+            return {
+                "key": key,
+                "taxon_id": taxon_id,
+                "region_slug": region["slug"] if region else None,
+                "hemisphere": hemisphere if not region else None,
+                "counts": json.loads(cached.counts_json),
+                "sample_size": cached.sample_size,
+                "synced_at": cached.synced_at,
+                "source": "iNaturalist research-grade observations",
+            }
+        raise HTTPException(status_code=503, detail="Seasonal archive is temporarily unavailable")
+    sample_size = sum(counts)
+    if cached is None:
+        cached = SeasonalityCache(cache_key=key, counts_json="[]")
+        db.add(cached)
+    cached.counts_json = json.dumps(counts)
+    cached.sample_size = sample_size
+    cached.synced_at = now()
+    db.commit()
+    return {
+        "key": key,
+        "taxon_id": taxon_id,
+        "region_slug": region["slug"] if region else None,
+        "hemisphere": hemisphere if not region else None,
+        "counts": counts,
+        "sample_size": sample_size,
+        "synced_at": cached.synced_at,
+        "source": "iNaturalist research-grade observations",
+    }
+
+
 @app.get("/api/sightings", response_model=list[SightingRead])
 def list_sightings(
     species_id: Optional[str] = Query(None),
@@ -679,14 +947,74 @@ def list_sightings(
     return [public_sighting(item) for item in query.limit(limit).all()]
 
 
+@app.get("/api/sightings/{sighting_id}/record", response_model=SightingRecordRead)
+def get_sighting_record(sighting_id: UUID, db: Session = Depends(get_db)):
+    sighting = db.query(Sighting).options(
+        joinedload(Sighting.species),
+        joinedload(Sighting.photos),
+        joinedload(Sighting.verifications),
+        joinedload(Sighting.crawled_sources),
+    ).filter(
+        Sighting.id == sighting_id,
+        Sighting.review_status == "approved",
+        Sighting.location_privacy != "private",
+    ).one_or_none()
+    if sighting is None:
+        raise HTTPException(status_code=404, detail="Observation not found")
+    return public_record(sighting)
+
+
+@app.post("/api/sightings/{sighting_id}/verifications", response_model=SightingRecordRead)
+def verify_sighting(
+    sighting_id: UUID,
+    payload: VerificationChecks,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    if not user.email_verified:
+        raise HTTPException(status_code=403, detail="Verify your email before reviewing observations")
+    sighting = db.query(Sighting).options(
+        joinedload(Sighting.species),
+        joinedload(Sighting.photos),
+        joinedload(Sighting.verifications),
+        joinedload(Sighting.crawled_sources),
+    ).filter(
+        Sighting.id == sighting_id,
+        Sighting.review_status == "approved",
+        Sighting.location_privacy != "private",
+    ).one_or_none()
+    if sighting is None:
+        raise HTTPException(status_code=404, detail="Observation not found")
+    if sighting.user_id == user.id and sighting.source == "community":
+        raise HTTPException(status_code=403, detail="You cannot verify your own observation")
+    verification = db.query(Verification).filter(
+        Verification.sighting_id == sighting.id,
+        Verification.verifier_id == user.id,
+    ).one_or_none()
+    values = verification_values(payload)
+    if verification is None:
+        verification = Verification(sighting=sighting, verifier_id=user.id, **values)
+        db.add(verification)
+    else:
+        for key, value in values.items():
+            setattr(verification, key, value)
+        verification.verified_at = now()
+    db.commit()
+    db.refresh(sighting)
+    return public_record(sighting)
+
+
 @app.post("/api/sightings", response_model=OwnerSightingRead, status_code=201)
 def create_sighting(payload: SightingCreate, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     species = db.get(Species, payload.species_id)
     if species is None:
         raise HTTPException(status_code=404, detail="Species not found")
-    data = payload.model_dump(exclude={"month"})
+    data = payload.model_dump(exclude={"month", "photo_urls"})
+    photo_urls = payload.photo_urls or ([payload.photo_url] if payload.photo_url else [])
+    data["photo_url"] = photo_urls[0] if photo_urls else None
     month = payload.month or (payload.found_on.month if payload.found_on else None)
     sighting = Sighting(**data, user_id=user.id, month=month, source="community", confidence_score=50)
+    sync_photo_urls(sighting, photo_urls)
     db.add(sighting)
     user.total_finds += 1
     db.commit()
@@ -717,10 +1045,15 @@ def update_logbook_sighting(
 ):
     sighting = owned_sighting(db, sighting_id, user)
     changes = payload.model_dump(exclude_unset=True)
+    photo_urls = changes.pop("photo_urls", None)
     if "species_id" in changes and db.get(Species, changes["species_id"]) is None:
         raise HTTPException(status_code=404, detail="Species not found")
     for key, value in changes.items():
         setattr(sighting, key, value)
+    if photo_urls is not None:
+        sync_photo_urls(sighting, photo_urls)
+    elif "photo_url" in changes:
+        sync_photo_urls(sighting, [changes["photo_url"]] if changes["photo_url"] else [])
     if "found_on" in changes:
         sighting.month = changes["found_on"].month if changes["found_on"] else None
     if sighting.source == "community":
@@ -766,6 +1099,108 @@ def save_location(payload: SavedLocationCreate, user: User = Depends(get_current
     return saved
 
 
+@app.patch("/api/account/saved/{saved_id}", response_model=SavedLocationRead)
+def update_saved_location(
+    saved_id: UUID,
+    payload: SavedLocationUpdate,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    saved = db.get(SavedLocation, saved_id)
+    if saved is None or saved.user_id != user.id:
+        raise HTTPException(status_code=404, detail="Saved place not found")
+    for key, value in payload.model_dump(exclude_unset=True).items():
+        setattr(saved, key, value)
+    db.commit()
+    db.refresh(saved)
+    return saved
+
+
+@app.get("/api/account/alerts", response_model=list[AlertSubscriptionRead])
+def list_alerts(user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    subscriptions = db.query(AlertSubscription).options(joinedload(AlertSubscription.species)).filter(
+        AlertSubscription.user_id == user.id
+    ).order_by(AlertSubscription.created_at.desc()).all()
+    return [alert_subscription_read(item) for item in subscriptions]
+
+
+@app.post("/api/account/alerts", response_model=AlertSubscriptionRead, status_code=201)
+def create_alert(
+    payload: AlertSubscriptionCreate,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    if not user.email_verified:
+        raise HTTPException(status_code=403, detail="Verify your email before creating alerts")
+    species = None
+    region_slug = None
+    if payload.kind == "species":
+        species = db.query(Species).filter(
+            Species.inaturalist_taxon_id == payload.species_taxon_id
+        ).one_or_none()
+        if species is None:
+            raise HTTPException(status_code=404, detail="Species not found")
+        target_key = f"species:{species.inaturalist_taxon_id}"
+    else:
+        region = get_region(payload.region_slug)
+        if region is None:
+            raise HTTPException(status_code=404, detail="Region not found")
+        region_slug = region["slug"]
+        target_key = f"region:{region_slug}"
+    subscription = db.query(AlertSubscription).filter(
+        AlertSubscription.user_id == user.id,
+        AlertSubscription.target_key == target_key,
+    ).one_or_none()
+    if subscription is None:
+        subscription = AlertSubscription(
+            user_id=user.id,
+            target_key=target_key,
+            kind=payload.kind,
+            species_id=species.id if species else None,
+            region_slug=region_slug,
+        )
+        db.add(subscription)
+    else:
+        subscription.enabled = True
+    db.commit()
+    subscription = db.query(AlertSubscription).options(joinedload(AlertSubscription.species)).filter(
+        AlertSubscription.id == subscription.id
+    ).one()
+    return alert_subscription_read(subscription)
+
+
+@app.patch("/api/account/alerts/{subscription_id}", response_model=AlertSubscriptionRead)
+def update_alert(
+    subscription_id: UUID,
+    payload: AlertSubscriptionUpdate,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    subscription = db.query(AlertSubscription).options(joinedload(AlertSubscription.species)).filter(
+        AlertSubscription.id == subscription_id,
+        AlertSubscription.user_id == user.id,
+    ).one_or_none()
+    if subscription is None:
+        raise HTTPException(status_code=404, detail="Alert not found")
+    subscription.enabled = payload.enabled
+    db.commit()
+    db.refresh(subscription)
+    return alert_subscription_read(subscription)
+
+
+@app.delete("/api/account/alerts/{subscription_id}", status_code=204)
+def delete_alert(
+    subscription_id: UUID,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    subscription = db.get(AlertSubscription, subscription_id)
+    if subscription is None or subscription.user_id != user.id:
+        raise HTTPException(status_code=404, detail="Alert not found")
+    db.delete(subscription)
+    db.commit()
+
+
 @app.delete("/api/account/saved/{saved_id}", status_code=204)
 def delete_saved_location(saved_id: UUID, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     saved = db.get(SavedLocation, saved_id)
@@ -801,6 +1236,17 @@ def review_sighting(
     sighting.reviewer_id = moderator.id
     sighting.reviewed_at = now()
     sighting.verified = payload.status == "approved"
+    verification = db.query(Verification).filter(
+        Verification.sighting_id == sighting.id,
+        Verification.verifier_id == moderator.id,
+    ).one_or_none()
+    values = verification_values(payload)
+    if verification is None:
+        db.add(Verification(sighting=sighting, verifier_id=moderator.id, **values))
+    else:
+        for key, value in values.items():
+            setattr(verification, key, value)
+        verification.verified_at = now()
     db.commit()
     db.refresh(sighting)
     return sighting
@@ -812,9 +1258,87 @@ def import_inaturalist(
     x_cron_secret: Optional[str] = Header(None),
     db: Session = Depends(get_db),
 ):
-    provided = authorization.removeprefix("Bearer ") if authorization else x_cron_secret
-    if not CRON_SECRET or provided != CRON_SECRET:
-        raise HTTPException(status_code=401, detail="Invalid cron credential")
+    require_cron(authorization, x_cron_secret)
     from crawler.inaturalist import run_scheduled_import
 
     return run_scheduled_import(db)
+
+
+@app.get("/api/cron/alerts")
+def send_weekly_alerts(
+    authorization: Optional[str] = Header(None),
+    x_cron_secret: Optional[str] = Header(None),
+    db: Session = Depends(get_db),
+):
+    require_cron(authorization, x_cron_secret)
+    if not os.getenv("RESEND_API_KEY"):
+        return {"status": "skipped", "reason": "email_not_configured", "users_emailed": 0}
+    due_before = now() - timedelta(days=7)
+    subscriptions = db.query(AlertSubscription).options(
+        joinedload(AlertSubscription.user), joinedload(AlertSubscription.species)
+    ).filter(
+        AlertSubscription.enabled == True,
+        or_(AlertSubscription.last_sent_at.is_(None), AlertSubscription.last_sent_at <= due_before),
+    ).all()
+    by_user = {}
+    for subscription in subscriptions:
+        by_user.setdefault(subscription.user_id, []).append(subscription)
+
+    cutoff = date.today() - timedelta(days=7)
+    users_emailed = 0
+    activity_items = 0
+    checked = 0
+    for user_subscriptions in by_user.values():
+        user = user_subscriptions[0].user
+        if not user or not user.is_active or not user.email_verified:
+            continue
+        items = []
+        for subscription in user_subscriptions:
+            query = db.query(Sighting).options(joinedload(Sighting.species)).filter(
+                Sighting.review_status == "approved",
+                Sighting.location_privacy != "private",
+                Sighting.found_on >= cutoff,
+            )
+            if subscription.kind == "species":
+                query = query.filter(Sighting.species_id == subscription.species_id)
+                label = subscription.species.common_name
+                path = f"/?taxon={subscription.species.inaturalist_taxon_id}"
+            else:
+                region = get_region(subscription.region_slug)
+                if region is None:
+                    continue
+                west, south, east, north = region["bounds"]
+                query = query.filter(
+                    Sighting.latitude.between(south, north),
+                    Sighting.longitude.between(west, east),
+                )
+                label = region["name"]
+                path = f"/regions/{region['slug']}"
+            recent = query.order_by(Sighting.found_on.desc()).all()
+            if recent:
+                species_names = ", ".join(dict.fromkeys(
+                    item.species.common_name for item in recent[:3]
+                ))
+                items.append({
+                    "label": label,
+                    "path": path,
+                    "summary": (
+                        f"{len(recent)} public observation{'s' if len(recent) != 1 else ''} "
+                        f"in the past week. Recent finds include {species_names}."
+                    ),
+                })
+        sent = send_digest_email(user.email, user.username, items) if items else False
+        if sent:
+            users_emailed += 1
+            activity_items += len(items)
+        if sent or not items:
+            for subscription in user_subscriptions:
+                subscription.last_sent_at = now()
+                checked += 1
+    db.commit()
+    return {
+        "status": "ok",
+        "users_emailed": users_emailed,
+        "activity_items": activity_items,
+        "subscriptions_checked": checked,
+    }

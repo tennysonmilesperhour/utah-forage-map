@@ -6,7 +6,7 @@ import httpx
 from sqlalchemy import func
 from sqlalchemy.orm import joinedload
 
-from app.models import CrawledSource, Sighting, SourceSync, Species, User
+from app.models import CrawledSource, ObservationPhoto, Sighting, SourceSync, Species, User
 from app.security import new_token, passwords
 
 
@@ -106,16 +106,37 @@ def fetch_observations(
 
 def compact_observation(observation):
     taxon = observation.get("taxon") or {}
+    photos = [
+        {
+            "url": item.get("url"),
+            "attribution": item.get("attribution"),
+        }
+        for item in (observation.get("photos") or [])[:6]
+        if item.get("url")
+    ]
     return json.dumps({
         "id": observation.get("id"),
         "observed_on": observation.get("observed_on"),
         "quality_grade": observation.get("quality_grade"),
         "coordinates": (observation.get("geojson") or {}).get("coordinates"),
         "taxon_id": taxon.get("id"),
-        "photo_url": ((observation.get("photos") or [{}])[0].get("url")),
+        "photos": photos,
         "place_guess": observation.get("place_guess"),
         "uri": observation.get("uri"),
     }, default=str, separators=(",", ":"))
+
+
+def sync_observation_photos(sighting, observation, source_url):
+    photo_data = [item for item in (observation.get("photos") or [])[:6] if item.get("url")]
+    existing = {item.url: item for item in sighting.photos}
+    sighting.photos[:] = [
+        existing.get(item["url"]) or ObservationPhoto(url=item["url"])
+        for item in photo_data
+    ]
+    for position, (photo, source_photo) in enumerate(zip(sighting.photos, photo_data)):
+        photo.position = position
+        photo.attribution = (source_photo.get("attribution") or "")[:300] or None
+        photo.source_url = source_url
 
 
 def import_observation_batch(db, observations, species_by_taxon_id, crawled_at):
@@ -175,6 +196,7 @@ def import_observation_batch(db, observations, species_by_taxon_id, crawled_at):
 
         if sighting is None:
             sighting = Sighting(user_id=importer.id, **values)
+            sync_observation_photos(sighting, observation, source_url)
             source = CrawledSource(
                 sighting=sighting,
                 source_name=SOURCE_NAME,
@@ -191,6 +213,7 @@ def import_observation_batch(db, observations, species_by_taxon_id, crawled_at):
         )
         for key, value in values.items():
             setattr(sighting, key, value)
+        sync_observation_photos(sighting, observation, source_url)
         source.raw_data = raw_data
         source.crawled_at = crawled_at
         if changed:

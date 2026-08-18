@@ -1,4 +1,5 @@
 import { speciesBySlug, speciesGuides } from '../content/species.generated'
+import { regionBySlug, regions } from '../data/regions'
 
 export const GUIDE_SITE_URL = 'https://utah-forage-map.vercel.app'
 
@@ -10,6 +11,10 @@ const FIXED_METADATA = {
   '/learn/safety': {
     title: 'Wild Mushroom Safety and Poison Response | Mushroom Forage Map',
     description: 'Learn the non-negotiable rules of wild mushroom identification and what to do immediately after a suspected mushroom poisoning.',
+  },
+  '/regions': {
+    title: 'Regional Mushroom Season Reports | Recent Finds and Seasonal Charts',
+    description: 'Compare recent reviewed mushroom observations and all-time monthly patterns across ten forest and habitat regions worldwide.',
   },
   '/about': {
     title: 'About and Editorial Standards | Mushroom Forage Map',
@@ -40,6 +45,18 @@ export function guideMetadataForPath(pathname) {
       }
     }
   }
+  const regionMatch = path.match(/^\/regions\/([^/]+)$/)
+  if (regionMatch) {
+    const region = regionBySlug[regionMatch[1]]
+    if (region) {
+      return {
+        path,
+        title: `${region.name} Mushroom Season Report | Recent Field Records`,
+        description: `See recent reviewed mushroom observations, current field signals, and monthly seasonal evidence for ${region.name}.`,
+        region,
+      }
+    }
+  }
   return { path, ...(FIXED_METADATA[path] ?? FIXED_METADATA['/learn']) }
 }
 
@@ -55,6 +72,30 @@ export function guideStructuredData(pathname) {
   const breadcrumbItems = [
     { '@type': 'ListItem', position: 1, name: 'Mushroom guide', item: `${GUIDE_SITE_URL}/learn` },
   ]
+
+  if (metadata.region) {
+    breadcrumbItems[0] = { '@type': 'ListItem', position: 1, name: 'Regional collections', item: `${GUIDE_SITE_URL}/regions` }
+    breadcrumbItems.push({ '@type': 'ListItem', position: 2, name: metadata.region.name, item: canonical })
+    return {
+      '@context': 'https://schema.org',
+      '@graph': [website, {
+        '@type': 'CollectionPage',
+        name: metadata.title,
+        description: metadata.description,
+        url: canonical,
+        about: { '@type': 'Place', name: metadata.region.name },
+        isPartOf: { '@id': website['@id'] },
+        mainEntity: {
+          '@type': 'Dataset',
+          name: `${metadata.region.name} public mushroom observation summary`,
+          description: 'Recent public field records and all-time monthly counts from research-grade iNaturalist observations.',
+          spatialCoverage: metadata.region.name,
+          measurementTechnique: 'Reviewed public observations aggregated by date and region',
+          creator: { '@type': 'Organization', name: 'Mushroom Forage Map' },
+        },
+      }, { '@type': 'BreadcrumbList', itemListElement: breadcrumbItems }],
+    }
+  }
 
   if (!metadata.species) {
     return {
@@ -130,6 +171,8 @@ export function guideRoutes() {
     '/learn',
     ...speciesGuides.map(species => `/learn/species/${species.slug}`),
     '/learn/safety',
+    '/regions',
+    ...regions.map(region => `/regions/${region.slug}`),
     '/about',
     '/disclaimer',
   ]

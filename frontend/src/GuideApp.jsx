@@ -1,10 +1,16 @@
 import { useEffect, useMemo, useState } from 'react'
 import {
   ArrowLeft, ArrowRight, Binoculars, BookOpen, CalendarDays, CheckCircle2,
-  ExternalLink, MapPin, Search, ShieldAlert, ShieldCheck, Sprout, Vote,
+  ExternalLink, Globe2, MapPin, Search, ShieldAlert, ShieldCheck, Sprout,
+  TrendingDown, TrendingUp, Vote,
 } from 'lucide-react'
+import FollowButton from './components/FollowButton'
 import GuideHeader from './components/GuideHeader'
-import { speciesBySlug, speciesGuides } from './content/species.generated'
+import SeasonalChart from './components/SeasonalChart'
+import { speciesBySlug, speciesGuides, speciesPathForTaxon } from './content/species.generated'
+import { regionBySlug, regions } from './data/regions'
+import { useCurrentUser } from './hooks/useAuth'
+import { useRegion, useRegions } from './hooks/useCompanion'
 import { useGuideRequests, useGuideSummaries } from './hooks/useGuide'
 import { applyGuideMetadata } from './lib/guideSeo'
 
@@ -44,10 +50,10 @@ function GuideFooter() {
   )
 }
 
-function GuideLayout({ children }) {
+function GuideLayout({ children, section = 'archive' }) {
   return (
     <div className="learn-shell">
-      <GuideHeader />
+      <GuideHeader section={section} />
       {children}
       <GuideFooter />
     </div>
@@ -242,7 +248,7 @@ function LookalikeCards({ lookalikes }) {
   )
 }
 
-function LiveFieldSignal({ species, summary }) {
+function LiveFieldSignal({ species, summary, user }) {
   return (
     <aside className="live-field-signal" aria-labelledby="live-signal-title">
       <div className="live-signal-heading"><MapPin size={18} aria-hidden="true" /><div><h2 id="live-signal-title">Live field signal</h2><p>Reviewed observations from the past 90 days</p></div></div>
@@ -264,12 +270,13 @@ function LiveFieldSignal({ species, summary }) {
         </>
       ) : <p className="live-signal-loading">Loading current field evidence...</p>}
       <a className="button button-primary" href={`/?taxon=${species.taxon_id}`}><MapPin size={16} aria-hidden="true" /> Show on map</a>
+      <FollowButton user={user} kind="species" taxonId={species.taxon_id} label={species.common_name} />
       <p className="live-signal-note">Location pins are approximate where privacy protection applies.</p>
     </aside>
   )
 }
 
-function SpeciesPage({ species, summary }) {
+function SpeciesPage({ species, summary, user }) {
   return (
     <GuideLayout>
       <main className="species-guide-main">
@@ -306,12 +313,14 @@ function SpeciesPage({ species, summary }) {
           <div><dt><ShieldCheck size={16} aria-hidden="true" /> Spore evidence</dt><dd>{species.spore_print}</dd></div>
         </dl>
 
+        <SeasonalChart taxonId={species.taxon_id} hemisphere="north" />
+
         <div className="species-guide-layout">
           <article className="species-guide-content">
             <LookalikeCards lookalikes={species.lookalikes} />
             <div className="guide-markdown" dangerouslySetInnerHTML={{ __html: species.content_html }} />
           </article>
-          <LiveFieldSignal species={species} summary={summary} />
+          <LiveFieldSignal species={species} summary={summary} user={user} />
         </div>
 
         <section className="species-safety-footer">
@@ -321,6 +330,93 @@ function SpeciesPage({ species, summary }) {
         </section>
 
         <a className="back-to-guide" href="/learn"><ArrowLeft size={16} aria-hidden="true" /> Back to all mushroom guides</a>
+      </main>
+    </GuideLayout>
+  )
+}
+
+function RegionIndexPage() {
+  const { data = [] } = useRegions()
+  const summaryBySlug = Object.fromEntries(data.map(item => [item.slug, item]))
+
+  return (
+    <GuideLayout section="regions">
+      <main className="regions-main">
+        <header className="regions-header">
+          <p className="eyebrow"><Globe2 size={16} aria-hidden="true" /> Regional collections</p>
+          <h1>Field evidence, organized by habitat region</h1>
+          <p>Compare recent public activity with the archive's long seasonal pattern. Counts reflect observations, not abundance or guaranteed fruiting.</p>
+        </header>
+        <section className="region-index" aria-label="Regional mushroom collections">
+          {regions.map((region, index) => {
+            const summary = summaryBySlug[region.slug]
+            return (
+              <article className="region-label" key={region.slug}>
+                <span className="region-number">COL. {String(index + 1).padStart(2, '0')}</span>
+                <h2><a href={`/regions/${region.slug}`}>{region.name}</a></h2>
+                <p>{region.description}</p>
+                <dl><div><dt>Past 14 days</dt><dd>{summary?.observations_14d ?? '...'}</dd></div><div><dt>90-day species</dt><dd>{summary?.species_count ?? '...'}</dd></div></dl>
+                <a className="region-label-link" href={`/regions/${region.slug}`}>Open field collection <ArrowRight size={15} /></a>
+              </article>
+            )
+          })}
+        </section>
+      </main>
+    </GuideLayout>
+  )
+}
+
+function OutlookIcon({ status }) {
+  if (status === 'ending') return <TrendingDown size={16} aria-hidden="true" />
+  if (status === 'starting') return <TrendingUp size={16} aria-hidden="true" />
+  return <Sprout size={16} aria-hidden="true" />
+}
+
+function RegionPage({ region, user }) {
+  const { data, isLoading } = useRegion(region.slug)
+
+  return (
+    <GuideLayout section="regions">
+      <main className="region-page">
+        <nav className="guide-breadcrumbs" aria-label="Breadcrumb"><a href="/regions">Regions</a><span>/</span><span aria-current="page">{region.name}</span></nav>
+        <header className="region-page-header">
+          <div><p className="eyebrow"><Globe2 size={16} aria-hidden="true" /> Regional field collection</p><h1>{region.name}</h1><p>{region.description}</p></div>
+          <div className="region-header-actions"><a className="button button-primary" href={`/?region=${region.slug}`}><MapPin size={16} /> Open this region on the map</a><FollowButton user={user} kind="region" regionSlug={region.slug} label={region.name} /></div>
+        </header>
+
+        <dl className="region-metrics">
+          <div><dt>Public records, 14 days</dt><dd>{data?.observations_14d ?? '...'}</dd></div>
+          <div><dt>Public records, 90 days</dt><dd>{data?.observations_90d ?? '...'}</dd></div>
+          <div><dt>Species observed, 90 days</dt><dd>{data?.species_count ?? '...'}</dd></div>
+          <div><dt>Latest dated record</dt><dd>{data ? formatDate(data.latest_observed_on) : '...'}</dd></div>
+        </dl>
+
+        <SeasonalChart regionSlug={region.slug} hemisphere={region.hemisphere} />
+
+        <section className="regional-outlook" aria-labelledby="outlook-title">
+          <div className="region-section-heading"><div><p className="eyebrow">Current field signal</p><h2 id="outlook-title">What recent records suggest</h2></div><span>Past 60 days</span></div>
+          {isLoading && <p className="empty-state">Reading recent regional records...</p>}
+          {data && !data.outlook.length && <p className="empty-state">No recent public records are available for this collection.</p>}
+          <div className="outlook-table">
+            {data?.outlook.map(item => (
+              <a href={speciesPathForTaxon(item.species.inaturalist_taxon_id) ?? `/?taxon=${item.species.inaturalist_taxon_id}`} className="outlook-row" key={item.species.id}>
+                <span className={`outlook-status ${item.status}`}><OutlookIcon status={item.status} /> {item.status}</span>
+                <span><strong>{item.species.common_name}</strong><em>{item.species.latin_name}</em></span>
+                <span><strong>{item.observations_14d}</strong><small>past 14 days</small></span>
+                <span><strong>{item.confidence}</strong><small>signal confidence</small></span>
+                <ArrowRight size={16} aria-hidden="true" />
+              </a>
+            ))}
+          </div>
+          <p className="outlook-method">Starting, likely, and ending compare the past 14 and 30 days with the preceding 30-day period. Sparse records are marked low confidence.</p>
+        </section>
+
+        <section className="region-recent" aria-labelledby="recent-region-title">
+          <div className="region-section-heading"><div><p className="eyebrow">Recent accessions</p><h2 id="recent-region-title">Latest public records</h2></div><a href={`/?region=${region.slug}`}>View all on map <ArrowRight size={15} /></a></div>
+          <div className="region-recent-grid">
+            {data?.recent_observations.slice(0, 6).map(item => <article key={item.id}>{item.photo_url && <img src={observationImage(item.photo_url)} alt="" loading="lazy" />}<div><span>{formatDate(item.found_on)}</span><h3>{item.species.common_name}</h3><p>{item.place_name || region.name}</p></div></article>)}
+          </div>
+        </section>
       </main>
     </GuideLayout>
   )
@@ -397,18 +493,26 @@ function NotFoundPage() {
 export default function GuideApp({ path = '/learn' }) {
   const normalizedPath = path.length > 1 ? path.replace(/\/$/, '') : path
   const { data: summaries = [] } = useGuideSummaries()
+  const { data: user = null } = useCurrentUser()
 
   useEffect(() => applyGuideMetadata(normalizedPath), [normalizedPath])
 
   if (normalizedPath === '/learn') return <GuideHome summaries={summaries} />
+  if (normalizedPath === '/regions') return <RegionIndexPage />
   if (normalizedPath === '/learn/safety') return <SafetyPage />
   if (normalizedPath === '/about') return <AboutPage />
   if (normalizedPath === '/disclaimer') return <DisclaimerPage />
 
+  const regionMatch = normalizedPath.match(/^\/regions\/([^/]+)$/)
+  if (regionMatch) {
+    const region = regionBySlug[regionMatch[1]]
+    if (region) return <RegionPage region={region} user={user} />
+  }
+
   const speciesMatch = normalizedPath.match(/^\/learn\/species\/([^/]+)$/)
   if (speciesMatch) {
     const species = speciesBySlug[speciesMatch[1]]
-    if (species) return <SpeciesPage species={species} summary={summaries.find(item => item.inaturalist_taxon_id === species.taxon_id)} />
+    if (species) return <SpeciesPage species={species} summary={summaries.find(item => item.inaturalist_taxon_id === species.taxon_id)} user={user} />
   }
   return <NotFoundPage />
 }

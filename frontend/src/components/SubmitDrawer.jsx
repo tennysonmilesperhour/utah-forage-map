@@ -7,7 +7,7 @@ import { approximateOffsetLabel, displayToMetres, elevationUnit, metresToDisplay
 const HABITAT_TYPES = ['forest', 'meadow', 'riparian', 'alpine', 'desert', 'scrubland', 'wetland']
 const EMPTY_FORM = {
   species_id: '', found_on: '', habitat_type: '', elevation_m: '',
-  place_name: '', notes: '', location_privacy: 'approximate',
+  place_name: '', substrate: '', weather_notes: '', photo_links: '', notes: '', location_privacy: 'approximate',
 }
 
 export default function SubmitDrawer({ species = [], location, onSubmit, onClose, creating }) {
@@ -28,8 +28,11 @@ export default function SubmitDrawer({ species = [], location, onSubmit, onClose
         found_on: form.found_on || undefined,
         month: form.found_on ? Number(form.found_on.slice(5, 7)) : undefined,
         habitat_type: form.habitat_type || undefined,
+        substrate: form.substrate.trim() || undefined,
+        weather_notes: form.weather_notes.trim() || undefined,
         elevation_ft: form.elevation_m === '' ? undefined : Number(form.elevation_m) * 3.28084,
         place_name: form.place_name.trim() || undefined,
+        photo_urls: form.photo_links.split('\n').map(value => value.trim()).filter(Boolean).slice(0, 6),
         notes: form.notes || undefined,
         location_privacy: form.location_privacy,
       })
@@ -114,11 +117,44 @@ export default function SubmitDrawer({ species = [], location, onSubmit, onClose
         </label>
 
         <label>
+          Substrate
+          <input
+            type="text"
+            maxLength={120}
+            placeholder="Soil, buried wood, hardwood log, conifer duff"
+            value={form.substrate}
+            onChange={event => setForm({ ...form, substrate: event.target.value })}
+          />
+        </label>
+
+        <label>
+          Recent weather
+          <input
+            type="text"
+            maxLength={240}
+            placeholder="Rainfall, temperature shift, or snowmelt"
+            value={form.weather_notes}
+            onChange={event => setForm({ ...form, weather_notes: event.target.value })}
+          />
+        </label>
+
+        <label>
+          Photo links
+          <textarea
+            rows="3"
+            maxLength={6000}
+            placeholder="One public image URL per line, up to six views"
+            value={form.photo_links}
+            onChange={event => setForm({ ...form, photo_links: event.target.value })}
+          />
+        </label>
+
+        <label>
           Field notes
           <textarea
             rows="4"
             maxLength={1000}
-            placeholder="Substrate, nearby trees, recent weather, and visible field marks"
+            placeholder="Nearby trees, scent, bruising, size, and visible field marks"
             value={form.notes}
             onChange={event => setForm({ ...form, notes: event.target.value })}
           />
