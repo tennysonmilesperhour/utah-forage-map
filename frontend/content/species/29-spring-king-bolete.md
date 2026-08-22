@@ -20,6 +20,9 @@ image:
   alt: Several brown spring king boletes held beside a mountain forest stream
   credit: Brian V., CC BY
   source: https://www.inaturalist.org/observations/218552951
+  creator: Brian V.
+  copyright_notice: © Brian V.
+  license: https://creativecommons.org/licenses/by/4.0/
 lookalikes:
   - name: King Bolete
     slug: king-bolete

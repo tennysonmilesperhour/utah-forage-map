@@ -20,6 +20,9 @@ image:
   alt: Dark black trumpet mushrooms rising from green moss
   credit: Cara Ennis, CC BY
   source: https://www.inaturalist.org/observations/319831841
+  creator: Cara Ennis
+  copyright_notice: © Cara Ennis
+  license: https://creativecommons.org/licenses/by/4.0/
 lookalikes:
   - name: Devil's Urn
     severity: caution

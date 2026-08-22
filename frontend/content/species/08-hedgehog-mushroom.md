@@ -20,6 +20,9 @@ image:
   alt: Tan hedgehog mushroom showing pale teeth beneath its cap
   credit: Public domain, CC0
   source: https://www.inaturalist.org/observations/190829667
+  creator: sturuss
+  copyright_notice: Public domain (CC0)
+  license: https://creativecommons.org/publicdomain/zero/1.0/
 lookalikes:
   - name: Other Hydnum species
     severity: harmless

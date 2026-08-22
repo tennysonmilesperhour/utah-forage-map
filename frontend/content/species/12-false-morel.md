@@ -20,6 +20,9 @@ image:
   alt: Reddish brown false morel with a folded brain-like cap
   credit: Jeffrey Lee, CC BY
   source: https://www.inaturalist.org/observations/12975751
+  creator: Jeffrey Lee
+  copyright_notice: © Jeffrey Lee
+  license: https://creativecommons.org/licenses/by/4.0/
 lookalikes:
   - name: Morel
     slug: morel

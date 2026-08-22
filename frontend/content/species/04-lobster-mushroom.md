@@ -20,6 +20,9 @@ image:
   alt: Bright red-orange lobster mushroom on the forest floor
   credit: Matt D'Agrosa, CC BY
   source: https://www.inaturalist.org/observations/57491597
+  creator: Matt D'Agrosa
+  copyright_notice: © Matt D'Agrosa
+  license: https://creativecommons.org/licenses/by/4.0/
 lookalikes:
   - name: Old lobster mushroom
     severity: caution

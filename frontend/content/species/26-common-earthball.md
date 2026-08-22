@@ -20,6 +20,9 @@ image:
   alt: Tan common earthball with a thick cracked surface among woodland leaves
   credit: Malte Kromer, CC BY
   source: https://www.inaturalist.org/observations/247778517
+  creator: Malte Kromer
+  copyright_notice: © Malte Kromer
+  license: https://creativecommons.org/licenses/by/4.0/
 lookalikes:
   - name: Giant Puffball
     slug: giant-puffball

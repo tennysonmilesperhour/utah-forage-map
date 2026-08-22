@@ -20,6 +20,9 @@ image:
   alt: Small tawny deadly Galerina showing rusty gills and a ringed stem
   credit: Alan Rockefeller, CC BY
   source: https://www.inaturalist.org/observations/322915721
+  creator: Alan Rockefeller
+  copyright_notice: © Alan Rockefeller
+  license: https://creativecommons.org/licenses/by/4.0/
 lookalikes:
   - name: Sheathed Woodtuft
     severity: deadly

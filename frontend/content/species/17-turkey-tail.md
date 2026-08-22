@@ -20,6 +20,9 @@ image:
   alt: Close overlapping turkey tail fans with sharply banded colors
   credit: Christine Young, CC BY
   source: https://www.inaturalist.org/observations/96503798
+  creator: Christine Young
+  copyright_notice: © Christine Young
+  license: https://creativecommons.org/licenses/by/4.0/
 lookalikes:
   - name: False Turkey Tail
     severity: harmless

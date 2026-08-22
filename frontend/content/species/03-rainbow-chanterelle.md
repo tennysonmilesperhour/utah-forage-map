@@ -20,6 +20,9 @@ image:
   alt: Golden rainbow chanterelles emerging from forest duff
   credit: Alan Rockefeller, CC BY
   source: https://www.inaturalist.org/observations/136662503
+  creator: Alan Rockefeller
+  copyright_notice: © Alan Rockefeller
+  license: https://creativecommons.org/licenses/by/4.0/
 lookalikes:
   - name: False Chanterelle
     severity: caution

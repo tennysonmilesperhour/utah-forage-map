@@ -128,6 +128,12 @@ export function guideStructuredData(pathname) {
         contentUrl: metadata.species.image.url,
         caption: metadata.species.image.alt,
         creditText: metadata.species.image.credit,
+        creator: {
+          '@type': 'Person',
+          name: metadata.species.image.creator,
+        },
+        copyrightNotice: metadata.species.image.copyright_notice,
+        license: metadata.species.image.license,
         acquireLicensePage: metadata.species.image.source,
       },
       isPartOf: { '@id': website['@id'] },

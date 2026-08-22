@@ -20,6 +20,9 @@ image:
   alt: Tall white shaggy mane mushrooms in grass
   credit: Tom Norton, CC BY
   source: https://www.inaturalist.org/observations/58497477
+  creator: Tom Norton
+  copyright_notice: © Tom Norton
+  license: https://creativecommons.org/licenses/by/4.0/
 lookalikes:
   - name: Common Inky Cap
     severity: sickener

@@ -20,6 +20,9 @@ image:
   alt: White destroying angel mushroom showing cap, ring, and stem
   credit: Alan Rockefeller, CC BY
   source: https://www.inaturalist.org/observations/178768388
+  creator: Alan Rockefeller
+  copyright_notice: © Alan Rockefeller
+  license: https://creativecommons.org/licenses/by/4.0/
 lookalikes:
   - name: Young Puffball
     severity: deadly

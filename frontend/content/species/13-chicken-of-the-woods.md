@@ -20,6 +20,9 @@ image:
   alt: Orange and cream chicken of the woods shelves growing from a fallen hardwood log
   credit: Public domain, CC0
   source: https://www.inaturalist.org/observations/16219800
+  creator: robnorris
+  copyright_notice: Public domain (CC0)
+  license: https://creativecommons.org/publicdomain/zero/1.0/
 lookalikes:
   - name: Jack-o'-lantern
     slug: jack-o-lantern

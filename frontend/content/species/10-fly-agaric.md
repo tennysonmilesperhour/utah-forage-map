@@ -20,6 +20,9 @@ image:
   alt: Red fly agaric cap with white veil warts in moss
   credit: Johan Adler, CC BY
   source: https://www.inaturalist.org/observations/242423358
+  creator: Johan Adler
+  copyright_notice: © Johan Adler
+  license: https://creativecommons.org/licenses/by/4.0/
 lookalikes:
   - name: Panther Cap
     severity: toxic

@@ -20,6 +20,9 @@ image:
   alt: Clustered gray common ink caps beside a tree as their gills darken
   credit: Public domain, CC0
   source: https://www.inaturalist.org/observations/6253290
+  creator: fungee
+  copyright_notice: Public domain (CC0)
+  license: https://creativecommons.org/publicdomain/zero/1.0/
 lookalikes:
   - name: Shaggy Mane
     slug: shaggy-mane

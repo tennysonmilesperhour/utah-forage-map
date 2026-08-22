@@ -20,6 +20,9 @@ image:
   alt: Red-brown Rocky Mountain porcini with a thick pale stem in spruce litter
   credit: Rachel, CC BY
   source: https://www.inaturalist.org/observations/232507737
+  creator: Rachel
+  copyright_notice: © Rachel
+  license: https://creativecommons.org/licenses/by/4.0/
 lookalikes:
   - name: King Bolete
     slug: king-bolete

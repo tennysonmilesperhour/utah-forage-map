@@ -20,6 +20,9 @@ image:
   alt: White lion's mane fungus with long hanging spines on hardwood
   credit: Katja Schulz, CC BY
   source: https://www.inaturalist.org/observations/4846446
+  creator: Katja Schulz
+  copyright_notice: © Katja Schulz
+  license: https://creativecommons.org/licenses/by/4.0/
 lookalikes:
   - name: Bear's Head Tooth
     severity: harmless

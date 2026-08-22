@@ -20,6 +20,9 @@ image:
   alt: Pitted cap of a morel mushroom growing among leaf litter
   credit: Sergey Neklyudov, CC BY
   source: https://www.inaturalist.org/observations/101750576
+  creator: Sergey Neklyudov
+  copyright_notice: © Sergey Neklyudov
+  license: https://creativecommons.org/licenses/by/4.0/
 lookalikes:
   - name: False Morel
     slug: false-morel

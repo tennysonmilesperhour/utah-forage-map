@@ -20,6 +20,9 @@ image:
   alt: Layered oyster mushroom caps growing from hardwood
   credit: Katja Schulz, CC BY
   source: https://www.inaturalist.org/observations/21968122
+  creator: Katja Schulz
+  copyright_notice: © Katja Schulz
+  license: https://creativecommons.org/licenses/by/4.0/
 lookalikes:
   - name: Angel Wings
     severity: caution

@@ -20,6 +20,9 @@ image:
   alt: A very large white giant puffball held in two hands
   credit: Adam Wilson, CC BY
   source: https://www.inaturalist.org/observations/41834267
+  creator: Adam Wilson
+  copyright_notice: © Adam Wilson
+  license: https://creativecommons.org/licenses/by/4.0/
 lookalikes:
   - name: Amanita button
     severity: deadly

@@ -20,6 +20,9 @@ image:
   alt: Orange-capped aspen bolete showing dark scabers along its pale stem
   credit: Jonathan Curley, CC BY
   source: https://www.inaturalist.org/observations/15583609
+  creator: Jonathan Curley
+  copyright_notice: © Jonathan Curley
+  license: https://creativecommons.org/licenses/by/4.0/
 lookalikes:
   - name: Other Leccinum species
     severity: caution

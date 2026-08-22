@@ -20,6 +20,9 @@ image:
   alt: Cluster of bright orange jack-o'-lantern mushrooms showing crowded descending gills
   credit: Mark Richman, CC BY
   source: https://www.inaturalist.org/observations/390690575
+  creator: Mark Richman
+  copyright_notice: © Mark Richman
+  license: https://creativecommons.org/licenses/by/4.0/
 lookalikes:
   - name: Golden Chanterelle
     slug: golden-chanterelle

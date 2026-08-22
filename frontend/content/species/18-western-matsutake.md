@@ -20,6 +20,9 @@ image:
   alt: White western matsutake cap pushing through dark conifer duff
   credit: Alan Rockefeller, CC BY
   source: https://www.inaturalist.org/observations/101058705
+  creator: Alan Rockefeller
+  copyright_notice: © Alan Rockefeller
+  license: https://creativecommons.org/licenses/by/4.0/
 lookalikes:
   - name: Amanita smithiana
     severity: deadly

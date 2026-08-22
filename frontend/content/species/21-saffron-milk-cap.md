@@ -20,6 +20,9 @@ image:
   alt: Group of orange saffron milk caps with green bruising and visible gills
   credit: Alan Rockefeller, CC BY
   source: https://www.inaturalist.org/observations/253233776
+  creator: Alan Rockefeller
+  copyright_notice: © Alan Rockefeller
+  license: https://creativecommons.org/licenses/by/4.0/
 lookalikes:
   - name: False Saffron Milk Cap
     severity: caution

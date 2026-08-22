@@ -20,6 +20,9 @@ image:
   alt: Meadow mushroom turned over to show mature chocolate-brown gills
   credit: Thomas Mesaglio, CC BY
   source: https://www.inaturalist.org/observations/72002631
+  creator: Thomas Mesaglio
+  copyright_notice: © Thomas Mesaglio
+  license: https://creativecommons.org/licenses/by/4.0/
 lookalikes:
   - name: Destroying Angel
     slug: destroying-angel

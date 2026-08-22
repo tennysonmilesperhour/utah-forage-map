@@ -20,6 +20,9 @@ image:
   alt: Golden chanterelle showing blunt ridges beneath a wavy cap
   credit: Public domain, CC0
   source: https://www.inaturalist.org/observations/241726630
+  creator: pilmar
+  copyright_notice: Public domain (CC0)
+  license: https://creativecommons.org/publicdomain/zero/1.0/
 lookalikes:
   - name: Jack-o'-lantern
     slug: jack-o-lantern

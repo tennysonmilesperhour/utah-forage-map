@@ -20,6 +20,9 @@ image:
   alt: Brown-capped king bolete with a thick pale stem
   credit: Alan Rockefeller, CC BY
   source: http://www.inaturalist.org/observations/4619665
+  creator: Alan Rockefeller
+  copyright_notice: © Alan Rockefeller
+  license: https://creativecommons.org/licenses/by/4.0/
 lookalikes:
   - name: Bitter Bolete
     severity: harmless

@@ -20,6 +20,9 @@ image:
   alt: Dense gray-brown hen of the woods rosette at a hardwood base
   credit: Public domain, CC0
   source: https://www.inaturalist.org/observations/61887392
+  creator: phillymycobeth
+  copyright_notice: Public domain (CC0)
+  license: https://creativecommons.org/publicdomain/zero/1.0/
 lookalikes:
   - name: Black-staining Polypore
     severity: caution

@@ -20,6 +20,9 @@ image:
   alt: Young green-spored parasol with brown cap scales growing in grass
   credit: Public domain, CC0
   source: https://www.inaturalist.org/observations/137367924
+  creator: buggybuddy
+  copyright_notice: Public domain (CC0)
+  license: https://creativecommons.org/publicdomain/zero/1.0/
 lookalikes:
   - name: Shaggy Parasol
     severity: toxic-confusion

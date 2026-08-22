@@ -20,6 +20,9 @@ image:
   alt: White gem-studded puffballs with small conical spines
   credit: Michael Nerrie, CC BY
   source: https://www.inaturalist.org/observations/255872820
+  creator: Michael Nerrie
+  copyright_notice: © Michael Nerrie
+  license: https://creativecommons.org/licenses/by/4.0/
 lookalikes:
   - name: Amanita button
     severity: deadly

@@ -12,7 +12,9 @@ const requiredFields = [
   'difficulty', 'season', 'habitat', 'underside', 'spore_print', 'warning',
   'author', 'reviewer', 'last_reviewed', 'image',
 ]
-const requiredImageFields = ['url', 'alt', 'credit', 'source']
+const requiredImageFields = [
+  'url', 'alt', 'credit', 'source', 'creator', 'copyright_notice', 'license',
+]
 
 marked.use({ gfm: true })
 

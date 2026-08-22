@@ -20,6 +20,9 @@ image:
   alt: Pale olive death cap showing white gills, ring, and stem in woodland litter
   credit: Public domain, CC0
   source: https://www.inaturalist.org/observations/197463930
+  creator: andy71
+  copyright_notice: Public domain (CC0)
+  license: https://creativecommons.org/publicdomain/zero/1.0/
 lookalikes:
   - name: Meadow Mushroom
     slug: meadow-mushroom
