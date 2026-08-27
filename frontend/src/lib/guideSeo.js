@@ -3,6 +3,19 @@ import { regionBySlug, regions } from '../data/regions'
 
 export const GUIDE_SITE_URL = 'https://worldmushroomforaging.org'
 
+const DATASET_CREATOR = {
+  '@type': 'Organization',
+  '@id': `${GUIDE_SITE_URL}/#organization`,
+  name: 'Mushroom Forage Map',
+  url: `${GUIDE_SITE_URL}/`,
+}
+
+const DATASET_LICENSE = {
+  '@type': 'CreativeWork',
+  name: 'Mushroom Forage Map data reuse notice',
+  url: `${GUIDE_SITE_URL}/about#data-license`,
+}
+
 const FIXED_METADATA = {
   '/learn': {
     title: 'Mushroom Identification Guide | Field Marks, Lookalikes and Live Finds',
@@ -91,7 +104,8 @@ export function guideStructuredData(pathname) {
           description: 'Recent public field records and all-time monthly counts from research-grade iNaturalist observations.',
           spatialCoverage: metadata.region.name,
           measurementTechnique: 'Reviewed public observations aggregated by date and region',
-          creator: { '@type': 'Organization', name: 'Mushroom Forage Map' },
+          creator: DATASET_CREATOR,
+          license: DATASET_LICENSE,
         },
       }, { '@type': 'BreadcrumbList', itemListElement: breadcrumbItems }],
     }
