@@ -1,3 +1,4 @@
+from datetime import date, timedelta
 from pathlib import Path
 import os
 import sys
@@ -44,6 +45,9 @@ def token_from_last_link(name):
 
 def main():
     with TestClient(main_module.app) as client:
+        # Keep the submitted find inside the rolling 14-day window regardless of
+        # when the smoke test runs, so date-relative region metrics stay stable.
+        recent_found_on = (date.today() - timedelta(days=2)).isoformat()
         db = SessionLocal()
         species = Species(
             common_name="Morel", latin_name="Morchella esculenta",
@@ -74,7 +78,7 @@ def main():
             "species_id": species_id,
             "latitude": 40.7,
             "longitude": -111.9,
-            "found_on": "2026-08-14",
+            "found_on": recent_found_on,
             "notes": "Exact test field point",
             "substrate": "Cottonwood duff",
             "weather_notes": "Rain two days earlier",
@@ -212,7 +216,7 @@ def main():
         assert summary.status_code == 200, summary.text
         assert summary.json()["reviewed_observations"] == 1
         assert summary.json()["species_count"] == 1
-        assert summary.json()["latest_observed_on"] == "2026-08-14"
+        assert summary.json()["latest_observed_on"] == recent_found_on
 
         saved = client.post("/api/account/saved", json={
             "sighting_id": sighting_id,

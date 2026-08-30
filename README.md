@@ -133,6 +133,36 @@ DATABASE_URL="$DATABASE_URL" python -m scripts.seed
 
 Never commit `.env` files, database URLs, Mapbox tokens, email keys, or generated session secrets.
 
+## Advertising and analytics
+
+Google Ads conversion tracking, optional Google Analytics 4, and Google AdSense are wired into the frontend but ship inactive. No third-party script loads and no `ads.txt` is generated until the matching `VITE_*` variables are configured on the `utah-forage-map` Vercel project, so nothing changes for visitors until you switch it on.
+
+Frontend variables (all optional):
+
+```text
+VITE_GOOGLE_ADS_ID              # AW-XXXXXXXXXX, loads gtag.js for Google Ads
+VITE_GOOGLE_ADS_SIGNUP_LABEL    # conversion label fired on account signup
+VITE_GOOGLE_ADS_SUBMIT_LABEL    # conversion label fired on sighting submission
+VITE_GA_MEASUREMENT_ID          # G-XXXXXXXXXX, optional GA4 through the same tag
+VITE_GOOGLE_CONSENT_DEFAULT     # granted (default) or denied for Consent Mode v2
+VITE_ADSENSE_CLIENT             # ca-pub-XXXXXXXXXXXXXXXX, loads AdSense and ads.txt
+```
+
+The tag helpers live in `frontend/src/lib/googleTag.js` and load once from `frontend/src/main.jsx`. Conversions fire from the register and sighting-submission mutations and stay off until their label is set, so each conversion is activated individually.
+
+To turn on conversion tracking:
+
+1. In Google Ads, create the account and a conversion action for each event; copy its conversion ID (`AW-…`) and label.
+2. Set `VITE_GOOGLE_ADS_ID` plus `VITE_GOOGLE_ADS_SIGNUP_LABEL` / `VITE_GOOGLE_ADS_SUBMIT_LABEL` and redeploy.
+
+To turn on AdSense:
+
+1. Add the site in AdSense and copy the publisher ID (`ca-pub-…`).
+2. Set `VITE_ADSENSE_CLIENT` and redeploy. The build writes `dist/ads.txt` from that ID (Vercel serves it at `/ads.txt`), and the AdSense loader is included on every page.
+3. Enable Auto ads from the AdSense dashboard, or place manual units with the `AdSlot` component (`frontend/src/components/AdSlot.jsx`) using a slot ID from AdSense: `<AdSlot slot="1234567890" />`.
+
+Consent Mode v2 defaults to granted. Set `VITE_GOOGLE_CONSENT_DEFAULT=denied` to withhold ad and analytics storage until a consent banner calls `updateGoogleConsent(...)`; add a Consent Management Platform before running personalized ads for EU/UK visitors.
+
 ## API Surface
 
 Public:

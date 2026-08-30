@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
+import { trackSignupConversion } from '../lib/googleTag'
 
 export function getApiError(error, fallback = 'Something went wrong. Please try again.') {
   return error?.response?.data?.detail ?? fallback
@@ -22,7 +23,7 @@ export function useCurrentUser() {
   })
 }
 
-function useAuthMutation(path) {
+function useAuthMutation(path, options = {}) {
   const queryClient = useQueryClient()
 
   return useMutation({
@@ -30,14 +31,17 @@ function useAuthMutation(path) {
       const { data } = await axios.post(path, payload)
       return data
     },
-    onSuccess: user => {
+    onSuccess: (user, variables, context) => {
       queryClient.setQueryData(['current-user'], user)
+      options.onSuccess?.(user, variables, context)
     },
   })
 }
 
 export function useRegister() {
-  return useAuthMutation('/api/auth/register')
+  return useAuthMutation('/api/auth/register', {
+    onSuccess: () => trackSignupConversion(),
+  })
 }
 
 export function useLogin() {
