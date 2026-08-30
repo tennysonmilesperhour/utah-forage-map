@@ -4,6 +4,13 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import './index.css'
 import App from './App.jsx'
 import GuideApp from './GuideApp.jsx'
+import { initGoogleTag } from './lib/googleTag'
+import { initAdSense } from './lib/adsense'
+
+// Load Google Ads/GA and AdSense tags. Both are no-ops unless their env vars
+// are configured, so nothing loads until the integration is switched on.
+initGoogleTag()
+initAdSense()
 
 const queryClient = new QueryClient({
   defaultOptions: {

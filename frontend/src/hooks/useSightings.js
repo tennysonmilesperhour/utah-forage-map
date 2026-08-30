@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
+import { trackSubmissionConversion } from '../lib/googleTag'
 
 function dateDaysAgo(days) {
   const value = new Date()
@@ -54,6 +55,7 @@ export function useCreateSighting() {
       return data
     },
     onSuccess: () => {
+      trackSubmissionConversion()
       queryClient.invalidateQueries({ queryKey: ['sightings'] })
       queryClient.invalidateQueries({ queryKey: ['species'] })
       queryClient.invalidateQueries({ queryKey: ['logbook'] })
