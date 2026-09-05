@@ -96,6 +96,7 @@ const pageEntries = [
   { path: '/learn/safety', lastmod: guideLastModified },
   { path: '/regions', lastmod: guideLastModified },
   { path: '/about', lastmod: guideLastModified },
+  { path: '/privacy', lastmod: guideLastModified },
   { path: '/disclaimer', lastmod: guideLastModified },
 ]
 const speciesEntries = speciesMetadata.map(metadata => ({

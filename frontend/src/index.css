@@ -2509,6 +2509,121 @@ button:disabled {
   }
 }
 
+.analytics-consent {
+  position: fixed;
+  z-index: 120;
+  right: 18px;
+  bottom: 18px;
+  left: 18px;
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+  width: min(780px, calc(100% - 36px));
+  margin-left: auto;
+  gap: 14px;
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: color-mix(in oklch, var(--surface) 96%, black);
+  box-shadow: var(--shadow-modal);
+  padding: 14px;
+  color: var(--ink);
+}
+
+.analytics-consent-icon {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border-radius: 8px;
+  background: var(--surface-muted);
+  color: var(--museum-sage);
+}
+
+.analytics-consent-copy strong {
+  display: block;
+  margin-bottom: 3px;
+  font-family: var(--museum-serif);
+  font-size: 15px;
+}
+
+.analytics-consent-copy p {
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.analytics-consent-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.analytics-consent-actions .button {
+  min-height: 40px;
+  white-space: nowrap;
+}
+
+.analytics-settings {
+  position: fixed;
+  z-index: 90;
+  right: 14px;
+  bottom: 14px;
+  display: flex;
+  min-height: 38px;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow-float);
+  color: var(--ink-muted);
+  padding: 8px 11px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.analytics-settings:hover {
+  background: var(--surface-muted);
+  color: var(--ink);
+}
+
+@media (max-width: 700px) {
+  .analytics-consent {
+    right: 10px;
+    bottom: 10px;
+    left: 10px;
+    grid-template-columns: 38px minmax(0, 1fr);
+    width: calc(100% - 20px);
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .analytics-consent-icon {
+    width: 38px;
+    height: 38px;
+  }
+
+  .analytics-consent-actions {
+    grid-column: 1 / -1;
+  }
+
+  .analytics-consent-actions .button {
+    flex: 1;
+  }
+
+  .analytics-settings span {
+    display: none;
+  }
+
+  .analytics-settings {
+    width: 40px;
+    height: 40px;
+    justify-content: center;
+    padding: 0;
+  }
+}
+
 @media (max-width: 350px) {
   .sign-in-button {
     display: none;

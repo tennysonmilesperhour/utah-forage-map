@@ -17,6 +17,7 @@ import { useUnitSystem } from './hooks/useUnits'
 import { countActiveFilters, DEFAULT_FILTERS } from './lib/filters'
 import { regionBySlug } from './data/regions'
 import { applyPageMetadata, pathForView, viewFromPathname } from './lib/seo'
+import { trackPageView } from './lib/googleTag'
 
 const MapView = lazy(() => import('./components/MapView'))
 export default function App() {
@@ -124,6 +125,7 @@ export default function App() {
 
   useEffect(() => {
     applyPageMetadata(activeView)
+    trackPageView(window.location.pathname)
   }, [activeView])
 
   useEffect(() => {

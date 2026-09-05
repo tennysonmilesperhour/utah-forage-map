@@ -13,6 +13,7 @@ import { useCurrentUser } from './hooks/useAuth'
 import { useRegion, useRegions } from './hooks/useCompanion'
 import { useGuideRequests, useGuideSummaries } from './hooks/useGuide'
 import { applyGuideMetadata } from './lib/guideSeo'
+import { trackPageView } from './lib/googleTag'
 
 const EDIBLE_GROUP = new Set(['choice', 'edible'])
 const HAZARD_GROUP = new Set(['poisonous', 'deadly'])
@@ -43,6 +44,7 @@ function GuideFooter() {
       <nav aria-label="Guide information">
         <a href="/learn/safety">Safety</a>
         <a href="/about">Editorial standards</a>
+        <a href="/privacy">Privacy</a>
         <a href="/disclaimer">Disclaimer</a>
         <a href="/field-guide">How the map works</a>
       </nav>
@@ -460,9 +462,30 @@ function AboutPage() {
           <article><h2>How guide content is handled</h2><p>Species content lives as Markdown in the public repository, so changes are versioned and reviewable. Pages name their compiler, review status, date, and sources. Until a qualified expert signs off, they say that review is pending.</p></article>
           <article><h2>What we cite</h2><p>Safety and medical claims prioritize poison centers, government agencies, university resources, toxicology literature, and established mycological organizations. Observation photography is licensed and attributed.</p></article>
           <article><h2>How locations are protected</h2><p>Approximate public coordinates are shifted before publication. Exact contributor coordinates remain private unless the contributor explicitly chooses otherwise.</p></article>
+          <article><h2>Analytics and cookies</h2><p>Google Analytics is optional and stays off until you allow it. When enabled, it helps us understand aggregate use of maps and guides; advertising storage and personalization remain off. Read the <a href="/privacy">privacy notice</a> or reopen Privacy choices at any time to change your selection.</p></article>
           <article id="data-license"><h2>Data provenance and reuse</h2><p>Effective August 27, 2026, you may quote, analyze, and redistribute the privacy-safe observation metadata compiled by Mushroom Forage Map for personal, educational, and research use when you credit Mushroom Forage Map and retain available source links. This permission excludes source photographs and text, commercial resale, attempts to reconstruct obscured locations, and personally identifying data. Imported observations and other third-party material remain subject to their original creators' licenses and attribution requirements.</p></article>
         </section>
         <a className="button button-primary" href="/learn">Open the mushroom guide <ArrowRight size={16} aria-hidden="true" /></a>
+      </main>
+    </GuideLayout>
+  )
+}
+
+function PrivacyPage() {
+  return (
+    <GuideLayout>
+      <main className="trust-page">
+        <p className="eyebrow"><ShieldCheck size={16} aria-hidden="true" /> Privacy</p>
+        <h1>Your field research should remain yours</h1>
+        <p className="trust-lede">The public map works without an account and without analytics. Google Analytics loads only after you choose Allow analytics.</p>
+        <section className="trust-sections">
+          <article><h2>What analytics measures</h2><p>When allowed, we collect aggregate page views and standard interactions such as scrolls, outbound-link clicks, site searches, form interactions, video engagement, and file downloads. We use this to learn which maps and guides are useful.</p></article>
+          <article><h2>What stays out</h2><p>Advertising storage, advertising user data, and ad personalization remain disabled. Analytics page locations exclude query strings and fragments so account tokens and filter details are not sent as page URLs. Exact private mushroom locations are not intentionally sent to Analytics.</p></article>
+          <article><h2>Your choice</h2><p>Choose Not now to keep the Google tag unloaded. After making a choice, use the Privacy control at the bottom of any page to change it. Refusing analytics does not limit the map, guide, community pages, or account features.</p></article>
+          <article><h2>Google processing</h2><p>When Analytics is enabled, Google processes measurement data under its own terms and safeguards. See <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noreferrer">how Google uses information from sites that use its services <ExternalLink size={13} aria-hidden="true" /></a>.</p></article>
+          <article><h2>Account and community data</h2><p>Account email is used for account access. Public observations follow the location-privacy choice selected by the contributor; approximate coordinates are shifted before publication, and private coordinates remain in the contributor's notebook.</p></article>
+        </section>
+        <a className="button button-primary" href="/">Return to the field map <ArrowRight size={16} aria-hidden="true" /></a>
       </main>
     </GuideLayout>
   )
@@ -496,12 +519,16 @@ export default function GuideApp({ path = '/learn' }) {
   const { data: summaries = [] } = useGuideSummaries()
   const { data: user = null } = useCurrentUser()
 
-  useEffect(() => applyGuideMetadata(normalizedPath), [normalizedPath])
+  useEffect(() => {
+    applyGuideMetadata(normalizedPath)
+    trackPageView(window.location.pathname)
+  }, [normalizedPath])
 
   if (normalizedPath === '/learn') return <GuideHome summaries={summaries} />
   if (normalizedPath === '/regions') return <RegionIndexPage />
   if (normalizedPath === '/learn/safety') return <SafetyPage />
   if (normalizedPath === '/about') return <AboutPage />
+  if (normalizedPath === '/privacy') return <PrivacyPage />
   if (normalizedPath === '/disclaimer') return <DisclaimerPage />
 
   const regionMatch = normalizedPath.match(/^\/regions\/([^/]+)$/)
