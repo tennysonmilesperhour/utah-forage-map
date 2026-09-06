@@ -1,39 +1,40 @@
 ---
 name: Mushroom Forage Map
-description: A calm, map-first field tool for mushroom communities worldwide.
+description: A living field atlas for exploring recent mushroom evidence worldwide.
 colors:
-  field-pine: "#184A3B"
-  field-pine-deep: "#123B2F"
-  trail-blue: "#2563EB"
-  safety-amber: "#B45309"
-  danger-red: "#B42318"
-  ink: "#17231F"
-  ink-muted: "#52625A"
-  canvas: "#F7F9F7"
-  surface: "#FFFFFF"
-  surface-muted: "#EDF2EF"
-  border: "#CBD6D0"
+  field-pine: "#83A978"
+  field-pine-deep: "#5C8058"
+  spore-coral: "#D66B50"
+  trail-blue: "#66A8B3"
+  safety-amber: "#D8A746"
+  danger-red: "#B7433A"
+  ink: "#F0F2E9"
+  ink-muted: "#A9B6AF"
+  canvas: "#101816"
+  surface: "#18211E"
+  surface-muted: "#25312D"
+  border: "#53625B"
 typography:
   headline:
-    fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif"
+    fontFamily: "Libre Baskerville, Baskerville, Georgia, serif"
     fontSize: "1.5rem"
     fontWeight: 700
     lineHeight: 1.2
     letterSpacing: "0"
   title:
-    fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif"
+    fontFamily: "Libre Baskerville, Baskerville, Georgia, serif"
     fontSize: "1rem"
     fontWeight: 650
     lineHeight: 1.35
     letterSpacing: "0"
   body:
-    fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif"
+    fontFamily: "Avenir Next, Segoe UI, ui-sans-serif, system-ui, sans-serif"
     fontSize: "0.875rem"
     fontWeight: 400
     lineHeight: 1.5
     letterSpacing: "0"
   label:
-    fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif"
+    fontFamily: "Avenir Next, Segoe UI, ui-sans-serif, system-ui, sans-serif"
     fontSize: "0.75rem"
     fontWeight: 650
     lineHeight: 1.35
@@ -50,8 +51,8 @@ spacing:
   lg: "24px"
 components:
   button-primary:
-    backgroundColor: "{colors.field-pine}"
-    textColor: "{colors.surface}"
+    backgroundColor: "{colors.spore-coral}"
+    textColor: "{colors.ink}"
     rounded: "{rounded.md}"
     padding: "10px 16px"
   button-secondary:
@@ -70,28 +71,29 @@ components:
 
 ## 1. Overview
 
-**Creative North Star: "The Field Desk"**
+**Creative North Star: "The Living Field Atlas"**
 
-The interface should feel like opening a clean, well-organized field kit beside a map. Information is compact but never cramped, controls use familiar product patterns, and the public map stays visually dominant. Worldwide place search, visible-area results, and recent found dates help users move quickly from global context to local evidence. A restrained palette and disciplined typography help source, review, and safety information carry more weight than decoration.
+The interface combines a field instrument, a specimen archive, and a quiet museum after dark. The globe is the primary experience. Observation photography links the map, community record, regional collections, and species guide into one continuous journey. Information remains compact and familiar while editorial scale, image-led collection layouts, and restrained motion give the product a distinct cultural identity.
 
 This system rejects account walls, generic SaaS landing-page composition, dense directory treatment, brown or beige outdoor palettes, novelty wilderness motifs, and tiny low-contrast controls. Responsive behavior is structural: side panels become drawers, toolbars simplify, and the map retains a useful viewport at every size.
 
 **Key Characteristics:**
 
 - Map-first and immediately useful to guests.
-- Restrained color with high-contrast semantic states.
+- A varied biological palette with high-contrast semantic states.
 - Familiar controls with clear keyboard and touch behavior.
 - Flat at rest, elevated only for temporary layers.
 - Friendly field language grounded in evidence and safety.
+- Asymmetric collection layouts that make imagery and metadata equally useful.
 
 ## 2. Colors
 
-The palette combines deep evergreen authority with cool neutral surfaces, clear trail blue for external data, and explicit amber and red safety states.
+The palette begins with green-black gallery surfaces, then uses lichen green for growth, spore coral for active exploration, mineral blue for sourced evidence, and explicit amber and red safety states. Color is never the only carrier of meaning.
 
 ### Primary
 
-- **Field Pine:** Primary actions, active filters, signed-in identity, and selected map state.
-- **Field Pine Deep:** Hover and pressed states for primary actions.
+- **Spore Coral:** Primary exploration actions, active navigation, and current map signal.
+- **Field Pine:** Growth, edible-listed state, selected lenses, and positive review state.
 
 ### Secondary
 
@@ -117,10 +119,10 @@ The palette combines deep evergreen authority with cool neutral surfaces, clear 
 
 ## 3. Typography
 
-**Display Font:** Inter (with system sans-serif fallback)
-**Body Font:** Inter (with system sans-serif fallback)
+**Editorial Font:** Libre Baskerville (with Baskerville and Georgia fallbacks)
+**Product Font:** Avenir Next (with Segoe UI and system sans-serif fallbacks)
 
-**Character:** One humanist sans family keeps the tool readable and familiar. Weight and spacing establish hierarchy without introducing editorial display type into operational surfaces.
+**Character:** The serif belongs to collection titles, species names, and interpretive headings. Product controls, data, labels, forms, and navigation remain in the humanist sans family for speed and outdoor legibility.
 
 ### Hierarchy
 
@@ -151,9 +153,9 @@ The system is flat by default. Borders and tonal layers organize persistent pane
 ### Buttons
 
 - **Shape:** Compact, gently curved corners (8px).
-- **Primary:** Field Pine with white text and 10px by 16px padding.
-- **Hover / Focus:** Deepen to Field Pine Deep; use a visible 2px focus ring with 2px offset.
-- **Secondary / Ghost:** White or transparent with Ink text and a structural Border outline where needed.
+- **Primary:** Spore Coral with Ink text and 10px by 16px padding.
+- **Hover / Focus:** Deepen the coral tone; use a visible mineral-blue focus ring with 2px offset.
+- **Secondary / Ghost:** Surface or transparent with Ink text and a structural Border outline where needed.
 
 ### Chips
 
@@ -170,13 +172,13 @@ The system is flat by default. Borders and tonal layers organize persistent pane
 
 ### Inputs / Fields
 
-- **Style:** White surface, Border stroke, 8px corners, and 44px minimum height.
-- **Focus:** Field Pine border with a visible low-opacity ring.
+- **Style:** Museum Black surface, Border stroke, 4px corners, and 44px minimum height.
+- **Focus:** Mineral Blue border with a visible low-opacity ring.
 - **Error / Disabled:** Danger Red text and border for errors; Muted Surface with readable Muted Ink for disabled state.
 
 ### Navigation
 
-The top bar keeps the map and account routes visible. Active sections use Field Pine text and a quiet selected background. Mobile navigation collapses to icon-labeled commands and drawers while retaining 44px touch targets.
+The top bar keeps the map and account routes visible. Active sections use a Spore Coral underline and clear Ink text. Mobile navigation collapses to icon-labeled commands and drawers while retaining 44px touch targets.
 
 ### Guest Access Prompt
 

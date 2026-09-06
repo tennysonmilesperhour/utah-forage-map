@@ -11,12 +11,12 @@ const CLUSTER_COUNT_LAYER = 'observation-cluster-count'
 const POINT_LAYER = 'observation-points'
 
 const EDIBILITY_COLORS = {
-  edible: '#8da67f',
-  choice: '#a7b991',
-  caution: '#d3a95c',
-  inedible: '#8f8981',
-  poisonous: '#d5664e',
-  deadly: '#a8332b',
+  edible: '#83a978',
+  choice: '#a9c986',
+  caution: '#e0b45f',
+  inedible: '#8e9a94',
+  poisonous: '#df765d',
+  deadly: '#b7433a',
 }
 
 function geojson(sightings) {
@@ -94,6 +94,7 @@ export default function MapView({
       minZoom: 0.3,
       maxBounds: [[-180, -85], [180, 85]],
       renderWorldCopies: false,
+      projection: 'globe',
     })
 
     map.addControl(new mapboxgl.NavigationControl(), 'top-right')
@@ -106,6 +107,13 @@ export default function MapView({
     map.addControl(scaleRef.current, 'bottom-right')
 
     map.on('load', () => {
+      map.setFog({
+        color: '#101715',
+        'high-color': '#1a2b29',
+        'horizon-blend': 0.08,
+        'space-color': '#050807',
+        'star-intensity': 0.16,
+      })
       map.addSource(SOURCE_ID, {
         type: 'geojson',
         data: geojson(sightingsRef.current),
@@ -119,10 +127,10 @@ export default function MapView({
         source: SOURCE_ID,
         filter: ['has', 'point_count'],
         paint: {
-          'circle-color': ['step', ['get', 'point_count'], '#b75c42', 50, '#96432f', 250, '#713124'],
+          'circle-color': ['step', ['get', 'point_count'], '#ca654b', 50, '#a84f3c', 250, '#78352f'],
           'circle-radius': ['step', ['get', 'point_count'], 17, 50, 21, 250, 26],
           'circle-stroke-width': 2,
-          'circle-stroke-color': '#f1ebe2',
+          'circle-stroke-color': '#f0f3e9',
           'circle-opacity': 0.92,
         },
       })
@@ -135,7 +143,7 @@ export default function MapView({
           'text-field': ['get', 'point_count_abbreviated'],
           'text-size': 12,
         },
-        paint: { 'text-color': '#fffaf2' },
+        paint: { 'text-color': '#f7f9f1' },
       })
       map.addLayer({
         id: POINT_LAYER,
@@ -155,7 +163,7 @@ export default function MapView({
             '#d3a95c',
           ],
           'circle-stroke-width': 2,
-          'circle-stroke-color': '#f1ebe2',
+          'circle-stroke-color': '#f0f3e9',
         },
       })
       onBoundsChangeRef.current?.(roundedBounds(map))

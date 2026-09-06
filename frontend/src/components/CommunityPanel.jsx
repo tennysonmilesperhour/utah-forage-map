@@ -22,6 +22,32 @@ function ExternalAction({ href, children }) {
   )
 }
 
+function ActivityRecord({ item, onViewSighting, featured = false }) {
+  return (
+    <article className={`activity-row ${featured ? 'activity-row-featured' : ''}`}>
+      {item.photo_url ? (
+        <img src={item.photo_url} alt={`${item.species?.common_name ?? 'Mushroom'} field observation`} loading={featured ? 'eager' : 'lazy'} />
+      ) : (
+        <div className="find-icon" aria-hidden="true">{item.species?.common_name?.slice(0, 1) ?? '?'}</div>
+      )}
+      <div className="activity-copy">
+        <div className="find-title-row">
+          <div><h4>{item.species?.common_name ?? 'Unknown mushroom'}</h4><p className="latin-name">{item.species?.latin_name}</p></div>
+          <span className="status-reviewed"><ShieldCheck size={12} aria-hidden="true" /> Reviewed</span>
+        </div>
+        <p className="activity-meta">
+          <time dateTime={item.found_on}>{formatDate(item.found_on)}</time>
+          <span>{item.place_name ?? 'Approximate map location'}</span>
+          <span>{item.source}</span>
+        </p>
+      </div>
+      <button className="button button-secondary view-map-button" type="button" onClick={() => onViewSighting(item)}>
+        <MapPin size={16} aria-hidden="true" /> View on map
+      </button>
+    </article>
+  )
+}
+
 export default function CommunityPanel({
   portal = {}, loading, initialView, user, onClose, onNavigate, onViewSighting,
   onAddFind, onCreateAccount,
@@ -107,30 +133,9 @@ export default function CommunityPanel({
                 </div>
                 {loading && <p className="loading-line" role="status">Loading community activity...</p>}
                 {!loading && activity.length === 0 && <p className="empty-line">No dated, reviewed observations have been published yet.</p>}
+                {activity[0] && <ActivityRecord item={activity[0]} onViewSighting={onViewSighting} featured />}
                 <div className="activity-list">
-                  {activity.map(item => (
-                    <article key={item.id} className="activity-row">
-                      {item.photo_url ? (
-                        <img src={item.photo_url} alt={`${item.species?.common_name ?? 'Mushroom'} field observation`} loading="lazy" />
-                      ) : (
-                        <div className="find-icon" aria-hidden="true">{item.species?.common_name?.slice(0, 1) ?? '?'}</div>
-                      )}
-                      <div className="activity-copy">
-                        <div className="find-title-row">
-                          <div><h4>{item.species?.common_name ?? 'Unknown mushroom'}</h4><p className="latin-name">{item.species?.latin_name}</p></div>
-                          <span className="status-reviewed"><ShieldCheck size={12} aria-hidden="true" /> Reviewed</span>
-                        </div>
-                        <p className="activity-meta">
-                          <time dateTime={item.found_on}>{formatDate(item.found_on)}</time>
-                          <span>{item.place_name ?? 'Approximate map location'}</span>
-                          <span>{item.source}</span>
-                        </p>
-                      </div>
-                      <button className="button button-secondary view-map-button" type="button" onClick={() => onViewSighting(item)}>
-                        <MapPin size={16} aria-hidden="true" /> View on map
-                      </button>
-                    </article>
-                  ))}
+                  {activity.slice(1).map(item => <ActivityRecord key={item.id} item={item} onViewSighting={onViewSighting} />)}
                 </div>
               </section>
 
@@ -148,31 +153,33 @@ export default function CommunityPanel({
                 <button className="button button-primary" type="button" onClick={onAddFind}><NotebookPen size={17} aria-hidden="true" /> Share a find</button>
               </section>
 
-              <section className="community-section">
-                <div className="community-section-heading"><CalendarDays size={18} aria-hidden="true" /><div><h3>Upcoming events</h3><p>Published community field activities</p></div></div>
-                <div className="community-list divided-list">
-                  {events.map(event => (
-                    <article key={event.id} className="connection-row">
-                      <time dateTime={event.starts_on}>{formatDate(event.starts_on, { month: 'short', day: 'numeric' })}</time>
-                      <div><h4>{event.title}</h4><p>{event.location_name}{event.region ? `, ${event.region}` : ''}</p>{event.description && <p>{event.description}</p>}<ExternalAction href={event.url}>Event details</ExternalAction></div>
-                    </article>
-                  ))}
-                  {!loading && events.length === 0 && <p className="empty-line">No future events are listed right now.</p>}
-                </div>
-              </section>
+              <div className="connections-layout">
+                <section className="community-section">
+                  <div className="community-section-heading"><CalendarDays size={18} aria-hidden="true" /><div><h3>Upcoming events</h3><p>Published community field activities</p></div></div>
+                  <div className="community-list divided-list">
+                    {events.map(event => (
+                      <article key={event.id} className="connection-row">
+                        <time dateTime={event.starts_on}>{formatDate(event.starts_on, { month: 'short', day: 'numeric' })}</time>
+                        <div><h4>{event.title}</h4><p>{event.location_name}{event.region ? `, ${event.region}` : ''}</p>{event.description && <p>{event.description}</p>}<ExternalAction href={event.url}>Event details</ExternalAction></div>
+                      </article>
+                    ))}
+                    {!loading && events.length === 0 && <p className="empty-line">No future events are listed right now.</p>}
+                  </div>
+                </section>
 
-              <section className="community-section">
-                <div className="community-section-heading"><Users size={18} aria-hidden="true" /><div><h3>Foraging groups</h3><p>Independent groups and local communities</p></div></div>
-                <div className="community-list divided-list">
-                  {clubs.map(club => (
-                    <article key={club.id} className="group-row">
-                      <div><h4>{club.name}</h4><p>{club.region}{club.meeting_cadence ? ` / ${club.meeting_cadence}` : ''}</p>{club.description && <p>{club.description}</p>}</div>
-                      <ExternalAction href={club.contact_url}>Visit group</ExternalAction>
-                    </article>
-                  ))}
-                  {!loading && clubs.length === 0 && <p className="empty-line">No groups are listed yet.</p>}
-                </div>
-              </section>
+                <section className="community-section">
+                  <div className="community-section-heading"><Users size={18} aria-hidden="true" /><div><h3>Foraging groups</h3><p>Independent groups and local communities</p></div></div>
+                  <div className="community-list divided-list">
+                    {clubs.map(club => (
+                      <article key={club.id} className="group-row">
+                        <div><h4>{club.name}</h4><p>{club.region}{club.meeting_cadence ? ` / ${club.meeting_cadence}` : ''}</p>{club.description && <p>{club.description}</p>}</div>
+                        <ExternalAction href={club.contact_url}>Visit group</ExternalAction>
+                      </article>
+                    ))}
+                    {!loading && clubs.length === 0 && <p className="empty-line">No groups are listed yet.</p>}
+                  </div>
+                </section>
+              </div>
             </>
           )}
 

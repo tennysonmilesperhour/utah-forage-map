@@ -18,6 +18,18 @@ import { trackPageView } from './lib/googleTag'
 const EDIBLE_GROUP = new Set(['choice', 'edible'])
 const HAZARD_GROUP = new Set(['poisonous', 'deadly'])
 const CAUTION_GROUP = new Set(['caution'])
+const REGION_SPECIMEN_SLUGS = {
+  'pacific-northwest': 'western-matsutake',
+  'rocky-mountains': 'rocky-mountain-porcini',
+  'northeastern-north-america': 'hen-of-the-woods',
+  'southeastern-north-america': 'chicken-of-the-woods',
+  'western-europe': 'golden-chanterelle',
+  'northern-europe': 'fly-agaric',
+  'east-asia': 'oyster-mushroom',
+  'southern-australia': 'saffron-milk-cap',
+  'new-zealand': 'turkey-tail',
+  'southern-south-america': 'black-trumpet',
+}
 
 function formatDate(value) {
   if (!value) return 'No dated observation'
@@ -352,13 +364,20 @@ function RegionIndexPage() {
         <section className="region-index" aria-label="Regional mushroom collections">
           {regions.map((region, index) => {
             const summary = summaryBySlug[region.slug]
+            const specimen = speciesBySlug[REGION_SPECIMEN_SLUGS[region.slug]]
             return (
               <article className="region-label" key={region.slug}>
-                <span className="region-number">COL. {String(index + 1).padStart(2, '0')}</span>
-                <h2><a href={`/regions/${region.slug}`}>{region.name}</a></h2>
-                <p>{region.description}</p>
-                <dl><div><dt>Past 14 days</dt><dd>{summary?.observations_14d ?? '...'}</dd></div><div><dt>90-day species</dt><dd>{summary?.species_count ?? '...'}</dd></div></dl>
-                <a className="region-label-link" href={`/regions/${region.slug}`}>Open field collection <ArrowRight size={15} /></a>
+                <a className="region-label-image" href={`/regions/${region.slug}`} tabIndex="-1" aria-hidden="true">
+                  <img src={specimen.image.url} alt="" loading={index < 4 ? 'eager' : 'lazy'} />
+                  <span>{region.hemisphere === 'north' ? 'Northern calendar' : 'Southern calendar'}</span>
+                </a>
+                <div className="region-label-copy">
+                  <p className="region-number">Habitat collection</p>
+                  <h2><a href={`/regions/${region.slug}`}>{region.name}</a></h2>
+                  <p>{region.description}</p>
+                  <dl><div><dt>Past 14 days</dt><dd>{summary?.observations_14d ?? '...'}</dd></div><div><dt>90-day species</dt><dd>{summary?.species_count ?? '...'}</dd></div></dl>
+                  <a className="region-label-link" href={`/regions/${region.slug}`}>Open field collection <ArrowRight size={15} /></a>
+                </div>
               </article>
             )
           })}
@@ -376,13 +395,18 @@ function OutlookIcon({ status }) {
 
 function RegionPage({ region, user }) {
   const { data, isLoading } = useRegion(region.slug)
+  const specimen = speciesBySlug[REGION_SPECIMEN_SLUGS[region.slug]]
 
   return (
     <GuideLayout section="regions">
       <main className="region-page">
         <nav className="guide-breadcrumbs" aria-label="Breadcrumb"><a href="/regions">Regions</a><span>/</span><span aria-current="page">{region.name}</span></nav>
         <header className="region-page-header">
-          <div><p className="eyebrow"><Globe2 size={16} aria-hidden="true" /> Regional field collection</p><h1>{region.name}</h1><p>{region.description}</p></div>
+          <figure className="region-page-figure">
+            <img src={specimen.image.url} alt={`${specimen.common_name} field specimen`} />
+            <figcaption>{specimen.common_name} / {specimen.latin_name}</figcaption>
+          </figure>
+          <div className="region-page-intro"><p className="eyebrow"><Globe2 size={16} aria-hidden="true" /> Regional field collection</p><h1>{region.name}</h1><p>{region.description}</p></div>
           <div className="region-header-actions"><a className="button button-primary" href={`/?region=${region.slug}`}><MapPin size={16} /> Open this region on the map</a><FollowButton user={user} kind="region" regionSlug={region.slug} label={region.name} /></div>
         </header>
 
