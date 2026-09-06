@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { BookOpen, ChevronDown, Globe2, Library, LogIn, LogOut, Map, NotebookPen, UserPlus, Users } from 'lucide-react'
+import { BookOpen, ChevronDown, Globe2, Leaf, Library, LogIn, LogOut, Map, NotebookPen, UserPlus, Users } from 'lucide-react'
 
 export default function AppHeader({
   user,
@@ -29,6 +29,11 @@ export default function AppHeader({
           <p>Mushroom Forage Map</p>
         </div>
       </a>
+
+      <div className="world-switch fungi-world-switch" aria-label="Foraging collection">
+        <a className="active" href="/" aria-current="page"><span aria-hidden="true">F</span> Fungi</a>
+        <a href="/herbs"><Leaf size={14} aria-hidden="true" /> Herbs</a>
+      </div>
 
       <nav className="primary-nav" aria-label="Primary navigation">
         <a className={`nav-item ${activeView === 'map' ? 'active' : ''}`} href="/" onClick={event => navigate(event, 'map')} aria-current={activeView === 'map' ? 'page' : undefined}><Map size={17} aria-hidden="true" /> Field map</a>

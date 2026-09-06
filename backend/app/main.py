@@ -1,10 +1,12 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
 import json
 import math
 from datetime import date, datetime, timedelta
 import os
 from typing import Optional
-from uuid import UUID
+from uuid import UUID, uuid4
 
 import httpx
 from fastapi import BackgroundTasks, Cookie, Depends, FastAPI, Header, HTTPException, Query, Request, Response, status
@@ -13,12 +15,14 @@ from sqlalchemy import func, or_
 from sqlalchemy.orm import Session, joinedload
 
 from app.database import Base, engine, get_db
-from app.email_service import send_account_email, send_digest_email
+from app.email_service import send_account_email, send_digest_email, send_herb_watch_email
 from app.models import (
     AccountToken, AlertSubscription, CommunityEvent, CommunityFind, CrawledSource, ForageClub,
-    GuideRequestVote, ObservationPhoto, RateLimitEvent, ResourceGuide, SavedLocation,
-    SeasonalityCache, Sighting, SourceSync, Species, User, UserSession, Verification,
+    GuideRequestVote, HerbInventoryItem, HerbWatchZone, HerbWishlistItem, ObservationPhoto,
+    RateLimitEvent, ResourceGuide, SavedLocation, SeasonalityCache, Sighting, SourceSync,
+    Species, User, UserSession, Verification,
 )
+from app.herbs import HERB_PROFILES, HERBS_BY_SLUG, harvest_months, moon_context, zone_readiness
 from app.privacy import MAX_OFFSET_MILES, MILES_PER_DEGREE, normalize_longitude, public_sighting
 from app.regions import REGIONS, get_region
 from app.schemas import (
@@ -28,7 +32,9 @@ from app.schemas import (
     PasswordResetConfirm, RegionDetailRead, RegionSummaryRead, ResourceGuideRead, ReviewCreate,
     SavedLocationCreate, SavedLocationRead, SavedLocationUpdate, SeasonalityRead, SessionRead,
     SightingCreate, SightingRead, SightingRecordRead, SightingUpdate, SpeciesRead, TokenRequest,
-    UserCreate, UserLogin, UserRead, VerificationChecks, VerificationRead,
+    UserCreate, UserLogin, UserRead, VerificationChecks, VerificationRead, HerbAlmanacRead,
+    HerbInventoryCreate, HerbInventoryRead, HerbInventoryUpdate, HerbWatchZoneCreate,
+    HerbWatchZoneRead, HerbWatchZoneUpdate, HerbWishlistCreate, HerbWishlistRead,
 )
 from app.security import DEFAULT_SECRET_KEY, SECRET_KEY, hash_identifier, hash_token, new_token, passwords
 
@@ -59,6 +65,7 @@ INATURALIST_HEADERS = {
     "Accept": "application/json",
     "User-Agent": "MushroomForageMap/2.1 (https://worldmushroomforaging.org)",
 }
+OPEN_METEO_URL = "https://api.open-meteo.com/v1/forecast"
 
 if ENVIRONMENT == "production" and SECRET_KEY == DEFAULT_SECRET_KEY:
     raise RuntimeError("SECRET_KEY must be set in production")
@@ -138,6 +145,16 @@ def sync_photo_urls(sighting: Sighting, urls: list[str]):
     sighting.photo_url = unique_urls[0] if unique_urls else None
 
 
+def sighting_radius_query(query, latitude: float, longitude: float, radius_km: float):
+    latitude_delta = radius_km / 111.0
+    longitude_scale = max(math.cos(math.radians(latitude)), 0.2)
+    longitude_delta = radius_km / (111.0 * longitude_scale)
+    return query.filter(
+        Sighting.latitude.between(latitude - latitude_delta, latitude + latitude_delta),
+        Sighting.longitude.between(longitude - longitude_delta, longitude + longitude_delta),
+    )
+
+
 def alert_subscription_read(subscription: AlertSubscription, db: Session):
     region = get_region(subscription.region_slug) if subscription.region_slug else None
     activity = db.query(Sighting).filter(
@@ -145,14 +162,46 @@ def alert_subscription_read(subscription: AlertSubscription, db: Session):
         Sighting.location_privacy != "private",
         Sighting.found_on >= date.today() - timedelta(days=7),
     )
-    if subscription.kind == "species":
+    if subscription.kind in {"species", "zone"}:
         activity = activity.filter(Sighting.species_id == subscription.species_id)
+    if subscription.kind == "zone":
+        activity = sighting_radius_query(
+            activity, subscription.latitude, subscription.longitude, subscription.radius_km
+        )
     elif region:
         west, south, east, north = region["bounds"]
         activity = activity.filter(
             Sighting.latitude.between(south, north),
             Sighting.longitude.between(west, east),
         )
+    recent_count = activity.count()
+    weather = herb_weather(subscription.latitude, subscription.longitude) if (
+        subscription.kind == "zone" and subscription.watch_weather
+    ) else None
+    peak_months = {
+        int(value) for value in (subscription.species.peak_months or "").split(",") if value.strip().isdigit()
+    } if subscription.species else set()
+    moon = moon_context()
+    readiness = None
+    if subscription.kind == "zone":
+        season_ready = not peak_months or date.today().month in peak_months
+        weather_values = (
+            weather.get("precipitation"), weather.get("rain_24h"), weather.get("wind_speed")
+        ) if weather else (None, None, None)
+        weather_ready = None if any(value is None for value in weather_values) else (
+            weather_values[0] <= 0.2 and weather_values[1] <= 2.5 and weather_values[2] <= 40
+        )
+        moon_ready = subscription.moon_phase is None or moon["name"] == subscription.moon_phase
+        readiness = {
+            "ready": season_ready and recent_count > 0 and (
+                not subscription.watch_weather or weather_ready is True
+            ) and moon_ready,
+            "season_ready": season_ready,
+            "recent_activity": recent_count > 0,
+            "weather_ready": weather_ready,
+            "moon_ready": moon_ready,
+            "moon": moon,
+        }
     return {
         "id": subscription.id,
         "kind": subscription.kind,
@@ -161,11 +210,80 @@ def alert_subscription_read(subscription: AlertSubscription, db: Session):
         "species_name": subscription.species.common_name if subscription.species else None,
         "region_slug": subscription.region_slug,
         "region_name": region["name"] if region else None,
+        "name": subscription.name,
+        "latitude": subscription.latitude,
+        "longitude": subscription.longitude,
+        "radius_km": subscription.radius_km,
+        "intention": subscription.intention,
+        "why": subscription.why,
+        "watch_weather": subscription.watch_weather,
+        "moon_phase": subscription.moon_phase,
         "enabled": subscription.enabled,
         "created_at": subscription.created_at,
         "last_sent_at": subscription.last_sent_at,
-        "recent_observations_7d": activity.count(),
+        "recent_observations_7d": recent_count,
         "latest_observed_on": activity.with_entities(func.max(Sighting.found_on)).scalar(),
+        "readiness": readiness,
+    }
+
+
+def herb_weather(latitude: float, longitude: float) -> dict | None:
+    try:
+        response = httpx.get(
+            OPEN_METEO_URL,
+            params={
+                "latitude": latitude,
+                "longitude": longitude,
+                "current": "temperature_2m,precipitation,weather_code,wind_speed_10m",
+                "daily": "precipitation_sum,temperature_2m_max,temperature_2m_min",
+                "past_days": 1,
+                "forecast_days": 3,
+                "timezone": "auto",
+            },
+            timeout=8,
+        )
+        response.raise_for_status()
+        data = response.json()
+        daily = data.get("daily", {})
+        rain = daily.get("precipitation_sum", [])
+        current = data.get("current", {})
+        return {
+            "temperature": current.get("temperature_2m"),
+            "precipitation": current.get("precipitation", 0),
+            "wind_speed": current.get("wind_speed_10m"),
+            "weather_code": current.get("weather_code"),
+            "rain_24h": rain[0] if rain else None,
+            "rain_next_48h": round(sum(value or 0 for value in rain[1:3]), 1) if len(rain) > 1 else None,
+            "temperature_max": daily.get("temperature_2m_max", [None, None])[1] if len(daily.get("temperature_2m_max", [])) > 1 else None,
+            "temperature_min": daily.get("temperature_2m_min", [None, None])[1] if len(daily.get("temperature_2m_min", [])) > 1 else None,
+            "timezone": data.get("timezone"),
+        }
+    except (httpx.HTTPError, ValueError, TypeError):
+        return None
+
+
+def herb_watch_zone_read(zone: HerbWatchZone, include_weather: bool = True) -> dict:
+    profile = HERBS_BY_SLUG[zone.herb_slug]
+    weather = herb_weather(zone.latitude, zone.longitude) if include_weather and zone.watch_weather else None
+    return {
+        "id": zone.id,
+        "name": zone.name,
+        "herb_slug": zone.herb_slug,
+        "herb_name": profile["name"],
+        "herb_latin_name": profile["latin_name"],
+        "intention": zone.intention,
+        "why": zone.why,
+        "latitude": zone.latitude,
+        "longitude": zone.longitude,
+        "radius_km": zone.radius_km,
+        "hemisphere": zone.hemisphere,
+        "watch_season": zone.watch_season,
+        "watch_moon": zone.watch_moon,
+        "watch_weather": zone.watch_weather,
+        "enabled": zone.enabled,
+        "created_at": zone.created_at,
+        "last_notified_at": zone.last_notified_at,
+        "readiness": zone_readiness(zone, weather),
     }
 
 
@@ -1147,22 +1265,21 @@ def create_alert(
 ):
     species = None
     region_slug = None
-    if payload.kind == "species":
+    if payload.kind in {"species", "zone"}:
         species = db.query(Species).filter(
             Species.inaturalist_taxon_id == payload.species_taxon_id
         ).one_or_none()
         if species is None:
             raise HTTPException(status_code=404, detail="Species not found")
-        target_key = f"species:{species.inaturalist_taxon_id}"
-    else:
+        target_key = f"species:{species.inaturalist_taxon_id}" if payload.kind == "species" else f"zone:{uuid4()}"
+    elif payload.kind == "region":
         region = get_region(payload.region_slug)
         if region is None:
             raise HTTPException(status_code=404, detail="Region not found")
         region_slug = region["slug"]
         target_key = f"region:{region_slug}"
-    subscription = db.query(AlertSubscription).filter(
-        AlertSubscription.user_id == user.id,
-        AlertSubscription.target_key == target_key,
+    subscription = None if payload.kind == "zone" else db.query(AlertSubscription).filter(
+        AlertSubscription.user_id == user.id, AlertSubscription.target_key == target_key,
     ).one_or_none()
     if subscription is None:
         subscription = AlertSubscription(
@@ -1171,6 +1288,14 @@ def create_alert(
             kind=payload.kind,
             species_id=species.id if species else None,
             region_slug=region_slug,
+            name=payload.name,
+            latitude=payload.latitude,
+            longitude=payload.longitude,
+            radius_km=payload.radius_km,
+            intention=payload.intention,
+            why=payload.why,
+            watch_weather=payload.watch_weather,
+            moon_phase=payload.moon_phase,
         )
         db.add(subscription)
     else:
@@ -1195,7 +1320,8 @@ def update_alert(
     ).one_or_none()
     if subscription is None:
         raise HTTPException(status_code=404, detail="Alert not found")
-    subscription.enabled = payload.enabled
+    for key, value in payload.model_dump(exclude_unset=True).items():
+        setattr(subscription, key, value)
     db.commit()
     db.refresh(subscription)
     return alert_subscription_read(subscription, db)
@@ -1220,6 +1346,172 @@ def delete_saved_location(saved_id: UUID, user: User = Depends(get_current_user)
     if saved is None or saved.user_id != user.id:
         raise HTTPException(status_code=404, detail="Saved place not found")
     db.delete(saved)
+    db.commit()
+
+
+@app.get("/api/herbs/almanac", response_model=HerbAlmanacRead)
+def get_herb_almanac(
+    latitude: Optional[float] = Query(default=None, ge=-90, le=90),
+    longitude: Optional[float] = Query(default=None, ge=-180, le=180),
+):
+    hemisphere = "south" if latitude is not None and latitude < 0 else "north"
+    weather = herb_weather(latitude, longitude) if latitude is not None and longitude is not None else None
+    month = date.today().month
+    herbs = [{
+        **profile,
+        "harvest_months": harvest_months(profile, hemisphere),
+        "in_season": month in harvest_months(profile, hemisphere),
+    } for profile in HERB_PROFILES]
+    return {
+        "generated_at": now(),
+        "hemisphere": hemisphere,
+        "moon": moon_context(),
+        "weather": weather,
+        "herbs": herbs,
+    }
+
+
+@app.get("/api/account/herb-watch-zones", response_model=list[HerbWatchZoneRead])
+def list_herb_watch_zones(user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    zones = db.query(HerbWatchZone).filter(HerbWatchZone.user_id == user.id).order_by(
+        HerbWatchZone.created_at.desc()
+    ).limit(20).all()
+    return [herb_watch_zone_read(zone) for zone in zones]
+
+
+@app.post("/api/account/herb-watch-zones", response_model=HerbWatchZoneRead, status_code=201)
+def create_herb_watch_zone(
+    payload: HerbWatchZoneCreate,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    if payload.herb_slug not in HERBS_BY_SLUG:
+        raise HTTPException(status_code=404, detail="Herb not found")
+    if db.query(HerbWatchZone).filter(HerbWatchZone.user_id == user.id).count() >= 20:
+        raise HTTPException(status_code=400, detail="A field desk can hold up to 20 herb watch zones")
+    values = payload.model_dump()
+    values["hemisphere"] = "south" if payload.latitude < 0 else "north"
+    zone = HerbWatchZone(user_id=user.id, **values)
+    db.add(zone)
+    db.commit()
+    db.refresh(zone)
+    return herb_watch_zone_read(zone)
+
+
+@app.patch("/api/account/herb-watch-zones/{zone_id}", response_model=HerbWatchZoneRead)
+def update_herb_watch_zone(
+    zone_id: UUID,
+    payload: HerbWatchZoneUpdate,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    zone = db.get(HerbWatchZone, zone_id)
+    if zone is None or zone.user_id != user.id:
+        raise HTTPException(status_code=404, detail="Watch zone not found")
+    for key, value in payload.model_dump(exclude_unset=True).items():
+        setattr(zone, key, value)
+    db.commit()
+    db.refresh(zone)
+    return herb_watch_zone_read(zone)
+
+
+@app.delete("/api/account/herb-watch-zones/{zone_id}", status_code=204)
+def delete_herb_watch_zone(zone_id: UUID, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    zone = db.get(HerbWatchZone, zone_id)
+    if zone is None or zone.user_id != user.id:
+        raise HTTPException(status_code=404, detail="Watch zone not found")
+    db.delete(zone)
+    db.commit()
+
+
+@app.get("/api/account/herb-inventory", response_model=list[HerbInventoryRead])
+def list_herb_inventory(user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    return db.query(HerbInventoryItem).filter(HerbInventoryItem.user_id == user.id).order_by(
+        HerbInventoryItem.gathered_on.desc(), HerbInventoryItem.created_at.desc()
+    ).all()
+
+
+@app.post("/api/account/herb-inventory", response_model=HerbInventoryRead, status_code=201)
+def create_herb_inventory_item(
+    payload: HerbInventoryCreate,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    profile = HERBS_BY_SLUG.get(payload.herb_slug)
+    if profile is None:
+        raise HTTPException(status_code=404, detail="Herb not found")
+    item = HerbInventoryItem(user_id=user.id, herb_name=profile["name"], **payload.model_dump())
+    db.add(item)
+    db.commit()
+    db.refresh(item)
+    return item
+
+
+@app.patch("/api/account/herb-inventory/{item_id}", response_model=HerbInventoryRead)
+def update_herb_inventory_item(
+    item_id: UUID,
+    payload: HerbInventoryUpdate,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    item = db.get(HerbInventoryItem, item_id)
+    if item is None or item.user_id != user.id:
+        raise HTTPException(status_code=404, detail="Inventory item not found")
+    for key, value in payload.model_dump(exclude_unset=True).items():
+        setattr(item, key, value)
+    db.commit()
+    db.refresh(item)
+    return item
+
+
+@app.delete("/api/account/herb-inventory/{item_id}", status_code=204)
+def delete_herb_inventory_item(item_id: UUID, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    item = db.get(HerbInventoryItem, item_id)
+    if item is None or item.user_id != user.id:
+        raise HTTPException(status_code=404, detail="Inventory item not found")
+    db.delete(item)
+    db.commit()
+
+
+@app.get("/api/account/herb-wishlist", response_model=list[HerbWishlistRead])
+def list_herb_wishlist(user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    return db.query(HerbWishlistItem).filter(HerbWishlistItem.user_id == user.id).order_by(
+        HerbWishlistItem.created_at.desc()
+    ).all()
+
+
+@app.post("/api/account/herb-wishlist", response_model=HerbWishlistRead, status_code=201)
+def create_herb_wishlist_item(
+    payload: HerbWishlistCreate,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    profile = HERBS_BY_SLUG.get(payload.herb_slug)
+    if profile is None:
+        raise HTTPException(status_code=404, detail="Herb not found")
+    existing = db.query(HerbWishlistItem).filter(
+        HerbWishlistItem.user_id == user.id,
+        HerbWishlistItem.herb_slug == payload.herb_slug,
+    ).one_or_none()
+    if existing:
+        existing.intention = payload.intention
+        existing.priority = payload.priority
+        db.commit()
+        db.refresh(existing)
+        return existing
+    item = HerbWishlistItem(user_id=user.id, herb_name=profile["name"], **payload.model_dump())
+    db.add(item)
+    db.commit()
+    db.refresh(item)
+    return item
+
+
+@app.delete("/api/account/herb-wishlist/{item_id}", status_code=204)
+def delete_herb_wishlist_item(item_id: UUID, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    item = db.get(HerbWishlistItem, item_id)
+    if item is None or item.user_id != user.id:
+        raise HTTPException(status_code=404, detail="Wish-list item not found")
+    db.delete(item)
     db.commit()
 
 
@@ -1312,7 +1604,18 @@ def send_weekly_alerts(
                 Sighting.location_privacy != "private",
                 Sighting.found_on >= cutoff,
             )
-            if subscription.kind == "species":
+            zone_snapshot = None
+            if subscription.kind == "zone":
+                query = query.filter(Sighting.species_id == subscription.species_id)
+                query = sighting_radius_query(
+                    query, subscription.latitude, subscription.longitude, subscription.radius_km
+                )
+                zone_snapshot = alert_subscription_read(subscription, db)
+                if not zone_snapshot["readiness"]["ready"]:
+                    continue
+                label = subscription.name
+                path = f"/?taxon={subscription.species.inaturalist_taxon_id}"
+            elif subscription.kind == "species":
                 query = query.filter(Sighting.species_id == subscription.species_id)
                 label = subscription.species.common_name
                 path = f"/?taxon={subscription.species.inaturalist_taxon_id}"
@@ -1338,6 +1641,7 @@ def send_weekly_alerts(
                     "summary": (
                         f"{len(recent)} public observation{'s' if len(recent) != 1 else ''} "
                         f"in the past week. Recent finds include {species_names}."
+                        + (f" Your intention is {subscription.intention}." if zone_snapshot else "")
                     ),
                 })
         sent = send_digest_email(user.email, user.username, items) if items else False
@@ -1355,3 +1659,54 @@ def send_weekly_alerts(
         "activity_items": activity_items,
         "subscriptions_checked": checked,
     }
+
+
+@app.get("/api/cron/herb-alerts")
+def send_herb_watch_alerts(
+    authorization: Optional[str] = Header(None),
+    x_cron_secret: Optional[str] = Header(None),
+    db: Session = Depends(get_db),
+):
+    require_cron(authorization, x_cron_secret)
+    if not os.getenv("RESEND_API_KEY"):
+        return {"status": "skipped", "reason": "email_not_configured", "users_emailed": 0}
+    due_before = now() - timedelta(days=3)
+    zones = db.query(HerbWatchZone).options(joinedload(HerbWatchZone.user)).filter(
+        HerbWatchZone.enabled == True,
+        or_(HerbWatchZone.last_notified_at.is_(None), HerbWatchZone.last_notified_at <= due_before),
+    ).all()
+    by_user = {}
+    for zone in zones:
+        by_user.setdefault(zone.user_id, []).append(zone)
+
+    users_emailed = 0
+    zones_ready = 0
+    for user_zones in by_user.values():
+        user = user_zones[0].user
+        if not user or not user.is_active or not user.email_verified:
+            continue
+        ready = []
+        for zone in user_zones:
+            weather = herb_weather(zone.latitude, zone.longitude) if zone.watch_weather else None
+            status = zone_readiness(zone, weather)
+            if not status["ready"]:
+                continue
+            signals = ["season"]
+            if zone.watch_weather:
+                signals.append("dry local weather")
+            if zone.watch_moon:
+                signals.append(f"the traditional {status['moon']['name']} window")
+            ready.append({
+                "zone": zone,
+                "herb_name": status["profile"]["name"],
+                "zone_name": zone.name,
+                "intention": zone.intention,
+                "summary": f"{', '.join(signals).capitalize()} align today. {status['profile']['summary']}",
+            })
+        if ready and send_herb_watch_email(user.email, user.username, ready):
+            users_emailed += 1
+            zones_ready += len(ready)
+            for item in ready:
+                item["zone"].last_notified_at = now()
+    db.commit()
+    return {"status": "ok", "users_emailed": users_emailed, "zones_ready": zones_ready}

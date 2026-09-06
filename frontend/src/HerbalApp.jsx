@@ -1,0 +1,289 @@
+import { useEffect, useMemo, useState } from 'react'
+import {
+  Archive, BellRing, BookHeart, CalendarDays, Check, ChevronRight, CloudSun,
+  Compass, Flower2, Heart, Leaf, ListPlus, LocateFixed, LogIn, LogOut, Menu,
+  Minus, MoonStar, Plus, Search, ShieldAlert, ShoppingBasket, Sparkles,
+  Trash2, UserPlus, X,
+} from 'lucide-react'
+import AuthDialog from './components/AuthDialog'
+import { getApiError, useCurrentUser, useLogout } from './hooks/useAuth'
+import {
+  useCreateHerbInventory, useCreateHerbWatchZone, useCreateHerbWishlist,
+  useDeleteHerbInventory, useDeleteHerbWatchZone, useDeleteHerbWishlist,
+  useHerbAlmanac, useHerbInventory, useHerbWatchZones, useHerbWishlist,
+  useUpdateHerbInventory, useUpdateHerbWatchZone,
+} from './hooks/useHerbs'
+import { herbIntents, herbProfiles, harvestMonthsFor } from './data/herbs'
+import { lunarContext } from './lib/lunar'
+import { trackPageView } from './lib/googleTag'
+
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+const VIEWS = ['today', 'plants', 'watches', 'pantry']
+
+function dateLabel(value) {
+  return new Intl.DateTimeFormat(undefined, { dateStyle: 'medium' }).format(new Date(`${value}T12:00:00`))
+}
+
+function currentView() {
+  const view = new URLSearchParams(window.location.search).get('view')
+  return VIEWS.includes(view) ? view : 'today'
+}
+
+function weatherLabel(code) {
+  if (code == null) return 'Conditions unavailable'
+  if (code === 0) return 'Clear'
+  if (code <= 3) return 'Partly cloudy'
+  if (code <= 48) return 'Fog or low cloud'
+  if (code <= 67) return 'Rain nearby'
+  if (code <= 77) return 'Snow nearby'
+  if (code <= 82) return 'Rain showers'
+  return 'Storm conditions'
+}
+
+function HerbModeSwitch() {
+  return (
+    <div className="world-switch" aria-label="Foraging collection">
+      <a href="/"><span aria-hidden="true">F</span> Fungi</a>
+      <a className="active" href="/herbs" aria-current="page"><Leaf size={14} aria-hidden="true" /> Herbs</a>
+    </div>
+  )
+}
+
+function HerbalHeader({ view, user, authLoading, onNavigate, onAuth, onLogout }) {
+  const [menuOpen, setMenuOpen] = useState(false)
+  const links = [
+    ['today', <Compass size={17} aria-hidden="true" />, 'Today'],
+    ['plants', <Flower2 size={17} aria-hidden="true" />, 'Plant atlas'],
+    ['watches', <BellRing size={17} aria-hidden="true" />, 'Watch zones'],
+    ['pantry', <Archive size={17} aria-hidden="true" />, 'Pantry'],
+  ]
+  function choose(next) {
+    setMenuOpen(false)
+    onNavigate(next)
+  }
+  return (
+    <header className="herbal-header">
+      <a className="herbal-brand" href="/herbs" onClick={event => { event.preventDefault(); choose('today') }}>
+        <span className="herbal-sigil" aria-hidden="true"><Leaf size={22} /></span>
+        <span><strong>The Verdant Hours</strong><small>Herbal gathering almanac</small></span>
+      </a>
+      <HerbModeSwitch />
+      <nav className={menuOpen ? 'open' : ''} aria-label="Herbal navigation">
+        {links.map(([value, icon, label]) => <button className={view === value ? 'active' : ''} type="button" key={value} onClick={() => choose(value)}>{icon}{label}</button>)}
+      </nav>
+      <div className="herbal-account-actions">
+        <button className="herbal-menu-button" type="button" onClick={() => setMenuOpen(!menuOpen)} aria-label="Open herbal navigation"><Menu size={20} /></button>
+        {!authLoading && !user && <><button className="herb-text-button" type="button" onClick={() => onAuth('login')}><LogIn size={16} /> Sign in</button><button className="herb-solid-button" type="button" onClick={() => onAuth('register')}><UserPlus size={16} /> Join</button></>}
+        {!authLoading && user && <><button className="herb-user-button" type="button" onClick={() => choose('pantry')}><span>{user.username.slice(0, 1).toUpperCase()}</span>{user.username}</button><button className="herb-icon-button" type="button" onClick={onLogout} aria-label="Sign out" title="Sign out"><LogOut size={18} /></button></>}
+      </div>
+    </header>
+  )
+}
+
+function MoonDial({ moon }) {
+  const next = moon.nextQuarter ? new Intl.DateTimeFormat(undefined, { month: 'short', day: 'numeric' }).format(moon.nextQuarter) : 'soon'
+  return (
+    <section className="moon-observatory" aria-labelledby="moon-title">
+      <div className="moon-orbit" style={{ '--moon-turn': `${moon.angle}deg` }} aria-hidden="true">
+        <span className="orbit-star one" /><span className="orbit-star two" /><span className="orbit-star three" />
+        <span className="moon-disc"><i /></span>
+      </div>
+      <div className="moon-copy">
+        <p className="herb-kicker"><MoonStar size={15} /> Sky clock</p>
+        <h2 id="moon-title">{moon.phase}</h2>
+        <p className="moon-sign">Moon in {moon.sign} <span>Tropical zodiac</span></p>
+        <dl><div><dt>Illuminated</dt><dd>{Math.round(moon.illumination * 100)}%</dd></div><div><dt>Next quarter</dt><dd>{next}</dd></div></dl>
+        <p className="tradition-note"><Sparkles size={15} /> Traditional correspondence only. The astronomical position is calculated; harvest efficacy is not established.</p>
+      </div>
+    </section>
+  )
+}
+
+function WeatherReading({ weather, locating, hasLocation, onLocate }) {
+  if (!hasLocation) return (
+    <section className="weather-reading is-empty">
+      <CloudSun size={28} aria-hidden="true" />
+      <div><p className="herb-kicker">Local conditions</p><h2>Bring the weather into view</h2><p>Use an approximate device location to check rain, wind, and a practical dry gathering window. It is not saved until you create a watch zone.</p></div>
+      <button className="herb-outline-button" type="button" onClick={onLocate} disabled={locating}><LocateFixed size={16} /> {locating ? 'Locating...' : 'Use my location'}</button>
+    </section>
+  )
+  if (!weather) return <section className="weather-reading is-empty"><CloudSun size={28} /><div><p className="herb-kicker">Local conditions</p><h2>Weather reading unavailable</h2><p>The plant and sky almanac still works without it.</p></div></section>
+  const dry = weather.precipitation <= 0.2 && weather.rain_24h <= 1 && weather.wind_speed <= 35
+  return (
+    <section className="weather-reading">
+      <div className="weather-primary"><CloudSun size={29} /><span><strong>{Math.round(weather.temperature)}°</strong><small>{weatherLabel(weather.weather_code)}</small></span></div>
+      <div className="weather-metrics"><span><small>Last 24h rain</small><strong>{weather.rain_24h ?? '—'} mm</strong></span><span><small>Next 48h</small><strong>{weather.rain_next_48h ?? '—'} mm</strong></span><span><small>Wind</small><strong>{Math.round(weather.wind_speed)} km/h</strong></span></div>
+      <div className={`gathering-verdict ${dry ? 'ready' : 'hold'}`}><Check size={17} /><span><strong>{dry ? 'Dry window open' : 'Wait for a drier window'}</strong><small>{dry ? 'Gather after dew dries and before midday heat.' : 'Wet plants bruise easily and dry less reliably.'}</small></span></div>
+    </section>
+  )
+}
+
+function SeasonalLedger({ hemisphere, onOpen }) {
+  const month = new Date().getMonth() + 1
+  const inSeason = herbProfiles.filter(herb => harvestMonthsFor(herb, hemisphere).includes(month))
+  return (
+    <section className="seasonal-ledger">
+      <div className="herb-section-heading"><div><p className="herb-kicker"><CalendarDays size={15} /> Seasonal ledger</p><h2>What the calendar suggests now</h2></div><span>{hemisphere === 'south' ? 'Southern' : 'Northern'} hemisphere · {MONTHS[month - 1]}</span></div>
+      <div className="seasonal-list">
+        {inSeason.map(herb => <button type="button" key={herb.slug} onClick={() => onOpen(herb)}><img src={herb.image.url} alt="" /><span><strong>{herb.name}</strong><em>{herb.latin}</em><small>{herb.parts.join(' · ')}</small></span><ChevronRight size={17} /></button>)}
+      </div>
+      <p className="ledger-footnote">Season ranges are broad guides and shift with elevation, latitude, rainfall, and local ecology.</p>
+    </section>
+  )
+}
+
+function TodayView({ almanac, location, locating, moon, onLocate, onOpenPlant, onNavigate }) {
+  return (
+    <main className="herbal-main herbal-today">
+      <section className="herbal-intro">
+        <div><p className="herb-kicker">A field practice for the whole season</p><h1>Read the plant, the place, and the hour.</h1></div>
+        <p>Begin with identity, permission, weather, and plant condition. Add lunar tradition only when it gives your practice meaning.</p>
+      </section>
+      <MoonDial moon={moon} />
+      <WeatherReading weather={almanac?.weather} hasLocation={Boolean(location)} locating={locating} onLocate={onLocate} />
+      <SeasonalLedger hemisphere={almanac?.hemisphere ?? 'north'} onOpen={onOpenPlant} />
+      <section className="herb-callouts">
+        <button type="button" onClick={() => onNavigate('watches')}><BellRing size={23} /><span><strong>Set a watch zone</strong><small>Combine season, weather, and optional sky timing around a place and intention.</small></span><ChevronRight size={18} /></button>
+        <button type="button" onClick={() => onNavigate('pantry')}><ShoppingBasket size={23} /><span><strong>Open your pantry</strong><small>Record gathered material, quantities, preparations, and what you hope to find next.</small></span><ChevronRight size={18} /></button>
+      </section>
+    </main>
+  )
+}
+
+function PlantDetail({ herb, hemisphere, onClose, onWatch, onWish }) {
+  return (
+    <aside className="herb-specimen" aria-label={`${herb.name} field notes`}>
+      <button className="herb-specimen-close" type="button" onClick={onClose} aria-label="Close plant notes"><X size={19} /></button>
+      <figure><img src={herb.image.url} alt={`${herb.name} growing in the field`} /><figcaption><a href={herb.image.source} target="_blank" rel="noreferrer">{herb.image.credit}</a></figcaption></figure>
+      <div className="herb-specimen-copy"><p className="herb-kicker">{herb.family}</p><h2>{herb.name}</h2><p className="herb-latin">{herb.latin}</p>
+        <div className="harvest-months" aria-label="Typical harvest months">{MONTHS.map((month, index) => <span className={harvestMonthsFor(herb, hemisphere).includes(index + 1) ? 'active' : ''} key={month}>{month}</span>)}</div>
+        <dl className="specimen-notes"><div><dt>Field marks</dt><dd>{herb.fieldMarks}</dd></div><div><dt>Habitat</dt><dd>{herb.habitat}</dd></div><div><dt>Harvest</dt><dd>{herb.harvest}</dd></div><div><dt>Stewardship</dt><dd>{herb.stewardship}</dd></div></dl>
+        <div className="herb-caution"><ShieldAlert size={18} /><span><strong>Before use</strong>{herb.caution}</span></div>
+        <div className="herb-tradition"><MoonStar size={18} /><span><strong>Traditional sky note</strong>{herb.tradition} Preferred traditional window: {herb.moon.join(' or ')}.</span></div>
+        <div className="specimen-actions"><button className="herb-solid-button" type="button" onClick={() => onWatch(herb)}><BellRing size={16} /> Watch this plant</button><button className="herb-outline-button" type="button" onClick={() => onWish(herb)}><Heart size={16} /> Add to wish list</button></div>
+      </div>
+    </aside>
+  )
+}
+
+function PlantsView({ hemisphere, selected, onSelect, onClose, onWatch, onWish }) {
+  const [query, setQuery] = useState('')
+  const [part, setPart] = useState('All parts')
+  const parts = ['All parts', ...new Set(herbProfiles.flatMap(herb => herb.parts))]
+  const visible = herbProfiles.filter(herb => `${herb.name} ${herb.latin} ${herb.habitat}`.toLowerCase().includes(query.toLowerCase()) && (part === 'All parts' || herb.parts.includes(part)))
+  return (
+    <main className="herbal-main plant-atlas-main">
+      <section className="atlas-heading"><div><p className="herb-kicker">Twelve first monographs</p><h1>The gathering atlas</h1></div><p>Field characters, harvest windows, clean-site cautions, and stewardship precede every traditional association.</p></section>
+      <div className="herb-atlas-tools"><label><Search size={18} /><span className="sr-only">Search plants</span><input type="search" placeholder="Search plant or habitat" value={query} onChange={event => setQuery(event.target.value)} /></label><select value={part} onChange={event => setPart(event.target.value)} aria-label="Filter by gathered part">{parts.map(value => <option key={value}>{value}</option>)}</select></div>
+      <section className="herb-folio" aria-label="Herbal field guides">
+        {visible.map((herb, index) => <button type="button" className={index % 5 === 0 ? 'folio-feature' : ''} onClick={() => onSelect(herb)} key={herb.slug}><img src={herb.image.url} alt={`${herb.name} in habitat`} loading="lazy" /><span className="folio-copy"><small>{herb.family}</small><strong>{herb.name}</strong><em>{herb.latin}</em><span>{herb.parts.join(' · ')}</span></span></button>)}
+      </section>
+      {selected && <PlantDetail herb={selected} hemisphere={hemisphere} onClose={onClose} onWatch={onWatch} onWish={onWish} />}
+    </main>
+  )
+}
+
+function GuestGate({ title, copy, onAuth }) {
+  return <section className="herb-guest-gate"><span><BookHeart size={28} /></span><div><p className="herb-kicker">Private field account</p><h2>{title}</h2><p>{copy}</p></div><div><button className="herb-solid-button" type="button" onClick={() => onAuth('register')}><UserPlus size={16} /> Create account</button><button className="herb-outline-button" type="button" onClick={() => onAuth('login')}><LogIn size={16} /> Sign in</button></div></section>
+}
+
+function WatchForm({ location, presetHerb, onLocate, locating, onSubmit, busy }) {
+  const [form, setForm] = useState({ name: '', herb_slug: presetHerb?.slug ?? herbProfiles[0].slug, intention: herbIntents[0], why: '', latitude: location?.latitude ?? '', longitude: location?.longitude ?? '', radius_km: 25, watch_season: true, watch_weather: true, watch_moon: false })
+  async function submit(event) {
+    event.preventDefault()
+    await onSubmit({ ...form, latitude: Number(form.latitude), longitude: Number(form.longitude), radius_km: Number(form.radius_km), why: form.why || null })
+    setForm(current => ({ ...current, name: '', why: '' }))
+  }
+  return (
+    <form className="watch-form" onSubmit={submit}>
+      <div className="watch-form-heading"><p className="herb-kicker">New watch zone</p><h2>Name a place and a purpose</h2></div>
+      <label>Zone name<input required maxLength="120" placeholder="Creek path, home valley..." value={form.name} onChange={event => setForm({ ...form, name: event.target.value })} /></label>
+      <div className="herb-paired-fields"><label>Plant<select value={form.herb_slug} onChange={event => setForm({ ...form, herb_slug: event.target.value })}>{herbProfiles.map(herb => <option value={herb.slug} key={herb.slug}>{herb.name}</option>)}</select></label><label>Intention<select value={form.intention} onChange={event => setForm({ ...form, intention: event.target.value })}>{herbIntents.map(value => <option key={value}>{value}</option>)}</select></label></div>
+      <label>Why this matters to you<textarea rows="3" maxLength="500" placeholder="A note to your future self, not a medical claim" value={form.why} onChange={event => setForm({ ...form, why: event.target.value })} /></label>
+      <div className="watch-location-heading"><span>Approximate center</span><button type="button" onClick={onLocate} disabled={locating}><LocateFixed size={15} /> {locating ? 'Locating...' : 'Use my location'}</button></div>
+      <div className="herb-paired-fields"><label>Latitude<input required type="number" step="any" min="-90" max="90" value={form.latitude} onChange={event => setForm({ ...form, latitude: event.target.value })} /></label><label>Longitude<input required type="number" step="any" min="-180" max="180" value={form.longitude} onChange={event => setForm({ ...form, longitude: event.target.value })} /></label></div>
+      <label>Watch radius <span>{form.radius_km} km</span><input type="range" min="1" max="250" value={form.radius_km} onChange={event => setForm({ ...form, radius_km: event.target.value })} /></label>
+      <fieldset className="signal-choices"><legend>Readiness signals</legend><label><input type="checkbox" checked={form.watch_season} onChange={event => setForm({ ...form, watch_season: event.target.checked })} /><span><CalendarDays size={17} /><strong>Growing season</strong><small>Broad regional harvest months</small></span></label><label><input type="checkbox" checked={form.watch_weather} onChange={event => setForm({ ...form, watch_weather: event.target.checked })} /><span><CloudSun size={17} /><strong>Dry weather</strong><small>Rain and wind at the zone</small></span></label><label><input type="checkbox" checked={form.watch_moon} onChange={event => setForm({ ...form, watch_moon: event.target.checked })} /><span><MoonStar size={17} /><strong>Sky tradition</strong><small>Optional, not scientifically established</small></span></label></fieldset>
+      <button className="herb-solid-button watch-submit" disabled={busy || (!form.watch_season && !form.watch_weather && !form.watch_moon)}><BellRing size={17} /> {busy ? 'Saving...' : 'Start watching'}</button>
+    </form>
+  )
+}
+
+function WatchCard({ zone, onToggle, onDelete }) {
+  const status = zone.readiness
+  const reasons = [{ label: 'Season', enabled: zone.watch_season, ready: status.season_ready }, { label: 'Weather', enabled: zone.watch_weather, ready: status.weather_ready }, { label: 'Sky tradition', enabled: zone.watch_moon, ready: status.moon_ready }].filter(item => item.enabled)
+  return (
+    <article className={`watch-card ${status.ready && zone.enabled ? 'is-ready' : ''}`}><div className="watch-card-top"><span className="watch-plant-mark"><Leaf size={20} /></span><div><p>{zone.name}</p><h3>{zone.herb_name}</h3><em>{zone.herb_latin_name}</em></div><label className="herb-switch"><input type="checkbox" checked={zone.enabled} onChange={event => onToggle(zone.id, event.target.checked)} /><span /></label></div><p className="watch-intention"><Sparkles size={15} /> {zone.intention}{zone.why ? ` · ${zone.why}` : ''}</p><div className="signal-status">{reasons.map(item => <span className={item.ready ? 'ready' : 'waiting'} key={item.label}>{item.ready ? <Check size={13} /> : <CalendarDays size={13} />}{item.label}</span>)}</div><div className="watch-card-foot"><span>{status.ready ? 'Gathering window open' : 'Watching for alignment'}</span><small>{zone.radius_km} km radius · {zone.hemisphere} calendar</small><button className="herb-icon-button" type="button" onClick={() => onDelete(zone.id)} aria-label={`Delete ${zone.name}`}><Trash2 size={16} /></button></div></article>
+  )
+}
+
+function WatchesView({ user, location, locating, presetHerb, onLocate, onAuth, onToast }) {
+  const zones = useHerbWatchZones(Boolean(user))
+  const create = useCreateHerbWatchZone()
+  const update = useUpdateHerbWatchZone()
+  const remove = useDeleteHerbWatchZone()
+  async function add(payload) { try { await create.mutateAsync(payload); onToast('Herb watch zone saved.') } catch (error) { onToast(getApiError(error, 'The watch zone could not be saved.')) } }
+  return (
+    <main className="herbal-main watches-main"><section className="atlas-heading"><div><p className="herb-kicker">Season × weather × chosen tradition</p><h1>Watch zones</h1></div><p>A watch opens only when every signal you chose aligns. Daily email checks stay quiet when nothing has changed.</p></section>
+      {!user && <GuestGate title="Let the season come to you" copy="An account keeps watch zones private and carries them between devices. The plant atlas remains public." onAuth={onAuth} />}
+      {user && <div className="watch-workspace"><WatchForm key={`${presetHerb?.slug ?? 'default'}:${location?.latitude ?? 'none'}`} location={location} presetHerb={presetHerb} onLocate={onLocate} locating={locating} onSubmit={add} busy={create.isPending} /><section className="watch-list"><div className="watch-list-heading"><h2>Your active ground</h2><span>{zones.data?.filter(zone => zone.enabled).length ?? 0} watching</span></div>{zones.isLoading && <p className="herb-empty">Reading your watch zones...</p>}{zones.data?.map(zone => <WatchCard key={zone.id} zone={zone} onToggle={(id, enabled) => update.mutate({ id, enabled })} onDelete={id => remove.mutate(id)} />)}{!zones.isLoading && !zones.data?.length && <p className="herb-empty">Your first watch zone will appear here.</p>}</section></div>}
+    </main>
+  )
+}
+
+function InventoryForm({ presetHerb, onSubmit, busy }) {
+  const [form, setForm] = useState({ herb_slug: presetHerb?.slug ?? herbProfiles[0].slug, quantity: 1, unit: 'bunch', gathered_on: new Date().toISOString().slice(0, 10), location_name: '', preparation: 'Fresh', notes: '' })
+  async function submit(event) { event.preventDefault(); await onSubmit({ ...form, quantity: Number(form.quantity), location_name: form.location_name || null, preparation: form.preparation || null, notes: form.notes || null }); setForm(current => ({ ...current, quantity: 1, notes: '' })) }
+  return <form className="pantry-form" onSubmit={submit}><div><p className="herb-kicker">Gathered inventory</p><h2>Add to the shelf</h2></div><label>Plant<select value={form.herb_slug} onChange={event => setForm({ ...form, herb_slug: event.target.value })}>{herbProfiles.map(herb => <option value={herb.slug} key={herb.slug}>{herb.name}</option>)}</select></label><div className="herb-paired-fields"><label>Amount<input type="number" min="0.1" step="0.1" required value={form.quantity} onChange={event => setForm({ ...form, quantity: event.target.value })} /></label><label>Unit<select value={form.unit} onChange={event => setForm({ ...form, unit: event.target.value })}>{['g', 'oz', 'bunch', 'jar', 'portion'].map(value => <option key={value}>{value}</option>)}</select></label></div><label>Gathered on<input type="date" required value={form.gathered_on} onChange={event => setForm({ ...form, gathered_on: event.target.value })} /></label><div className="herb-paired-fields"><label>Place<input maxLength="160" placeholder="Private label" value={form.location_name} onChange={event => setForm({ ...form, location_name: event.target.value })} /></label><label>Preparation<input maxLength="80" placeholder="Fresh, dried..." value={form.preparation} onChange={event => setForm({ ...form, preparation: event.target.value })} /></label></div><label>Notes<textarea rows="2" maxLength="1000" value={form.notes} onChange={event => setForm({ ...form, notes: event.target.value })} /></label><button className="herb-solid-button" disabled={busy}><ListPlus size={17} /> {busy ? 'Adding...' : 'Add gathering'}</button></form>
+}
+
+function WishlistForm({ presetHerb, onSubmit, busy }) {
+  const [form, setForm] = useState({ herb_slug: presetHerb?.slug ?? herbProfiles[0].slug, intention: herbIntents[0], priority: 'season' })
+  return <form className="wishlist-form" onSubmit={event => { event.preventDefault(); onSubmit(form) }}><div><p className="herb-kicker">Wish list</p><h2>Something to seek</h2></div><label>Plant<select value={form.herb_slug} onChange={event => setForm({ ...form, herb_slug: event.target.value })}>{herbProfiles.map(herb => <option value={herb.slug} key={herb.slug}>{herb.name}</option>)}</select></label><label>Intention<select value={form.intention} onChange={event => setForm({ ...form, intention: event.target.value })}>{herbIntents.map(value => <option key={value}>{value}</option>)}</select></label><label>When<select value={form.priority} onChange={event => setForm({ ...form, priority: event.target.value })}><option value="next">Seek next</option><option value="season">This season</option><option value="someday">Someday</option></select></label><button className="herb-outline-button" disabled={busy}><Heart size={17} /> Add to wish list</button></form>
+}
+
+function PantryView({ user, presetHerb, onAuth, onToast }) {
+  const inventory = useHerbInventory(Boolean(user)); const wishlist = useHerbWishlist(Boolean(user))
+  const createInventory = useCreateHerbInventory(); const updateInventory = useUpdateHerbInventory(); const deleteInventory = useDeleteHerbInventory(); const createWish = useCreateHerbWishlist(); const deleteWish = useDeleteHerbWishlist()
+  async function addInventory(payload) { try { await createInventory.mutateAsync(payload); onToast('Gathering added to your pantry.') } catch (error) { onToast(getApiError(error, 'The gathering could not be saved.')) } }
+  async function addWish(payload) { try { await createWish.mutateAsync(payload); onToast('Wish list updated.') } catch (error) { onToast(getApiError(error, 'The wish could not be saved.')) } }
+  return <main className="herbal-main pantry-main"><section className="atlas-heading"><div><p className="herb-kicker">Private seasonal memory</p><h1>Pantry and wish list</h1></div><p>Keep amounts, dates, preparations, and future interests together. These records are private to your field account.</p></section>{!user && <GuestGate title="Remember what the season gave" copy="Create an account to keep a private gathered inventory and wish list. Nothing here is published to the community map." onAuth={onAuth} />}{user && <><div className="pantry-forms"><InventoryForm key={`inventory:${presetHerb?.slug ?? 'default'}`} presetHerb={presetHerb} onSubmit={addInventory} busy={createInventory.isPending} /><WishlistForm key={`wish:${presetHerb?.slug ?? 'default'}`} presetHerb={presetHerb} onSubmit={addWish} busy={createWish.isPending} /></div><div className="pantry-ledgers"><section><div className="pantry-ledger-heading"><h2>On the shelf</h2><span>{inventory.data?.length ?? 0} entries</span></div>{inventory.data?.map(item => { const step = item.unit === 'g' ? 10 : 1; return <article className="inventory-row" key={item.id}><span className="inventory-plant"><Leaf size={18} /></span><div><h3>{item.herb_name}</h3><p>{dateLabel(item.gathered_on)}{item.location_name ? ` · ${item.location_name}` : ''}</p><small>{item.preparation}{item.notes ? ` · ${item.notes}` : ''}</small></div><div className="inventory-stepper"><button type="button" disabled={item.quantity <= step} onClick={() => updateInventory.mutate({ id: item.id, quantity: Math.max(step, item.quantity - step) })} aria-label={`Reduce ${item.herb_name}`}><Minus size={15} /></button><strong>{item.quantity} {item.unit}</strong><button type="button" onClick={() => updateInventory.mutate({ id: item.id, quantity: item.quantity + step })} aria-label={`Increase ${item.herb_name}`}><Plus size={15} /></button></div><button className="herb-icon-button" type="button" onClick={() => deleteInventory.mutate(item.id)} aria-label={`Delete ${item.herb_name}`}><Trash2 size={16} /></button></article>})}{!inventory.isLoading && !inventory.data?.length && <p className="herb-empty">No gathered material recorded yet.</p>}</section><section><div className="pantry-ledger-heading"><h2>What you hope to meet</h2><span>{wishlist.data?.length ?? 0} wishes</span></div>{wishlist.data?.map(item => <article className="wish-row" key={item.id}><Heart size={18} /><div><h3>{item.herb_name}</h3><p>{item.intention || 'No intention noted'}</p></div><span>{item.priority}</span><button className="herb-icon-button" type="button" onClick={() => deleteWish.mutate(item.id)} aria-label={`Remove ${item.herb_name}`}><Trash2 size={16} /></button></article>)}{!wishlist.isLoading && !wishlist.data?.length && <p className="herb-empty">Your wish list is open.</p>}</section></div></>}</main>
+}
+
+function HerbalFooter() {
+  return <footer className="herbal-footer"><div><Leaf size={18} /><span><strong>The Verdant Hours</strong><small>Observe carefully. Gather lightly. Keep claims honest.</small></span></div><p>Never consume a wild plant unless identity is certain. Check permissions, contamination, allergies, pregnancy cautions, and medication interactions with qualified local sources and a health professional.</p><div><a href="https://www.poison.org/articles/plant" target="_blank" rel="noreferrer">Poison Control plant safety</a><a href="https://www.fda.gov/consumers/consumer-updates/fda-101-dietary-supplements" target="_blank" rel="noreferrer">FDA herbal safety</a></div></footer>
+}
+
+export default function HerbalApp() {
+  const [view, setView] = useState(currentView)
+  const [location, setLocation] = useState(null)
+  const [locating, setLocating] = useState(false)
+  const [selected, setSelected] = useState(null)
+  const [presetHerb, setPresetHerb] = useState(null)
+  const [authMode, setAuthMode] = useState(null)
+  const [toast, setToast] = useState('')
+  const moon = useMemo(() => lunarContext(), [])
+  const { data: user = null, isLoading: authLoading } = useCurrentUser()
+  const logout = useLogout()
+  const almanac = useHerbAlmanac(location)
+
+  useEffect(() => { document.title = 'The Verdant Hours | Herbal Gathering Almanac'; document.body.classList.add('herbal-body'); trackPageView(`/herbs?view=${view}`); return () => document.body.classList.remove('herbal-body') }, [view])
+  useEffect(() => { if (!toast) return undefined; const timer = window.setTimeout(() => setToast(''), 3600); return () => window.clearTimeout(timer) }, [toast])
+  useEffect(() => { const restoreView = () => { setView(currentView()); setSelected(null) }; window.addEventListener('popstate', restoreView); return () => window.removeEventListener('popstate', restoreView) }, [])
+
+  function navigate(next) { const url = next === 'today' ? '/herbs' : `/herbs?view=${next}`; window.history.pushState({}, '', url); setView(next); setSelected(null) }
+  function locate() { if (!navigator.geolocation) { setToast('Location is unavailable in this browser.'); return } setLocating(true); navigator.geolocation.getCurrentPosition(position => { setLocation({ latitude: position.coords.latitude, longitude: position.coords.longitude }); setLocating(false) }, () => { setToast('Location permission was not granted. You can enter coordinates in a watch zone.'); setLocating(false) }, { enableHighAccuracy: false, timeout: 10000 }) }
+  function watchPlant(herb) { setPresetHerb(herb); setSelected(null); navigate('watches') }
+  function wishForPlant(herb) { setPresetHerb(herb); setSelected(null); navigate('pantry') }
+  async function signOut() { await logout.mutateAsync(); setToast('Signed out. The herbal atlas remains open.') }
+
+  return <div className="herbal-shell"><HerbalHeader view={view} user={user} authLoading={authLoading} onNavigate={navigate} onAuth={setAuthMode} onLogout={signOut} />
+    {view === 'today' && <TodayView almanac={almanac.data} location={location} locating={locating} moon={moon} onLocate={locate} onOpenPlant={herb => { setSelected(herb); navigate('plants'); setSelected(herb) }} onNavigate={navigate} />}
+    {view === 'plants' && <PlantsView hemisphere={almanac.data?.hemisphere ?? 'north'} selected={selected} onSelect={setSelected} onClose={() => setSelected(null)} onWatch={watchPlant} onWish={wishForPlant} />}
+    {view === 'watches' && <WatchesView user={user} location={location} locating={locating} presetHerb={presetHerb} onLocate={locate} onAuth={setAuthMode} onToast={setToast} />}
+    {view === 'pantry' && <PantryView user={user} presetHerb={presetHerb} onAuth={setAuthMode} onToast={setToast} />}
+    <HerbalFooter />
+    {authMode && <AuthDialog context="herbs" mode={authMode} onClose={() => setAuthMode(null)} onAuthenticated={() => { setAuthMode(null); setToast('Your field account is ready.') }} />}
+    {toast && <div className="herb-toast" role="status"><Check size={17} />{toast}</div>}
+  </div>
+}

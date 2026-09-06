@@ -1,6 +1,6 @@
 ---
 name: Mushroom Forage Map
-description: A living field atlas for exploring recent mushroom evidence worldwide.
+description: Two connected field collections for mushroom evidence and herbal gathering.
 colors:
   field-pine: "#83A978"
   field-pine-deep: "#5C8058"
@@ -67,7 +67,7 @@ components:
     padding: "10px 12px"
 ---
 
-# Design System: Mushroom Forage Map
+# Design System: World Mushroom Foraging
 
 ## 1. Overview
 
@@ -77,6 +77,8 @@ The interface combines a field instrument, a specimen archive, and a quiet museu
 
 This system rejects account walls, generic SaaS landing-page composition, dense directory treatment, brown or beige outdoor palettes, novelty wilderness motifs, and tiny low-contrast controls. Responsive behavior is structural: side panels become drawers, toolbars simplify, and the map retains a useful viewport at every size.
 
+The herbal collection is a deliberately different visual world called **The Verdant Hours**. It uses a bright celadon field-paper ground, plum astronomical panels, leaf green, foxglove pink, pressed-flower photography, Cormorant Garamond display type, and ledger-like structures. The switch between Fungi and Herbs is persistent, compact, and explicit; identity, authentication, and private records remain shared underneath.
+
 **Key Characteristics:**
 
 - Map-first and immediately useful to guests.
@@ -85,6 +87,8 @@ This system rejects account walls, generic SaaS landing-page composition, dense 
 - Flat at rest, elevated only for temporary layers.
 - Friendly field language grounded in evidence and safety.
 - Asymmetric collection layouts that make imagery and metadata equally useful.
+- Distinct fungal and herbal art directions joined by one recognizable collection switch.
+- Astronomical data separated visually and verbally from traditional correspondence or health claims.
 
 ## 2. Colors
 
@@ -116,6 +120,10 @@ The palette begins with green-black gallery surfaces, then uses lichen green for
 ### Named Rules
 
 **The Map Signal Rule.** Accent colors identify actions or data states; they are never scattered as decoration.
+
+**The Two Worlds Rule.** Fungi behaves like a nocturnal museum instrument; Herbs behaves like a daylight botanical almanac. Shared controls keep their function and accessibility even when color, type, composition, and atmosphere change.
+
+**The Honest Almanac Rule.** Season and weather are practical field signals. Moon phase and zodiac are offered as an optional cultural timing practice and must never be presented as scientifically established improvements to potency, safety, or efficacy.
 
 ## 3. Typography
 

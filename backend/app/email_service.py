@@ -74,3 +74,46 @@ def send_digest_email(to: str, username: str, items: list[dict]) -> bool:
         return True
     except httpx.HTTPError:
         return False
+
+
+def send_herb_watch_email(to: str, username: str, items: list[dict]) -> bool:
+    if not RESEND_API_KEY or not items:
+        return False
+    rows = "".join(
+        f"""
+        <tr>
+          <td style="padding:16px 0;border-top:1px solid #9bb4a0">
+            <div style="color:#8e3155;font-family:Georgia,serif;font-size:20px">{html.escape(item['herb_name'])}</div>
+            <div style="color:#3f3044;font-size:14px;line-height:1.55;margin-top:4px">{html.escape(item['summary'])}</div>
+            <div style="color:#61726a;font-size:12px;margin-top:7px">Watch zone: {html.escape(item['zone_name'])} · Intention: {html.escape(item['intention'])}</div>
+          </td>
+        </tr>
+        """
+        for item in items
+    )
+    markup = f"""
+    <div style="background:#edf4e8;color:#302334;font-family:Arial,sans-serif;margin:auto;max-width:620px;padding:30px">
+      <div style="color:#24665b;font-size:12px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase">The Verdant Hours</div>
+      <h1 style="font-family:Georgia,serif;font-size:29px;font-weight:400;margin:12px 0 8px">A gathering window is open, {html.escape(username)}</h1>
+      <p style="color:#56665e;line-height:1.6;margin:0 0 22px">Season, selected sky tradition, and local weather now match the signals in your watch zones.</p>
+      <table role="presentation" style="border-collapse:collapse;width:100%">{rows}</table>
+      <p style="margin:24px 0 0"><a href="{html.escape(APP_URL + '/herbs?view=watches')}" style="background:#8e3155;color:#fff;padding:11px 16px;text-decoration:none">Open watch zones</a></p>
+      <p style="color:#6c786f;font-size:12px;line-height:1.55;margin-top:24px">Moon and zodiac timing is shown as traditional practice, not proven plant science. Confirm identity, permission, contamination risk, and personal medical safety before gathering or using any herb.</p>
+    </div>
+    """
+    try:
+        response = httpx.post(
+            "https://api.resend.com/emails",
+            headers={"Authorization": f"Bearer {RESEND_API_KEY}"},
+            json={
+                "from": EMAIL_FROM,
+                "to": [to],
+                "subject": "A gathering window is open in your herb watch",
+                "html": markup,
+            },
+            timeout=10,
+        )
+        response.raise_for_status()
+        return True
+    except httpx.HTTPError:
+        return False

@@ -1,4 +1,4 @@
-import { BookOpen, Globe2, Library, Map, MapPinned, Users } from 'lucide-react'
+import { BookOpen, Globe2, Leaf, Library, Map, MapPinned, Users } from 'lucide-react'
 
 export default function GuideHeader({ section = 'archive' }) {
   return (
@@ -10,6 +10,11 @@ export default function GuideHeader({ section = 'archive' }) {
           <span>Mushroom Forage Map</span>
         </div>
       </a>
+
+      <div className="world-switch fungi-world-switch" aria-label="Foraging collection">
+        <a className="active" href="/" aria-current="page"><span aria-hidden="true">F</span> Fungi</a>
+        <a href="/herbs"><Leaf size={14} aria-hidden="true" /> Herbs</a>
+      </div>
 
       <nav className="guide-global-nav" aria-label="Primary navigation">
         <a href="/"><Map size={17} aria-hidden="true" /> Field map</a>

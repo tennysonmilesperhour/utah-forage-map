@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import {
-  Bell, Bookmark, CalendarClock, Check, Clock3, Download, KeyRound, MapPinned,
-  NotebookPen, Save, Settings, ShieldCheck, Trash2, X, XCircle,
+  Bell, Bookmark, CalendarClock, Check, Clock3, CloudSun, Download, KeyRound,
+  LocateFixed, MapPin, MapPinned, MoonStar, NotebookPen, Save, Settings,
+  ShieldCheck, Trash2, X, XCircle,
 } from 'lucide-react'
 import { getApiError, useResendVerification } from '../hooks/useAuth'
 import { useUnitSystem } from '../hooks/useUnits'
@@ -12,7 +13,7 @@ import {
   useRevokeSession, useSavedLocations, useSessions, useUpdateLogbook,
   useUpdateSavedLocation,
 } from '../hooks/useAccount'
-import { useAlerts, useDeleteAlert, useUpdateAlert } from '../hooks/useCompanion'
+import { useAlerts, useCreateAlert, useDeleteAlert, useUpdateAlert } from '../hooks/useCompanion'
 
 const BASE_TABS = [
   ['logbook', <NotebookPen size={17} aria-hidden="true" />, 'Notebook'],
@@ -142,6 +143,76 @@ function ModerationRow({ item, onReview, busy }) {
   )
 }
 
+const FUNGI_INTENTIONS = [
+  'Kitchen and table', 'Study and identification', 'Photography',
+  'Connection to place', 'Seasonal ritual',
+]
+
+const MOON_PHASES = [
+  ['', 'No sky timing'], ['new moon', 'New moon'], ['waxing crescent', 'Waxing crescent'],
+  ['first quarter', 'First quarter'], ['waxing gibbous', 'Waxing gibbous'],
+  ['full moon', 'Full moon'], ['waning gibbous', 'Waning gibbous'],
+  ['last quarter', 'Last quarter'], ['waning crescent', 'Waning crescent'],
+]
+
+function FungiWatchForm({ species, onCreate, busy }) {
+  const [locating, setLocating] = useState(false)
+  const [form, setForm] = useState({
+    name: '', species_taxon_id: species[0]?.inaturalist_taxon_id ?? '',
+    intention: FUNGI_INTENTIONS[0], why: '', latitude: '', longitude: '',
+    radius_km: 25, watch_weather: true, moon_phase: '',
+  })
+
+  function locate() {
+    if (!navigator.geolocation) return
+    setLocating(true)
+    navigator.geolocation.getCurrentPosition(position => {
+      setForm(current => ({
+        ...current,
+        latitude: position.coords.latitude.toFixed(5),
+        longitude: position.coords.longitude.toFixed(5),
+      }))
+      setLocating(false)
+    }, () => setLocating(false), { enableHighAccuracy: false, timeout: 10000 })
+  }
+
+  async function submit(event) {
+    event.preventDefault()
+    await onCreate({
+      kind: 'zone', name: form.name, species_taxon_id: Number(form.species_taxon_id),
+      intention: form.intention, why: form.why || null,
+      latitude: Number(form.latitude), longitude: Number(form.longitude),
+      radius_km: Number(form.radius_km), watch_weather: form.watch_weather,
+      moon_phase: form.moon_phase || null,
+    })
+    setForm(current => ({ ...current, name: '', why: '' }))
+  }
+
+  return (
+    <form className="fungi-watch-form" onSubmit={submit}>
+      <div className="fungi-watch-heading"><div><p>New place watch</p><h3>Watch a patch, not just a species</h3></div><span>Reviewed activity is always required</span></div>
+      <div className="fungi-watch-grid">
+        <label>Zone name<input required maxLength="120" placeholder="North-facing canyon" value={form.name} onChange={event => setForm({ ...form, name: event.target.value })} /></label>
+        <label>Species<select required value={form.species_taxon_id} onChange={event => setForm({ ...form, species_taxon_id: event.target.value })}>{species.map(item => <option key={item.id} value={item.inaturalist_taxon_id}>{item.common_name}</option>)}</select></label>
+        <label>Intention<select value={form.intention} onChange={event => setForm({ ...form, intention: event.target.value })}>{FUNGI_INTENTIONS.map(value => <option key={value}>{value}</option>)}</select></label>
+        <label>Optional lunar tradition<select value={form.moon_phase} onChange={event => setForm({ ...form, moon_phase: event.target.value })}>{MOON_PHASES.map(([value, label]) => <option value={value} key={label}>{label}</option>)}</select></label>
+      </div>
+      <label>Why this matters to you<textarea maxLength="500" rows="2" placeholder="A note to your future self" value={form.why} onChange={event => setForm({ ...form, why: event.target.value })} /></label>
+      <div className="fungi-watch-location"><button className="button button-secondary compact-button" type="button" onClick={locate} disabled={locating}><LocateFixed size={15} /> {locating ? 'Locating...' : 'Use my location'}</button><label>Latitude<input required type="number" step="any" min="-90" max="90" value={form.latitude} onChange={event => setForm({ ...form, latitude: event.target.value })} /></label><label>Longitude<input required type="number" step="any" min="-180" max="180" value={form.longitude} onChange={event => setForm({ ...form, longitude: event.target.value })} /></label><label>Radius <span>{form.radius_km} km</span><input type="range" min="1" max="250" value={form.radius_km} onChange={event => setForm({ ...form, radius_km: event.target.value })} /></label></div>
+      <label className="fungi-weather-check"><input type="checkbox" checked={form.watch_weather} onChange={event => setForm({ ...form, watch_weather: event.target.checked })} /><CloudSun size={17} /><span><strong>Include a dry-weather check</strong><small>Moon timing is optional traditional context and is not treated as biological evidence.</small></span></label>
+      <button className="button button-primary" disabled={busy || !species.length}><Bell size={16} /> {busy ? 'Saving...' : 'Create watch zone'}</button>
+    </form>
+  )
+}
+
+function AlertRow({ item, onUpdate, onDelete }) {
+  const title = item.name || item.species_name || item.region_name
+  const detail = item.kind === 'zone'
+    ? `${item.species_name} · ${item.radius_km} km radius`
+    : `${item.recent_observations_7d} public ${item.recent_observations_7d === 1 ? 'record' : 'records'} in the past 7 days${item.latest_observed_on ? ` · latest ${dateLabel(item.latest_observed_on)}` : ''}`
+  return <article className={`account-row alert-row ${item.kind === 'zone' ? 'zone-alert-row' : ''}`} key={item.id}><Bell size={18} /><div><div className="alert-title-line"><span>{item.kind === 'zone' ? 'Watch zone' : item.kind}</span><h3>{title}</h3></div><p>{detail}</p>{item.intention && <p className="alert-intention">{item.intention}{item.why ? ` · ${item.why}` : ''}</p>}{item.readiness && <div className="fungi-readiness"><span className={item.readiness.recent_activity ? 'ready' : ''}><MapPin size={12} /> Recent finds</span><span className={item.readiness.season_ready ? 'ready' : ''}><CalendarClock size={12} /> Season</span>{item.watch_weather && <span className={item.readiness.weather_ready ? 'ready' : ''}><CloudSun size={12} /> Weather</span>}{item.moon_phase && <span className={item.readiness.moon_ready ? 'ready' : ''}><MoonStar size={12} /> {item.moon_phase}</span>}</div>}</div><label className="switch-control"><input type="checkbox" checked={item.enabled} onChange={event => onUpdate({ id: item.id, enabled: event.target.checked })} /><span aria-hidden="true" /></label><button className="icon-button" type="button" onClick={() => onDelete(item.id)} aria-label={`Remove ${title} alert`}><Trash2 size={17} /></button></article>
+}
+
 export default function AccountWorkspace({ user, species, initialTab = 'logbook', onClose, onDeleted, onToast }) {
   const [tab, setTab] = useState(initialTab)
   const [password, setPassword] = useState('')
@@ -157,6 +228,7 @@ export default function AccountWorkspace({ user, species, initialTab = 'logbook'
   const deleteSaved = useDeleteSavedLocation()
   const updateAlert = useUpdateAlert()
   const deleteAlert = useDeleteAlert()
+  const createAlert = useCreateAlert()
   const revokeSession = useRevokeSession()
   const revokeOthers = useRevokeOtherSessions()
   const deleteAccount = useDeleteAccount()
@@ -180,6 +252,15 @@ export default function AccountWorkspace({ user, species, initialTab = 'logbook'
     catch (requestError) { setError(getApiError(requestError, 'The account could not be deleted.')) }
   }
 
+  async function createFungiWatch(payload) {
+    try {
+      await createAlert.mutateAsync(payload)
+      onToast('Fungi watch zone saved.')
+    } catch (requestError) {
+      onToast(getApiError(requestError, 'The watch zone could not be saved.'))
+    }
+  }
+
   return (
     <div className="drawer-layer account-workspace-layer">
       <button className="drawer-backdrop" type="button" onClick={onClose} aria-label="Close field desk" />
@@ -191,7 +272,7 @@ export default function AccountWorkspace({ user, species, initialTab = 'logbook'
 
           {tab === 'saved' && <section><div className="section-heading"><div><h3>Saved places</h3><p>Plan a return after the weather changes.</p></div><strong>{saved.data?.length ?? 0}</strong></div>{saved.data?.map(item => <SavedRow key={item.id} item={item} onUpdate={updateSaved.mutateAsync} onDelete={deleteSaved.mutate} />)}{!saved.isLoading && !saved.data?.length && <p className="empty-state">Bookmark a public observation to keep it close.</p>}</section>}
 
-          {tab === 'alerts' && <section><div className="section-heading"><div><h3>Field watchlist</h3><p>Recent activity for the species and regions you follow.</p></div><strong>{alerts.data?.filter(item => item.enabled).length ?? 0}</strong></div>{alerts.data?.map(item => <article className="account-row alert-row" key={item.id}><Bell size={18} /><div><h3>{item.species_name || item.region_name}</h3><p>{item.recent_observations_7d} public {item.recent_observations_7d === 1 ? 'record' : 'records'} in the past 7 days{item.latest_observed_on ? ` · latest ${dateLabel(item.latest_observed_on)}` : ''}</p></div><label className="switch-control"><input type="checkbox" checked={item.enabled} onChange={event => updateAlert.mutate({ id: item.id, enabled: event.target.checked })} /><span aria-hidden="true" /></label><button className="icon-button" type="button" onClick={() => deleteAlert.mutate(item.id)} aria-label={`Remove ${item.species_name || item.region_name} alert`}><Trash2 size={17} /></button></article>)}{!alerts.isLoading && !alerts.data?.length && <p className="empty-state">Follow a species guide or regional field page to start your watchlist.</p>}</section>}
+          {tab === 'alerts' && <section><div className="section-heading"><div><h3>Field watchlist</h3><p>Follow broad collections or create a place-based watch with a reason.</p></div><strong>{alerts.data?.filter(item => item.enabled).length ?? 0}</strong></div><FungiWatchForm species={species} onCreate={createFungiWatch} busy={createAlert.isPending} />{alerts.data?.map(item => <AlertRow key={item.id} item={item} onUpdate={updateAlert.mutate} onDelete={deleteAlert.mutate} />)}{!alerts.isLoading && !alerts.data?.length && <p className="empty-state">Create a watch zone here, or follow a species guide or regional field page.</p>}</section>}
 
           {tab === 'moderation' && <section><div className="section-heading"><div><h3>Review queue</h3><p>Record which field marks the evidence actually shows.</p></div><strong>{moderation.data?.length ?? 0}</strong></div>{moderation.data?.map(item => <ModerationRow key={item.id} item={item} onReview={review.mutate} busy={review.isPending} />)}{!moderation.isLoading && !moderation.data?.length && <p className="empty-state">The review queue is clear.</p>}</section>}
 

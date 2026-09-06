@@ -16,9 +16,15 @@ const PAGE_METADATA = {
     title: 'Mushroom Field Guide | Map Safety, Privacy and Data Sources',
     description: 'Learn how to read the mushroom forage map, check access rules, understand location privacy, evaluate reviewed observations, and forage more responsibly.',
   },
+  herbs: {
+    path: '/herbs',
+    title: 'The Verdant Hours | Herbal Gathering Almanac',
+    description: 'Explore a safety-led herbal field atlas with seasonal harvest windows, local weather, optional lunar tradition, private watch zones, gathered inventory, and a wish list.',
+  },
 }
 
 export function viewFromPathname(pathname) {
+  if (pathname === '/herbs' || pathname.startsWith('/herbs/')) return 'herbs'
   if (pathname === '/field-guide' || pathname.startsWith('/field-guide/')) return 'guide'
   if (pathname === '/community' || pathname.startsWith('/community/')) return 'community'
   return 'map'
@@ -30,6 +36,36 @@ export function pathForView(view) {
 
 export function pageMetadataForPath(pathname) {
   return PAGE_METADATA[viewFromPathname(pathname)] ?? PAGE_METADATA.map
+}
+
+export function pageStructuredDataForPath(pathname) {
+  if (viewFromPathname(pathname) !== 'herbs') return null
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [{
+      '@type': 'WebApplication',
+      name: 'The Verdant Hours',
+      url: `${SITE_URL}/herbs`,
+      applicationCategory: 'LifestyleApplication',
+      operatingSystem: 'Any',
+      isAccessibleForFree: true,
+      description: PAGE_METADATA.herbs.description,
+      featureList: [
+        'Seasonal herbal field atlas',
+        'Local weather gathering signals',
+        'Astronomical moon phase and lunar sign',
+        'Private herb watch zones',
+        'Gathered inventory and wish list',
+      ],
+    }, {
+      '@type': 'CollectionPage',
+      name: 'Herbal gathering atlas',
+      url: `${SITE_URL}/herbs`,
+      description: PAGE_METADATA.herbs.description,
+      about: { '@type': 'Thing', name: 'Responsible herbal foraging' },
+      isPartOf: { '@id': `${SITE_URL}/#website` },
+    }],
+  }
 }
 
 function setMeta(selector, attribute, value) {

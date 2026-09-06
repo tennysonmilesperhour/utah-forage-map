@@ -10,7 +10,7 @@ const template = await readFile(path.join(dist, 'index.html'), 'utf8')
 const renderer = await import(pathToFileURL(path.join(root, '.ssr', 'ssr.js')).href)
 const routes = renderer.guideRoutes()
 const siteUrl = 'https://worldmushroomforaging.org'
-const appRoutes = ['/community', '/field-guide']
+const appRoutes = ['/community', '/field-guide', '/herbs']
 
 function escapeXml(value) {
   return String(value)
@@ -57,6 +57,11 @@ for (const route of appRoutes) {
   const metadata = renderer.pageMetadataForPath(route)
   const $ = load(template)
   applyMetadata($, metadata)
+  const structuredData = renderer.pageStructuredDataForPath(route)
+  if (structuredData) {
+    $('script[type="application/ld+json"]').remove()
+    $('head').append(`<script type="application/ld+json">${JSON.stringify(structuredData).replace(/</g, '\\u003c')}</script>`)
+  }
 
   const outputDirectory = path.join(dist, route.slice(1))
   await mkdir(outputDirectory, { recursive: true })

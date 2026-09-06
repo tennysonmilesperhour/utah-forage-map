@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import './index.css'
 import App from './App.jsx'
 import GuideApp from './GuideApp.jsx'
+import LazyHerbalApp from './components/LazyHerbalApp.jsx'
 import AnalyticsConsent from './components/AnalyticsConsent'
 import { initGoogleTag } from './lib/googleTag'
 import { initAdSense } from './lib/adsense'
@@ -23,11 +24,12 @@ const queryClient = new QueryClient({
 
 const root = document.getElementById('root')
 const pathname = window.location.pathname
+const isHerbalPath = pathname === '/herbs' || pathname.startsWith('/herbs/')
 const isGuidePath = pathname === '/learn' || pathname.startsWith('/learn/') || pathname === '/regions' || pathname.startsWith('/regions/') || pathname === '/about' || pathname === '/privacy' || pathname === '/disclaimer'
 const content = (
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      {isGuidePath ? <GuideApp path={pathname} /> : <App />}
+      {isHerbalPath ? <LazyHerbalApp /> : isGuidePath ? <GuideApp path={pathname} /> : <App />}
       <AnalyticsConsent />
     </QueryClientProvider>
   </StrictMode>

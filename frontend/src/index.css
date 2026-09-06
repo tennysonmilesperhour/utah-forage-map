@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap");
 @import "tailwindcss";
 
 :root {
@@ -7604,6 +7604,670 @@ textarea::placeholder {
   .region-label-copy > p:not(.region-number) {
     min-height: 0;
   }
+}
+
+/* Shared collection switch */
+.world-switch {
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr;
+  min-width: 142px;
+  height: 34px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  flex: 0 0 auto;
+}
+
+.world-switch a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-width: 0;
+  padding: 0 9px;
+  color: var(--ink-muted);
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.world-switch a + a { border-left: 1px solid var(--border); }
+.world-switch a.active { background: var(--spore-coral); color: white; }
+.world-switch a span { font-family: var(--museum-serif); font-size: 13px; }
+
+.fungi-watch-form {
+  display: grid;
+  gap: 16px;
+  margin: 18px 0 28px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--museum-black);
+  padding: 24px;
+}
+
+.fungi-watch-heading { display: flex; align-items: end; justify-content: space-between; gap: 18px; }
+.fungi-watch-heading p { margin: 0 0 4px; color: var(--spore-coral); font-size: 10px; font-weight: 800; text-transform: uppercase; }
+.fungi-watch-heading h3 { margin: 0; font: 400 24px var(--museum-serif); }
+.fungi-watch-heading > span { color: var(--ink-muted); font-size: 10px; text-align: right; }
+.fungi-watch-form > label,
+.fungi-watch-grid label,
+.fungi-watch-location label { display: grid; gap: 6px; color: var(--ink-muted); font-size: 10px; font-weight: 800; text-transform: uppercase; }
+.fungi-watch-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.fungi-watch-location { display: grid; grid-template-columns: auto 1fr 1fr 1.2fr; align-items: end; gap: 10px; }
+.fungi-watch-location label > span { color: var(--spore-coral); }
+.fungi-weather-check { display: flex !important; align-items: center; gap: 10px !important; border-top: 1px solid var(--border); padding-top: 14px; text-transform: none !important; cursor: pointer; }
+.fungi-weather-check input { width: 18px; min-height: 18px; height: 18px; accent-color: var(--spore-coral); }
+.fungi-weather-check svg { flex: 0 0 auto; color: var(--trail-blue); }
+.fungi-weather-check span { display: grid; gap: 2px; }
+.fungi-weather-check strong { color: var(--ink); font-size: 12px; }
+.fungi-weather-check small { color: var(--ink-muted); font-size: 10px; font-weight: 400; }
+.fungi-watch-form > .button-primary { justify-self: start; }
+.zone-alert-row { grid-template-columns: auto minmax(0, 1fr) auto auto; }
+.alert-title-line { display: flex; align-items: baseline; gap: 9px; }
+.alert-title-line > span { color: var(--spore-coral); font-size: 9px; font-weight: 800; text-transform: uppercase; }
+.alert-intention { margin-top: 5px !important; color: var(--museum-bronze) !important; }
+.fungi-readiness { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 9px; }
+.fungi-readiness span { display: inline-flex; align-items: center; gap: 4px; border: 1px solid var(--border); border-radius: 12px; padding: 4px 7px; color: var(--ink-muted); font-size: 9px; }
+.fungi-readiness span.ready { border-color: var(--field-pine-deep); color: var(--field-pine); }
+
+@media (max-width: 700px) {
+  .fungi-watch-form { margin-right: -16px; margin-left: -16px; padding: 20px 16px; }
+  .fungi-watch-heading { align-items: start; flex-direction: column; gap: 5px; }
+  .fungi-watch-heading > span { text-align: left; }
+  .fungi-watch-grid,
+  .fungi-watch-location { grid-template-columns: minmax(0, 1fr); }
+  .fungi-watch-location .button { justify-self: start; }
+}
+
+.app-header .fungi-world-switch,
+.guide-site-header .fungi-world-switch { margin-left: 8px; }
+
+.app-header,
+.guide-site-header {
+  grid-template-columns: minmax(210px, 0.75fr) auto minmax(430px, 1.5fr) minmax(210px, 0.75fr);
+  gap: 12px;
+}
+
+/* The Verdant Hours */
+.herbal-body {
+  color-scheme: light;
+  background: #edf4e8;
+}
+
+.herbal-shell {
+  --herb-paper: #edf4e8;
+  --herb-paper-bright: #f8fbf3;
+  --herb-paper-deep: #dfe9db;
+  --herb-ink: #302334;
+  --herb-muted: #667068;
+  --herb-line: #b8c8b6;
+  --herb-leaf: #24665b;
+  --herb-leaf-dark: #1d4e45;
+  --herb-pink: #a43d60;
+  --herb-gold: #c58b28;
+  --herb-blue: #416f7b;
+  --herb-night: #291f31;
+  --herb-serif: "Cormorant Garamond", Garamond, Georgia, serif;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: var(--herb-paper);
+  color: var(--herb-ink);
+  font-family: "Avenir Next", Avenir, "Segoe UI", sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+.herbal-loading {
+  display: grid;
+  min-height: 100dvh;
+  place-items: center;
+  background: #e5eddf;
+  color: #263d2b;
+  font: 600 16px/1.4 "Avenir Next", "Segoe UI", sans-serif;
+}
+
+.herbal-shell button,
+.herbal-shell input,
+.herbal-shell select,
+.herbal-shell textarea { color: inherit; }
+
+.herbal-shell input,
+.herbal-shell select,
+.herbal-shell textarea {
+  border-color: var(--herb-line);
+  border-radius: 4px;
+  background: var(--herb-paper-bright);
+  color: var(--herb-ink);
+}
+
+.herbal-shell input:focus-visible,
+.herbal-shell select:focus-visible,
+.herbal-shell textarea:focus-visible,
+.herbal-shell button:focus-visible,
+.herbal-shell a:focus-visible { outline-color: color-mix(in srgb, var(--herb-pink) 60%, transparent); }
+
+.herbal-header {
+  position: sticky;
+  z-index: 50;
+  top: 0;
+  display: grid;
+  grid-template-columns: minmax(205px, auto) auto 1fr auto;
+  align-items: center;
+  min-height: 72px;
+  border-bottom: 1px solid var(--herb-line);
+  background: rgba(248, 251, 243, 0.96);
+  color: var(--herb-ink);
+  padding: 0 28px;
+}
+
+.herbal-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.herbal-sigil {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--herb-leaf);
+  border-radius: 50%;
+  color: var(--herb-leaf);
+}
+
+.herbal-brand > span:last-child { display: grid; }
+.herbal-brand strong { font: 600 23px/1 var(--herb-serif); }
+.herbal-brand small { margin-top: 3px; color: var(--herb-muted); font-size: 10px; text-transform: uppercase; letter-spacing: 0; }
+
+.herbal-header .world-switch {
+  --border: var(--herb-line);
+  --ink-muted: var(--herb-muted);
+  margin-left: 24px;
+  border-radius: 17px;
+  background: var(--herb-paper);
+}
+
+.herbal-header .world-switch a.active { background: var(--herb-leaf); }
+
+.herbal-header nav {
+  display: flex;
+  justify-content: center;
+  height: 72px;
+  margin: 0 18px;
+}
+
+.herbal-header nav button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 0;
+  background: transparent;
+  padding: 0 15px;
+  color: var(--herb-muted);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.herbal-header nav button.active { color: var(--herb-pink); }
+.herbal-header nav button.active::after { position: absolute; right: 12px; bottom: 0; left: 12px; height: 3px; background: var(--herb-pink); content: ""; }
+
+.herbal-account-actions { display: flex; align-items: center; justify-content: flex-end; gap: 7px; }
+.herb-solid-button,
+.herb-outline-button,
+.herb-text-button,
+.herb-user-button,
+.herb-icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 42px;
+  border-radius: 4px;
+  padding: 0 14px;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.herb-solid-button { border: 1px solid var(--herb-pink); background: var(--herb-pink); color: white !important; }
+.herb-outline-button { border: 1px solid var(--herb-leaf); background: transparent; color: var(--herb-leaf) !important; }
+.herb-text-button { border: 0; background: transparent; color: var(--herb-ink); }
+.herb-icon-button { width: 42px; padding: 0; border: 1px solid var(--herb-line); background: transparent; }
+.herb-user-button { border: 0; background: transparent; }
+.herb-user-button > span { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: var(--herb-leaf); color: white; }
+.herb-solid-button:disabled,
+.herb-outline-button:disabled { cursor: wait; opacity: 0.55; }
+.herbal-menu-button { display: none; width: 42px; height: 42px; align-items: center; justify-content: center; border: 1px solid var(--herb-line); background: transparent; border-radius: 4px; }
+
+.herbal-main { width: min(1440px, 100%); flex: 1 0 auto; margin: 0 auto; }
+.herb-kicker { display: flex; align-items: center; gap: 7px; margin: 0 0 8px; color: var(--herb-pink); font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 0; }
+.herbal-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(280px, 0.65fr);
+  align-items: end;
+  gap: 48px;
+  padding: 64px 48px 42px;
+}
+
+.herbal-intro h1,
+.atlas-heading h1 {
+  max-width: 820px;
+  margin: 0;
+  font: 500 78px/0.94 var(--herb-serif);
+  letter-spacing: 0;
+}
+
+.herbal-intro > p,
+.atlas-heading > p { margin: 0; color: var(--herb-muted); font-size: 16px; line-height: 1.65; }
+
+.moon-observatory {
+  display: grid;
+  grid-template-columns: minmax(360px, 0.9fr) minmax(360px, 1.1fr);
+  min-height: 440px;
+  overflow: hidden;
+  background: var(--herb-night);
+  color: #f6f0e5;
+}
+
+.moon-orbit { position: relative; min-height: 440px; overflow: hidden; border-right: 1px solid #6f6077; }
+.moon-orbit::before,
+.moon-orbit::after { position: absolute; border: 1px solid #716079; border-radius: 50%; content: ""; }
+.moon-orbit::before { width: 340px; height: 340px; top: 50px; left: calc(50% - 170px); }
+.moon-orbit::after { width: 230px; height: 230px; top: 105px; left: calc(50% - 115px); border-color: #54465b; }
+.moon-disc { position: absolute; top: 50%; left: 50%; display: block; width: 112px; height: 112px; border: 1px solid #e8c880; border-radius: 50%; background: #e8c880; box-shadow: inset -36px 0 0 #34263b, 0 0 34px rgba(232, 200, 128, 0.18); transform: translate(-50%, -50%); }
+.moon-disc::after { position: absolute; top: -116px; left: 55px; width: 7px; height: 7px; border-radius: 50%; background: var(--herb-pink); content: ""; transform: rotate(var(--moon-turn)) translateY(116px); transform-origin: 0 116px; }
+.moon-disc i { position: absolute; inset: -10px; border: 1px solid #8a7791; border-radius: 50%; }
+.orbit-star { position: absolute; width: 3px; height: 3px; background: #c9d9ca; }
+.orbit-star.one { top: 72px; left: 16%; }
+.orbit-star.two { right: 19%; bottom: 85px; }
+.orbit-star.three { top: 31%; right: 12%; background: var(--herb-gold); }
+.moon-copy { display: flex; flex-direction: column; justify-content: center; max-width: 600px; padding: 56px 64px; }
+.moon-copy .herb-kicker { color: #df9db1; }
+.moon-copy h2 { margin: 0; font: 500 68px/0.95 var(--herb-serif); }
+.moon-sign { display: flex; align-items: baseline; gap: 10px; margin: 16px 0 32px; color: #d8c3de; font: italic 24px var(--herb-serif); }
+.moon-sign span { color: #9f90a6; font: 10px "Avenir Next", sans-serif; text-transform: uppercase; }
+.moon-copy dl { display: grid; grid-template-columns: 1fr 1fr; margin: 0 0 28px; border-top: 1px solid #6f6077; border-bottom: 1px solid #6f6077; }
+.moon-copy dl div { padding: 16px 0; }
+.moon-copy dl div + div { border-left: 1px solid #6f6077; padding-left: 22px; }
+.moon-copy dt { color: #a998af; font-size: 10px; text-transform: uppercase; }
+.moon-copy dd { margin: 5px 0 0; font: 500 27px var(--herb-serif); }
+.tradition-note { display: flex; gap: 8px; margin: 0; color: #b9abbf; font-size: 12px; line-height: 1.55; }
+.tradition-note svg { flex: 0 0 auto; margin-top: 2px; color: #df9db1; }
+
+.weather-reading {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.6fr) minmax(360px, 1.2fr) minmax(300px, 1fr);
+  align-items: stretch;
+  border-bottom: 1px solid var(--herb-line);
+  background: var(--herb-paper-bright);
+}
+.weather-primary,
+.weather-metrics,
+.gathering-verdict { min-height: 122px; padding: 25px 30px; }
+.weather-primary { display: flex; align-items: center; gap: 16px; color: var(--herb-blue); border-right: 1px solid var(--herb-line); }
+.weather-primary span { display: grid; }
+.weather-primary strong { font: 600 38px/1 var(--herb-serif); }
+.weather-primary small { margin-top: 4px; color: var(--herb-muted); }
+.weather-metrics { display: grid; grid-template-columns: repeat(3, 1fr); align-items: center; border-right: 1px solid var(--herb-line); }
+.weather-metrics span { display: grid; gap: 5px; }
+.weather-metrics small { color: var(--herb-muted); font-size: 10px; text-transform: uppercase; }
+.weather-metrics strong { font: 600 20px var(--herb-serif); }
+.gathering-verdict { display: flex; align-items: center; gap: 13px; }
+.gathering-verdict > span { display: grid; gap: 3px; }
+.gathering-verdict.ready { color: var(--herb-leaf); }
+.gathering-verdict.hold { color: var(--herb-pink); }
+.gathering-verdict small { color: var(--herb-muted); line-height: 1.4; }
+.weather-reading.is-empty { grid-template-columns: auto 1fr auto; align-items: center; gap: 22px; padding: 30px 48px; color: var(--herb-blue); }
+.weather-reading.is-empty > div { color: var(--herb-ink); }
+.weather-reading.is-empty h2 { margin: 0 0 4px; font: 600 29px var(--herb-serif); }
+.weather-reading.is-empty p:not(.herb-kicker) { margin: 0; color: var(--herb-muted); line-height: 1.5; }
+
+.seasonal-ledger { padding: 60px 48px 72px; }
+.herb-section-heading,
+.atlas-heading { display: grid; grid-template-columns: 1fr minmax(280px, 0.52fr); align-items: end; gap: 42px; margin-bottom: 30px; }
+.herb-section-heading h2 { margin: 0; font: 600 50px/1 var(--herb-serif); }
+.herb-section-heading > span { color: var(--herb-muted); font-size: 13px; text-align: right; }
+.seasonal-list { border-top: 1px solid var(--herb-line); }
+.seasonal-list button { display: grid; grid-template-columns: 92px 1fr auto; align-items: center; gap: 21px; width: 100%; min-height: 112px; border: 0; border-bottom: 1px solid var(--herb-line); background: transparent; text-align: left; cursor: pointer; }
+.seasonal-list button:hover { background: var(--herb-paper-bright); }
+.seasonal-list img { width: 92px; height: 76px; object-fit: cover; }
+.seasonal-list button > span { display: grid; }
+.seasonal-list strong { font: 600 25px var(--herb-serif); }
+.seasonal-list em { color: var(--herb-muted); font: italic 15px var(--herb-serif); }
+.seasonal-list small { margin-top: 4px; color: var(--herb-leaf); font-size: 11px; text-transform: uppercase; }
+.ledger-footnote { margin: 18px 0 0; color: var(--herb-muted); font-size: 12px; }
+.herb-callouts { display: grid; grid-template-columns: 1fr 1fr; background: var(--herb-paper-deep); border-top: 1px solid var(--herb-line); }
+.herb-callouts button { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 17px; min-height: 126px; border: 0; background: transparent; padding: 26px 48px; color: var(--herb-leaf); text-align: left; cursor: pointer; }
+.herb-callouts button + button { border-left: 1px solid var(--herb-line); color: var(--herb-pink); }
+.herb-callouts button > span { display: grid; gap: 4px; color: var(--herb-ink); }
+.herb-callouts strong { font: 600 25px var(--herb-serif); }
+.herb-callouts small { color: var(--herb-muted); line-height: 1.45; }
+
+.atlas-heading { padding: 62px 48px 36px; margin: 0; }
+.atlas-heading h1 { font-size: 76px; }
+.herb-atlas-tools { display: grid; grid-template-columns: 1fr 240px; gap: 12px; padding: 0 48px 28px; }
+.herb-atlas-tools label { position: relative; }
+.herb-atlas-tools label svg { position: absolute; z-index: 1; top: 14px; left: 14px; color: var(--herb-leaf); }
+.herb-atlas-tools input { padding-left: 42px; }
+.herb-folio { display: grid; grid-template-columns: repeat(12, 1fr); border-top: 1px solid var(--herb-line); }
+.herb-folio > button { position: relative; grid-column: span 4; min-width: 0; min-height: 470px; overflow: hidden; border: 0; border-right: 1px solid var(--herb-line); border-bottom: 1px solid var(--herb-line); background: var(--herb-paper-bright); padding: 0; color: inherit; text-align: left; cursor: pointer; }
+.herb-folio > button.folio-feature { grid-column: span 8; }
+.herb-folio img { width: 100%; height: 310px; object-fit: cover; filter: saturate(0.82) contrast(1.02); transition: transform 420ms ease, filter 420ms ease; }
+.herb-folio > button.folio-feature img { height: 330px; }
+.herb-folio > button:hover img { filter: saturate(1); transform: scale(1.015); }
+.folio-copy { display: grid; padding: 20px 22px 24px; }
+.folio-copy small { color: var(--herb-pink); font-size: 10px; font-weight: 800; text-transform: uppercase; }
+.folio-copy strong { margin-top: 4px; font: 600 30px/1.05 var(--herb-serif); }
+.folio-copy em { color: var(--herb-muted); font: italic 15px var(--herb-serif); }
+.folio-copy > span { margin-top: 8px; color: var(--herb-leaf); font-size: 11px; text-transform: uppercase; }
+
+.herb-specimen { position: fixed; z-index: 80; top: 72px; right: 0; bottom: 0; display: grid; grid-template-columns: minmax(360px, 0.88fr) minmax(440px, 1.12fr); width: min(1040px, calc(100vw - 72px)); overflow: auto; border-left: 1px solid var(--herb-line); background: var(--herb-paper-bright); box-shadow: -10px 0 38px rgba(48, 35, 52, 0.18); }
+.herb-specimen-close { position: fixed; z-index: 2; top: 90px; right: 18px; display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; border: 1px solid var(--herb-line); border-radius: 50%; background: var(--herb-paper-bright); cursor: pointer; }
+.herb-specimen figure { position: sticky; top: 0; height: calc(100vh - 72px); margin: 0; background: var(--herb-night); }
+.herb-specimen figure img { width: 100%; height: 100%; object-fit: cover; }
+.herb-specimen figcaption { position: absolute; right: 12px; bottom: 12px; background: rgba(41, 31, 49, 0.88); padding: 7px 9px; font-size: 10px; }
+.herb-specimen figcaption a { color: white; }
+.herb-specimen-copy { padding: 64px 60px 90px; }
+.herb-specimen-copy h2 { margin: 0; font: 600 68px/0.92 var(--herb-serif); }
+.herb-latin { margin: 8px 0 28px; color: var(--herb-muted); font: italic 23px var(--herb-serif); }
+.harvest-months { display: grid; grid-template-columns: repeat(12, 1fr); margin: 0 0 36px; border: 1px solid var(--herb-line); }
+.harvest-months span { display: flex; align-items: center; justify-content: center; min-height: 34px; color: var(--herb-muted); font-size: 9px; }
+.harvest-months span + span { border-left: 1px solid var(--herb-line); }
+.harvest-months span.active { background: var(--herb-leaf); color: white; }
+.specimen-notes { margin: 0; }
+.specimen-notes div { display: grid; grid-template-columns: 105px 1fr; gap: 18px; padding: 17px 0; border-top: 1px solid var(--herb-line); }
+.specimen-notes dt { color: var(--herb-pink); font-size: 10px; font-weight: 900; text-transform: uppercase; }
+.specimen-notes dd { margin: 0; line-height: 1.55; }
+.herb-caution,
+.herb-tradition { display: flex; gap: 13px; margin-top: 20px; border: 1px solid #d4af6d; background: #fff7dc; padding: 17px; color: #66501e; font-size: 13px; line-height: 1.5; }
+.herb-tradition { border-color: #c5afca; background: #f3eaf2; color: #5a3b5e; }
+.herb-caution svg,
+.herb-tradition svg { flex: 0 0 auto; margin-top: 2px; }
+.herb-caution span,
+.herb-tradition span { display: grid; gap: 2px; }
+.specimen-actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 28px; }
+
+.herb-guest-gate { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 26px; margin: 0 48px 64px; border-top: 1px solid var(--herb-line); border-bottom: 1px solid var(--herb-line); padding: 34px 0; }
+.herb-guest-gate > span { display: inline-flex; align-items: center; justify-content: center; width: 62px; height: 62px; border-radius: 50%; background: var(--herb-paper-deep); color: var(--herb-leaf); }
+.herb-guest-gate h2 { margin: 0; font: 600 34px var(--herb-serif); }
+.herb-guest-gate p:not(.herb-kicker) { margin: 3px 0 0; color: var(--herb-muted); }
+.herb-guest-gate > div:last-child { display: flex; gap: 8px; }
+
+.watch-workspace { display: grid; grid-template-columns: minmax(380px, 0.72fr) minmax(480px, 1.28fr); min-height: 660px; border-top: 1px solid var(--herb-line); }
+.watch-form { align-self: start; display: grid; gap: 17px; padding: 38px 44px 64px; border-right: 1px solid var(--herb-line); background: var(--herb-paper-bright); }
+.watch-form h2,
+.pantry-form h2,
+.wishlist-form h2 { margin: 0; font: 600 34px var(--herb-serif); }
+.watch-form label,
+.pantry-form label,
+.wishlist-form label { display: grid; gap: 6px; color: var(--herb-muted); font-size: 11px; font-weight: 800; text-transform: uppercase; }
+.watch-form label > span { color: var(--herb-pink); }
+.herb-paired-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.watch-location-heading { display: flex; align-items: center; justify-content: space-between; color: var(--herb-muted); font-size: 11px; font-weight: 800; text-transform: uppercase; }
+.watch-location-heading button { display: inline-flex; align-items: center; gap: 5px; border: 0; background: transparent; color: var(--herb-leaf); cursor: pointer; }
+.signal-choices { margin: 0; border: 0; padding: 0; }
+.signal-choices legend { margin-bottom: 8px; color: var(--herb-muted); font-size: 11px; font-weight: 800; text-transform: uppercase; }
+.signal-choices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.signal-choices legend { grid-column: 1 / -1; }
+.signal-choices label { position: relative; min-width: 0; }
+.signal-choices input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.signal-choices label > span { display: grid; justify-items: start; min-height: 112px; border: 1px solid var(--herb-line); padding: 13px; color: var(--herb-muted); cursor: pointer; }
+.signal-choices input:checked + span { border-color: var(--herb-leaf); background: var(--herb-paper-deep); color: var(--herb-leaf); }
+.signal-choices strong { margin-top: 8px; color: var(--herb-ink); font-size: 11px; text-transform: none; }
+.signal-choices small { margin-top: 3px; font-size: 9px; line-height: 1.35; text-transform: none; }
+.watch-submit { width: 100%; }
+.watch-list { padding: 38px 44px 70px; }
+.watch-list-heading,
+.pantry-ledger-heading { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 17px; }
+.watch-list-heading h2,
+.pantry-ledger-heading h2 { margin: 0; font: 600 34px var(--herb-serif); }
+.watch-list-heading span,
+.pantry-ledger-heading span { color: var(--herb-muted); font-size: 11px; text-transform: uppercase; }
+.watch-card { border-top: 1px solid var(--herb-line); padding: 23px 0; }
+.watch-card.is-ready { border-top: 3px solid var(--herb-pink); }
+.watch-card-top { display: grid; grid-template-columns: auto 1fr auto; gap: 13px; align-items: center; }
+.watch-plant-mark { display: inline-flex; align-items: center; justify-content: center; width: 46px; height: 46px; border-radius: 50%; background: var(--herb-paper-deep); color: var(--herb-leaf); }
+.watch-card-top p { margin: 0 0 2px; color: var(--herb-pink); font-size: 10px; font-weight: 800; text-transform: uppercase; }
+.watch-card-top h3 { display: inline; margin: 0; font: 600 26px var(--herb-serif); }
+.watch-card-top em { margin-left: 8px; color: var(--herb-muted); font: italic 15px var(--herb-serif); }
+.herb-switch { position: relative; }
+.herb-switch input { position: absolute; opacity: 0; }
+.herb-switch span { position: relative; display: block; width: 44px; height: 24px; border: 1px solid var(--herb-line); border-radius: 12px; background: var(--herb-paper-deep); cursor: pointer; }
+.herb-switch span::after { position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: var(--herb-muted); content: ""; transition: transform 180ms ease; }
+.herb-switch input:checked + span { background: var(--herb-leaf); }
+.herb-switch input:checked + span::after { background: white; transform: translateX(19px); }
+.watch-intention { display: flex; gap: 7px; margin: 16px 0; color: var(--herb-muted); font-size: 13px; line-height: 1.5; }
+.watch-intention svg { flex: 0 0 auto; color: var(--herb-gold); }
+.signal-status { display: flex; flex-wrap: wrap; gap: 6px; }
+.signal-status span { display: inline-flex; align-items: center; gap: 4px; border: 1px solid var(--herb-line); border-radius: 13px; padding: 5px 9px; font-size: 10px; font-weight: 800; }
+.signal-status .ready { border-color: #82ab95; color: var(--herb-leaf); }
+.signal-status .waiting { color: var(--herb-muted); }
+.watch-card-foot { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 12px; margin-top: 17px; border-top: 1px solid var(--herb-line); padding-top: 13px; }
+.watch-card-foot > span { color: var(--herb-pink); font: 600 18px var(--herb-serif); }
+.watch-card-foot small { color: var(--herb-muted); }
+.herb-empty { border-top: 1px solid var(--herb-line); padding: 28px 0; color: var(--herb-muted); }
+
+.pantry-forms { display: grid; grid-template-columns: 1fr 0.72fr; border-top: 1px solid var(--herb-line); border-bottom: 1px solid var(--herb-line); background: var(--herb-paper-bright); }
+.pantry-form,
+.wishlist-form { display: grid; align-content: start; gap: 16px; padding: 36px 48px 44px; }
+.pantry-form { border-right: 1px solid var(--herb-line); }
+.pantry-ledgers { display: grid; grid-template-columns: 1fr 0.72fr; min-height: 430px; }
+.pantry-ledgers > section { padding: 40px 48px 72px; }
+.pantry-ledgers > section + section { border-left: 1px solid var(--herb-line); background: var(--herb-paper-deep); }
+.inventory-row { display: grid; grid-template-columns: auto 1fr auto auto; align-items: center; gap: 13px; border-top: 1px solid var(--herb-line); padding: 18px 0; }
+.inventory-plant { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; color: white; background: var(--herb-leaf); }
+.inventory-row h3,
+.wish-row h3 { margin: 0; font: 600 22px var(--herb-serif); }
+.inventory-row p,
+.wish-row p { margin: 2px 0; color: var(--herb-muted); font-size: 12px; }
+.inventory-row small { color: var(--herb-leaf); }
+.inventory-stepper { display: grid; grid-template-columns: 32px minmax(76px, auto) 32px; align-items: center; border: 1px solid var(--herb-line); }
+.inventory-stepper button { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 36px; border: 0; background: transparent; cursor: pointer; }
+.inventory-stepper button + strong,
+.inventory-stepper strong + button { border-left: 1px solid var(--herb-line); }
+.inventory-stepper strong { display: inline-flex; justify-content: center; height: 36px; align-items: center; padding: 0 8px; font-size: 12px; }
+.wish-row { display: grid; grid-template-columns: auto 1fr auto auto; align-items: center; gap: 11px; border-top: 1px solid var(--herb-line); padding: 17px 0; }
+.wish-row > svg { color: var(--herb-pink); }
+.wish-row > span { border: 1px solid var(--herb-line); border-radius: 12px; padding: 4px 8px; color: var(--herb-muted); font-size: 9px; text-transform: uppercase; }
+
+.herbal-footer { display: grid; grid-template-columns: minmax(220px, 0.7fr) minmax(360px, 1.5fr) minmax(200px, 0.7fr); align-items: start; gap: 34px; margin-top: auto; border-top: 1px solid #6b6070; background: var(--herb-night); padding: 38px 48px; color: #ddd4df; }
+.herbal-footer > div:first-child { display: flex; gap: 10px; color: #b5d4c4; }
+.herbal-footer > div:first-child span { display: grid; }
+.herbal-footer strong { font: 600 21px var(--herb-serif); }
+.herbal-footer small,
+.herbal-footer p { color: #a99eac; font-size: 11px; line-height: 1.55; }
+.herbal-footer p { margin: 0; }
+.herbal-footer > div:last-child { display: grid; gap: 8px; }
+.herbal-footer a { color: #e6b1c2; font-size: 11px; }
+.herb-toast { position: fixed; z-index: 120; right: 22px; bottom: 22px; display: flex; align-items: center; gap: 8px; max-width: 440px; border: 1px solid var(--herb-line); background: var(--herb-paper-bright); padding: 13px 16px; color: var(--herb-ink); box-shadow: 0 8px 26px rgba(48, 35, 52, 0.2); }
+
+.herbal-shell .auth-dialog { --canvas: var(--herb-paper); --surface: var(--herb-paper-bright); --surface-muted: var(--herb-paper-deep); --border: var(--herb-line); --ink: var(--herb-ink); --ink-muted: var(--herb-muted); --spore-coral: var(--herb-pink); --spore-coral-deep: var(--herb-pink); --field-pine: var(--herb-leaf); color: var(--herb-ink); color-scheme: light; }
+.herbal-shell .herbal-auth-context { background: var(--herb-night); color: #f6f0e5; }
+.herbal-shell .herbal-auth-context p,
+.herbal-shell .herbal-auth-context li { color: #c9becb; }
+.herbal-shell .auth-tabs { border-color: var(--herb-line); background: var(--herb-paper-deep); }
+.herbal-shell .auth-tabs button { background: transparent; color: var(--herb-muted); }
+.herbal-shell .auth-tabs button.active { background: var(--herb-leaf); color: white; }
+.herbal-shell .auth-submit { background: var(--herb-pink); color: white; }
+
+@media (max-width: 1050px) {
+  .app-header { grid-template-columns: minmax(0, 1fr) auto auto; }
+  .app-header .fungi-world-switch { display: inline-grid; grid-column: 2; }
+  .app-header .header-actions { grid-column: 3; }
+}
+
+@media (max-width: 800px) {
+  .guide-site-header { grid-template-columns: minmax(0, 1fr) auto auto; }
+  .guide-site-header .fungi-world-switch { display: inline-grid; grid-column: 2; }
+  .guide-site-header .guide-map-link { grid-column: 3; }
+}
+
+@media (max-width: 600px) {
+  .app-header .fungi-world-switch,
+  .guide-site-header .fungi-world-switch {
+    width: 42px;
+    min-width: 42px;
+    grid-template-columns: 1fr;
+    border-radius: 50%;
+  }
+  .app-header .fungi-world-switch a.active,
+  .guide-site-header .fungi-world-switch a.active { display: none; }
+  .app-header .fungi-world-switch a:last-child,
+  .guide-site-header .fungi-world-switch a:last-child { border-left: 0; padding: 0; font-size: 0; }
+  .app-header .fungi-world-switch svg,
+  .guide-site-header .fungi-world-switch svg { width: 18px; height: 18px; }
+}
+
+@media (max-width: 1180px) {
+  .herbal-header { grid-template-columns: minmax(188px, auto) auto 1fr auto; padding: 0 18px; }
+  .herbal-header .world-switch { margin-left: 12px; }
+  .herbal-header nav { margin: 0 6px; }
+  .herbal-header nav button { padding: 0 9px; }
+  .herbal-header nav button svg { display: none; }
+  .herb-text-button { display: none; }
+  .moon-observatory { grid-template-columns: 0.8fr 1.2fr; }
+  .signal-choices { grid-template-columns: 1fr; }
+  .signal-choices label > span { grid-template-columns: auto 1fr; min-height: 74px; column-gap: 9px; }
+  .signal-choices strong { margin: 0; }
+  .signal-choices small { grid-column: 2; }
+}
+
+@media (max-width: 960px) {
+  .herbal-header { grid-template-columns: 1fr auto auto; }
+  .herbal-header .world-switch { grid-column: 2; }
+  .herbal-header nav { position: absolute; top: 71px; right: 0; left: 0; display: none; height: auto; margin: 0; border-bottom: 1px solid var(--herb-line); background: var(--herb-paper-bright); padding: 9px; }
+  .herbal-header nav.open { display: grid; grid-template-columns: repeat(4, 1fr); }
+  .herbal-header nav button { min-height: 48px; justify-content: center; }
+  .herbal-header nav button svg { display: block; }
+  .herbal-menu-button { display: inline-flex; }
+  .herbal-intro,
+  .atlas-heading { grid-template-columns: 1fr; gap: 24px; }
+  .moon-observatory { grid-template-columns: 1fr 1fr; }
+  .moon-copy { padding: 44px 36px; }
+  .weather-reading { grid-template-columns: 0.7fr 1.3fr; }
+  .gathering-verdict { grid-column: 1 / -1; min-height: 86px; border-top: 1px solid var(--herb-line); }
+  .weather-metrics { border-right: 0; }
+  .herb-folio > button { grid-column: span 6; }
+  .herb-folio > button.folio-feature { grid-column: span 6; }
+  .herb-specimen { grid-template-columns: 0.8fr 1.2fr; width: calc(100vw - 32px); }
+  .herb-specimen-copy { padding: 54px 34px 80px; }
+  .watch-workspace { grid-template-columns: 1fr; }
+  .watch-form { border-right: 0; border-bottom: 1px solid var(--herb-line); }
+}
+
+@media (max-width: 700px) {
+  .herbal-header { min-height: 64px; padding: 0 12px; }
+  .herbal-brand strong { font-size: 19px; }
+  .herbal-brand small { display: none; }
+  .herbal-sigil { width: 36px; height: 36px; }
+  .herbal-header .world-switch { min-width: 118px; height: 32px; margin-left: 4px; }
+  .herbal-header .world-switch a { padding: 0 6px; font-size: 11px; }
+  .herbal-header nav { top: 63px; grid-template-columns: 1fr 1fr !important; }
+  .herb-user-button { width: 38px; padding: 0; }
+  .herb-user-button > span { width: 34px; height: 34px; }
+  .herb-user-button:not(:focus) { font-size: 0; }
+  .herbal-account-actions .herb-solid-button { min-height: 38px; padding: 0 10px; }
+  .herbal-intro { gap: 18px; padding: 42px 20px 28px; }
+  .herbal-intro h1,
+  .atlas-heading h1 { font-size: 49px; }
+  .herbal-intro > p,
+  .atlas-heading > p { font-size: 14px; }
+  .moon-observatory { grid-template-columns: 1fr; }
+  .moon-orbit { min-height: 330px; border-right: 0; border-bottom: 1px solid #6f6077; }
+  .moon-orbit::before { width: 280px; height: 280px; top: 25px; left: calc(50% - 140px); }
+  .moon-orbit::after { width: 180px; height: 180px; top: 75px; left: calc(50% - 90px); }
+  .moon-disc { width: 94px; height: 94px; }
+  .moon-disc::after { top: -93px; transform: rotate(var(--moon-turn)) translateY(93px); transform-origin: 0 93px; }
+  .moon-copy { padding: 36px 22px 42px; }
+  .moon-copy h2 { font-size: 51px; }
+  .moon-sign { margin-bottom: 22px; font-size: 21px; }
+  .weather-reading,
+  .weather-reading.is-empty { grid-template-columns: 1fr; }
+  .weather-reading.is-empty { justify-items: start; padding: 28px 20px; }
+  .weather-primary,
+  .weather-metrics { border-right: 0; border-bottom: 1px solid var(--herb-line); }
+  .weather-primary { min-height: 96px; }
+  .weather-metrics { min-height: 100px; padding: 20px; }
+  .seasonal-ledger { padding: 46px 20px 52px; }
+  .herb-section-heading { grid-template-columns: 1fr; gap: 9px; }
+  .herb-section-heading > span { text-align: left; }
+  .seasonal-list button { grid-template-columns: 72px 1fr auto; gap: 11px; min-height: 94px; }
+  .seasonal-list img { width: 72px; height: 64px; }
+  .seasonal-list strong { font-size: 21px; }
+  .herb-callouts { grid-template-columns: 1fr; }
+  .herb-callouts button { padding: 24px 20px; }
+  .herb-callouts button + button { border-top: 1px solid var(--herb-line); border-left: 0; }
+  .atlas-heading { padding: 42px 20px 26px; }
+  .herb-atlas-tools { grid-template-columns: 1fr; padding: 0 20px 22px; }
+  .herb-folio { grid-template-columns: 1fr; }
+  .herb-folio > button,
+  .herb-folio > button.folio-feature { grid-column: 1; min-height: 420px; border-right: 0; }
+  .herb-folio img,
+  .herb-folio > button.folio-feature img { height: 285px; }
+  .herb-specimen { top: 64px; grid-template-columns: 1fr; width: 100%; }
+  .herb-specimen-close { top: 76px; right: 12px; }
+  .herb-specimen figure { position: relative; height: 360px; }
+  .herb-specimen-copy { padding: 38px 20px 68px; }
+  .harvest-months { grid-template-columns: repeat(6, 1fr); }
+  .harvest-months span:nth-child(7) { border-left: 0; }
+  .harvest-months span:nth-child(n + 7) { border-top: 1px solid var(--herb-line); }
+  .specimen-notes div { grid-template-columns: 1fr; gap: 5px; }
+  .herb-guest-gate { grid-template-columns: 1fr; margin: 0 20px 50px; }
+  .herb-guest-gate > div:last-child { flex-wrap: wrap; }
+  .watch-form,
+  .watch-list { padding: 30px 20px 52px; }
+  .herb-paired-fields { grid-template-columns: 1fr; }
+  .signal-choices { grid-template-columns: 1fr; }
+  .watch-card-top em { display: block; margin: 0; }
+  .watch-card-foot { grid-template-columns: 1fr auto; }
+  .watch-card-foot small { grid-row: 2; }
+  .watch-card-foot button { grid-column: 2; grid-row: 1 / 3; }
+  .pantry-forms,
+  .pantry-ledgers { grid-template-columns: 1fr; }
+  .pantry-form { border-right: 0; border-bottom: 1px solid var(--herb-line); }
+  .pantry-form,
+  .wishlist-form,
+  .pantry-ledgers > section { padding: 30px 20px 44px; }
+  .pantry-ledgers > section + section { border-top: 1px solid var(--herb-line); border-left: 0; }
+  .inventory-row { grid-template-columns: auto 1fr auto; }
+  .inventory-stepper { grid-column: 2; }
+  .inventory-row > .herb-icon-button { grid-column: 3; grid-row: 1 / 3; }
+  .herbal-footer { grid-template-columns: 1fr; padding: 34px 20px; }
+}
+
+@media (max-width: 460px) {
+  .herbal-brand > span:last-child { display: none; }
+  .herbal-header { grid-template-columns: auto 1fr auto; }
+  .herbal-header .world-switch { justify-self: start; }
+  .herb-text-button { display: none; }
+  .herbal-intro h1,
+  .atlas-heading h1 { font-size: 43px; }
+  .moon-copy dl { grid-template-columns: 1fr; }
+  .moon-copy dl div + div { border-top: 1px solid #6f6077; border-left: 0; padding-left: 0; }
+  .seasonal-list button { grid-template-columns: 62px 1fr; }
+  .seasonal-list img { width: 62px; height: 58px; }
+  .seasonal-list button > svg { display: none; }
+  .inventory-row { grid-template-columns: 1fr auto; }
+  .inventory-plant { display: none; }
+  .inventory-stepper { grid-column: 1; }
+  .inventory-row > .herb-icon-button { grid-column: 2; }
+  .wish-row { grid-template-columns: auto 1fr auto; }
+  .wish-row > span { grid-column: 2; justify-self: start; }
+  .wish-row > .herb-icon-button { grid-column: 3; grid-row: 1 / 3; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .herb-folio img,
+  .herb-switch span::after { transition: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {

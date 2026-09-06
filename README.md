@@ -1,6 +1,6 @@
-# Mushroom Forage Map
+# World Mushroom Foraging
 
-Mushroom Forage Map is a worldwide public mushroom field desk: anyone can search a place and explore recent reviewed observations, found dates, habitat, elevation, community knowledge, seasonal evidence, and safety resources. Accounts are optional and add a private notebook, saved places, weekly field bulletins, editable submissions, recovery, and session controls.
+World Mushroom Foraging is a guest-first field companion with two distinct collections. The mushroom side is a worldwide public field desk for recent reviewed observations and identification education. The herbal side, The Verdant Hours, is a daylight field almanac for learning harvest windows, reading local weather, and keeping a private seasonal record. One optional account serves both experiences.
 
 The project takes inspiration from the usefulness of community location catalogues such as Rockhounding.org while treating sensitive biological locations more carefully. Exact coordinates remain in the contributor's logbook by default; the public map receives a stable point shifted roughly 1 to 2.5 miles away.
 
@@ -15,6 +15,11 @@ The project takes inspiration from the usefulness of community location catalogu
 - Public location modes: approximate, private, or contributor-approved exact
 - Saved public locations with notes and planned revisit dates
 - Species and region follows with an in-app seven-day activity watchlist and optional weekly email delivery
+- Place-based fungi watch zones that combine current season, recent local observations, optional weather, and optional traditional lunar timing
+- A separate 12-plant herbal atlas with harvest parts, broad seasonal windows, field marks, stewardship notes, cautions, and licensed photography
+- A live astronomical moon clock and optional local weather reading, with lunar correspondences explicitly labeled as traditional rather than proven harvest effects
+- Herbal watch zones with an intention and private reason, plus daily alignment alerts for selected season, weather, and optional lunar signals
+- A private gathered-herb inventory and wish list linked to the same field account
 - Structured community verification across cap, underside, stem, base, interior, substrate, and lookalike evidence
 - Multi-photo observation records with source links, attribution, substrate, recent weather, and verification summaries
 - Ten regional field collections with recent activity outlooks and public observation lists
@@ -84,7 +89,7 @@ python -m scripts.import_smoke
 python -m compileall app crawler scripts
 ```
 
-The API smoke tests cover registration, verification, private/public coordinate separation, multi-photo records, structured review, follows, regional summaries, seasonal caching, saved-place revisits, recovery, session revocation, owner edits, account deletion, import updates, and retired source records.
+The API smoke tests cover registration, verification, private/public coordinate separation, multi-photo records, structured review, fungi and herbal watch zones, herbal inventory and wishes, follows, regional summaries, seasonal caching, saved-place revisits, recovery, session revocation, owner edits, account deletion, import updates, and retired source records.
 
 ## Imports
 
@@ -97,7 +102,7 @@ python -m crawler.inaturalist
 
 Only research-grade, wild, geolocated worldwide observations from the rolling 90-day window and matching catalogue species are imported. Each cycle reconciles the complete matching iNaturalist result set: new observations are inserted, changed locations and found dates are updated, and records that leave the current research-grade window are retired from the public map. `crawled_sources.source_url` is unique, making repeat runs safe. Imported map points still use public approximation.
 
-The production cron calls `GET /api/cron/inaturalist` with `Authorization: Bearer $CRON_SECRET` once daily. Persisted sync state starts a new cycle only when 14 days have elapsed, processes at most 3,600 records per invocation, and resumes the following day until the worldwide result set is complete. This keeps each invocation bounded and allows retry after failure. The importer follows iNaturalist's recommended 200-record pages, one request per second, cursor pagination, and identifying user agent.
+The production cron calls `GET /api/cron/inaturalist` with `Authorization: Bearer $CRON_SECRET` once daily. Persisted sync state starts a new cycle only when 14 days have elapsed, processes at most 3,600 records per invocation, and resumes the following day until the worldwide result set is complete. This keeps each invocation bounded and allows retry after failure. The importer follows iNaturalist's recommended 200-record pages, one request per second, cursor pagination, and identifying user agent. Separate alert jobs evaluate mushroom watches weekly and herbal watches daily; an email is sent only when all signals a person selected are aligned.
 
 ## Production
 

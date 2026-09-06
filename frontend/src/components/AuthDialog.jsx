@@ -4,7 +4,7 @@ import { getApiError, useForgotPassword, useLogin, useRegister, useResetPassword
 
 const EMPTY_FORM = { username: '', email: '', password: '' }
 
-export default function AuthDialog({ mode: initialMode, resetToken, onClose, onAuthenticated }) {
+export default function AuthDialog({ mode: initialMode, resetToken, onClose, onAuthenticated, context = 'fungi' }) {
   const dialogRef = useRef(null)
   const [mode, setMode] = useState(initialMode)
   const [form, setForm] = useState(EMPTY_FORM)
@@ -68,17 +68,17 @@ export default function AuthDialog({ mode: initialMode, resetToken, onClose, onA
         <X size={20} aria-hidden="true" />
       </button>
 
-      <div className="auth-context">
+      <div className={`auth-context ${context === 'herbs' ? 'herbal-auth-context' : ''}`}>
         <div className="auth-mark" aria-hidden="true">
           <LockKeyhole size={22} />
         </div>
-        <p className="auth-context-label">Your field record</p>
-        <h2>Keep the map public. Keep your finds yours.</h2>
-        <p>An account adds a private home for your field activity without changing how anyone explores the public map.</p>
+        <p className="auth-context-label">{context === 'herbs' ? 'Your seasonal record' : 'Your field record'}</p>
+        <h2>{context === 'herbs' ? 'Let the atlas stay open. Keep your practice personal.' : 'Keep the map public. Keep your finds yours.'}</h2>
+        <p>{context === 'herbs' ? 'One field account holds private watch zones, gathered inventory, and the plants you hope to meet.' : 'An account adds a private home for your field activity without changing how anyone explores the public map.'}</p>
         <ul>
-          <li><Check size={17} aria-hidden="true" /> Save places to revisit</li>
-          <li><Check size={17} aria-hidden="true" /> Build a personal logbook</li>
-          <li><Check size={17} aria-hidden="true" /> Submit finds for review</li>
+          <li><Check size={17} aria-hidden="true" /> {context === 'herbs' ? 'Watch a place and season' : 'Save places to revisit'}</li>
+          <li><Check size={17} aria-hidden="true" /> {context === 'herbs' ? 'Keep a gathered inventory' : 'Build a personal logbook'}</li>
+          <li><Check size={17} aria-hidden="true" /> {context === 'herbs' ? 'Remember a wish list' : 'Submit finds for review'}</li>
         </ul>
       </div>
 
@@ -104,10 +104,10 @@ export default function AuthDialog({ mode: initialMode, resetToken, onClose, onA
           <h3>{mode === 'register' ? 'Create your field account' : mode === 'forgot' ? 'Reset your password' : mode === 'reset' ? 'Choose a new password' : 'Welcome back'}</h3>
           <p>
             {mode === 'register'
-              ? 'Three details, then you are back on the map.'
+              ? `Three details, then you are back in the ${context === 'herbs' ? 'almanac' : 'map'}.`
               : mode === 'forgot' ? 'We will send a secure, one-hour recovery link.'
                 : mode === 'reset' ? 'Use at least eight characters for your new password.'
-                  : 'Open your logbook and continue where you left off.'}
+                  : `Open your ${context === 'herbs' ? 'seasonal record' : 'logbook'} and continue where you left off.`}
           </p>
         </div>
 
@@ -152,7 +152,7 @@ export default function AuthDialog({ mode: initialMode, resetToken, onClose, onA
         <button className="guest-link" type="button" onClick={onClose}>
           Continue exploring without an account
         </button>
-        <p className="auth-privacy">We use your email only for account access. Public finds never display it.</p>
+        <p className="auth-privacy">We use your email only for account access. Private field records are never displayed publicly.</p>
       </div>
     </dialog>
   )

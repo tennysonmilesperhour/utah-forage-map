@@ -162,6 +162,20 @@ def main():
             "kind": "region", "region_slug": "rocky-mountains",
         })
         assert region_alert.status_code == 201, region_alert.text
+        fungi_zone = client.post("/api/account/alerts", json={
+            "kind": "zone",
+            "name": "Cottonwood patch",
+            "species_taxon_id": 58682,
+            "intention": "Study and identification",
+            "why": "Compare the same fruiting place through the season.",
+            "latitude": 40.7,
+            "longitude": -111.9,
+            "radius_km": 20,
+            "watch_weather": False,
+        })
+        assert fungi_zone.status_code == 201, fungi_zone.text
+        assert fungi_zone.json()["readiness"]["recent_activity"] is True
+        assert fungi_zone.json()["readiness"]["ready"] is True
         regions = client.get("/api/regions")
         assert regions.status_code == 200, regions.text
         rocky = next(item for item in regions.json() if item["slug"] == "rocky-mountains")
@@ -169,6 +183,56 @@ def main():
         region_detail = client.get("/api/regions/rocky-mountains")
         assert region_detail.status_code == 200, region_detail.text
         assert region_detail.json()["recent_observations"][0]["id"] == sighting_id
+
+        almanac = client.get("/api/herbs/almanac")
+        assert almanac.status_code == 200, almanac.text
+        assert len(almanac.json()["herbs"]) == 12
+        assert almanac.json()["moon"]["name"]
+
+        herb_zone = client.post("/api/account/herb-watch-zones", json={
+            "name": "Home foothills",
+            "herb_slug": "common-yarrow",
+            "intention": "Study and identification",
+            "why": "Learn one plant through an entire season.",
+            "latitude": 40.7,
+            "longitude": -111.9,
+            "radius_km": 20,
+            "watch_season": True,
+            "watch_weather": False,
+            "watch_moon": False,
+        })
+        assert herb_zone.status_code == 201, herb_zone.text
+        assert herb_zone.json()["herb_name"] == "Common yarrow"
+        zone_id = herb_zone.json()["id"]
+        paused_zone = client.patch(f"/api/account/herb-watch-zones/{zone_id}", json={"enabled": False})
+        assert paused_zone.status_code == 200 and paused_zone.json()["enabled"] is False
+        assert len(client.get("/api/account/herb-watch-zones").json()) == 1
+
+        inventory = client.post("/api/account/herb-inventory", json={
+            "herb_slug": "common-yarrow",
+            "quantity": 24,
+            "unit": "g",
+            "gathered_on": recent_found_on,
+            "preparation": "Dried",
+        })
+        assert inventory.status_code == 201, inventory.text
+        inventory_id = inventory.json()["id"]
+        inventory_update = client.patch(f"/api/account/herb-inventory/{inventory_id}", json={"quantity": 14})
+        assert inventory_update.status_code == 200 and inventory_update.json()["quantity"] == 14
+
+        wish = client.post("/api/account/herb-wishlist", json={
+            "herb_slug": "stinging-nettle",
+            "intention": "Kitchen and tea",
+            "priority": "season",
+        })
+        assert wish.status_code == 201, wish.text
+        updated_wish = client.post("/api/account/herb-wishlist", json={
+            "herb_slug": "stinging-nettle",
+            "intention": "Connection to place",
+            "priority": "next",
+        })
+        assert updated_wish.status_code == 201, updated_wish.text
+        assert len(client.get("/api/account/herb-wishlist").json()) == 1
 
         main_module.httpx.get = lambda *_args, **_kwargs: HistogramResponse()
         seasonal = client.get("/api/seasonality?taxon_id=58682&region_slug=rocky-mountains")
@@ -256,7 +320,7 @@ def main():
         assert len(client.get("/api/sightings").json()) == 1
 
     runtime_dir.cleanup()
-    print("Account, privacy, saved-place, moderation, and recovery smoke test passed.")
+    print("Account, fungi and herb watches, pantry, privacy, moderation, and recovery smoke test passed.")
 
 
 if __name__ == "__main__":

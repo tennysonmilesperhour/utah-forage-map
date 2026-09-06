@@ -57,6 +57,9 @@ class User(Base):
     account_tokens = relationship("AccountToken", back_populates="user", cascade="all, delete-orphan")
     saved_locations = relationship("SavedLocation", back_populates="user", cascade="all, delete-orphan")
     alert_subscriptions = relationship("AlertSubscription", back_populates="user", cascade="all, delete-orphan")
+    herb_watch_zones = relationship("HerbWatchZone", back_populates="user", cascade="all, delete-orphan")
+    herb_inventory = relationship("HerbInventoryItem", back_populates="user", cascade="all, delete-orphan")
+    herb_wishlist = relationship("HerbWishlistItem", back_populates="user", cascade="all, delete-orphan")
 
 
 class Species(Base):
@@ -267,12 +270,77 @@ class AlertSubscription(Base):
     kind = Column(String(20), nullable=False)
     species_id = Column(GUID(), ForeignKey("species.id", ondelete="CASCADE"))
     region_slug = Column(String(80))
+    name = Column(String(120))
+    latitude = Column(Float)
+    longitude = Column(Float)
+    radius_km = Column(Float)
+    intention = Column(String(80))
+    why = Column(String(500))
+    watch_weather = Column(Boolean, default=False, nullable=False)
+    moon_phase = Column(String(24))
     enabled = Column(Boolean, default=True, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     last_sent_at = Column(DateTime)
 
     user = relationship("User", back_populates="alert_subscriptions")
     species = relationship("Species", back_populates="alert_subscriptions")
+
+
+class HerbWatchZone(Base):
+    __tablename__ = "herb_watch_zones"
+    __table_args__ = (Index("ix_herb_watch_zones_enabled", "enabled", "last_notified_at"),)
+
+    id = Column(GUID(), primary_key=True, default=uuid.uuid4)
+    user_id = Column(GUID(), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    name = Column(String(120), nullable=False)
+    herb_slug = Column(String(80), nullable=False)
+    intention = Column(String(80), nullable=False)
+    why = Column(String(500))
+    latitude = Column(Float, nullable=False)
+    longitude = Column(Float, nullable=False)
+    radius_km = Column(Float, default=25, nullable=False)
+    hemisphere = Column(String(10), default="north", nullable=False)
+    watch_season = Column(Boolean, default=True, nullable=False)
+    watch_moon = Column(Boolean, default=False, nullable=False)
+    watch_weather = Column(Boolean, default=True, nullable=False)
+    enabled = Column(Boolean, default=True, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    last_notified_at = Column(DateTime)
+
+    user = relationship("User", back_populates="herb_watch_zones")
+
+
+class HerbInventoryItem(Base):
+    __tablename__ = "herb_inventory_items"
+
+    id = Column(GUID(), primary_key=True, default=uuid.uuid4)
+    user_id = Column(GUID(), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    herb_slug = Column(String(80), nullable=False)
+    herb_name = Column(String(120), nullable=False)
+    quantity = Column(Float, nullable=False)
+    unit = Column(String(24), nullable=False)
+    gathered_on = Column(Date, nullable=False)
+    location_name = Column(String(160))
+    preparation = Column(String(80))
+    notes = Column(Text)
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+
+    user = relationship("User", back_populates="herb_inventory")
+
+
+class HerbWishlistItem(Base):
+    __tablename__ = "herb_wishlist_items"
+    __table_args__ = (UniqueConstraint("user_id", "herb_slug", name="uq_herb_wishlist_user_herb"),)
+
+    id = Column(GUID(), primary_key=True, default=uuid.uuid4)
+    user_id = Column(GUID(), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    herb_slug = Column(String(80), nullable=False)
+    herb_name = Column(String(120), nullable=False)
+    intention = Column(String(80))
+    priority = Column(String(12), default="someday", nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+
+    user = relationship("User", back_populates="herb_wishlist")
 
 
 class SeasonalityCache(Base):

@@ -3,7 +3,7 @@ import { renderToString } from 'react-dom/server'
 import GuideApp from './GuideApp.jsx'
 import AnalyticsConsent from './components/AnalyticsConsent.jsx'
 import { guideMetadataForPath, guideRoutes, guideStructuredData } from './lib/guideSeo'
-import { pageMetadataForPath } from './lib/seo'
+import { pageMetadataForPath, pageStructuredDataForPath } from './lib/seo'
 
 export function renderGuide(path) {
   const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } })
@@ -15,4 +15,4 @@ export function renderGuide(path) {
   )
 }
 
-export { guideMetadataForPath, guideRoutes, guideStructuredData, pageMetadataForPath }
+export { guideMetadataForPath, guideRoutes, guideStructuredData, pageMetadataForPath, pageStructuredDataForPath }

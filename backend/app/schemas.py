@@ -274,9 +274,20 @@ class SavedLocationUpdate(BaseModel):
 
 
 class AlertSubscriptionCreate(BaseModel):
-    kind: Literal["species", "region"]
+    kind: Literal["species", "region", "zone"]
     species_taxon_id: Optional[int] = Field(default=None, ge=1)
     region_slug: Optional[str] = Field(default=None, max_length=80, pattern=r"^[a-z0-9-]+$")
+    name: Optional[str] = Field(default=None, min_length=1, max_length=120)
+    latitude: Optional[float] = Field(default=None, ge=-90, le=90)
+    longitude: Optional[float] = Field(default=None, ge=-180, le=180)
+    radius_km: Optional[float] = Field(default=None, ge=1, le=250)
+    intention: Optional[str] = Field(default=None, max_length=80)
+    why: Optional[str] = Field(default=None, max_length=500)
+    watch_weather: bool = False
+    moon_phase: Optional[Literal[
+        "new moon", "waxing crescent", "first quarter", "waxing gibbous",
+        "full moon", "waning gibbous", "last quarter", "waning crescent",
+    ]] = None
 
     @model_validator(mode="after")
     def one_target(self):
@@ -284,11 +295,23 @@ class AlertSubscriptionCreate(BaseModel):
             raise ValueError("Choose a species")
         if self.kind == "region" and not self.region_slug:
             raise ValueError("Choose a region")
+        if self.kind == "zone" and (
+            not self.species_taxon_id or not self.name or self.latitude is None
+            or self.longitude is None or self.radius_km is None or not self.intention
+        ):
+            raise ValueError("Name the watch zone, choose a species and intention, and provide its center and radius")
         return self
 
 
 class AlertSubscriptionUpdate(BaseModel):
-    enabled: bool
+    enabled: Optional[bool] = None
+    intention: Optional[str] = Field(default=None, max_length=80)
+    why: Optional[str] = Field(default=None, max_length=500)
+    watch_weather: Optional[bool] = None
+    moon_phase: Optional[Literal[
+        "new moon", "waxing crescent", "first quarter", "waxing gibbous",
+        "full moon", "waning gibbous", "last quarter", "waning crescent",
+    ]] = None
 
 
 class AlertSubscriptionRead(BaseModel):
@@ -299,11 +322,102 @@ class AlertSubscriptionRead(BaseModel):
     species_name: Optional[str] = None
     region_slug: Optional[str] = None
     region_name: Optional[str] = None
+    name: Optional[str] = None
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
+    radius_km: Optional[float] = None
+    intention: Optional[str] = None
+    why: Optional[str] = None
+    watch_weather: bool = False
+    moon_phase: Optional[str] = None
     enabled: bool
     created_at: datetime
     last_sent_at: Optional[datetime] = None
     recent_observations_7d: int = 0
     latest_observed_on: Optional[date] = None
+    readiness: Optional[dict] = None
+
+
+class HerbWatchZoneCreate(BaseModel):
+    name: str = Field(min_length=1, max_length=120)
+    herb_slug: str = Field(min_length=1, max_length=80, pattern=r"^[a-z0-9-]+$")
+    intention: str = Field(min_length=1, max_length=80)
+    why: Optional[str] = Field(default=None, max_length=500)
+    latitude: float = Field(ge=-90, le=90)
+    longitude: float = Field(ge=-180, le=180)
+    radius_km: float = Field(default=25, ge=1, le=250)
+    watch_season: bool = True
+    watch_moon: bool = False
+    watch_weather: bool = True
+
+
+class HerbWatchZoneUpdate(BaseModel):
+    name: Optional[str] = Field(default=None, min_length=1, max_length=120)
+    intention: Optional[str] = Field(default=None, min_length=1, max_length=80)
+    why: Optional[str] = Field(default=None, max_length=500)
+    radius_km: Optional[float] = Field(default=None, ge=1, le=250)
+    watch_season: Optional[bool] = None
+    watch_moon: Optional[bool] = None
+    watch_weather: Optional[bool] = None
+    enabled: Optional[bool] = None
+
+
+class HerbWatchZoneRead(HerbWatchZoneCreate):
+    id: UUID
+    herb_name: str
+    herb_latin_name: str
+    hemisphere: str
+    enabled: bool
+    created_at: datetime
+    last_notified_at: Optional[datetime] = None
+    readiness: dict
+
+
+class HerbInventoryCreate(BaseModel):
+    herb_slug: str = Field(min_length=1, max_length=80, pattern=r"^[a-z0-9-]+$")
+    quantity: float = Field(gt=0, le=100000)
+    unit: Literal["g", "oz", "bunch", "jar", "portion"]
+    gathered_on: date
+    location_name: Optional[str] = Field(default=None, max_length=160)
+    preparation: Optional[str] = Field(default=None, max_length=80)
+    notes: Optional[str] = Field(default=None, max_length=1000)
+
+
+class HerbInventoryUpdate(BaseModel):
+    quantity: Optional[float] = Field(default=None, gt=0, le=100000)
+    unit: Optional[Literal["g", "oz", "bunch", "jar", "portion"]] = None
+    preparation: Optional[str] = Field(default=None, max_length=80)
+    notes: Optional[str] = Field(default=None, max_length=1000)
+
+
+class HerbInventoryRead(HerbInventoryCreate):
+    id: UUID
+    herb_name: str
+    created_at: datetime
+
+    model_config = {"from_attributes": True}
+
+
+class HerbWishlistCreate(BaseModel):
+    herb_slug: str = Field(min_length=1, max_length=80, pattern=r"^[a-z0-9-]+$")
+    intention: Optional[str] = Field(default=None, max_length=80)
+    priority: Literal["next", "season", "someday"] = "someday"
+
+
+class HerbWishlistRead(HerbWishlistCreate):
+    id: UUID
+    herb_name: str
+    created_at: datetime
+
+    model_config = {"from_attributes": True}
+
+
+class HerbAlmanacRead(BaseModel):
+    generated_at: datetime
+    hemisphere: str
+    moon: dict
+    weather: Optional[dict] = None
+    herbs: list[dict]
 
 
 class RegionSummaryRead(BaseModel):
