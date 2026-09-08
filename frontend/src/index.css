@@ -7896,6 +7896,7 @@ textarea::placeholder {
 .field-practice-response p + p { margin-top: 14px; }
 .field-practice-actions { display: flex; flex-wrap: wrap; gap: 12px; }
 .field-practice-actions button { min-height: 44px; }
+.field-practice-actions .herb-text-button { display: inline-flex; }
 .herb-wisdom-sources { margin-top: 18px; color: var(--herb-muted); font-size: 12px; line-height: 1.7; }
 .herb-wisdom-sources summary { display: list-item; width: fit-content; min-height: 44px; padding: 12px 0; color: var(--herb-leaf); font-weight: 700; cursor: pointer; }
 .herb-wisdom-sources p { max-width: 820px; margin: 8px 0; }
