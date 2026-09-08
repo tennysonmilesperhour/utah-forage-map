@@ -6,6 +6,8 @@ import {
   Trash2, UserPlus, X,
 } from 'lucide-react'
 import AuthDialog from './components/AuthDialog'
+import HerbFieldPractice from './components/HerbFieldPractice'
+import HerbPlantReflection from './components/HerbPlantReflection'
 import { getApiError, useCurrentUser, useLogout } from './hooks/useAuth'
 import {
   useCreateHerbInventory, useCreateHerbWatchZone, useCreateHerbWishlist,
@@ -136,9 +138,10 @@ function TodayView({ almanac, location, locating, moon, onLocate, onOpenPlant, o
   return (
     <main className="herbal-main herbal-today">
       <section className="herbal-intro">
-        <div><p className="herb-kicker">A field practice for the whole season</p><h1>Read the plant, the place, and the hour.</h1></div>
-        <p>Begin with identity, permission, weather, and plant condition. Add lunar tradition only when it gives your practice meaning.</p>
+        <div><p className="herb-kicker">A field practice for the whole season</p><h1>Meet the plants. Listen to what stirs.</h1></div>
+        <p>Come with curiosity and whatever the day has left you feeling. Get to know the plants, notice the lives around them, and gather with care.</p>
       </section>
+      <HerbFieldPractice />
       <MoonDial moon={moon} />
       <WeatherReading weather={almanac?.weather} hasLocation={Boolean(location)} locating={locating} onLocate={onLocate} />
       <SeasonalLedger hemisphere={almanac?.hemisphere ?? 'north'} onOpen={onOpenPlant} />
@@ -160,6 +163,7 @@ function PlantDetail({ herb, hemisphere, onClose, onWatch, onWish }) {
         <dl className="specimen-notes"><div><dt>Field marks</dt><dd>{herb.fieldMarks}</dd></div><div><dt>Habitat</dt><dd>{herb.habitat}</dd></div><div><dt>Harvest</dt><dd>{herb.harvest}</dd></div><div><dt>Stewardship</dt><dd>{herb.stewardship}</dd></div></dl>
         <div className="herb-caution"><ShieldAlert size={18} /><span><strong>Before use</strong>{herb.caution}</span></div>
         <div className="herb-tradition"><MoonStar size={18} /><span><strong>Traditional sky note</strong>{herb.tradition} Preferred traditional window: {herb.moon.join(' or ')}.</span></div>
+        <HerbPlantReflection herb={herb} />
         <div className="specimen-actions"><button className="herb-solid-button" type="button" onClick={() => onWatch(herb)}><BellRing size={16} /> Watch this plant</button><button className="herb-outline-button" type="button" onClick={() => onWish(herb)}><Heart size={16} /> Add to wish list</button></div>
       </div>
     </aside>
@@ -173,7 +177,7 @@ function PlantsView({ hemisphere, selected, onSelect, onClose, onWatch, onWish }
   const visible = herbProfiles.filter(herb => `${herb.name} ${herb.latin} ${herb.habitat}`.toLowerCase().includes(query.toLowerCase()) && (part === 'All parts' || herb.parts.includes(part)))
   return (
     <main className="herbal-main plant-atlas-main">
-      <section className="atlas-heading"><div><p className="herb-kicker">Twelve first monographs</p><h1>The gathering atlas</h1></div><p>Field characters, harvest windows, clean-site cautions, and stewardship precede every traditional association.</p></section>
+      <section className="atlas-heading"><div><p className="herb-kicker">Twelve plants to know slowly</p><h1>The gathering atlas</h1></div><p>Begin with field marks, harvest windows, and care for the patch. Each plant also offers a quiet invitation to observe and reflect.</p></section>
       <div className="herb-atlas-tools"><label><Search size={18} /><span className="sr-only">Search plants</span><input type="search" placeholder="Search plant or habitat" value={query} onChange={event => setQuery(event.target.value)} /></label><select value={part} onChange={event => setPart(event.target.value)} aria-label="Filter by gathered part">{parts.map(value => <option key={value}>{value}</option>)}</select></div>
       <section className="herb-folio" aria-label="Herbal field guides">
         {visible.map((herb, index) => <button type="button" className={index % 5 === 0 ? 'folio-feature' : ''} onClick={() => onSelect(herb)} key={herb.slug}><img src={herb.image.url} alt={`${herb.name} in habitat`} loading="lazy" /><span className="folio-copy"><small>{herb.family}</small><strong>{herb.name}</strong><em>{herb.latin}</em><span>{herb.parts.join(' · ')}</span></span></button>)}
@@ -199,7 +203,7 @@ function WatchForm({ location, presetHerb, onLocate, locating, onSubmit, busy })
       <div className="watch-form-heading"><p className="herb-kicker">New watch zone</p><h2>Name a place and a purpose</h2></div>
       <label>Zone name<input required maxLength="120" placeholder="Creek path, home valley..." value={form.name} onChange={event => setForm({ ...form, name: event.target.value })} /></label>
       <div className="herb-paired-fields"><label>Plant<select value={form.herb_slug} onChange={event => setForm({ ...form, herb_slug: event.target.value })}>{herbProfiles.map(herb => <option value={herb.slug} key={herb.slug}>{herb.name}</option>)}</select></label><label>Intention<select value={form.intention} onChange={event => setForm({ ...form, intention: event.target.value })}>{herbIntents.map(value => <option key={value}>{value}</option>)}</select></label></div>
-      <label>Why this matters to you<textarea rows="3" maxLength="500" placeholder="A note to your future self, not a medical claim" value={form.why} onChange={event => setForm({ ...form, why: event.target.value })} /></label>
+      <label>Why this matters to you<textarea rows="3" maxLength="500" placeholder="What would you like to make room for? A slower walk, time to notice, a familiar place to return to…" value={form.why} onChange={event => setForm({ ...form, why: event.target.value })} /></label>
       <div className="watch-location-heading"><span>Approximate center</span><button type="button" onClick={onLocate} disabled={locating}><LocateFixed size={15} /> {locating ? 'Locating...' : 'Use my location'}</button></div>
       <div className="herb-paired-fields"><label>Latitude<input required type="number" step="any" min="-90" max="90" value={form.latitude} onChange={event => setForm({ ...form, latitude: event.target.value })} /></label><label>Longitude<input required type="number" step="any" min="-180" max="180" value={form.longitude} onChange={event => setForm({ ...form, longitude: event.target.value })} /></label></div>
       <label>Watch radius <span>{form.radius_km} km</span><input type="range" min="1" max="250" value={form.radius_km} onChange={event => setForm({ ...form, radius_km: event.target.value })} /></label>
@@ -234,7 +238,7 @@ function WatchesView({ user, location, locating, presetHerb, onLocate, onAuth, o
 function InventoryForm({ presetHerb, onSubmit, busy }) {
   const [form, setForm] = useState({ herb_slug: presetHerb?.slug ?? herbProfiles[0].slug, quantity: 1, unit: 'bunch', gathered_on: new Date().toISOString().slice(0, 10), location_name: '', preparation: 'Fresh', notes: '' })
   async function submit(event) { event.preventDefault(); await onSubmit({ ...form, quantity: Number(form.quantity), location_name: form.location_name || null, preparation: form.preparation || null, notes: form.notes || null }); setForm(current => ({ ...current, quantity: 1, notes: '' })) }
-  return <form className="pantry-form" onSubmit={submit}><div><p className="herb-kicker">Gathered inventory</p><h2>Add to the shelf</h2></div><label>Plant<select value={form.herb_slug} onChange={event => setForm({ ...form, herb_slug: event.target.value })}>{herbProfiles.map(herb => <option value={herb.slug} key={herb.slug}>{herb.name}</option>)}</select></label><div className="herb-paired-fields"><label>Amount<input type="number" min="0.1" step="0.1" required value={form.quantity} onChange={event => setForm({ ...form, quantity: event.target.value })} /></label><label>Unit<select value={form.unit} onChange={event => setForm({ ...form, unit: event.target.value })}>{['g', 'oz', 'bunch', 'jar', 'portion'].map(value => <option key={value}>{value}</option>)}</select></label></div><label>Gathered on<input type="date" required value={form.gathered_on} onChange={event => setForm({ ...form, gathered_on: event.target.value })} /></label><div className="herb-paired-fields"><label>Place<input maxLength="160" placeholder="Private label" value={form.location_name} onChange={event => setForm({ ...form, location_name: event.target.value })} /></label><label>Preparation<input maxLength="80" placeholder="Fresh, dried..." value={form.preparation} onChange={event => setForm({ ...form, preparation: event.target.value })} /></label></div><label>Notes<textarea rows="2" maxLength="1000" value={form.notes} onChange={event => setForm({ ...form, notes: event.target.value })} /></label><button className="herb-solid-button" disabled={busy}><ListPlus size={17} /> {busy ? 'Adding...' : 'Add gathering'}</button></form>
+  return <form className="pantry-form" onSubmit={submit}><div><p className="herb-kicker">Gathered inventory</p><h2>Add to the shelf</h2></div><label>Plant<select value={form.herb_slug} onChange={event => setForm({ ...form, herb_slug: event.target.value })}>{herbProfiles.map(herb => <option value={herb.slug} key={herb.slug}>{herb.name}</option>)}</select></label><div className="herb-paired-fields"><label>Amount<input type="number" min="0.1" step="0.1" required value={form.quantity} onChange={event => setForm({ ...form, quantity: event.target.value })} /></label><label>Unit<select value={form.unit} onChange={event => setForm({ ...form, unit: event.target.value })}>{['g', 'oz', 'bunch', 'jar', 'portion'].map(value => <option key={value}>{value}</option>)}</select></label></div><label>Gathered on<input type="date" required value={form.gathered_on} onChange={event => setForm({ ...form, gathered_on: event.target.value })} /></label><div className="herb-paired-fields"><label>Place<input maxLength="160" placeholder="Private label" value={form.location_name} onChange={event => setForm({ ...form, location_name: event.target.value })} /></label><label>Preparation<input maxLength="80" placeholder="Fresh, dried..." value={form.preparation} onChange={event => setForm({ ...form, preparation: event.target.value })} /></label></div><label>Field notes and reflections<textarea rows="3" maxLength="1000" placeholder="What did you notice? How did you arrive, and what would you like to remember? Include plant condition and preparation notes." value={form.notes} onChange={event => setForm({ ...form, notes: event.target.value })} /></label><button className="herb-solid-button" disabled={busy}><ListPlus size={17} /> {busy ? 'Adding...' : 'Add gathering'}</button></form>
 }
 
 function WishlistForm({ presetHerb, onSubmit, busy }) {
@@ -251,7 +255,7 @@ function PantryView({ user, presetHerb, onAuth, onToast }) {
 }
 
 function HerbalFooter() {
-  return <footer className="herbal-footer"><div><Leaf size={18} /><span><strong>The Verdant Hours</strong><small>Observe carefully. Gather lightly. Keep claims honest.</small></span></div><p>Never consume a wild plant unless identity is certain. Check permissions, contamination, allergies, pregnancy cautions, and medication interactions with qualified local sources and a health professional.</p><div><a href="https://www.poison.org/articles/plant" target="_blank" rel="noreferrer">Poison Control plant safety</a><a href="https://www.fda.gov/consumers/consumer-updates/fda-101-dietary-supplements" target="_blank" rel="noreferrer">FDA herbal safety</a></div></footer>
+  return <footer className="herbal-footer"><div><Leaf size={18} /><span><strong>The Verdant Hours</strong><small>Notice what is here. Gather with care.</small></span></div><p>Never consume a wild plant unless identity is certain. Check permissions, contamination, allergies, pregnancy cautions, and medication interactions with qualified local sources and a health professional.</p><div><a href="https://www.poison.org/articles/plant" target="_blank" rel="noreferrer">Poison Control plant safety</a><a href="https://www.fda.gov/consumers/consumer-updates/fda-101-dietary-supplements" target="_blank" rel="noreferrer">FDA herbal safety</a></div></footer>
 }
 
 export default function HerbalApp() {

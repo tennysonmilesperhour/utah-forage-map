@@ -20,6 +20,7 @@ The project takes inspiration from the usefulness of community location catalogu
 - A live astronomical moon clock and optional local weather reading, with lunar correspondences explicitly labeled as traditional rather than proven harvest effects
 - Herbal watch zones with an intention and private reason, plus daily alignment alerts for selected season, weather, and optional lunar signals
 - A private gathered-herb inventory and wish list linked to the same field account
+- An optional herbal field pause and twelve plant reflections informed by emotional awareness and attentive nature observation, with book attribution and [editorial guidance](docs/HERBAL_VOICE.md)
 - Structured community verification across cap, underside, stem, base, interior, substrate, and lookalike evidence
 - Multi-photo observation records with source links, attribution, substrate, recent weather, and verification summaries
 - Ten regional field collections with recent activity outlooks and public observation lists
