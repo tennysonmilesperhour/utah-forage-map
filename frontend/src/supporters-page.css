@@ -58,6 +58,23 @@
 .supporter-motion-toggle { display: block; margin-top: 10px; padding: 4px 0; color: #b5bf9f; font-size: 10px; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
 .supporter-footer a { display: inline-flex; align-items: center; gap: 5px; color: #c9cdb6; }
 .supporters-main :is(a, button, input):focus-visible { outline: 2px solid #e3c88b; outline-offset: 4px; }
+/* The fungi collection uses midnight glass; the herbal palette stays local to its shell. */
+.supporters-shell.mycelial-theme { color: var(--ink); background: radial-gradient(ellipse at 78% 12%, #23467745, transparent 48%), radial-gradient(ellipse at 8% 62%, #34254f22, transparent 45%), #030711; }
+.mycelial-theme :is(.supporters-story h1, .supporter-wall h2) { color: #f1f4fc; }
+.mycelial-theme .supporters-story h1 em { color: #b8d2ff; }
+.mycelial-theme .supporters-story > p:not(.supporter-eyebrow) { color: var(--ink-muted); }
+.mycelial-theme .supporters-story > p.supporter-lede { color: #d9e3f4; }
+.mycelial-theme .supporter-friend-scene > span { color: #bdcfea; }
+.mycelial-theme .supporter-card { border-color: #86abe166; background: linear-gradient(130deg, #142b4bd9, #0c1933e3 48%, #050d1df2); box-shadow: 0 24px 65px #0006, inset 0 1px #c7dfff29; }
+.mycelial-theme .supporter-perks { border-color: var(--mycelial-edge); }
+.mycelial-theme .supporter-perks strong { color: #e9effa; }
+.mycelial-theme :is(.supporter-price-note, .supporter-perks span, .supporter-terms, .supporter-smallprint, .supporter-signin, .supporter-wall > p, .supporter-footer, .supporter-motion-toggle) { color: var(--ink-muted); }
+.mycelial-theme :is(.supporter-profile-preview small, .supporter-names small, .supporter-listing-choice small, .supporter-wall-empty span) { color: #adc1e0; }
+.mycelial-theme :is(.supporter-listing-choice, .supporter-thanks > span, .supporter-wall-empty, .supporter-footer a) { color: #d0dff4; }
+.mycelial-theme .supporter-cta { color: #0a1221; background: linear-gradient(110deg, #f0cf9f, #dca679); border-color: #f3d8ad; }
+.mycelial-theme :is(.supporter-wall, .supporter-footer, .supporter-wall-empty, .supporter-names li) { border-color: var(--mycelial-edge); }
+.mycelial-theme .supporter-wall-heading > span { color: #c2d3ec; }
+.mycelial-theme .supporter-names li { background: #244c7d18; }
 @media (max-width: 1100px) { .supporters-intro { gap: 45px; grid-template-columns: 1fr 400px; } }
 @media (max-width: 1050px) { .supporters-main { padding-bottom: calc(108px + env(safe-area-inset-bottom)); } }
 @media (max-width: 800px) { .supporters-main { padding-top: 45px; } .supporters-intro { grid-template-columns: 1fr; gap: 36px; max-width: 520px; margin: auto; } .supporters-story h1 { font-size: 64px; } .supporter-friend-scene { margin-top: 20px; } .supporter-friend-scene > svg { width: 80px; height: 84px; } .supporter-wall { margin-top: 48px; padding-top: 40px; } .supporter-wall-heading { align-items: flex-start; flex-direction: column; gap: 15px; } .supporter-names { grid-template-columns: repeat(2, minmax(0, 1fr)); } .supporter-footer { flex-direction: column; } }

@@ -117,14 +117,14 @@ export default function MapView({
       onMapErrorRef.current?.(null)
       // Tint the basemap itself, preserving legibility of labels and the meaning of specimen colors.
       for (const layer of map.getStyle().layers) {
-        if (layer.type === 'background') map.setPaintProperty(layer.id, 'background-color', collection === 'herbs' ? '#0e1e15' : '#19151d')
-        if (layer.id === 'water' && layer.type === 'fill') map.setPaintProperty(layer.id, 'fill-color', collection === 'herbs' ? '#102c29' : '#102f35')
+        if (layer.type === 'background') map.setPaintProperty(layer.id, 'background-color', collection === 'herbs' ? '#0e1e15' : '#060d1b')
+        if (layer.id === 'water' && layer.type === 'fill') map.setPaintProperty(layer.id, 'fill-color', collection === 'herbs' ? '#102c29' : '#0d2449')
       }
       map.setFog({
-        color: '#1c2830',
-        'high-color': collection === 'herbs' ? '#426347' : '#49314b',
+        color: collection === 'herbs' ? '#1c2830' : '#111e3a',
+        'high-color': collection === 'herbs' ? '#426347' : '#203b70',
         'horizon-blend': 0.08,
-        'space-color': '#090809',
+        'space-color': collection === 'herbs' ? '#090809' : '#02050e',
         'star-intensity': 0.16,
       })
       map.addSource(SOURCE_ID, {
