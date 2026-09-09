@@ -2,6 +2,16 @@
 
 The shared header sprouts a small mushroom with a link to `/supporters`. One membership covers fungi and herbs. The price is $10 USD per year, automatically renewing until canceled. Active supporters receive a gilded profile, an optional public username listing, and occasional surprises without a promised schedule. Public guides and maps remain accessible.
 
+## Botanical artwork and motion
+
+The invitation uses an ivory oyster specimen and a separate bark/soil cutout (`frontend/public/images/fungi/oyster-{specimen,ground}.webp`). Both are generated decorative artwork, optimized to about 132 KB combined; the existing real species photographs and their credits are unchanged. The specimen was prompted as photographic botanical texture with detailed decurrent gills, an asymmetrical fan cap and curved stem, transparent background, no face, arms or outlines. The ground was prompted as a low transparent bed of bark, soil and sparse dry vegetation with no mushrooms.
+
+`BotanicalMushroom` renders both assets with Canvas. A 10 × 16 texture mesh keeps the stem and cap connected while rising, opening, bowing and folding. The cycle has a 4.6-second emergence, a six-second invitation, a 3.8-second wilt, then 22 seconds at rest. Closing the invitation starts the same wilt; pointer and keyboard interaction hold it open. System reduced motion and the manual pause preference render a still specimen. Rendering sleeps offscreen and in hidden documents, and cleans up observers and animation frames on unmount. Static artwork remains as a fallback if Canvas or asset decoding fails.
+
+The fungi theme uses oyster ivory, bark and near-black surfaces. All photographic overlays use neutral black. Herb colors retain their separate forest palette.
+
+`node --test frontend/tests/mushroom-motion.test.mjs` checks that texture triangles never invert during emergence/absorption and that visible phase boundaries meet. Review motion in the browser as well: geometry checks cannot judge its visual quality.
+
 ## Current activation requirements
 
 Code alone does not activate payments. The receiving Stripe account must be authenticated and live payments enabled, the database migration applied, and the following server environment variables set on the **utah-forage-api** Vercel project:

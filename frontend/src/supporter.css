@@ -1,19 +1,22 @@
 /* The sprout occupies existing right-hand space; its bubble never changes layout. */
 #root .collection-header > :is(.header-actions, .herbal-account-actions) { width: 100%; display: flex; align-items: center; justify-content: flex-end; gap: 8px; overflow: visible; }
 #root .collection-header .supporter-sprout { position: relative; display: block; flex: 0 0 46px; width: 46px; height: 52px; margin-right: auto; color: #d8c691; text-decoration: none; border-radius: 6px; isolation: isolate; }
-.mushroom-friend { display: block; width: 100%; height: 100%; overflow: visible; }
+.mushroom-friend { position: relative; display: block; width: 100%; height: 100%; isolation: isolate; }
+.mushroom-canvas, .mushroom-fallback { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+.mushroom-canvas { opacity: 0; }
+.mushroom-friend[data-rendered="true"] .mushroom-canvas { opacity: 1; }
+.mushroom-friend[data-rendered="true"] .mushroom-fallback { visibility: hidden; }
+.mushroom-friend[data-phase="dormant"] .mushroom-fallback { opacity: 0; }
 #root .collection-header .sprout-trigger { display: block; width: 100%; height: 100%; min-width: 0; min-height: 0; padding: 0; border: 0; border-radius: 6px; background: none; color: inherit; cursor: pointer; }
-.sprout-bubble { position: absolute; top: calc(100% + 4px); right: -8px; width: 246px; padding: 0; border: 1px solid #ba95645e; border-radius: 7px; background: linear-gradient(120deg, #241824ee, #091b12ee); -webkit-backdrop-filter: blur(20px) saturate(145%); backdrop-filter: blur(20px) saturate(145%); box-shadow: 0 10px 35px #0007, inset 0 1px #ffffff14; color: #e8e2ce; font-family: inherit; font-size: 11px; line-height: 1.5; white-space: normal; animation: sprout-invitation-enter .24s ease-out both; }
+.sprout-bubble { position: absolute; top: calc(100% + 4px); right: -8px; width: 246px; padding: 0; border: 1px solid #ba95645e; border-radius: 7px; background: linear-gradient(120deg, #242019e0, #050505ed); -webkit-backdrop-filter: blur(20px) saturate(110%); backdrop-filter: blur(20px) saturate(110%); box-shadow: 0 10px 35px #0007, inset 0 1px #ffffff14; color: #e8e2ce; font-family: inherit; font-size: 11px; line-height: 1.5; white-space: normal; animation: sprout-invitation-enter .24s ease-out both; }
 .herbal-header .sprout-bubble { background: linear-gradient(120deg, #122b1dee, #04140dee); }
-.mycelial-theme .sprout-bubble { border-color: #8aade36b; background: linear-gradient(120deg, #142c4ef0, #050d20f5); color: #e5edfc; }
-.sprout-bubble::before { content: ''; position: absolute; right: 29px; top: -5px; width: 8px; height: 8px; border: solid #ba95645e; border-width: 1px 0 0 1px; background: #142219; transform: rotate(45deg); }
+.mycelial-theme .sprout-bubble { border-color: #d0b99550; background: linear-gradient(120deg, #242019e0, #050505ed); color: #f0e8db; }
 .sprout-bubble::after { content: ''; position: absolute; top: -9px; right: 0; left: 0; height: 9px; }
-.mycelial-theme .sprout-bubble::before { border-color: #8aade36b; background: #0a1b34; }
 #root .sprout-invitation { display: flex; flex-direction: column; gap: 6px; padding: 14px 34px 14px 15px; border-radius: 7px; color: #e8e2ce; text-decoration: none; }
-.sprout-invitation strong { color: #f0cf8e; font-size: 11px; font-weight: 500; }
+.sprout-invitation strong { color: #e6d0a9; font-size: 11px; font-weight: 500; }
 #root .collection-header .sprout-close { position: absolute; top: 5px; right: 4px; display: flex; align-items: center; justify-content: center; width: 26px; height: 26px; min-height: 26px; min-width: 26px; margin: 0; padding: 0; border: 0; border-radius: 4px; background: #ffffff05; color: #c0c9ab; cursor: pointer; }
 #root .collection-header .sprout-close:hover { color: #fff0d0; background: #ffffff12; }
-#root .mycelial-theme .sprout-close { color: #c3d6f1; }
+#root .mycelial-theme .sprout-close { color: #d3c5af; }
 @keyframes sprout-invitation-enter { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
 #root .collection-header .herb-user-button > span { flex: 0 0 28px; }
 #root .herbal-header.collection-header .herb-user-button { padding-inline: 6px; }
@@ -43,4 +46,4 @@
 }
 @media (prefers-reduced-motion: reduce) { .sprout-bubble { animation: none; } }
 @media (prefers-reduced-transparency: reduce) { .sprout-bubble { background: #0c1b12; } }
-@media (prefers-reduced-transparency: reduce) { .mycelial-theme .sprout-bubble { background: #08162c; } }
+@media (prefers-reduced-transparency: reduce) { .mycelial-theme .sprout-bubble { background: #0b0a08; } }

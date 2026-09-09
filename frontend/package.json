@@ -13,6 +13,7 @@
     "preview": "vite preview",
     "test:herbs": "node --test tests/herb-guide.test.mjs",
     "test:map": "node --test tests/visitor-country.test.mjs tests/herb-map.test.mjs",
+    "test:motion": "node --test tests/mushroom-motion.test.mjs",
     "test:seo": "node --test tests/seo.test.mjs",
     "indexnow": "node scripts/submit-indexnow.mjs"
   },

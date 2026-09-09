@@ -8,7 +8,7 @@
 .supporters-story > p:not(.supporter-eyebrow) { max-width: 425px; font-size: 13px; line-height: 1.9; color: #a6b3a5; }
 .supporters-story > p.supporter-lede { color: #d1d4bf; font-size: 17px; line-height: 1.75; margin-bottom: 18px; }
 .supporter-friend-scene { display: flex; align-items: center; gap: 20px; margin-top: 34px; }
-.supporter-friend-scene > svg { width: 112px; height: 118px; color: #d3bd87; filter: drop-shadow(0 12px 24px #9f6b4926); }
+.supporter-friend-scene > .mushroom-friend { width: 148px; height: 166px; flex: 0 0 148px; }
 .supporter-friend-scene > span { font-family: 'Cormorant Garamond', Georgia, serif; color: #b3ba9b; font-size: 19px; line-height: 1.4; font-style: italic; }
 .supporter-card { padding: 30px; border: 1px solid #d5bc7545; border-radius: 10px; background: linear-gradient(130deg, #68725215, #a0726814 48%, #101e1660); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); box-shadow: 0 20px 60px #0002, inset 0 1px 0 #fff1; }
 .supporter-price { display: flex; align-items: baseline; gap: 13px; margin: 14px 0 0; }
@@ -46,7 +46,7 @@
 .supporter-wall-heading > span { display: flex; gap: 8px; align-items: center; white-space: nowrap; font-size: 10px; color: #bcbc97; }
 .supporter-wall > p { margin: 16px 0 28px; color: #a4b29f; font-size: 12px; line-height: 1.8; }
 .supporter-wall-empty { display: flex; align-items: center; gap: 22px; margin: 24px 0; padding: 25px; border: 1px dashed #c2c99530; border-radius: 7px; font-size: 13px; line-height: 1.7; color: #c5ccb6; }
-.supporter-wall-empty > svg { width: 50px; height: 54px; flex-shrink: 0; color: #cabb8e; }
+.supporter-wall-empty > .mushroom-friend { width: 58px; height: 68px; flex: 0 0 58px; }
 .supporter-wall-empty span { color: #98a88f; font-size: 11px; }
 .supporter-names { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); list-style: none; padding: 0; gap: 20px; margin: 30px 0; }
 .supporter-names li { display: flex; align-items: center; gap: 14px; padding: 16px; border: 1px solid #d5bc7530; border-radius: 7px; background: #bfaa6c06; }
@@ -58,24 +58,24 @@
 .supporter-motion-toggle { display: block; margin-top: 10px; padding: 4px 0; color: #b5bf9f; font-size: 10px; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
 .supporter-footer a { display: inline-flex; align-items: center; gap: 5px; color: #c9cdb6; }
 .supporters-main :is(a, button, input):focus-visible { outline: 2px solid #e3c88b; outline-offset: 4px; }
-/* The fungi collection uses midnight glass; the herbal palette stays local to its shell. */
-.supporters-shell.mycelial-theme { color: var(--ink); background: radial-gradient(ellipse at 78% 12%, #23467745, transparent 48%), radial-gradient(ellipse at 8% 62%, #34254f22, transparent 45%), #030711; }
-.mycelial-theme :is(.supporters-story h1, .supporter-wall h2) { color: #f1f4fc; }
-.mycelial-theme .supporters-story h1 em { color: #b8d2ff; }
+/* Oyster ivory and bark over near-black glass. */
+.supporters-shell.mycelial-theme { color: var(--ink); background: radial-gradient(ellipse at 78% 12%, #82613b1c, transparent 48%), #030303; }
+.mycelial-theme :is(.supporters-story h1, .supporter-wall h2) { color: #f6f1e7; }
+.mycelial-theme .supporters-story h1 em { color: #e7d5b6; }
 .mycelial-theme .supporters-story > p:not(.supporter-eyebrow) { color: var(--ink-muted); }
-.mycelial-theme .supporters-story > p.supporter-lede { color: #d9e3f4; }
-.mycelial-theme .supporter-friend-scene > span { color: #bdcfea; }
-.mycelial-theme .supporter-card { border-color: #86abe166; background: linear-gradient(130deg, #142b4bd9, #0c1933e3 48%, #050d1df2); box-shadow: 0 24px 65px #0006, inset 0 1px #c7dfff29; }
+.mycelial-theme .supporters-story > p.supporter-lede { color: #f8f3eb; }
+.mycelial-theme .supporter-friend-scene > span { color: #eee6d9; }
+.mycelial-theme .supporter-card { border-color: #d4bc9259; background: linear-gradient(130deg, #28221ad9, #12100de8 48%, #050505f2); box-shadow: 0 24px 65px #0006, inset 0 1px #fff6e629; }
 .mycelial-theme .supporter-perks { border-color: var(--mycelial-edge); }
-.mycelial-theme .supporter-perks strong { color: #e9effa; }
+.mycelial-theme .supporter-perks strong { color: #f1eadd; }
 .mycelial-theme :is(.supporter-price-note, .supporter-perks span, .supporter-terms, .supporter-smallprint, .supporter-signin, .supporter-wall > p, .supporter-footer, .supporter-motion-toggle) { color: var(--ink-muted); }
-.mycelial-theme :is(.supporter-profile-preview small, .supporter-names small, .supporter-listing-choice small, .supporter-wall-empty span) { color: #adc1e0; }
-.mycelial-theme :is(.supporter-listing-choice, .supporter-thanks > span, .supporter-wall-empty, .supporter-footer a) { color: #d0dff4; }
-.mycelial-theme .supporter-cta { color: #0a1221; background: linear-gradient(110deg, #f0cf9f, #dca679); border-color: #f3d8ad; }
+.mycelial-theme :is(.supporter-profile-preview small, .supporter-names small, .supporter-listing-choice small, .supporter-wall-empty span) { color: #e3dbcc; }
+.mycelial-theme :is(.supporter-listing-choice, .supporter-thanks > span, .supporter-wall-empty, .supporter-footer a) { color: #f8f2e7; }
+.mycelial-theme .supporter-cta { color: #181612; background: linear-gradient(110deg, #efdfbf, #c7af86); border-color: #f0dfbf; }
 .mycelial-theme :is(.supporter-wall, .supporter-footer, .supporter-wall-empty, .supporter-names li) { border-color: var(--mycelial-edge); }
-.mycelial-theme .supporter-wall-heading > span { color: #c2d3ec; }
-.mycelial-theme .supporter-names li { background: #244c7d18; }
+.mycelial-theme .supporter-wall-heading > span { color: #f0e9dc; }
+.mycelial-theme .supporter-names li { background: #5c524318; }
 @media (max-width: 1100px) { .supporters-intro { gap: 45px; grid-template-columns: 1fr 400px; } }
 @media (max-width: 1050px) { .supporters-main { padding-bottom: calc(108px + env(safe-area-inset-bottom)); } }
-@media (max-width: 800px) { .supporters-main { padding-top: 45px; } .supporters-intro { grid-template-columns: 1fr; gap: 36px; max-width: 520px; margin: auto; } .supporters-story h1 { font-size: 64px; } .supporter-friend-scene { margin-top: 20px; } .supporter-friend-scene > svg { width: 80px; height: 84px; } .supporter-wall { margin-top: 48px; padding-top: 40px; } .supporter-wall-heading { align-items: flex-start; flex-direction: column; gap: 15px; } .supporter-names { grid-template-columns: repeat(2, minmax(0, 1fr)); } .supporter-footer { flex-direction: column; } }
+@media (max-width: 800px) { .supporters-main { padding-top: 45px; } .supporters-intro { grid-template-columns: 1fr; gap: 36px; max-width: 520px; margin: auto; } .supporters-story h1 { font-size: 64px; } .supporter-friend-scene { margin-top: 20px; } .supporter-friend-scene > .mushroom-friend { width: 98px; height: 112px; flex-basis: 98px; } .supporter-wall { margin-top: 48px; padding-top: 40px; } .supporter-wall-heading { align-items: flex-start; flex-direction: column; gap: 15px; } .supporter-names { grid-template-columns: repeat(2, minmax(0, 1fr)); } .supporter-footer { flex-direction: column; } }
 @media (max-width: 480px) { .supporters-main { padding-left: 22px; padding-right: 22px; } .supporters-story h1 { font-size: 56px; } .supporter-card { padding: 23px; } .supporter-eyebrow { font-size: 8px; letter-spacing: 1.5px; } .supporter-wall h2 { font-size: 30px; } .supporter-names { grid-template-columns: 1fr; } .supporter-footer nav { gap: 18px; } }

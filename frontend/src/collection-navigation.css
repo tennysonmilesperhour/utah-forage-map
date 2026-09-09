@@ -101,6 +101,6 @@
   #root .collection-header :is(.brand-mark, .herbal-sigil) { display: none; }
 }
 @media (prefers-reduced-transparency: reduce) {
-  #root .collection-header .collection-nav { background: #0a1730; }
+  #root .collection-header .collection-nav { background: #100e0b; }
   #root .herbal-header .collection-nav { background: #0c2115; }
 }
