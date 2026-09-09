@@ -19,6 +19,7 @@ export const herbNavigation = [
   { key: 'today', label: 'Today', icon: 'compass' },
   { key: 'map', label: 'Field map', icon: 'map' },
   { key: 'plants', label: 'Plant atlas', icon: 'flower' },
+  { key: 'practice', label: 'Gathering ways', icon: 'book' },
   { key: 'watches', label: 'Watch zones', icon: 'bell' },
   { key: 'pantry', label: 'Pantry', icon: 'archive' },
 ]

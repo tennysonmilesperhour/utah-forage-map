@@ -17,10 +17,12 @@ The project takes inspiration from the usefulness of community location catalogu
 - Species and region follows with an in-app seven-day activity watchlist and optional weekly email delivery
 - Place-based fungi watch zones that combine current season, recent local observations, optional weather, and optional traditional lunar timing
 - A separate 12-plant herbal atlas with harvest parts, broad seasonal windows, field marks, stewardship notes, cautions, and licensed photography
-- A live astronomical moon clock and optional local weather reading, with lunar correspondences explicitly labeled as traditional rather than proven harvest effects
+- A live astronomical moon clock and optional local weather reading, paired with a transparent eight-phase devotional practice rooted in European and Euro-American lunar gardening
 - Herbal watch zones with an intention and private reason, plus daily alignment alerts for selected season, weather, and optional lunar signals
 - A private gathered-herb inventory and wish list linked to the same field account
 - An optional herbal field pause and twelve plant reflections informed by emotional awareness and attentive nature observation, with book attribution and [editorial guidance](docs/HERBAL_VOICE.md)
+- A public Ways of Gathering library with an arrival-to-return rite, plant-part harvest timing, lunar and stellar calendar traditions, reciprocity guidance, a seven-question field record, and a linked lineage reading room
+- Plant-specific spiritual companionship notes that name their folk-herbal context instead of presenting one blended or universal tradition
 - Structured community verification across cap, underside, stem, base, interior, substrate, and lookalike evidence
 - Multi-photo observation records with source links, attribution, substrate, recent weather, and verification summaries
 - Ten regional field collections with recent activity outlooks and public observation lists

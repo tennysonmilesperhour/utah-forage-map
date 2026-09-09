@@ -7,6 +7,7 @@ import {
 import AuthDialog from './components/AuthDialog'
 import HerbalHeader from './components/HerbalHeader'
 import HerbMoonVisual from './components/HerbMoonVisual'
+import HerbalPracticeLibrary from './components/HerbalPracticeLibrary'
 import { getApiError, useCurrentUser, useLogout } from './hooks/useAuth'
 import {
   useCreateHerbInventory, useCreateHerbWatchZone, useCreateHerbWishlist,
@@ -15,6 +16,7 @@ import {
   useUpdateHerbInventory, useUpdateHerbWatchZone,
 } from './hooks/useHerbs'
 import { herbIntents, herbProfiles, herbsBySlug, harvestMonthsFor } from './data/herbs'
+import { moonPracticeFor, plantSpiritNotes } from './data/herbTraditions'
 import { lunarContext } from './lib/lunar'
 import { trackPageView } from './lib/googleTag'
 import { applyPageMetadata } from './lib/seo'
@@ -22,7 +24,7 @@ import './herbal.css'
 import './herbal-forest.css'
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-const VIEWS = ['today', 'plants', 'watches', 'pantry']
+const VIEWS = ['today', 'plants', 'practice', 'watches', 'pantry']
 
 function dateLabel(value) {
   return new Intl.DateTimeFormat(undefined, { dateStyle: 'medium' }).format(new Date(`${value}T12:00:00`))
@@ -46,6 +48,7 @@ function weatherLabel(code) {
 
 function MoonDial({ moon }) {
   const next = moon.nextQuarter ? new Intl.DateTimeFormat(undefined, { month: 'short', day: 'numeric' }).format(moon.nextQuarter) : 'soon'
+  const practice = moonPracticeFor(moon.phase)
   return (
     <section className="moon-observatory" aria-labelledby="moon-title">
       <HerbMoonVisual moon={moon} />
@@ -54,7 +57,8 @@ function MoonDial({ moon }) {
         <h2 id="moon-title">{moon.phase}</h2>
         <p className="moon-sign">Moon in {moon.sign} <span>Tropical zodiac</span></p>
         <dl><div><dt>Illuminated</dt><dd>{Math.round(moon.illumination * 100)}%</dd></div><div><dt>Next quarter</dt><dd>{next}</dd></div></dl>
-        <p className="tradition-note"><Sparkles size={15} /> Traditional correspondence only. The astronomical position is calculated; harvest efficacy is not established.</p>
+        <div className="moon-devotional"><span>{practice.arc}</span><p>{practice.work}</p><small>{practice.question}</small></div>
+        <p className="tradition-note"><Sparkles size={15} /> The sky clock is astronomical. This reflection follows a named lunar-gardening synthesis; it never replaces identification, permission, or reading the living plant.</p>
       </div>
     </section>
   )
@@ -115,6 +119,7 @@ function TodayView({ almanac, location, locating, moon, onLocate, onOpenPlant, o
       </section>
       <SeasonalLedger hemisphere={almanac?.hemisphere ?? 'north'} onOpen={onOpenPlant} onNavigate={onNavigate} />
       <section className="herb-callouts">
+        <button type="button" onClick={() => onNavigate('practice')}><BookHeart size={23} /><span><strong>Enter the practice library</strong><small>Gathering rites, plant-part timing, lunar and stellar traditions, reciprocity, and field journaling.</small></span><ChevronRight size={18} /></button>
         <button type="button" onClick={() => onNavigate('watches')}><BellRing size={23} /><span><strong>Set a watch zone</strong><small>Combine season, weather, and optional sky timing around a place and intention.</small></span><ChevronRight size={18} /></button>
         <button type="button" onClick={() => onNavigate('pantry')}><ShoppingBasket size={23} /><span><strong>Open your pantry</strong><small>Record gathered material, quantities, preparations, and what you hope to find next.</small></span><ChevronRight size={18} /></button>
       </section>
@@ -144,6 +149,7 @@ function ForestTodayView({ almanac, location, locating, moon, onLocate, onOpenPl
       <div className="forest-conditions"><WeatherReading weather={almanac?.weather} hasLocation={Boolean(location)} locating={locating} onLocate={onLocate} /></div>
       <SeasonalLedger hemisphere={almanac?.hemisphere ?? 'north'} onOpen={onOpenPlant} onNavigate={onNavigate} />
       <section className="herb-callouts">
+        <button type="button" onClick={() => onNavigate('practice')}><BookHeart size={23} /><span><strong>Enter the practice library</strong><small>Gathering rites, plant-part timing, lunar and stellar traditions, reciprocity, and field journaling.</small></span><ChevronRight size={18} /></button>
         <button type="button" onClick={() => onNavigate('watches')}><BellRing size={23} /><span><strong>Set a watch zone</strong><small>Combine season, weather, and optional sky timing around a place and intention.</small></span><ChevronRight size={18} /></button>
         <button type="button" onClick={() => onNavigate('pantry')}><ShoppingBasket size={23} /><span><strong>Open your pantry</strong><small>Record gathered material, quantities, preparations, and what you hope to find next.</small></span><ChevronRight size={18} /></button>
       </section>
@@ -152,6 +158,7 @@ function ForestTodayView({ almanac, location, locating, moon, onLocate, onOpenPl
 }
 
 function PlantDetail({ herb, hemisphere, onClose, onWatch, onWish }) {
+  const spirit = plantSpiritNotes[herb.slug]
   return (
     <aside className="herb-specimen" aria-label={`${herb.name} field notes`}>
       <button className="herb-specimen-close" type="button" onClick={onClose} aria-label="Close plant notes"><X size={19} /></button>
@@ -160,7 +167,8 @@ function PlantDetail({ herb, hemisphere, onClose, onWatch, onWish }) {
         <div className="harvest-months" aria-label="Typical harvest months">{MONTHS.map((month, index) => <span className={harvestMonthsFor(herb, hemisphere).includes(index + 1) ? 'active' : ''} key={month}>{month}</span>)}</div>
         <dl className="specimen-notes"><div><dt>Field marks</dt><dd>{herb.fieldMarks}</dd></div><div><dt>Habitat</dt><dd>{herb.habitat}</dd></div><div><dt>Harvest</dt><dd>{herb.harvest}</dd></div><div><dt>Stewardship</dt><dd>{herb.stewardship}</dd></div></dl>
         <div className="herb-caution"><ShieldAlert size={18} /><span><strong>Before use</strong>{herb.caution}</span></div>
-        <div className="herb-tradition"><MoonStar size={18} /><span><strong>Traditional sky note</strong>{herb.tradition} Preferred traditional window: {herb.moon.join(' or ')}.</span></div>
+        <div className="herb-tradition"><MoonStar size={18} /><span><strong>{spirit?.lineage ?? 'Traditional sky note'}</strong>{herb.tradition} Suggested lunar window within that practice: {herb.moon.join(' or ')}.</span></div>
+        {spirit && <section className="plant-spirit-note"><p className="herb-kicker"><Sparkles size={15} /> Spiritual companionship</p><h3>{spirit.gift}</h3><dl><div><dt>At the patch</dt><dd>{spirit.rite}</dd></div><div><dt>Before making</dt><dd>{spirit.making}</dd></div></dl></section>}
         <div className="specimen-actions"><button className="herb-solid-button" type="button" onClick={() => onWatch(herb)}><BellRing size={16} /> Watch this plant</button><button className="herb-outline-button" type="button" onClick={() => onWish(herb)}><Heart size={16} /> Add to wish list</button></div>
       </div>
     </aside>
@@ -205,7 +213,7 @@ function WatchForm({ location, presetHerb, onLocate, locating, onSubmit, busy })
       <div className="watch-location-heading"><span>Approximate center</span><button type="button" onClick={onLocate} disabled={locating}><LocateFixed size={15} /> {locating ? 'Locating...' : 'Use my location'}</button></div>
       <div className="herb-paired-fields"><label>Latitude<input required type="number" step="any" min="-90" max="90" value={form.latitude} onChange={event => setForm({ ...form, latitude: event.target.value })} /></label><label>Longitude<input required type="number" step="any" min="-180" max="180" value={form.longitude} onChange={event => setForm({ ...form, longitude: event.target.value })} /></label></div>
       <label>Watch radius <span>{form.radius_km} km</span><input type="range" min="1" max="250" value={form.radius_km} onChange={event => setForm({ ...form, radius_km: event.target.value })} /></label>
-      <fieldset className="signal-choices"><legend>Readiness signals</legend><label><input type="checkbox" checked={form.watch_season} onChange={event => setForm({ ...form, watch_season: event.target.checked })} /><span><CalendarDays size={17} /><strong>Growing season</strong><small>Broad regional harvest months</small></span></label><label><input type="checkbox" checked={form.watch_weather} onChange={event => setForm({ ...form, watch_weather: event.target.checked })} /><span><CloudSun size={17} /><strong>Dry weather</strong><small>Rain and wind at the zone</small></span></label><label><input type="checkbox" checked={form.watch_moon} onChange={event => setForm({ ...form, watch_moon: event.target.checked })} /><span><MoonStar size={17} /><strong>Sky tradition</strong><small>Optional, not scientifically established</small></span></label></fieldset>
+      <fieldset className="signal-choices"><legend>Readiness signals</legend><label><input type="checkbox" checked={form.watch_season} onChange={event => setForm({ ...form, watch_season: event.target.checked })} /><span><CalendarDays size={17} /><strong>Growing season</strong><small>Broad regional harvest months</small></span></label><label><input type="checkbox" checked={form.watch_weather} onChange={event => setForm({ ...form, watch_weather: event.target.checked })} /><span><CloudSun size={17} /><strong>Dry weather</strong><small>Rain and wind at the zone</small></span></label><label><input type="checkbox" checked={form.watch_moon} onChange={event => setForm({ ...form, watch_moon: event.target.checked })} /><span><MoonStar size={17} /><strong>Plant’s lunar window</strong><small>The named folk-herbal timing shown in its atlas entry</small></span></label></fieldset>
       <button className="herb-solid-button watch-submit" disabled={busy || (!form.watch_season && !form.watch_weather && !form.watch_moon)}><BellRing size={17} /> {busy ? 'Saving...' : 'Start watching'}</button>
     </form>
   )
@@ -288,6 +296,7 @@ export default function HerbalApp() {
   return <div className={`herbal-shell${forest ? ' herbal-shell--forest' : ''}`} data-view={view} ref={shellRef}><HerbalHeader view={view} forest={forest} user={user} authLoading={authLoading} onNavigate={navigate} onAuth={setAuthMode} onLogout={signOut} />
     {view === 'today' && <Today almanac={almanac.data} location={location} locating={locating} moon={moon} onLocate={locate} onOpenPlant={herb => { if (forest) { window.location.assign(`/herbs/atlas/${herb.slug}`); return } setSelected(herb); navigate('plants'); setSelected(herb) }} onNavigate={navigate} />}
     {view === 'plants' && <PlantsView hemisphere={almanac.data?.hemisphere ?? 'north'} selected={selected} onSelect={setSelected} onClose={() => setSelected(null)} onWatch={watchPlant} onWish={wishForPlant} />}
+    {view === 'practice' && <HerbalPracticeLibrary />}
     {view === 'watches' && <WatchesView user={user} location={location} locating={locating} presetHerb={presetHerb} onLocate={locate} onAuth={setAuthMode} onToast={setToast} />}
     {view === 'pantry' && <PantryView user={user} presetHerb={presetHerb} onAuth={setAuthMode} onToast={setToast} />}
     <HerbalFooter />
