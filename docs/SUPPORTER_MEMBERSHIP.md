@@ -1,6 +1,6 @@
 # Annual supporter membership
 
-The shared header sprouts a small mushroom with a link to `/supporters`. One membership covers fungi and herbs. The price is $10 USD per year, automatically renewing until canceled. Active supporters receive a gilded profile, an optional public username listing, and occasional surprises without a promised schedule. Public guides and maps remain accessible.
+The shared header sprouts a small mushroom with a link to `/supporters`. One membership covers fungi and herbs. The price is $10 USD per year, automatically renewing until canceled. Active supporters receive a gilded profile, an optional public username listing, and a rotating collection of 40 original mushroom-and-herb poems in the sprout dialog. All guides, maps and field tools remain free.
 
 ## Botanical artwork and motion
 

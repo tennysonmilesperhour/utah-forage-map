@@ -11,9 +11,16 @@
 .sprout-bubble { position: absolute; top: calc(100% + 4px); right: -8px; width: 246px; padding: 0; border: 1px solid #ba95645e; border-radius: 7px; background: linear-gradient(120deg, #242019e0, #050505ed); -webkit-backdrop-filter: blur(20px) saturate(110%); backdrop-filter: blur(20px) saturate(110%); box-shadow: 0 10px 35px #0007, inset 0 1px #ffffff14; color: #e8e2ce; font-family: inherit; font-size: 11px; line-height: 1.5; white-space: normal; animation: sprout-invitation-enter .24s ease-out both; }
 .herbal-header .sprout-bubble { background: linear-gradient(120deg, #122b1dee, #04140dee); }
 .mycelial-theme .sprout-bubble { border-color: #d0b99550; background: linear-gradient(120deg, #242019e0, #050505ed); color: #f0e8db; }
+.sprout-bubble--poem { width: 270px; }
 .sprout-bubble::after { content: ''; position: absolute; top: -9px; right: 0; left: 0; height: 9px; }
 #root .sprout-invitation { display: flex; flex-direction: column; gap: 6px; padding: 14px 34px 14px 15px; border-radius: 7px; color: #e8e2ce; text-decoration: none; }
 .sprout-invitation strong { color: #e6d0a9; font-size: 11px; font-weight: 500; }
+.sprout-poem { display: grid; gap: 6px; padding: 14px 36px 13px 15px; }
+.sprout-poem > span { color: #b8bea9; font-size: 9px; letter-spacing: .09em; text-transform: uppercase; }
+.sprout-poem > strong { color: #ead3a7; font-family: Georgia, serif; font-size: 14px; font-weight: 400; letter-spacing: .01em; }
+.sprout-poem p { display: grid; gap: 1px; margin: 1px 0 3px; color: #e8e2ce; font-family: Georgia, serif; font-size: 12px; line-height: 1.45; }
+#root .collection-header .sprout-poem > button { display: inline-flex; width: fit-content; min-width: 0; min-height: 0; align-items: center; gap: 5px; margin: 0; padding: 3px 0; border: 0; border-bottom: 1px solid #b59662; border-radius: 0; background: none; color: #d8c691; font: 500 10px/1.2 inherit; cursor: pointer; }
+#root .collection-header .sprout-poem > button:hover { color: #fff0d0; border-color: #fff0d0; }
 #root .collection-header .sprout-close { position: absolute; top: 5px; right: 4px; display: flex; align-items: center; justify-content: center; width: 26px; height: 26px; min-height: 26px; min-width: 26px; margin: 0; padding: 0; border: 0; border-radius: 4px; background: #ffffff05; color: #c0c9ab; cursor: pointer; }
 #root .collection-header .sprout-close:hover { color: #fff0d0; background: #ffffff12; }
 #root .mycelial-theme .sprout-close { color: #d3c5af; }

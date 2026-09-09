@@ -3,7 +3,7 @@ export { SITE_URL } from './siteIdentity'
 
 const PAGE_METADATA = {
   library: FUNGI_LIBRARY_METADATA,
-  supporters: { path: '/supporters', title: 'Optional Support | World Mushroom Foraging', description: 'Free fungi and herb guides, maps and field tools, with no paid features. Support is appreciated, never necessary or expected.' },
+  supporters: { path: '/supporters', title: 'Optional Support | World Mushroom Foraging', description: 'All fungi and herb guides, maps and field tools stay free. Optional annual support includes small thank-yous, including forty pocket poems.' },
   map: {
     path: '/map',
     title: 'Worldwide Mushroom Forage Map | Recent Reviewed Observations',

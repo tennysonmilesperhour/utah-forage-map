@@ -80,7 +80,7 @@ export default function SupportersApp() {
       : <AppHeader user={user} authLoading={currentUser.isLoading} activeView="supporters" onCreateAccount={() => setAuthMode('register')} onSignIn={() => setAuthMode('login')} onSubmitFind={() => window.location.assign('/map?submit=1')} onNavigate={view => window.location.assign(pathForView(view))} onOpenAccount={() => window.location.assign('/account')} onLogout={() => logout.mutate()} />}
     <main className="supporters-main">
       <section className="supporters-intro" aria-labelledby="supporter-title">
-        <div className="supporters-story"><p className="supporter-eyebrow">Optional support</p><h1 id="supporter-title">Free for<br /><em>everyone.</em></h1><p className="supporter-lede">A free resource, with no paid features. Support is appreciated, never necessary or expected.</p><div className="supporter-friend-scene"><MushroomFriend /><span>we grow better together</span></div></div>
+        <div className="supporters-story"><p className="supporter-eyebrow">Optional support</p><h1 id="supporter-title">Field tools stay<br /><em>free for everyone.</em></h1><p className="supporter-lede">Support is appreciated, never necessary or expected. Supporters receive a few small thank-yous while every guide, map, and field tool stays open.</p><div className="supporter-friend-scene"><MushroomFriend /><span>we grow better together</span></div></div>
         <div className="supporter-card">
           <p className="supporter-eyebrow"><Heart size={14} /> The supporter circle</p>
           <div className="supporter-price"><strong>$10</strong><span>USD / year</span></div>
@@ -88,7 +88,7 @@ export default function SupportersApp() {
           <ul className="supporter-perks">
             <li><Crown /><div><strong>A little gold, just for you</strong><span>A gilded outline around your profile in fungi and herbs.</span></div></li>
             <li><Users /><div><strong>A place in the circle</strong><span>Your profile name on our supporter list, if you’d like.</span></div></li>
-            <li><Gift /><div><strong>Small, unexpected delights</strong><span>Occasional extra surprises along the way.</span></div></li>
+            <li><Gift /><div><strong>Forty pocket poems</strong><span>The little growing mushroom shares poems about fungi and herbs instead of asking for support.</span></div></li>
           </ul>
           {user && <div className={`supporter-profile-preview${status?.active ? ' supporter-gilded' : ''}`}><span className="supporter-avatar supporter-gilded" aria-hidden="true">{user.username.slice(0, 1).toUpperCase()}</span><div><strong>{user.username}</strong><small>{status?.active ? 'Project supporter' : 'Your gilded profile preview'}</small></div>{status?.active && <Check size={18} />}</div>}
           {currentUser.isError && <p className="supporter-notice" role="alert">Your account could not be loaded. <button onClick={() => currentUser.refetch()}>Try again</button></p>}

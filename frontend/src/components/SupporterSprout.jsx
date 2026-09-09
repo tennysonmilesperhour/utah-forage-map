@@ -1,8 +1,9 @@
 import { useEffect, useId, useRef, useState, useSyncExternalStore } from 'react'
-import { X } from 'lucide-react'
+import { ArrowRight, X } from 'lucide-react'
 import { useSupporterMotion } from '../lib/supporterMotion'
 import { MUSHROOM_TIMING, nextMushroomPhase } from '../lib/mushroomMotion'
 import MushroomFriend from './BotanicalMushroom'
+import { nextSupporterPoem, SUPPORTER_POEMS } from '../data/supporter-poems'
 import '../supporter.css'
 
 function subscribeReducedMotion(callback) {
@@ -11,12 +12,14 @@ function subscribeReducedMotion(callback) {
   return () => media.removeEventListener('change', callback)
 }
 function reducedMotionSnapshot() { return window.matchMedia('(prefers-reduced-motion: reduce)').matches }
+const POEM_KEY = 'forage-supporter-poem'
 
 export default function SupporterSprout({ collection = 'fungi', supporter = false }) {
   const [life, setLife] = useState({ phase: 'dormant', cycle: 0 })
   const [hovered, setHovered] = useState(false)
   const [artworkReady, setArtworkReady] = useState(false)
   const [focused, setFocused] = useState(false)
+  const [poemIndex, setPoemIndex] = useState(0)
   const trigger = useRef(null)
   const skipFocus = useRef(false)
   const popupId = useId()
@@ -25,6 +28,14 @@ export default function SupporterSprout({ collection = 'fungi', supporter = fals
   const motionDisabled = paused || reducedMotion
   const { phase, cycle } = life
   const showing = phase === 'offering'
+  const poem = SUPPORTER_POEMS[poemIndex]
+
+  useEffect(() => {
+    try {
+      const saved = Number.parseInt(localStorage.getItem(POEM_KEY), 10)
+      if (Number.isInteger(saved) && saved >= 0) queueMicrotask(() => setPoemIndex(saved % SUPPORTER_POEMS.length))
+    } catch { /* The poems still rotate when storage is unavailable. */ }
+  }, [])
 
   useEffect(() => {
     // Keep the invitation still while someone reads or keyboards through it.
@@ -38,7 +49,16 @@ export default function SupporterSprout({ collection = 'fungi', supporter = fals
   }, [phase, cycle, hovered, focused, motionDisabled, artworkReady])
 
   function start() {
-    setLife(current => current.phase === 'dormant' ? { ...current, phase: motionDisabled ? 'offering' : 'forming' } : current)
+    if (phase !== 'dormant') return
+    if (supporter) advancePoem()
+    setLife(current => ({ ...current, phase: motionDisabled ? 'offering' : 'forming' }))
+  }
+  function advancePoem() {
+    setPoemIndex(current => {
+      const next = nextSupporterPoem(current)
+      try { localStorage.setItem(POEM_KEY, String(next)) } catch { /* Keep rotating in memory. */ }
+      return next
+    })
   }
   function dismiss() {
     if (!showing) return
@@ -53,13 +73,14 @@ export default function SupporterSprout({ collection = 'fungi', supporter = fals
   }
 
   return <div className="supporter-sprout" data-phase={phase} data-motion={motionDisabled ? 'still' : 'animated'} onKeyDown={event => { if (event.key === 'Escape' && showing) { event.preventDefault(); dismiss() } }}>
-    <button ref={trigger} className="sprout-trigger" type="button" aria-label={supporter ? 'Your supporter membership' : 'Optional project support for 10 US dollars per year'} aria-expanded={showing} aria-controls={popupId}
+    <button ref={trigger} className="sprout-trigger" type="button" aria-label={supporter ? 'Open a pocket mushroom or herb poem' : 'Optional project support for 10 US dollars per year'} aria-expanded={showing} aria-controls={popupId}
       onMouseEnter={() => { if (!motionDisabled) start() }} onFocus={() => { if (!skipFocus.current && !motionDisabled) start() }} onClick={() => showing ? dismiss() : start()}>
       <MushroomFriend phase={motionDisabled ? 'still' : phase} onReady={setArtworkReady} />
     </button>
-    {showing && <div className="sprout-bubble" id={popupId} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} onFocusCapture={() => setFocused(true)} onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget)) setFocused(false) }}>
-      <a className="sprout-invitation" href={`/supporters${collection === 'herbs' ? '?collection=herbs' : ''}`}><span>{supporter ? 'Thank you for supporting this free resource.' : 'A free resource, with no paid features. Support is appreciated, never necessary or expected.'}</span><strong>{supporter ? 'Your supporter membership ↗' : 'Optional support · $10/year ↗'}</strong></a>
-      <button className="sprout-close" type="button" aria-label="Close supporter invitation" onClick={dismiss}><X size={13} aria-hidden="true" /></button>
+    {showing && <div className={`sprout-bubble${supporter ? ' sprout-bubble--poem' : ''}`} id={popupId} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} onFocusCapture={() => setFocused(true)} onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget)) setFocused(false) }}>
+      {supporter ? <div className="sprout-poem"><span>Pocket poem · {poemIndex + 1} of {SUPPORTER_POEMS.length}</span><strong>{poem.title}</strong><p>{poem.lines.map(line => <span key={line}>{line}</span>)}</p><button type="button" onClick={advancePoem}>Another poem <ArrowRight size={12} aria-hidden="true" /></button></div>
+        : <a className="sprout-invitation" href={`/supporters${collection === 'herbs' ? '?collection=herbs' : ''}`}><span>All field tools are free. Optional support unlocks small thank-yous and is never expected.</span><strong>Optional support · $10/year ↗</strong></a>}
+      <button className="sprout-close" type="button" aria-label={supporter ? 'Close pocket poem' : 'Close supporter invitation'} onClick={dismiss}><X size={13} aria-hidden="true" /></button>
     </div>}
   </div>
 }
