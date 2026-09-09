@@ -40,6 +40,7 @@ function ObservationDetail({ record, onClose }) {
 
 export default function HerbMapApp() {
   const [search, setSearch] = useState(() => readMapSearch(typeof window === 'undefined' ? '' : window.location.search))
+  const resultsRef = useRef(null)
   const viewportRef = useRef(search.bbox)
   const startedRef = useRef(!!search.bbox)
   const [flyTarget, setFlyTarget] = useState(() => search.bbox ? { bbox: search.bbox, key: 'shared-area' } : null)
@@ -83,6 +84,14 @@ export default function HerbMapApp() {
     window.addEventListener('popstate', restore)
     return () => { document.body.classList.remove('herbal-body'); window.removeEventListener('popstate', restore) }
   }, [])
+
+  useEffect(() => {
+    if (!selected) return
+    const panel = resultsRef.current
+    panel?.scrollTo({ top: 0 })
+    if (window.matchMedia('(max-width: 720px)').matches) panel?.scrollIntoView({ block: 'start', behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' })
+    panel?.focus({ preventScroll: true })
+  }, [selected])
 
   function applySearch(next, replace = false) {
     window.history[replace ? 'replaceState' : 'pushState']({}, '', `/herbs/map?${mapSearchParams(next)}`)
@@ -131,7 +140,7 @@ export default function HerbMapApp() {
           {mapError && <p className="herb-map-error" role="status">The map could not load. You can still search and browse the observation list.</p>}
           <div className="herb-map-legend" aria-label="Map legend"><span><i />Reference plant</span><span><i className="caution" />Caution / study</span><span><i className="toxic" />Toxic lookalike</span></div>
         </section>
-        <aside id="herb-map-results" className="herb-map-results" aria-label="Plant observations" tabIndex={-1}>
+        <aside ref={resultsRef} id="herb-map-results" className="herb-map-results" aria-label="Plant observations" tabIndex={-1}>
           {selected ? <ObservationDetail record={selected} onClose={() => setSelected(null)} /> : <>
             <div className="herb-map-result-heading"><p className="herb-kicker">In this area</p><h2>{plant?.name || 'Field observations'}</h2><p role="status" aria-live="polite">{results.isFetching ? 'Loading public observations…' : results.isError ? 'Observations unavailable' : results.data ? `${observations.length.toLocaleString()} shown · ${results.data.total.toLocaleString()} matching records` : 'Choose an area to explore'}</p></div>
             {results.isError ? <div className="herb-map-empty" role="alert"><Leaf size={26} /><h3>Field records are taking a pause.</h3><p>{results.error.message}</p><button onClick={() => results.refetch()}>Try again</button></div> : results.isFetching ? <div className="herb-map-empty"><LoaderCircle className="spin" size={25} /><p>Gathering the latest public records…</p></div> : results.data && !observations.length ? <div className="herb-map-empty"><Leaf size={28} /><h3>No matching public records.</h3><p>Try all recorded years, another plant, or a wider area. An empty map does not mean a plant is absent.</p><button onClick={() => filter('period', 'all')}>Search all recorded years</button></div> : !results.data ? <div className="herb-map-empty"><MapPinned size={26} /><p>The map opens on your country when available. Search an area to see public plant records.</p><button onClick={searchArea}>Load observations</button></div> : <>

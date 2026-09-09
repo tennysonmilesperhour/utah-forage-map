@@ -1,5 +1,5 @@
 .herb-map-shell { background: #06100b; color: #e7ecdf; }
-.herb-map-main { display: flex; flex-direction: column; min-height: calc(100dvh - 88px); }
+.herb-map-main { display: flex; flex-direction: column; flex: 0 0 auto; min-height: calc(100dvh - 88px); }
 .herb-map-heading { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 24px 30px; border-bottom: 1px solid #b5ca9521; background: radial-gradient(ellipse at 15% 0, #34563738, transparent 65%); }
 .herb-map-heading .herb-kicker { margin: 0 0 7px; font-size: 9px; }
 .herb-map-heading h1 { margin: 0; font-size: clamp(28px, 3vw, 42px); font-weight: 400; letter-spacing: -1.5px; line-height: 1.15; }
@@ -83,12 +83,15 @@
   .herb-map-filter-toggle { display: flex; align-items: center; gap: 8px; width: 100%; min-height: 48px; padding: 10px 18px; border-bottom: 1px solid #b5ca9538; background: #112318; font-size: 11px; text-align: left; }
   .herb-map-filter-toggle span { margin-left: auto; color: #b2c99b; font-size: 9px; max-width: 110px; text-align: right; }
   .herb-map-filters { display: none; padding: 16px 18px; gap: 14px 10px; }.herb-map-filters.is-open { display: grid; }.herb-map-filters > div { grid-column: 1/-1; }.herb-map-filters > label:nth-child(2) { grid-column: 1/-1; }
-  .herb-map-workspace { display: flex; flex-direction: column; min-height: 0; }
+  .herb-map-workspace { display: flex; flex-direction: column; flex: none; min-height: 0; }
   .herb-map-surface { flex: none; height: 54dvh; min-height: 360px; max-height: 640px; }
-  .herb-map-results { height: auto; min-height: 240px; max-height: none; overflow: visible; border-left: 0; border-top: 1px solid #b5ca953b; }
+  .herb-map-results { flex: none; height: auto; min-height: 240px; max-height: none; overflow: visible; border-left: 0; border-top: 1px solid #b5ca953b; }
   .herb-map-map-actions { left: 12px; top: 12px; }.herb-map-map-actions button { min-height: 40px; padding: 0 10px; font-size: 10px; }
   .herb-map-legend { left: 12px; max-width: calc(100% - 24px); bottom: 40px; font-size: 8px; gap: 8px; }
   .herb-map-result-heading { padding: 22px 18px; }.herb-map-records button { padding: 16px 18px; }
   .herb-map-footer { padding: 20px 18px; }.herb-map-footer p { align-items: flex-start; }.herb-map-footer svg { flex-shrink: 0; }
   .herb-map-detail { padding: 20px 18px; }.herb-map-photo img { height: 280px; }.herb-map-selected-warning { padding: 11px 18px; }
 }
+
+.herb-map-filters .place-search :is(svg, button) { color: #d4e5bc; }
+.herb-map-filters .place-search form button:last-child { background: #3d5f36; }
