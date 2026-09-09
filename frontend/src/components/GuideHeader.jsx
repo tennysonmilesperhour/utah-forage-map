@@ -1,3 +1,4 @@
+import SupporterSprout from './SupporterSprout'
 import { MapPinned } from 'lucide-react'
 import MyceliumMark from './MyceliumMark'
 import CollectionNavigation, { CollectionSwitch } from './CollectionNavigation'
@@ -17,9 +18,12 @@ export default function GuideHeader({ section = 'archive' }) {
       <CollectionSwitch collection="fungi" />
       <CollectionNavigation collection="fungi" active={section} className="guide-global-nav" />
 
-      <a className="button button-primary guide-map-link" href="/">
-        <MapPinned size={17} aria-hidden="true" /> Open field map
-      </a>
+      <div className="header-actions">
+        <SupporterSprout />
+        <a className="button button-primary guide-map-link" href="/" aria-label="Open field map">
+          <MapPinned size={17} aria-hidden="true" /> Open field map
+        </a>
+      </div>
     </header>
   )
 }

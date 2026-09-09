@@ -60,6 +60,44 @@ class User(Base):
     herb_watch_zones = relationship("HerbWatchZone", back_populates="user", cascade="all, delete-orphan")
     herb_inventory = relationship("HerbInventoryItem", back_populates="user", cascade="all, delete-orphan")
     herb_wishlist = relationship("HerbWishlistItem", back_populates="user", cascade="all, delete-orphan")
+    supporter_membership = relationship("SupporterMembership", back_populates="user", uselist=False)
+
+    @property
+    def is_supporter(self):
+        # The feature flag permits the additive migration to precede activation.
+        import os
+        if os.getenv("SUPPORTER_BILLING_ENABLED") != "true":
+            return False
+        return bool(self.is_active and self.supporter_membership and self.supporter_membership.entitled)
+
+
+class SupporterMembership(Base):
+    __tablename__ = "supporter_memberships"
+
+    user_id = Column(GUID(), ForeignKey("users.id"), primary_key=True)
+    customer_id = Column(String(255), unique=True)
+    subscription_id = Column(String(255), unique=True)
+    price_id = Column(String(255))
+    status = Column(String(40), nullable=False, default="none")
+    paid_until = Column(DateTime)
+    supporter_since = Column(DateTime)
+    cancel_at_period_end = Column(Boolean, nullable=False, default=False)
+    public_listing = Column(Boolean, nullable=False, default=False)
+    checkout_id = Column(String(255))
+    checkout_attempt = Column(Integer, nullable=False, default=0)
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    user = relationship("User", back_populates="supporter_membership")
+
+    @property
+    def entitled(self):
+        return bool(self.paid_until and self.paid_until > datetime.utcnow()
+                    and self.status in {"active", "past_due", "canceled", "unpaid"})
+
+
+class BillingEvent(Base):
+    __tablename__ = "billing_events"
+    id = Column(String(255), primary_key=True)
+    processed_at = Column(DateTime, nullable=False, default=datetime.utcnow)
 
 
 class Species(Base):

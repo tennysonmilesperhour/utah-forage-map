@@ -12,7 +12,7 @@ const renderer = await import(pathToFileURL(path.join(root, '.ssr', 'ssr.js')).h
 const routes = renderer.guideRoutes()
 const herbRoutes = renderer.herbGuideRoutes()
 const siteUrl = 'https://worldmushroomforaging.org'
-const appRoutes = ['/', '/community', '/field-guide', '/herbs', '/herbs/map']
+const appRoutes = ['/', '/community', '/field-guide', '/herbs', '/herbs/map', '/supporters']
 // Public, aggregate responses only. An unavailable upstream must never break the static guide.
 const publicQueries = [
   { key: ['guide-species-summaries'], endpoint: '/api/guide/species' },
@@ -71,7 +71,7 @@ function updateMeta($, selector, attribute, value) {
 }
 
 function applyMetadata($, metadata) {
-  const entry = metadata.path === '/herbs/map' ? 'src/HerbMapApp.jsx' : metadata.path.startsWith('/herbs/') ? 'src/HerbAtlasApp.jsx' : metadata.path === '/herbs' ? 'src/HerbalApp.jsx' : appRoutes.includes(metadata.path) ? 'src/App.jsx' : 'src/GuideApp.jsx'
+  const entry = metadata.path === '/supporters' ? 'src/SupportersApp.jsx' : metadata.path === '/herbs/map' ? 'src/HerbMapApp.jsx' : metadata.path.startsWith('/herbs/') ? 'src/HerbAtlasApp.jsx' : metadata.path === '/herbs' ? 'src/HerbalApp.jsx' : appRoutes.includes(metadata.path) ? 'src/App.jsx' : 'src/GuideApp.jsx'
   const visited = new Set()
   function preload(key) {
     if (visited.has(key) || !manifest[key]) return

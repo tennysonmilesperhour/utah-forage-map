@@ -1,0 +1,51 @@
+/* The sprout occupies existing right-hand space; its bubble never changes layout. */
+#root .collection-header > :is(.header-actions, .herbal-account-actions) { width: 100%; display: flex; align-items: center; justify-content: flex-end; gap: 8px; overflow: visible; }
+#root .collection-header .supporter-sprout { position: relative; display: block; flex: 0 0 46px; width: 46px; height: 52px; margin-right: auto; color: #d8c691; text-decoration: none; border-radius: 6px; isolation: isolate; }
+.supporter-sprout::after { content: ''; position: absolute; top: 100%; right: -8px; width: 218px; height: 10px; }
+.mushroom-friend { display: block; width: 100%; height: 100%; overflow: visible; }
+.supporter-sprout .mushroom-grow { transform-origin: 40px 77px; animation: mushroom-sprout 24s ease-in-out infinite; }
+.supporter-sprout .mushroom-wave { transform-origin: 50px 51px; animation: mushroom-wave 24s ease-in-out infinite; }
+.sprout-bubble { position: absolute; top: calc(100% + 4px); right: -8px; display: flex; flex-direction: column; gap: 6px; width: 218px; padding: 13px 15px; border: 1px solid #e2c68a57; border-radius: 7px; background: linear-gradient(120deg, #443340e6, #202d26e8); -webkit-backdrop-filter: blur(20px) saturate(130%); backdrop-filter: blur(20px) saturate(130%); box-shadow: 0 10px 35px #0005, inset 0 1px #fff2; color: #eee5ce; font-family: inherit; font-size: 11px; line-height: 1.5; white-space: normal; animation: mushroom-message 24s ease-in-out infinite; transform-origin: calc(100% - 30px) 0; }
+.herbal-header .sprout-bubble { background: linear-gradient(120deg, #294131e8, #0c2319e8); }
+.sprout-bubble::before { content: ''; position: absolute; right: 29px; top: -5px; width: 8px; height: 8px; border: solid #e2c68a57; border-width: 1px 0 0 1px; background: #343932; transform: rotate(45deg); }
+.sprout-bubble strong { color: #f3d9a2; font-size: 11px; font-weight: 500; }
+.supporter-sprout:is(:hover, :focus-visible) .sprout-bubble { animation: none; opacity: 1; visibility: visible; transform: none; }
+.supporter-sprout:is(:hover, :focus-visible) .mushroom-grow { animation: none; transform: none; }
+#root .supporter-sprout.sprout-dismissed .sprout-bubble { visibility: hidden; }
+.supporter-sprout.sprout-paused :is(.mushroom-grow, .mushroom-wave, .sprout-bubble) { animation: none; transform: none; }
+.supporter-sprout.sprout-paused .sprout-bubble { opacity: 0; visibility: hidden; }
+.supporter-sprout.sprout-paused:is(:hover, :focus-visible) .sprout-bubble { opacity: 1; visibility: visible; }
+#root .collection-header .herb-user-button > span { flex: 0 0 28px; }
+#root .herbal-header.collection-header .herb-user-button { padding-inline: 6px; }
+.supporter-gilded { outline: 1px solid #e1bd73 !important; outline-offset: 3px; box-shadow: 0 0 0 1px #655032, 0 0 15px #d2a44b20 !important; }
+.account-menu > a[role="menuitem"] { display: block; padding: 12px 14px; color: #ead5a6; font-size: 12px; line-height: 1.6; text-decoration: none; }
+.account-menu > a[role="menuitem"]:hover { background: #ccb47615; }
+.supporter-profile-strip { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 12px 22px 18px; padding: 12px 14px; border: 1px solid #d8bf8040; border-radius: 7px; color: #ead7b0; font-size: 12px; }
+.supporter-profile-strip a { color: inherit; text-underline-offset: 4px; }
+@keyframes mushroom-sprout { 0%, 4%, 88%, 100% { transform: translateY(5px) scale(.76, .62); } 10% { transform: translateY(-2px) scale(1.03, 1.05); } 14%, 78% { transform: none; } }
+@keyframes mushroom-wave { 0%, 14%, 34%, 100% { transform: rotate(0); } 18%, 26% { transform: rotate(-22deg); } 22%, 30% { transform: rotate(13deg); } }
+@keyframes mushroom-message { 0%, 17%, 72%, 100% { opacity: 0; visibility: hidden; transform: translateY(-5px) scale(.97); } 21%, 65% { opacity: 1; visibility: visible; transform: none; } }
+@media (max-width: 1500px) { #root .collection-header .submit-header-button { display: none; } #root .collection-header .account-name { display: none; } }
+@media (max-width: 1350px) { #root .collection-header .header-actions .button.guide-map-link { width: 40px; min-width: 40px; height: 40px; padding: 0; font-size: 0; gap: 0; } }
+@media (max-width: 640px) {
+  #root .collection-header > :is(.header-actions, .herbal-account-actions) { gap: 5px; }
+  #root .collection-header .supporter-sprout { width: 42px; flex-basis: 42px; height: 48px; }
+  #root .collection-header .account-trigger { padding: 0; gap: 0; }
+  #root .collection-header .account-trigger > svg { display: none; }
+  #root .collection-header .herb-user-button { display: none; }
+  #root .herbal-header.collection-header .herbal-account-actions .herb-solid-button { font-size: 11px; padding: 0 9px; gap: 0; }
+  #root .herbal-header.collection-header .herbal-account-actions .herb-solid-button > svg { display: none; }
+}
+@media (max-width: 360px) {
+  #root .collection-header .supporter-sprout { flex-basis: 36px; width: 36px; }
+  #root .collection-header .header-actions > .button.button-primary { min-width: 28px; padding: 0 5px; font-size: 0; gap: 0; }
+  #root .collection-header .create-label-short { display: none; }
+  #root .collection-header :is(.herb-icon-button, .guide-map-link) { min-width: 28px; width: 28px; padding: 0; }
+  #root .herbal-header.collection-header .herbal-account-actions .herb-solid-button { min-width: 28px; padding: 0 5px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .supporter-sprout :is(.mushroom-grow, .mushroom-wave, .sprout-bubble) { animation: none; transform: none; }
+  .supporter-sprout .sprout-bubble { opacity: 0; visibility: hidden; }
+  .supporter-sprout:is(:hover, :focus-visible) .sprout-bubble { opacity: 1; visibility: visible; }
+}
+@media (prefers-reduced-transparency: reduce) { .sprout-bubble { background: #252b26; } }

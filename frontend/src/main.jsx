@@ -21,12 +21,13 @@ const queryClient = new QueryClient({
 
 const root = document.getElementById('root')
 const pathname = window.location.pathname
+const isSupporterPath = /^\/supporters\/?$/.test(pathname)
 const isHerbMapPath = /^\/herbs\/map\/?$/.test(pathname)
 const isHerbalGuidePath = /^\/herbs\/(atlas|regions|fieldcraft)(\/|$)/.test(pathname)
 const isHerbalPath = pathname === '/herbs' || pathname.startsWith('/herbs/')
 const isGuidePath = pathname === '/learn' || pathname.startsWith('/learn/') || pathname === '/regions' || pathname.startsWith('/regions/') || pathname === '/about' || pathname === '/privacy' || pathname === '/disclaimer'
 async function mount() {
-  const { default: Page } = isHerbMapPath ? await import('./HerbMapApp.jsx') : isHerbalGuidePath ? await import('./HerbAtlasApp.jsx')
+  const { default: Page } = isSupporterPath ? await import('./SupportersApp.jsx') : isHerbMapPath ? await import('./HerbMapApp.jsx') : isHerbalGuidePath ? await import('./HerbAtlasApp.jsx')
     : isHerbalPath ? await import('./HerbalApp.jsx')
       : isGuidePath ? await import('./GuideApp.jsx') : await import('./App.jsx')
   const snapshot = document.getElementById('public-query-snapshot')

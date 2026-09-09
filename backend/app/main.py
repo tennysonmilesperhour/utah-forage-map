@@ -15,6 +15,7 @@ from sqlalchemy import func, or_
 from sqlalchemy.orm import Session, joinedload
 
 from app.database import Base, engine, get_db
+from app.billing import billing_router, cancel_for_deleted_account
 from app.email_service import send_account_email, send_digest_email, send_herb_watch_email
 from app.models import (
     AccountToken, AlertSubscription, CommunityEvent, CommunityFind, CrawledSource, ForageClub,
@@ -83,7 +84,7 @@ app.add_middleware(
 
 @app.on_event("startup")
 def create_dev_tables():
-    if ENVIRONMENT != "production":
+    if ENVIRONMENT != "production" and not os.getenv("VERCEL"):
         Base.metadata.create_all(bind=engine)
 
 
@@ -648,6 +649,7 @@ def delete_account(
 ):
     if not passwords.verify(payload.password, auth.user.hashed_password):
         raise HTTPException(status_code=400, detail="Password is incorrect")
+    cancel_for_deleted_account(db, auth.user)
     stamp = now().strftime("%Y%m%d%H%M%S")
     auth.user.username = f"Deleted forager {str(auth.user.id)[:8]}"
     auth.user.email = f"deleted-{auth.user.id}-{stamp}@invalid.local"
@@ -1710,3 +1712,7 @@ def send_herb_watch_alerts(
                 item["zone"].last_notified_at = now()
     db.commit()
     return {"status": "ok", "users_emailed": users_emailed, "zones_ready": zones_ready}
+
+
+# Attach after authentication helpers are defined; billing never accepts a caller-supplied user ID.
+app.include_router(billing_router(get_current_user, enforce_rate_limit))

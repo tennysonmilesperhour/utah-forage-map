@@ -2,6 +2,7 @@ import { SITE_URL, DEFAULT_IMAGE, HERB_IMAGE, siteEntities, applyMetadata } from
 export { SITE_URL } from './siteIdentity'
 
 const PAGE_METADATA = {
+  supporters: { path: '/supporters', title: 'Support the Foraging Project | $10 a Year', description: 'Help grow the global fungi and herb field guides with a $10 USD annual supporter membership, a gilded profile and an optional place on our supporter list.' },
   map: {
     path: '/',
     title: 'Worldwide Mushroom Forage Map | Recent Reviewed Observations',
@@ -30,6 +31,7 @@ const PAGE_METADATA = {
 }
 
 export function viewFromPathname(pathname) {
+  if (/^\/supporters\/?$/.test(pathname)) return 'supporters'
   if (/^\/herbs\/map\/?$/.test(pathname)) return 'herbMap'
   if (pathname === '/herbs' || pathname.startsWith('/herbs/')) return 'herbs'
   if (pathname === '/field-guide' || pathname.startsWith('/field-guide/')) return 'guide'
@@ -78,6 +80,6 @@ export function pageStructuredDataForPath(pathname) {
 export function applyPageMetadata(view) {
   const metadata = pageMetadataForPath(PAGE_METADATA[view]?.path || '/')
   const params = new URLSearchParams(window.location.search)
-  const privatePage = window.location.pathname === '/account' || ['reset', 'verify', 'follow'].some(key => params.has(key))
+  const privatePage = window.location.pathname === '/account' || ['reset', 'verify', 'follow', 'checkout', 'session_id', 'billing'].some(key => params.has(key))
   applyMetadata({ ...metadata, noindex: privatePage }, pageStructuredDataForPath(metadata.path))
 }
