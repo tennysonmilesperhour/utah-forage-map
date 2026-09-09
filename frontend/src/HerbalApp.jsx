@@ -49,7 +49,7 @@ function HerbModeSwitch({ forest }) {
   return (
     <div className="world-switch" aria-label="Foraging collection">
       <a href="/"><span aria-hidden="true">F</span> Fungi</a>
-      <a className="active" href={forest ? '/herbs?design=forest' : '/herbs'} aria-current="page"><Leaf size={14} aria-hidden="true" /> Herbs</a>
+      <a className="active" href={forest ? '/herbs' : '/herbs?design=classic'} aria-current="page"><Leaf size={14} aria-hidden="true" /> Herbs</a>
     </div>
   )
 }
@@ -302,7 +302,7 @@ function HerbalFooter() {
 export default function HerbalApp() {
   const shellRef = useRef(null)
   const [view, setView] = useState(currentView)
-  const [forest, setForest] = useState(() => new URLSearchParams(window.location.search).get('design') === 'forest')
+  const [forest, setForest] = useState(() => new URLSearchParams(window.location.search).get('design') !== 'classic')
   const [location, setLocation] = useState(null)
   const [locating, setLocating] = useState(false)
   const [selected, setSelected] = useState(null)
@@ -316,10 +316,10 @@ export default function HerbalApp() {
 
   useEffect(() => { document.title = 'The Verdant Hours | Herbal Gathering Almanac'; document.body.classList.add('herbal-body'); trackPageView(`/herbs?view=${view}`); return () => document.body.classList.remove('herbal-body') }, [view])
   useEffect(() => { if (!toast) return undefined; const timer = window.setTimeout(() => setToast(''), 3600); return () => window.clearTimeout(timer) }, [toast])
-  useEffect(() => { const restoreView = () => { setView(currentView()); setForest(new URLSearchParams(window.location.search).get('design') === 'forest'); setSelected(null) }; window.addEventListener('popstate', restoreView); return () => window.removeEventListener('popstate', restoreView) }, [])
+  useEffect(() => { const restoreView = () => { setView(currentView()); setForest(new URLSearchParams(window.location.search).get('design') !== 'classic'); setSelected(null) }; window.addEventListener('popstate', restoreView); return () => window.removeEventListener('popstate', restoreView) }, [])
   useEffect(() => { shellRef.current?.scrollTo({ top: 0, behavior: 'instant' }) }, [view])
 
-  function navigate(next) { const params = new URLSearchParams(); if (forest) params.set('design', 'forest'); if (next !== 'today') params.set('view', next); const url = `/herbs${params.size ? `?${params}` : ''}`; window.history.pushState({}, '', url); setView(next); setSelected(null) }
+  function navigate(next) { const params = new URLSearchParams(); if (!forest) params.set('design', 'classic'); if (next !== 'today') params.set('view', next); const url = `/herbs${params.size ? `?${params}` : ''}`; window.history.pushState({}, '', url); setView(next); setSelected(null) }
   function locate() { if (!navigator.geolocation) { setToast('Location is unavailable in this browser.'); return } setLocating(true); navigator.geolocation.getCurrentPosition(position => { setLocation({ latitude: position.coords.latitude, longitude: position.coords.longitude }); setLocating(false) }, () => { setToast('Location permission was not granted. You can enter coordinates in a watch zone.'); setLocating(false) }, { enableHighAccuracy: false, timeout: 10000 }) }
   function watchPlant(herb) { setPresetHerb(herb); setSelected(null); navigate('watches') }
   function wishForPlant(herb) { setPresetHerb(herb); setSelected(null); navigate('pantry') }

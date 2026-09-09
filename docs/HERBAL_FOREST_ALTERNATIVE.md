@@ -1,12 +1,12 @@
-# Forest immersion: opt-in design study
+# Forest immersion: approved default (B)
 
-The current herbal design remains the default at `/herbs`. The alternative is available at `/herbs?design=forest`; `view=plants`, `view=watches`, and `view=pantry` can be combined with that parameter. The comparison was requested September 8, 2026, after the darker glass palette and refined moon were approved.
+The user selected B on September 8, 2026. Forest immersion is now the default at `/herbs`, including plants, watches, and pantry. Existing `?design=forest` links still work; the earlier A study is available explicitly at `?design=classic` for historical comparison. The same composition and glass language now carries into fungi with a dark mycelial palette; see [MYCELIAL_DESIGN.md](MYCELIAL_DESIGN.md).
 
 ## Primary reference
 
 [Forest UI design, posted by akgraphics](https://www.pinterest.com/pin/903605112758948160/). Inspected expanded in the user's Chrome tab. Its main characteristics are a dark emerald forest, a luminous opening, very large thin lowercase lettering near the lower left, quiet navigation, and a fine information line along the bottom.
 
-The alternative follows that composition with an original forest background and an app-specific “gather.” headline. It retains the user's darker green spectrum, transparent glass direction, and reduced corner rounding.
+The approved design follows that composition with an original forest background and an app-specific “gather.” headline. It retains the user's darker green spectrum, transparent glass direction, and reduced corner rounding.
 
 ## Supporting recommendations on the same page
 
@@ -20,23 +20,21 @@ These are visual interpretations of the recommendations visible during this revi
 
 ## Implementation
 
-`HerbalApp.jsx` selects `ForestTodayView` only when `design=forest`. Navigation and browser history preserve the opt-in state. `herbal-forest.css` is scoped to `.herbal-shell--forest` and new `forest-*` elements.
+`HerbalApp.jsx` selects `ForestTodayView` by default. Only `design=classic` selects the historical A study. Navigation and browser history preserve that explicit comparison state. `herbal-forest.css` is scoped to `.herbal-shell--forest` and new `forest-*` elements.
 
 - An edge-to-edge forest hero, light 300-weight display heading, and dark transparent header.
-- A compact horizontal moon panel using the same phase-aware SVG and lunar calculation as the default.
+- A compact horizontal moon panel using the same phase-aware SVG and lunar calculation as the original study.
 - Unboxed weather and secondary action bands; glass is concentrated around the moon and controls.
 - Seasonal plants before the field pause, with direct links to both.
 - Alternating 7/5 and 5/7 desktop atlas columns. One 330px-high photo per row on phones.
 - Cooler tokens: canvas `#030b09`, deep `#06110e`, raised `#0b1b16`, accent `#c6ded1`, text `#f0f4ed`.
-- Main surfaces have 8–10px radii. The alternate moon has no arched top.
+- Main surfaces have 8–10px radii. The compact moon has no arched top.
 
 The account hooks, weather hooks, twelve botanical profiles, plant photos and credits, field notes, lunar information, reflections, watch-zone behavior, and pantry behavior are shared. The alternative changes presentation and sequence, not botanical information.
 
-## Tradeoffs
+## Selection
 
-The alternative more closely matches the primary reference and gives the imagery greater prominence. The default shows daily conditions sooner and supports faster plant scanning. The alternative's single-column mobile atlas requires more scrolling; thin display text should be evaluated outdoors as well as on a desktop screen.
-
-For a combined next iteration, consider the alternate forest, palette, header, and compact moon alongside the default's denser atlas and earlier weather information. This study does not change the default design.
+The approved design gives imagery greater prominence and closely follows the primary reference. Its single-column mobile atlas involves more scrolling; the map stays immediately accessible through the collection switch. The prior comparison captures document A and B at the time of selection.
 
 ## Original backdrop
 

@@ -1,212 +1,58 @@
 ---
-name: Mushroom Forage Map
-description: Two connected field collections for mushroom evidence and herbal gathering.
+name: The Living Fungi Archive & The Verdant Hours
+description: Two dark, immersive foraging collections joined by a shared visual language.
 colors:
-  field-pine: "#83A978"
-  field-pine-deep: "#5C8058"
-  spore-coral: "#D66B50"
-  trail-blue: "#66A8B3"
-  safety-amber: "#D8A746"
-  danger-red: "#B7433A"
-  ink: "#F0F2E9"
-  ink-muted: "#A9B6AF"
-  canvas: "#101816"
-  surface: "#18211E"
-  surface-muted: "#25312D"
-  border: "#53625B"
+  fungi-canvas: "#0B090C"
+  fungi-surface: "#181419"
+  fungi-raised: "#282129"
+  fungi-ivory: "#F1EAE1"
+  fungi-muted: "#BFB4BA"
+  fungi-plum: "#C4B5CE"
+  fungi-bark: "#D6BFA9"
+  herbs-canvas: "#030B09"
+  herbs-surface: "#0B1B16"
+  herbs-ivory: "#F0F4ED"
+  herbs-sage: "#C6DED1"
+  safety-amber: "#E0B765"
+  danger-red: "#ED907E"
 typography:
-  headline:
-    fontFamily: "Libre Baskerville, Baskerville, Georgia, serif"
-    fontSize: "1.5rem"
-    fontWeight: 700
-    lineHeight: 1.2
-    letterSpacing: "0"
-  title:
-    fontFamily: "Libre Baskerville, Baskerville, Georgia, serif"
-    fontSize: "1rem"
-    fontWeight: 650
-    lineHeight: 1.35
-    letterSpacing: "0"
-  body:
-    fontFamily: "Avenir Next, Segoe UI, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "0.875rem"
-    fontWeight: 400
-    lineHeight: 1.5
-    letterSpacing: "0"
-  label:
-    fontFamily: "Avenir Next, Segoe UI, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "0.75rem"
-    fontWeight: 650
-    lineHeight: 1.35
-    letterSpacing: "0"
+  family: "Avenir Next, Segoe UI, ui-sans-serif, system-ui, sans-serif"
+  display-weight: 300
+  body-weight: 400
+  control-weight: 500
 rounded:
-  sm: "4px"
-  md: "8px"
-  lg: "12px"
-  pill: "999px"
-spacing:
-  xs: "4px"
-  sm: "8px"
-  md: "16px"
-  lg: "24px"
-components:
-  button-primary:
-    backgroundColor: "{colors.spore-coral}"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.md}"
-    padding: "10px 16px"
-  button-secondary:
-    backgroundColor: "{colors.surface}"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.md}"
-    padding: "10px 16px"
-  input:
-    backgroundColor: "{colors.surface}"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.md}"
-    padding: "10px 12px"
+  control: "8px"
+  card: "8px"
+  glass-panel: "10px"
 ---
 
-# Design System: World Mushroom Foraging
+# Shared design direction
 
-## 1. Overview
+The user selected **B: Forest immersion** on September 8, 2026, and requested the same theme for fungi with a dark mycelial palette. This supersedes the older museum/serif fungi direction and the original herbal study. The primary visual reference is [Forest UI design](https://www.pinterest.com/pin/903605112758948160/), with supporting pins documented in [the forest specification](docs/HERBAL_FOREST_ALTERNATIVE.md).
 
-**Creative North Star: "The Living Field Atlas"**
+Both collections use cinematic nature imagery, very dark backgrounds and headers, thin sans-serif display type, quiet navigation, clear tinted glass with fine light edges, and restrained 8–10px corners. The collection switch keeps each world one click away. Herbs uses evergreen, sage, and cool ivory. Fungi uses near-black bark, charcoal, smoky plum, muted taupe, and warm ivory. An original photographic mycelial backdrop and a fine branching vector mark define the fungi identity.
 
-The interface combines a field instrument, a specimen archive, and a quiet museum after dark. The globe is the primary experience. Observation photography links the map, community record, regional collections, and species guide into one continuous journey. Information remains compact and familiar while editorial scale, image-led collection layouts, and restrained motion give the product a distinct cultural identity.
+## Composition and typography
 
-This system rejects account walls, generic SaaS landing-page composition, dense directory treatment, brown or beige outdoor palettes, novelty wilderness motifs, and tiny low-contrast controls. Responsive behavior is structural: side panels become drawers, toolbars simplify, and the map retains a useful viewport at every size.
+- Immersive collection openings place a large 300-weight lowercase heading near the lower left, with concise field copy and a fine information line along the bottom.
+- The fungi map remains the default fungi route, immediately usable by guests. It has a compact photographic filter-panel introduction, without a landing hero covering the globe.
+- Community, species, and plant browsing carry the image-led treatment through to their content. Desktop collections alternate 7/5 and 5/7 photo cards; phones use one column.
+- Product text remains readable and compact: 12–14px body copy, 10–12px controls, larger 30–38px editorial headings. Thin type belongs to display text; form labels and safety states retain stronger weights.
+- Real, attributed species photography remains distinct from generated atmospheric artwork. Latin names may retain their established italic treatment.
 
-The herbal collection is a deliberately different visual world called **The Verdant Hours**. Its visual reference is the user’s [App Design Pinterest board](https://www.pinterest.com/thekiwipop/app-design/), confirmed September 8, 2026. It uses immersive woodland photography, deep forest and sage greens, translucent botanical glass, warm ivory text, rounded panels, and spacious Avenir typography. See [the herbal design specification](docs/HERBAL_DESIGN.md) for the reference pins, component rules, and asset provenance. The switch between Fungi and Herbs is persistent, compact, and explicit; identity, authentication, and private records remain shared underneath.
+## Glass, shape, and color
 
-**Key Characteristics:**
+Use lightly reflective upper edges, dark transparent color gradients, and modest backdrop blur. Glass is concentrated on controls, navigation, and temporary layers. Text-heavy panels have enough dark tint to support reading. Avoid large opaque colored boxes or heavily frosted white surfaces. Buttons and repeated cards use 8px corners; glass panels and dialogs use 10px. Circular astronomical geometry stays circular.
 
-- Map-first and immediately useful to guests.
-- A varied biological palette with high-contrast semantic states.
-- Familiar controls with clear keyboard and touch behavior.
-- Flat at rest, elevated only for temporary layers.
-- Friendly field language grounded in evidence and safety.
-- Asymmetric collection layouts that make imagery and metadata equally useful.
-- Distinct fungal and herbal art directions joined by one recognizable collection switch.
-- Astronomical data separated visually and verbally from traditional correspondence or health claims.
+Fungi tokens are scoped to `.mycelial-theme`; herbs uses `.herbal-shell--forest`. Legacy shared variable names are mapped inside the fungi scope so account forms, alerts, filters, region pages, species guides, and record detail share the same palette. Primary fungi actions are pale ivory over dark text; active glass controls use muted plum and ivory. Red and amber retain their safety meaning, and edible-listed states retain muted olive. Labels always accompany semantic color.
 
-## 2. Colors
+## Interaction and responsiveness
 
-The palette begins with green-black gallery surfaces, then uses lichen green for growth, spore coral for active exploration, mineral blue for sourced evidence, and explicit amber and red safety states. Color is never the only carrier of meaning.
+- Keep the public map and species archive available without authentication. Ask for an account only when saving, contributing, or opening private records.
+- Keep keyboard focus visible and touch targets practical. Floating mobile navigation includes labels and device-safe-area clearance.
+- Sidebars become drawers on phones. Overlays must preserve close controls, readable content, and scrolling at narrow sizes.
+- Preserve all existing data, field-safety wording, credits, source links, privacy choices, and account workflows.
+- Respect reduced-motion preferences. Do not animate full-screen artwork. Fungi glass has an opaque fallback for reduced-transparency preferences.
+- Moon phase remains a calculated illustration with text for phase and illumination. Traditional correspondences must remain distinct from astronomical or scientific claims.
 
-### Primary
-
-- **Spore Coral:** Primary exploration actions, active navigation, and current map signal.
-- **Field Pine:** Growth, edible-listed state, selected lenses, and positive review state.
-
-### Secondary
-
-- **Trail Blue:** Imported observations, links, and informational state.
-
-### Tertiary
-
-- **Safety Amber:** Caution and field-safety messages.
-- **Danger Red:** Destructive actions, authentication errors, and poisonous or deadly status.
-
-### Neutral
-
-- **Ink:** Primary copy and high-priority data.
-- **Muted Ink:** Secondary copy that still meets AA contrast.
-- **Canvas:** App background outside the map.
-- **Surface:** Panels, menus, and forms.
-- **Muted Surface:** Selected rows, quiet controls, and grouped regions.
-- **Border:** Structural dividers and input boundaries.
-
-### Named Rules
-
-**The Map Signal Rule.** Accent colors identify actions or data states; they are never scattered as decoration.
-
-**The Two Worlds Rule.** Fungi behaves like a nocturnal museum instrument; Herbs behaves like a sunlit forest almanac with glass surfaces. Shared controls keep their function and accessibility even when color, type, composition, and atmosphere change.
-
-**The Honest Almanac Rule.** Season and weather are practical field signals. Moon phase and zodiac are offered as an optional cultural timing practice and must never be presented as scientifically established improvements to potency, safety, or efficacy.
-
-## 3. Typography
-
-**Editorial Font:** Libre Baskerville (with Baskerville and Georgia fallbacks)
-**Product Font:** Avenir Next (with Segoe UI and system sans-serif fallbacks)
-
-**Character:** The serif belongs to collection titles, species names, and interpretive headings. Product controls, data, labels, forms, and navigation remain in the humanist sans family for speed and outdoor legibility.
-
-### Hierarchy
-
-- **Headline** (700, 24px, 1.2): Major panel and dialog titles only.
-- **Title** (650, 16px, 1.35): Section titles, selected finds, and account identity.
-- **Body** (400, 14px, 1.5): Descriptions and field notes, capped at 70 characters where prose runs long.
-- **Label** (650, 12px, 1.35): Form labels and compact metadata; sentence case by default.
-
-### Named Rules
-
-**The Outdoor Readability Rule.** Secondary text remains readable in bright light; pale gray body copy is prohibited.
-
-## 4. Elevation
-
-The system is flat by default. Borders and tonal layers organize persistent panels. Compact shadows appear only on menus, dialogs, drawers, popovers, and map overlays that physically sit above the task.
-
-### Shadow Vocabulary
-
-- **Floating control** (`0 2px 8px rgba(23, 35, 31, 0.16)`): Map controls and menus.
-- **Modal layer** (`0 12px 32px rgba(23, 35, 31, 0.22)`): Authentication and confirmation dialogs without a simultaneous decorative border.
-
-### Named Rules
-
-**The Flat-at-Rest Rule (Fungi).** Persistent fungal panels do not float; elevation communicates temporary layering or active interaction. The herbal collection follows the botanical glass system in docs/HERBAL_DESIGN.md, including rounded translucent surfaces and floating mobile navigation.
-
-## 5. Components
-
-### Buttons
-
-- **Shape:** Compact, gently curved corners (8px).
-- **Primary:** Spore Coral with Ink text and 10px by 16px padding.
-- **Hover / Focus:** Deepen the coral tone; use a visible mineral-blue focus ring with 2px offset.
-- **Secondary / Ghost:** Surface or transparent with Ink text and a structural Border outline where needed.
-
-### Chips
-
-- **Style:** Muted Surface with Ink text and a full pill shape for compact state only.
-- **State:** Selected chips use Field Pine and white text; source and safety chips pair color with text or an icon.
-
-### Cards / Containers
-
-- **Corner Style:** 8px for repeated items and 12px for dialogs.
-- **Background:** Surface or Muted Surface based on hierarchy.
-- **Shadow Strategy:** Flat persistent surfaces; compact shadows only for floating layers.
-- **Border:** One structural Border stroke where separation requires it.
-- **Internal Padding:** 12px for dense items, 16px for panels, 24px for dialogs.
-
-### Inputs / Fields
-
-- **Style:** Museum Black surface, Border stroke, 4px corners, and 44px minimum height.
-- **Focus:** Mineral Blue border with a visible low-opacity ring.
-- **Error / Disabled:** Danger Red text and border for errors; Muted Surface with readable Muted Ink for disabled state.
-
-### Navigation
-
-The top bar keeps the map and account routes visible. Active sections use a Spore Coral underline and clear Ink text. Mobile navigation collapses to icon-labeled commands and drawers while retaining 44px touch targets.
-
-### Guest Access Prompt
-
-A compact, dismissible map overlay states that the full public map is available without an account. Account creation is offered as the path to saving and contributing, never as a prerequisite for browsing.
-
-## 6. Do's and Don'ts
-
-### Do:
-
-- **Do** keep the public map interactive before authentication.
-- **Do** ask for an account at the moment a user saves, submits, or opens a private logbook.
-- **Do** pair every status color with text or an icon.
-- **Do** maintain 44px touch targets and WCAG AA contrast.
-- **Do** use source, review, privacy, and safety language near the relevant action.
-
-### Don't:
-
-- **Don't** use account walls that block the public map before users understand its value.
-- **Don't** use generic SaaS landing pages, oversized marketing headlines, or decorative feature-card grids.
-- **Don't** use dense directory pages that make every link compete at the same visual weight.
-- **Don't** use brown or beige outdoor palettes, novelty wilderness motifs, or decorative map styling that obscures data.
-- **Don't** use tiny, low-contrast controls that fail in bright outdoor light.
-- **Don't** pair a decorative wide shadow with a bordered card.
+See [the fungi implementation and artwork provenance](docs/MYCELIAL_DESIGN.md), [approved herbal B](docs/HERBAL_FOREST_ALTERNATIVE.md), and [the earlier herbal reference history](docs/HERBAL_DESIGN.md).

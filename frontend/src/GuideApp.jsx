@@ -14,6 +14,7 @@ import { useRegion, useRegions } from './hooks/useCompanion'
 import { useGuideRequests, useGuideSummaries } from './hooks/useGuide'
 import { applyGuideMetadata } from './lib/guideSeo'
 import { trackPageView } from './lib/googleTag'
+import './mycelial.css'
 
 const EDIBLE_GROUP = new Set(['choice', 'edible'])
 const HAZARD_GROUP = new Set(['poisonous', 'deadly'])
@@ -66,7 +67,7 @@ function GuideFooter() {
 
 function GuideLayout({ children, section = 'archive' }) {
   return (
-    <div className="learn-shell">
+    <div className="learn-shell mycelial-theme">
       <GuideHeader section={section} />
       {children}
       <GuideFooter />
@@ -191,18 +192,18 @@ function GuideHome({ summaries }) {
     <GuideLayout>
       <main className="learn-main">
         <section className="learn-hero">
-          <img src={speciesBySlug.morel.image.url} alt="Morel mushroom among spring leaf litter" />
+          <img src="/images/fungi/mycelial-forest.webp" alt="" fetchPriority="high" />
           <div className="learn-hero-overlay" />
           <div className="learn-hero-content">
-            <p className="eyebrow"><BookOpen size={16} aria-hidden="true" /> Field collection · {speciesGuides.length} species</p>
-            <h1>The living fungi archive</h1>
+            <p className="eyebrow">The living fungi archive · {speciesGuides.length} species</p>
+            <h1>fungi<span>.</span></h1>
             <p>Field marks, dangerous lookalike checks, cited safety notes, and recent reviewed observations for the map's current species.</p>
             <div className="hero-actions">
               <a className="button button-primary" href="#browse-species"><Binoculars size={17} aria-hidden="true" /> Browse the collection</a>
               <a className="button button-inverse" href="/learn/safety"><ShieldAlert size={17} aria-hidden="true" /> Safety rules</a>
             </div>
           </div>
-          <a className="hero-photo-credit" href={speciesBySlug.morel.image.source} target="_blank" rel="noreferrer">Photo: {speciesBySlug.morel.image.credit}</a>
+          <div className="mycelial-hero-foot"><span>A FIELD COLLECTION / ROOTED IN OBSERVATION</span><a href="#browse-species">Explore the archive <ArrowRight size={16} aria-hidden="true" /></a></div>
         </section>
 
         <section className="guide-principles" aria-label="Guide standards">

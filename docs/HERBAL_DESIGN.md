@@ -1,4 +1,6 @@
-# The Verdant Hours: visual direction
+# The Verdant Hours: original visual direction
+
+**Current selection:** B (Forest immersion) is the default. See [the approved specification](HERBAL_FOREST_ALTERNATIVE.md) and [the shared fungi adaptation](MYCELIAL_DESIGN.md). This document preserves the original A study and asset provenance; its earlier radii, composition, and fungi notes are historical.
 
 The user designated [this App Design board](https://www.pinterest.com/thekiwipop/app-design/) as the visual reference for the herbal collection on September 8, 2026. It supersedes the previous celadon-paper and plum direction for Herbs. The 15-pin board was inspected in Chrome, including its forest, botanical, frosted-glass, and mobile-interface references.
 

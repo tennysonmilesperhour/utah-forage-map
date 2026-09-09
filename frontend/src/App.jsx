@@ -18,6 +18,7 @@ import { countActiveFilters, DEFAULT_FILTERS } from './lib/filters'
 import { regionBySlug } from './data/regions'
 import { applyPageMetadata, pathForView, viewFromPathname } from './lib/seo'
 import { trackPageView } from './lib/googleTag'
+import './mycelial.css'
 
 const MapView = lazy(() => import('./components/MapView'))
 export default function App() {
@@ -243,7 +244,7 @@ export default function App() {
   }
 
   return (
-    <div className="app-shell">
+    <div className="app-shell mycelial-theme">
       <AppHeader
         user={user}
         authLoading={authLoading}

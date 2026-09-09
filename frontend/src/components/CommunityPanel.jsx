@@ -103,9 +103,10 @@ export default function CommunityPanel({
         <div className="community-scroll">
           {section === 'activity' && (
             <>
-              <section className="community-intro">
+              <section className="community-intro mycelial-community-hero">
                 <div>
-                  <h3>Recent reviewed observations</h3>
+                  <p className="mycelial-panel-kicker">A shared field practice</p>
+                  <h3>connected<span>.</span></h3>
                   <p>Browse the live field map without an account. Create one only when you want to submit a find, save a place, or keep a logbook.</p>
                 </div>
                 <div className="community-actions">
@@ -129,7 +130,7 @@ export default function CommunityPanel({
               <section className="community-section activity-section">
                 <div className="community-section-heading">
                   <MapPin size={18} aria-hidden="true" />
-                  <div><h3>Latest from the field</h3><p>Approximate public locations, newest observation first</p></div>
+                  <div><h3>Recent reviewed observations</h3><p>Approximate public locations, newest observation first</p></div>
                 </div>
                 {loading && <p className="loading-line" role="status">Loading community activity...</p>}
                 {!loading && activity.length === 0 && <p className="empty-line">No dated, reviewed observations have been published yet.</p>}
