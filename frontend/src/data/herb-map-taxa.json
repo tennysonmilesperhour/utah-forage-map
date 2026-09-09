@@ -1,0 +1,354 @@
+[
+  {
+    "slug": "stinging-nettle",
+    "taxonId": 1631210,
+    "taxonName": "Urtica dioica",
+    "name": "Stinging nettle",
+    "latin": "Urtica dioica",
+    "status": "culinary"
+  },
+  {
+    "slug": "dandelion",
+    "taxonId": 47602,
+    "taxonName": "Taraxacum officinale",
+    "name": "Dandelion",
+    "latin": "Taraxacum officinale",
+    "status": "culinary"
+  },
+  {
+    "slug": "common-yarrow",
+    "taxonId": 1105043,
+    "taxonName": "Achillea millefolium",
+    "name": "Common yarrow",
+    "latin": "Achillea millefolium",
+    "status": "study"
+  },
+  {
+    "slug": "elderflower",
+    "taxonId": 1665961,
+    "taxonName": "Sambucus nigra",
+    "name": "Black elder",
+    "latin": "Sambucus nigra",
+    "status": "culinary"
+  },
+  {
+    "slug": "wild-mint",
+    "taxonId": 77991,
+    "taxonName": "Mentha canadensis",
+    "name": "American wild mint",
+    "latin": "Mentha canadensis",
+    "status": "study"
+  },
+  {
+    "slug": "red-clover",
+    "taxonId": 51875,
+    "taxonName": "Trifolium pratense",
+    "name": "Red clover",
+    "latin": "Trifolium pratense",
+    "status": "study"
+  },
+  {
+    "slug": "greater-plantain",
+    "taxonId": 58961,
+    "taxonName": "Plantago major",
+    "name": "Greater plantain",
+    "latin": "Plantago major",
+    "status": "culinary"
+  },
+  {
+    "slug": "mugwort",
+    "taxonId": 52856,
+    "taxonName": "Artemisia vulgaris",
+    "name": "Mugwort",
+    "latin": "Artemisia vulgaris",
+    "status": "study"
+  },
+  {
+    "slug": "dog-rose",
+    "taxonId": 55884,
+    "taxonName": "Rosa canina",
+    "name": "Dog rose",
+    "latin": "Rosa canina",
+    "status": "culinary"
+  },
+  {
+    "slug": "lemon-balm",
+    "taxonId": 59901,
+    "taxonName": "Melissa officinalis",
+    "name": "Lemon balm",
+    "latin": "Melissa officinalis",
+    "status": "culinary"
+  },
+  {
+    "slug": "german-chamomile",
+    "taxonId": 77965,
+    "taxonName": "Matricaria chamomilla",
+    "name": "German chamomile",
+    "latin": "Matricaria chamomilla",
+    "status": "culinary"
+  },
+  {
+    "slug": "calendula",
+    "taxonId": 75931,
+    "taxonName": "Calendula officinalis",
+    "name": "Calendula",
+    "latin": "Calendula officinalis",
+    "status": "culinary"
+  },
+  {
+    "slug": "wild-garlic",
+    "taxonId": 56152,
+    "taxonName": "Allium ursinum",
+    "name": "Wild garlic",
+    "latin": "Allium ursinum",
+    "status": "caution"
+  },
+  {
+    "slug": "purslane",
+    "taxonId": 1571188,
+    "taxonName": "Portulaca oleracea",
+    "name": "Common purslane",
+    "latin": "Portulaca oleracea",
+    "status": "caution"
+  },
+  {
+    "slug": "chickweed",
+    "taxonId": 1087592,
+    "taxonName": "Stellaria media",
+    "name": "Common chickweed",
+    "latin": "Stellaria media",
+    "status": "culinary"
+  },
+  {
+    "slug": "yellow-wood-sorrel",
+    "taxonId": 53183,
+    "taxonName": "Oxalis stricta",
+    "name": "Yellow wood sorrel",
+    "latin": "Oxalis stricta",
+    "status": "caution"
+  },
+  {
+    "slug": "sheep-sorrel",
+    "taxonId": 53195,
+    "taxonName": "Rumex acetosella",
+    "name": "Sheep sorrel",
+    "latin": "Rumex acetosella",
+    "status": "caution"
+  },
+  {
+    "slug": "garlic-mustard",
+    "taxonId": 56061,
+    "taxonName": "Alliaria petiolata",
+    "name": "Garlic mustard",
+    "latin": "Alliaria petiolata",
+    "status": "culinary"
+  },
+  {
+    "slug": "cleavers",
+    "taxonId": 1403902,
+    "taxonName": "Galium aparine",
+    "name": "Cleavers",
+    "latin": "Galium aparine",
+    "status": "study"
+  },
+  {
+    "slug": "fennel",
+    "taxonId": 53052,
+    "taxonName": "Foeniculum vulgare",
+    "name": "Fennel",
+    "latin": "Foeniculum vulgare",
+    "status": "caution"
+  },
+  {
+    "slug": "watercress",
+    "taxonId": 78174,
+    "taxonName": "Nasturtium officinale",
+    "name": "Watercress",
+    "latin": "Nasturtium officinale",
+    "status": "caution"
+  },
+  {
+    "slug": "selfheal",
+    "taxonId": 52764,
+    "taxonName": "Prunella vulgaris",
+    "name": "Selfheal",
+    "latin": "Prunella vulgaris",
+    "status": "study"
+  },
+  {
+    "slug": "common-blue-violet",
+    "taxonId": 82816,
+    "taxonName": "Viola sororia",
+    "name": "Common blue violet",
+    "latin": "Viola sororia",
+    "status": "culinary"
+  },
+  {
+    "slug": "gotu-kola",
+    "taxonId": 160294,
+    "taxonName": "Centella asiatica",
+    "name": "Gotu kola",
+    "latin": "Centella asiatica",
+    "status": "culinary"
+  },
+  {
+    "slug": "lemongrass",
+    "taxonId": 123728,
+    "taxonName": "Cymbopogon citratus",
+    "name": "Lemongrass",
+    "latin": "Cymbopogon citratus",
+    "status": "culinary"
+  },
+  {
+    "slug": "roselle",
+    "taxonId": 1687652,
+    "taxonName": "Sabdariffa gossypiifolia",
+    "name": "Roselle",
+    "latin": "Sabdariffa gossypiifolia",
+    "status": "culinary"
+  },
+  {
+    "slug": "moringa",
+    "taxonId": 165529,
+    "taxonName": "Moringa oleifera",
+    "name": "Moringa",
+    "latin": "Moringa oleifera",
+    "status": "culinary"
+  },
+  {
+    "slug": "culantro",
+    "taxonId": 162702,
+    "taxonName": "Eryngium foetidum",
+    "name": "Culantro",
+    "latin": "Eryngium foetidum",
+    "status": "culinary"
+  },
+  {
+    "slug": "epazote",
+    "taxonId": 76746,
+    "taxonName": "Dysphania ambrosioides",
+    "name": "Epazote",
+    "latin": "Dysphania ambrosioides",
+    "status": "study"
+  },
+  {
+    "slug": "lemon-verbena",
+    "taxonId": 332455,
+    "taxonName": "Aloysia citrodora",
+    "name": "Lemon verbena",
+    "latin": "Aloysia citrodora",
+    "status": "culinary"
+  },
+  {
+    "slug": "perilla",
+    "taxonId": 119136,
+    "taxonName": "Perilla frutescens",
+    "name": "Perilla",
+    "latin": "Perilla frutescens",
+    "status": "culinary"
+  },
+  {
+    "slug": "warrigal-greens",
+    "taxonId": 418653,
+    "taxonName": "Tetragonia tetragonoides",
+    "name": "Warrigal greens",
+    "latin": "Tetragonia tetragonoides",
+    "status": "caution"
+  },
+  {
+    "slug": "lemon-myrtle",
+    "taxonId": 122826,
+    "taxonName": "Backhousia citriodora",
+    "name": "Lemon myrtle",
+    "latin": "Backhousia citriodora",
+    "status": "culinary"
+  },
+  {
+    "slug": "kapokbos",
+    "taxonId": 430981,
+    "taxonName": "Eriocephalus africanus",
+    "name": "Kapokbos",
+    "latin": "Eriocephalus africanus",
+    "status": "study"
+  },
+  {
+    "slug": "rooibos",
+    "taxonId": 447656,
+    "taxonName": "Aspalathus linearis",
+    "name": "Rooibos",
+    "latin": "Aspalathus linearis",
+    "status": "culinary"
+  },
+  {
+    "slug": "buchu",
+    "taxonId": 579225,
+    "taxonName": "Agathosma betulina",
+    "name": "Round-leaf buchu",
+    "latin": "Agathosma betulina",
+    "status": "study"
+  },
+  {
+    "slug": "poison-hemlock",
+    "taxonId": 52998,
+    "taxonName": "Conium maculatum",
+    "name": "Poison hemlock",
+    "latin": "Conium maculatum",
+    "status": "toxic"
+  },
+  {
+    "slug": "water-hemlock",
+    "taxonId": 60125,
+    "taxonName": "Cicuta maculata",
+    "name": "Spotted water hemlock",
+    "latin": "Cicuta maculata",
+    "status": "toxic"
+  },
+  {
+    "slug": "lily-of-the-valley",
+    "taxonId": 48206,
+    "taxonName": "Convallaria majalis",
+    "name": "Lily of the valley",
+    "latin": "Convallaria majalis",
+    "status": "toxic"
+  },
+  {
+    "slug": "autumn-crocus",
+    "taxonId": 1193207,
+    "taxonName": "Colchicum autumnale",
+    "name": "Autumn crocus",
+    "latin": "Colchicum autumnale",
+    "status": "toxic"
+  },
+  {
+    "slug": "foxglove",
+    "taxonId": 53983,
+    "taxonName": "Digitalis purpurea",
+    "name": "Foxglove",
+    "latin": "Digitalis purpurea",
+    "status": "toxic"
+  },
+  {
+    "slug": "pennyroyal",
+    "taxonId": 57116,
+    "taxonName": "Mentha pulegium",
+    "name": "Pennyroyal",
+    "latin": "Mentha pulegium",
+    "status": "toxic"
+  },
+  {
+    "slug": "spotted-spurge",
+    "taxonId": 58893,
+    "taxonName": "Euphorbia maculata",
+    "name": "Spotted spurge",
+    "latin": "Euphorbia maculata",
+    "status": "toxic"
+  },
+  {
+    "slug": "comfrey",
+    "taxonId": 1247945,
+    "taxonName": "Symphytum officinale",
+    "name": "Common comfrey",
+    "latin": "Symphytum officinale",
+    "status": "study"
+  }
+]

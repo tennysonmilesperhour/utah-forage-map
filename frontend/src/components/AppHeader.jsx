@@ -1,6 +1,8 @@
 import { useState } from 'react'
-import { BookOpen, ChevronDown, Globe2, Leaf, LogIn, LogOut, Map, NotebookPen, UserPlus, Users } from 'lucide-react'
+import { ChevronDown, LogIn, LogOut, NotebookPen, UserPlus, Users } from 'lucide-react'
 import MyceliumMark from './MyceliumMark'
+import CollectionNavigation, { CollectionSwitch } from './CollectionNavigation'
+import { FUNGI_HOME } from '../lib/navigation'
 
 export default function AppHeader({
   user,
@@ -15,15 +17,9 @@ export default function AppHeader({
 }) {
   const [accountOpen, setAccountOpen] = useState(false)
 
-  function navigate(event, view) {
-    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
-    event.preventDefault()
-    onNavigate(view)
-  }
-
   return (
-    <header className="app-header">
-      <a className="brand-lockup" href="/" onClick={event => navigate(event, 'map')} aria-label="Mushroom Forage Map home">
+    <header className="app-header collection-header">
+      <a className="brand-lockup" href={FUNGI_HOME} aria-label="Mushroom Forage Map home">
         <div className="brand-mark"><MyceliumMark /></div>
         <div className="brand-copy">
           <h1><span className="brand-name-full">The Living Fungi Archive</span><span className="brand-name-short">Fungi Archive</span></h1>
@@ -31,17 +27,8 @@ export default function AppHeader({
         </div>
       </a>
 
-      <div className="world-switch fungi-world-switch" aria-label="Foraging collection">
-        <a className="active" href="/" aria-current="page"><span aria-hidden="true">F</span> Fungi</a>
-        <a href="/herbs"><Leaf size={14} aria-hidden="true" /> Herbs</a>
-      </div>
-
-      <nav className="primary-nav" aria-label="Primary navigation">
-        <a className={`nav-item ${activeView === 'map' ? 'active' : ''}`} href="/" onClick={event => navigate(event, 'map')} aria-current={activeView === 'map' ? 'page' : undefined}><Map size={17} aria-hidden="true" /> Field map</a>
-        <a className={`nav-item ${activeView === 'community' ? 'active' : ''}`} href="/community" onClick={event => navigate(event, 'community')} aria-current={activeView === 'community' ? 'page' : undefined}><Users size={17} aria-hidden="true" /> Community</a>
-        <a className="nav-item" href="/regions"><Globe2 size={17} aria-hidden="true" /> Regions</a>
-        <a className="nav-item" href="/learn"><BookOpen size={17} aria-hidden="true" /> Species archive</a>
-      </nav>
+      <CollectionSwitch collection="fungi" />
+      <CollectionNavigation collection="fungi" active={activeView} onNavigate={onNavigate} className="primary-nav" />
 
       <div className="header-actions">
         <button className="icon-button mobile-filter-button" type="button" onClick={() => onNavigate('community')} aria-label="Open community field desk" title="Community">

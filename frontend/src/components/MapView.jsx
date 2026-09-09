@@ -31,6 +31,7 @@ function geojson(sightings) {
         id: sighting.id,
         edibility: sighting.species?.edibility ?? 'unknown',
         source: sighting.source,
+        plantStatus: sighting.status ?? 'study',
       },
     })),
   }
@@ -50,6 +51,8 @@ function roundedBounds(map) {
 
 export default function MapView({
   sightings = [],
+  collection = 'fungi',
+  onMapError,
   onSightingClick,
   onBoundsChange,
   flyTarget,
@@ -69,12 +72,14 @@ export default function MapView({
   const onSightingClickRef = useRef(onSightingClick)
   const onBoundsChangeRef = useRef(onBoundsChange)
   const onMapClickRef = useRef(onMapClick)
+  const onMapErrorRef = useRef(onMapError)
   const isPickingLocationRef = useRef(isPickingLocation)
 
   useEffect(() => { sightingsRef.current = sightings }, [sightings])
   useEffect(() => { onSightingClickRef.current = onSightingClick }, [onSightingClick])
   useEffect(() => { onBoundsChangeRef.current = onBoundsChange }, [onBoundsChange])
   useEffect(() => { onMapClickRef.current = onMapClick }, [onMapClick])
+  useEffect(() => { onMapErrorRef.current = onMapError }, [onMapError])
   useEffect(() => { isPickingLocationRef.current = isPickingLocation }, [isPickingLocation])
 
   const syncSource = useCallback(() => {
@@ -107,15 +112,17 @@ export default function MapView({
     scaleRef.current = new mapboxgl.ScaleControl({ unit: 'metric' })
     map.addControl(scaleRef.current, 'bottom-right')
 
+    map.on('error', () => { if (!map.isStyleLoaded()) onMapErrorRef.current?.(true) })
     map.on('load', () => {
+      onMapErrorRef.current?.(null)
       // Tint the basemap itself, preserving legibility of labels and the meaning of specimen colors.
       for (const layer of map.getStyle().layers) {
-        if (layer.type === 'background') map.setPaintProperty(layer.id, 'background-color', '#19151d')
-        if (layer.id === 'water' && layer.type === 'fill') map.setPaintProperty(layer.id, 'fill-color', '#102f35')
+        if (layer.type === 'background') map.setPaintProperty(layer.id, 'background-color', collection === 'herbs' ? '#0e1e15' : '#19151d')
+        if (layer.id === 'water' && layer.type === 'fill') map.setPaintProperty(layer.id, 'fill-color', collection === 'herbs' ? '#102c29' : '#102f35')
       }
       map.setFog({
         color: '#1c2830',
-        'high-color': '#49314b',
+        'high-color': collection === 'herbs' ? '#426347' : '#49314b',
         'horizon-blend': 0.08,
         'space-color': '#090809',
         'star-intensity': 0.16,
@@ -133,7 +140,7 @@ export default function MapView({
         source: SOURCE_ID,
         filter: ['has', 'point_count'],
         paint: {
-          'circle-color': ['step', ['get', 'point_count'], '#8a583b', 50, '#73445e', 250, '#493953'],
+          'circle-color': collection === 'herbs' ? ['step', ['get', 'point_count'], '#3d694f', 50, '#597543', 250, '#324f43'] : ['step', ['get', 'point_count'], '#8a583b', 50, '#73445e', 250, '#493953'],
           'circle-radius': ['step', ['get', 'point_count'], 17, 50, 21, 250, 26],
           'circle-stroke-width': 2,
           'circle-stroke-color': '#edd0a8',
@@ -158,7 +165,7 @@ export default function MapView({
         filter: ['!', ['has', 'point_count']],
         paint: {
           'circle-radius': 6,
-          'circle-color': [
+          'circle-color': collection === 'herbs' ? ['match', ['get', 'plantStatus'], 'culinary', '#b5d58b', 'toxic', '#e98672', '#d8bc80'] : [
             'match', ['get', 'edibility'],
             'choice', EDIBILITY_COLORS.choice,
             'edible', EDIBILITY_COLORS.edible,
@@ -205,7 +212,7 @@ export default function MapView({
       mapRef.current = null
       scaleRef.current = null
     }
-  }, [])
+  }, [collection])
 
   useEffect(() => {
     scaleRef.current?.setUnit(unitSystem)
@@ -251,7 +258,7 @@ export default function MapView({
       <div className="absolute inset-0"><div ref={containerRef} className="h-full w-full" /></div>
       {!hasToken && (
         <div className="map-token-fallback">
-          <div><p>Mapbox token required</p><span>Set <code>VITE_MAPBOX_TOKEN</code> in <code>frontend/.env</code></span></div>
+          <div><p>The map is unavailable</p><span>You can still browse the observation list.</span></div>
         </div>
       )}
     </div>

@@ -568,9 +568,9 @@ export default function GuideApp({ path = '/learn' }) {
     trackPageView(window.location.pathname)
   }, [normalizedPath])
 
-  if (normalizedPath === '/learn/foraging') return <GuideLayout><ForagingIndex /></GuideLayout>
+  if (normalizedPath === '/learn/foraging') return <GuideLayout section="skills"><ForagingIndex /></GuideLayout>
   const topicMatch = normalizedPath.match(/^\/learn\/foraging\/([^/]+)$/)
-  if (topicMatch && foragingBySlug[topicMatch[1]]) return <GuideLayout><ForagingArticle guide={foragingBySlug[topicMatch[1]]} /></GuideLayout>
+  if (topicMatch && foragingBySlug[topicMatch[1]]) return <GuideLayout section="skills"><ForagingArticle guide={foragingBySlug[topicMatch[1]]} /></GuideLayout>
   if (normalizedPath === '/learn') return <GuideHome summaries={summaries} updatedAt={summariesUpdatedAt} />
   if (normalizedPath === '/regions') return <RegionIndexPage />
   if (normalizedPath === '/learn/safety') return <SafetyPage />
