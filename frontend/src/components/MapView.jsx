@@ -2,9 +2,8 @@ import { useCallback, useEffect, useRef } from 'react'
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { useUnitSystem } from '../hooks/useUnits'
+import { initialMapCamera } from '../lib/visitorCountry'
 
-const WORLD_CENTER = [0, 20]
-const WORLD_ZOOM = 1.35
 const SOURCE_ID = 'mushroom-observations'
 const CLUSTER_LAYER = 'observation-clusters'
 const CLUSTER_COUNT_LAYER = 'observation-cluster-count'
@@ -54,11 +53,14 @@ export default function MapView({
   onSightingClick,
   onBoundsChange,
   flyTarget,
+  countryCamera,
   draftLocation,
   onMapClick,
   isPickingLocation = false,
 }) {
   const containerRef = useRef(null)
+  // Country detection only sets the first camera. Subsequent navigation belongs to the visitor.
+  const initialCameraRef = useRef({ target: flyTarget, countryCamera })
   const mapRef = useRef(null)
   const scaleRef = useRef(null)
   const { system: unitSystem } = useUnitSystem()
@@ -89,8 +91,7 @@ export default function MapView({
     const map = new mapboxgl.Map({
       container: containerRef.current,
       style: 'mapbox://styles/mapbox/dark-v11',
-      center: WORLD_CENTER,
-      zoom: compactViewport ? 0.45 : WORLD_ZOOM,
+      ...initialMapCamera({ ...initialCameraRef.current, compact: compactViewport }),
       minZoom: 0.3,
       maxBounds: [[-180, -85], [180, 85]],
       renderWorldCopies: false,

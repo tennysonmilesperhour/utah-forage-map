@@ -14,6 +14,7 @@ import { useSaveLocation } from './hooks/useAccount'
 import { useCreateAlert } from './hooks/useCompanion'
 import { useCommunityPortal, useCreateSighting, useSightings, useSpecies } from './hooks/useSightings'
 import { useUnitSystem } from './hooks/useUnits'
+import { useVisitorCountry } from './hooks/useVisitorCountry'
 import { countActiveFilters, DEFAULT_FILTERS } from './lib/filters'
 import { regionBySlug } from './data/regions'
 import { applyPageMetadata, pathForView, viewFromPathname } from './lib/seo'
@@ -28,7 +29,7 @@ export default function App() {
   const initialObservationId = initialParams.get('observation')
   const [filters, setFilters] = useState(() => ({ ...DEFAULT_FILTERS, taxon_id: initialTaxonId }))
   const [viewport, setViewport] = useState(null)
-  const [flyTarget, setFlyTarget] = useState(null)
+  const [flyTarget, setFlyTarget] = useState(() => initialRegion ? { bbox: initialRegion.bounds } : null)
   const [selected, setSelected] = useState(null)
   const [draftLocation, setDraftLocation] = useState(null)
   const [authMode, setAuthMode] = useState(initialParams.get('reset') ? 'reset' : null)
@@ -49,6 +50,8 @@ export default function App() {
   )
 
   const { system: unitSystem } = useUnitSystem()
+  const shouldLocateCountry = !initialRegion && !initialObservationId && !flyTarget
+  const countryCamera = useVisitorCountry(shouldLocateCountry)
   const { data: user = null, isLoading: authLoading } = useCurrentUser()
   const logout = useLogout()
   const verifyEmail = useVerifyEmail()
@@ -76,13 +79,6 @@ export default function App() {
     setObservationHandled(true)
     if (match) setFlyTarget({ center: [match.longitude, match.latitude], selectedAt: Date.now() })
   }, [initialObservationId, observationHandled, sightings])
-
-  useEffect(() => {
-    if (!initialRegion) return
-    setFlyTarget({ bbox: initialRegion.bounds, selectedAt: Date.now() })
-    // Regional handoff is interpreted once when the map starts.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   useEffect(() => {
     if (!toast) return undefined
@@ -268,7 +264,8 @@ export default function App() {
 
         <section className={`map-stage ${submissionOpen ? 'is-picking' : ''}`} aria-label="Worldwide mushroom observations map">
           <Suspense fallback={<div className="map-loading" role="status"><span>Loading map...</span></div>}>
-            <MapView
+            {shouldLocateCountry && countryCamera.isLoading ? <div className="map-loading" role="status"><span>Loading map...</span></div> : <MapView
+              countryCamera={countryCamera.data}
               sightings={sightings}
               onSightingClick={setSelected}
               onBoundsChange={setViewport}
@@ -276,7 +273,7 @@ export default function App() {
               draftLocation={draftLocation}
               onMapClick={submissionOpen ? setDraftLocation : undefined}
               isPickingLocation={submissionOpen}
-            />
+            />}
           </Suspense>
 
           <div className="map-toolbar">
