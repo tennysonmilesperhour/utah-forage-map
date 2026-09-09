@@ -10,7 +10,15 @@ The public map remains the fungi entry. Filters, search, map overlays, records, 
 
 The species archive and community opening use cinematic imagery and thin lowercase headings. Species cards remain linked to their real, attributed photography and field notes. Mobile navigation has four labeled destinations and safe-area clearance. The herb default changed to B; the earlier comparison remains reachable with `?design=classic`.
 
-## Original artwork
+## Current backdrop
+
+The approved replacement is `frontend/public/images/fungi/forest-floor-extended.webp` (1672 × 941, 142,682 bytes). It is the previously generated photographic extension, used unchanged. The original source is [Matt Richmond’s photograph](https://unsplash.com/photos/mushrooms-grow-on-a-dark-weathered-log-dcnWLYD4IFA), published 12 March 2025, with Sony ILCE-7M4 camera metadata and the [Unsplash License](https://unsplash.com/license).
+
+The real photograph was extended with AI to continue the weathered log and forest floor across the left side. It is decorative artwork, not unaltered documentary or identification evidence. A visible source credit and extension disclosure accompany the archive hero. It replaces the former generated backdrop in the archive hero, map filter heading, community hero and authentication context. Species reference photographs remain unchanged.
+
+The archive overlay is lighter so bark and leaf-litter detail remain visible across the left. Narrow crops favor the mushroom subjects on the right. A new filename prevents a cached old scene from persisting after deployment. The previous generated asset has been removed from the current public assets; its provenance follows for history.
+
+## Previous artwork (retired)
 
 Mode: new generation with the built-in imagegen tool, no reference-image edit. Asset: `frontend/public/images/fungi/mycelial-forest.webp`, 1536 × 1024, 184,324 bytes; encoded with cwebp quality 84. Source: `exec-c40aa7a9-82a0-4b07-a644-231e5a019ddc.png`. Generated atmosphere is decorative, never a scientific illustration or an identification photograph. Its empty alt text avoids implying a species identification. All existing species-photo attribution remains in the guide detail pages.
 

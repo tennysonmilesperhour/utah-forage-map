@@ -3,19 +3,11 @@
 .atlas-shell * { box-sizing: border-box; }
 .atlas-shell :is(h1,h2,h3,p,figure) { margin: 0; }
 .atlas-shell a { color: inherit; }
-.atlas-shell button, .atlas-shell select, .atlas-shell input { font: inherit; }
+.atlas-shell :where(main) :is(button, select, input) { font: inherit; }
 .atlas-shell button { cursor: pointer; }
 .atlas-shell :is(a, button, input, select):focus-visible { outline: 2px solid #d5eddf; outline-offset: 4px; }
 .atlas-shell :is(section,main,div)[id] { scroll-margin-top: 160px; }
-.atlas-header.herbal-header { position: sticky; top: 0; z-index: 40; min-height: 88px; height: 88px; display: flex; gap: 30px; padding: 0 clamp(24px, 4vw, 64px); background: #020b09e8; backdrop-filter: blur(22px); }
-.atlas-header .herbal-brand { text-decoration: none; display: flex; align-items: center; gap: 12px; }
-.atlas-header .herbal-brand strong, .atlas-header .herbal-brand small { display: block; }
-.atlas-header .herbal-brand small { text-transform: uppercase; }
-.atlas-header .atlas-primary-nav { display: flex; position: static; height: 88px; margin-left: auto; gap: 28px; }
-.atlas-primary-nav a { text-decoration: none; font-size: 12px; display: flex; align-items: center; gap: 8px; color: #b8cac0; position: relative; }
-.atlas-primary-nav a svg { display: none; }
-.atlas-primary-nav a.active { color: #f0f6f1; }
-.atlas-primary-nav a.active:after { content: ''; height: 1px; background: #cce4d6; position: absolute; bottom: 20px; left: 0; right: 0; }
+/* The shared HerbalHeader owns header geometry and responsive navigation. */
 .atlas-subnav { height: 52px; position: sticky; top: 88px; z-index: 35; background: #071710de; backdrop-filter: blur(18px); border-block: 1px solid #c6ded11d; padding: 0 clamp(24px,4vw,64px); display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .atlas-subnav nav { display: flex; gap: 30px; }
 .atlas-subnav a { display: flex; gap: 8px; align-items: center; text-decoration: none; color: #b8cec1; font-size: 11px; min-height: 44px; }
@@ -101,7 +93,7 @@
 .atlas-compare-tray > div { display: flex; align-items: center; gap: 10px; font-size: 11px; color: #cee1d5; }
 .atlas-compare-tray > button { display: flex; gap: 8px; align-items: center; padding: 9px; font-size: 11px; color: #d3e6d9; background: #c6ded10c; border: 1px solid #c6ded129; border-radius: 5px; }
 .atlas-compare-tray small { font-size: 11px; }
-.atlas-shell .herb-solid-button, .atlas-shell .herb-outline-button { display: inline-flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; border-width: 1px; border-style: solid; }
+.atlas-shell :where(main) .herb-solid-button, .atlas-shell :where(main) .herb-outline-button { display: inline-flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; border-width: 1px; border-style: solid; }
 .atlas-footer { padding: 48px clamp(24px,4vw,64px) 35px; border-top: 1px solid #d2e9db1d; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; background: #010806; }
 .atlas-footer strong { display: inline-block; margin-left: 12px; font-weight: 400; font-size: 17px; }
 .atlas-footer p { margin-top: 13px; font-size: 12px; color: #a5bfb0; }
@@ -205,8 +197,6 @@
 .atlas-glossary dt { font-size: 16px; color: #daeadf; }
 .atlas-glossary dd { font-size: 13px; color: #b6cebe; margin: 8px 0 0; line-height: 1.9; }
 @media (max-width: 1100px) {
-  .atlas-header.herbal-header { gap: 20px; }
-  .atlas-header .atlas-primary-nav { gap: 17px; }
   .atlas-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .atlas-detail-columns { grid-template-columns: minmax(0,1fr) 250px; gap: 35px; }
   .atlas-detail-hero { gap: 35px; }
@@ -214,14 +204,16 @@
   .atlas-start-links > a { gap: 12px; }
   .atlas-start-links > a > svg:first-child { display: none; }
 }
+@media (max-width: 980px) {
+  .atlas-subnav { top: 76px; }
+  .atlas-footer { padding-bottom: 120px; }
+  .atlas-compare-tray { bottom: 104px; }
+}
+@media (max-width: 640px) {
+  .atlas-subnav { top: 72px; }
+}
 @media (max-width: 800px) {
-  .atlas-header.herbal-header { height: 76px; min-height: 76px; justify-content: space-between; -webkit-backdrop-filter: none; backdrop-filter: none; }
-  .atlas-header .atlas-primary-nav { transform: none; width: auto; position: fixed; top: auto; bottom: calc(12px + env(safe-area-inset-bottom)); left: 18px; right: 18px; height: 66px; padding: 7px; gap: 4px; display: grid; grid-template-columns: repeat(4,1fr); margin: 0; background: #0c2519ee; backdrop-filter: blur(25px); border: 1px solid #d6ecdd40; border-radius: 9px; box-shadow: 0 8px 40px #0008; }
-  .atlas-primary-nav a { display: flex; justify-content: center; flex-direction: column; gap: 7px; font-size: 9px; border-radius: 5px; }
-  .atlas-primary-nav a svg { display: block; }
-  .atlas-primary-nav a.active { background: #c6ded119; }
-  .atlas-primary-nav a.active:after { display: none; }
-  .atlas-subnav { top: 76px; padding-inline: 24px; }
+  .atlas-subnav { padding-inline: 24px; }
   .atlas-subnav nav { gap: 20px; }
   .atlas-subnav > a { font-size: 10px; }
   .atlas-hero { min-height: 600px; grid-template-columns: 1fr 280px; gap: 25px; }
@@ -250,12 +242,6 @@
   .atlas-comparison-heading h2 { font-size: 25px; }
 }
 @media (max-width: 540px) {
-  .atlas-header.herbal-header { padding-inline: 20px; height: 72px; min-height: 72px; gap: 12px; }
-  .atlas-header .herbal-brand strong { font-size: 14px; }
-  .atlas-header .herbal-brand small { font-size: 6px; letter-spacing: 1px; }
-  .atlas-header .herbal-brand > svg { width: 20px; }
-  .atlas-header .world-switch a { padding-inline: 8px; font-size: 10px; }
-  .atlas-header .world-switch { height: 33px; }
   .atlas-subnav { top: 72px; padding-inline: 20px; height: 48px; }
   .atlas-subnav nav { gap: 18px; }
   .atlas-subnav a { font-size: 10px; }

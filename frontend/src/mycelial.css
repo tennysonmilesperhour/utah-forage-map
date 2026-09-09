@@ -52,7 +52,7 @@
 .mycelial-theme .world-switch a span { font-family: inherit; }
 .mycelial-theme .workspace { grid-template-columns: 320px minmax(0, 1fr); }
 .mycelial-theme .filter-panel { border-color: var(--mycelial-edge); background: linear-gradient(150deg, #211a24, #100d12 55%); }
-.mycelial-theme .panel-heading { min-height: 190px; align-items: start; padding: 24px; background: linear-gradient(90deg, #110d14b8, #100a1270), linear-gradient(0deg, #17121b, transparent 65%), url('/images/fungi/mycelial-forest.webp') center 68% / cover; border-bottom-color: var(--mycelial-edge); }
+.mycelial-theme .panel-heading { min-height: 190px; align-items: start; padding: 24px; background: linear-gradient(90deg, #110d14b8, #100a1270), linear-gradient(0deg, #17121b, transparent 65%), url('/images/fungi/forest-floor-extended.webp') 78% center / cover; border-bottom-color: var(--mycelial-edge); }
 .mycelial-theme .panel-title-row { gap: 8px; color: #d9cbd5; }
 .mycelial-theme .panel-title-row svg { width: 13px; }
 .mycelial-panel-kicker { font-size: 9px; font-weight: 400; letter-spacing: 1.8px; text-transform: uppercase; }
@@ -92,7 +92,7 @@
 .mycelial-theme .drawer-heading > div > p { font-size: 9px; letter-spacing: 1.4px; font-weight: 400; }
 .mycelial-theme :is(.community-tabs a, .community-tabs button, .account-tabs button) { font-weight: 400; }
 .mycelial-theme .community-intro { background: #221827; }
-.mycelial-theme .mycelial-community-hero { min-height: 385px; display: flex; flex-direction: column; align-items: start; justify-content: end; padding: 65px 40px 35px; background: linear-gradient(90deg, #130d1999, #110c160d), linear-gradient(0deg, #140e1bed, #140e1b10), url('/images/fungi/mycelial-forest.webp') center 65% / cover; }
+.mycelial-theme .mycelial-community-hero { min-height: 385px; display: flex; flex-direction: column; align-items: start; justify-content: end; padding: 65px 40px 35px; background: linear-gradient(90deg, #130d1999, #110c160d), linear-gradient(0deg, #140e1bed, #140e1b10), url('/images/fungi/forest-floor-extended.webp') center 65% / cover; }
 .mycelial-theme .mycelial-community-hero h3 { margin: 9px 0 14px; font-size: clamp(58px, 6.5vw, 96px); font-weight: 300; letter-spacing: -.055em; line-height: 1; }
 .mycelial-theme .mycelial-community-hero .mycelial-panel-kicker { color: #dbcbd7; font-size: 9px; }
 .mycelial-theme .mycelial-community-hero p:not(.mycelial-panel-kicker) { max-width: 420px; color: #d1c3ce; font-size: 12px; line-height: 1.8; }
@@ -108,7 +108,7 @@
 .mycelial-theme .activity-row-featured h4 { font-size: 29px; font-weight: 300; }
 .mycelial-theme :is(.activity-row, .community-provenance, .community-section, .community-list article) { border-color: var(--mycelial-edge); }
 .mycelial-theme .auth-dialog { margin: auto; border-radius: 10px; }
-.mycelial-theme .auth-context { background: linear-gradient(0deg, #100b18ee, #100b1866), url('/images/fungi/mycelial-forest.webp') 70% center / cover; border-color: var(--mycelial-edge); }
+.mycelial-theme .auth-context { background: linear-gradient(0deg, #100b18ee, #100b1866), url('/images/fungi/forest-floor-extended.webp') 84% center / cover; border-color: var(--mycelial-edge); }
 .mycelial-theme .auth-context h2 { font-size: 32px; font-weight: 300; }
 .mycelial-theme :is(.auth-mark, .avatar) { border-color: var(--mycelial-edge); color: #e5d8e0; background: #dcc8e112; }
 .mycelial-theme .auth-tabs button.active { color: var(--ink); background: #d3bdd21e; }
@@ -117,8 +117,8 @@
 .mycelial-theme .learn-main { background: var(--canvas); }
 .mycelial-theme:has(.learn-hero) .guide-site-header { margin-bottom: -88px; background: linear-gradient(#09080bec, #09080b7a); }
 .mycelial-theme .learn-hero { display: flex; flex-direction: column; height: min(940px, 92svh); min-height: 730px; padding: 160px 64px 25px; background: #09080b; }
-.mycelial-theme .learn-hero > img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; object-position: center 60%; }
-.mycelial-theme .learn-hero-overlay { display: block; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, #100b1880, transparent 75%), linear-gradient(0deg, #0b090cee, #0b090c00 75%); }
+.mycelial-theme .learn-hero > img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; object-position: right center; }
+.mycelial-theme .learn-hero-overlay { display: block; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, #0b090c40, #0b090c05 65%), linear-gradient(0deg, #0b090c8a, transparent 53%); }
 .mycelial-theme .learn-hero-content { display: flex; flex-direction: column; justify-content: end; align-items: start; width: 100%; flex: 1; margin: 0; border: 0; padding: 0 0 65px; background: transparent; }
 .mycelial-theme .learn-hero .eyebrow { font-size: 10px; font-weight: 400; letter-spacing: 2px; color: #d6cbd1; }
 .mycelial-theme .learn-hero h1 { margin: 12px 0 18px; max-width: none; font-size: clamp(106px, 12vw, 188px); font-weight: 300; line-height: .97; letter-spacing: -.065em; }
@@ -178,7 +178,7 @@
   .mycelial-theme :is(.guide-principles, .species-browser) { padding-left: 36px; padding-right: 36px; }
 }
 @media (max-width: 1050px) {
-  .mycelial-theme :is(.app-header, .guide-site-header) { height: 76px; min-height: 76px; flex-basis: 76px; grid-template-columns: minmax(0, 1fr) auto auto; backdrop-filter: none; -webkit-backdrop-filter: none; background: #0c090df5; }
+  .mycelial-theme :is(.app-header, .guide-site-header) { height: 76px; min-height: 76px; flex-basis: 76px; grid-template-columns: minmax(0, 1fr) auto auto; -webkit-backdrop-filter: none; backdrop-filter: none; background: #0c090df5; }
   .mycelial-theme .fungi-world-switch { grid-column: 2; }
   .mycelial-theme :is(.header-actions, .guide-map-link) { grid-column: 3; }
   .mycelial-theme :is(.primary-nav, .guide-global-nav) { position: fixed; z-index: 60; inset: auto 16px calc(12px + env(safe-area-inset-bottom)); display: grid; grid-template-columns: repeat(4, 1fr); width: min(540px, calc(100% - 32px)); height: 64px; margin: 0 auto; align-self: auto; gap: 4px; padding: 5px; border: 1px solid #eedee333; border-radius: 10px; background: linear-gradient(130deg, #493346a8, #110d16db); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 1px 0 #fff3fb19, 0 8px 36px #00000055; }
@@ -223,7 +223,7 @@
   .mycelial-theme .drawer-heading { padding: 18px; }
   .mycelial-theme .drawer-heading h2 { font-size: 19px; }
   .mycelial-theme .drawer-heading > div > p { font-size: 8px; }
-  .mycelial-theme .mycelial-community-hero { min-height: 385px; padding: 60px 22px 28px; background-position: center, center, 64% center; }
+  .mycelial-theme .mycelial-community-hero { min-height: 385px; padding: 60px 22px 28px; background-position: center, center, 84% center; }
   .mycelial-theme .mycelial-community-hero h3 { font-size: clamp(54px, 15vw, 76px); }
   .mycelial-theme .community-metrics { grid-template-columns: repeat(3, 1fr); padding: 0 22px; gap: 14px; }
   .mycelial-theme .community-metrics div:nth-child(n) { display: flex; flex-direction: column; justify-content: center; min-height: 104px; border: 0; padding: 12px 0; }
@@ -233,8 +233,8 @@
   .mycelial-theme .community-section-heading h3 { font-size: 23px; }
   .mycelial-theme:has(.learn-hero) .guide-site-header { margin-bottom: -72px; }
   .mycelial-theme .learn-hero { height: 870px; min-height: 790px; max-height: none; padding: 115px 22px 24px; }
-  .mycelial-theme .learn-hero > img { object-position: 59% center; }
-  .mycelial-theme .learn-hero-overlay { background: linear-gradient(0deg, #0b090cf5, #0b090c88 43%, #0b090c08 80%); }
+  .mycelial-theme .learn-hero > img { object-position: 92% center; }
+  .mycelial-theme .learn-hero-overlay { background: linear-gradient(0deg, #0b090ce0, #0b090c65 43%, #0b090c08 80%); }
   .mycelial-theme .learn-hero-content { justify-content: end; padding: 180px 0 48px; }
   .mycelial-theme .learn-hero .eyebrow { font-size: 8px; letter-spacing: 1.5px; }
   .mycelial-theme .learn-hero h1 { font-size: clamp(106px, 29vw, 152px); margin: 16px 0 20px; }
@@ -267,3 +267,5 @@
 @media (prefers-reduced-motion: reduce) {
   .mycelial-theme *, .mycelial-theme *::after { animation: none !important; transition: none !important; }
 }
+
+.mycelial-hero-foot a.mycelial-photo-credit { display: inline; min-height: 0; font: inherit; letter-spacing: inherit; text-decoration: underline; text-underline-offset: 3px; }

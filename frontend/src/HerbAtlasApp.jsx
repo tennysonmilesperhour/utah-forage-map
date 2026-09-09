@@ -1,8 +1,11 @@
 import { useEffect, useState, useSyncExternalStore } from 'react'
-import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, BookOpen, Bookmark, Check, Compass, GitCompareArrows, Globe2, Leaf, Printer, Search, ShieldAlert, SlidersHorizontal, X } from 'lucide-react'
+import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, BookOpen, Bookmark, Check, GitCompareArrows, Globe2, Leaf, Printer, Search, ShieldAlert, SlidersHorizontal, X } from 'lucide-react'
 import { herbGuides, herbGuideBySlug, herbRegions, herbRegionBySlug, habitatLabels, useLabels, statusLabels, stageLabels, filterHerbGuides, herbComparisonSelection, herbGuidePath, herbAtlasRoute, HERB_ATLAS_PATH } from './data/herbGuide'
 import { herbFieldcraft, botanicalGlossary } from './data/herbFieldcraft'
 import { herbsBySlug } from './data/herbs'
+import HerbalHeader from './components/HerbalHeader'
+import AuthDialog from './components/AuthDialog'
+import { getApiError, useCurrentUser, useLogout } from './hooks/useAuth'
 import { applyHerbGuideMetadata } from './lib/herbGuideSeo'
 import { trackPageView } from './lib/googleTag'
 import './herbal.css'
@@ -42,8 +45,12 @@ function Photo({ plant, second = false, eager = false }) {
 }
 function Sources({ sources }) { return <ul className="atlas-source-list">{sources.map(source => <li key={source.url}><a href={source.url} target="_blank" rel="noreferrer">{source.title}<ArrowUpRight size={14} /></a>{source.supports && <small>{source.supports}</small>}</li>)}</ul> }
 function Header({ route }) {
+  const [authMode, setAuthMode] = useState(null)
+  const { data: user = null, isLoading: authLoading } = useCurrentUser()
+  const logout = useLogout()
+  function navigate(view) { window.location.assign(view === 'plants' ? HERB_ATLAS_PATH : `/herbs${view === 'today' ? '' : `?view=${view}`}`) }
   const section = ['region', 'regions'].includes(route.type) ? 'regions' : route.type === 'fieldcraft' ? 'fieldcraft' : 'atlas'
-  return <><a className="atlas-skip" href="#atlas-content">Skip to guide</a><header className="herbal-header atlas-header"><a className="herbal-brand" href="/herbs"><Leaf size={24} strokeWidth={1.5} /><span><strong>The Verdant Hours</strong><small>A botanical field companion</small></span></a><div className="world-switch" aria-label="Foraging collection"><a href="/learn">Fungi</a><a href="/herbs" className="active">Herbs</a></div><nav className="atlas-primary-nav" aria-label="Herbal navigation"><a href="/herbs"><Compass size={17} />Today</a><a href={HERB_ATLAS_PATH} className="active" aria-current="page"><Leaf size={17} />Plant atlas</a><a href="/herbs?view=watches"><Globe2 size={17} />Watch zones</a><a href="/herbs?view=pantry"><Bookmark size={17} />Pantry</a></nav></header><div className="atlas-subnav"><nav aria-label="Reference guide sections"><a href={HERB_ATLAS_PATH} aria-current={section === 'atlas' ? 'page' : undefined}>The atlas</a><a href="/herbs/regions" aria-current={section === 'regions' ? 'page' : undefined}>Explore regions</a><a href="/herbs/fieldcraft" aria-current={section === 'fieldcraft' ? 'page' : undefined}>Field skills</a></nav><a href="/herbs/fieldcraft#poison"><ShieldAlert size={14} />Poison help</a></div></>
+  return <><a className="atlas-skip" href="#atlas-content">Skip to guide</a><HerbalHeader className="atlas-header" view="plants" forest user={user} authLoading={authLoading} onNavigate={navigate} onAuth={setAuthMode} onLogout={() => logout.mutate()} />{authMode && <AuthDialog context="herbs" mode={authMode} onClose={() => setAuthMode(null)} onAuthenticated={() => setAuthMode(null)} />}{logout.error && <div className="herb-toast" role="alert">{getApiError(logout.error)}</div>}<div className="atlas-subnav"><nav aria-label="Reference guide sections"><a href={HERB_ATLAS_PATH} aria-current={section === 'atlas' ? 'page' : undefined}>The atlas</a><a href="/herbs/regions" aria-current={section === 'regions' ? 'page' : undefined}>Explore regions</a><a href="/herbs/fieldcraft" aria-current={section === 'fieldcraft' ? 'page' : undefined}>Field skills</a></nav><a href="/herbs/fieldcraft#poison"><ShieldAlert size={14} />Poison help</a></div></>
 }
 function Footer() { return <footer className="atlas-footer"><div><Leaf size={20} /><strong>The Verdant Hours</strong><p>Learn the place. Know the plant. Gather with care.</p></div><div><a href="/herbs/fieldcraft#editorial">Sources & coverage</a><a href="/herbs/fieldcraft#glossary">Botanical glossary</a><a href="/herbs/fieldcraft#poison">Poison response</a><a href="mailto:morphiclabsdata@gmail.com?subject=Herb%20atlas%20correction">Suggest a correction</a><a href="/privacy">Privacy</a></div><small>Reference edition · Sources checked 9 September 2026. Independent botanical field review pending. These pages cannot identify a specimen or certify food safety.</small></footer> }
 function SelectFilter({ label, name, options, params }) { return <label className="atlas-filter"><span>{label}</span><select value={params.get(name) || ''} onChange={e => setParams({ [name]: e.target.value })}><option value="">All {label.toLowerCase()}</option>{Object.entries(options).map(([value, text]) => <option key={value} value={value}>{text}</option>)}</select></label> }

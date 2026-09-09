@@ -20,5 +20,6 @@ export function renderGuide(path) {
 export { guideMetadataForPath, guideRoutes, guideStructuredData, pageMetadataForPath, pageStructuredDataForPath }
 
 export function renderHerbGuide(path) {
-  return renderToString(<><HerbAtlasApp path={path} /><AnalyticsConsent collection="herbs" /></>)
+  const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } })
+  return renderToString(<QueryClientProvider client={queryClient}><HerbAtlasApp path={path} /><AnalyticsConsent collection="herbs" /></QueryClientProvider>)
 }
