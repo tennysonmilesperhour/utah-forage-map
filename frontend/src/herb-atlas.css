@@ -22,7 +22,7 @@
 .atlas-hero h1 { font-size: clamp(100px,12vw,180px); line-height: 1; font-weight: 300; letter-spacing: -.065em; margin: 18px 0; }
 .atlas-shell h1 span { color: #c6ded1; }
 .atlas-hero-copy > p:not(.herb-kicker) { font-size: 19px; font-weight: 300; line-height: 1.65; color: #d9e6dd; }
-.atlas-hero-copy > a { display: inline-flex; align-items: center; gap: 28px; text-decoration: none; font-size: 12px; margin-top: 24px; min-height: 44px; }
+.atlas-hero-copy > a { display: inline-flex; align-items: center; gap: 28px; text-decoration: none; font-size: 12px; margin-top: 24px; margin-right: 24px; min-height: 44px; }
 .atlas-hero-panel { border: 1px solid #e3f9eb33; border-radius: 8px; padding: 28px; background: linear-gradient(120deg,#e4f4eb0e,#081e1280); backdrop-filter: blur(10px); box-shadow: inset 0 1px 0 #effff11c; }
 .atlas-hero-panel h2 { font-size: 25px; font-weight: 300; line-height: 1.35; margin: 15px 0; letter-spacing: -.5px; }
 .atlas-hero-panel p { font-size: 12px; color: #c4d6c9; line-height: 1.8; }
