@@ -7690,8 +7690,8 @@ textarea::placeholder {
 
 /* The Verdant Hours */
 .herbal-body {
-  color-scheme: light;
-  background: #edf4e8;
+  color-scheme: dark;
+  background: #050d09;
 }
 
 .herbal-shell {
@@ -7723,8 +7723,8 @@ textarea::placeholder {
   display: grid;
   min-height: 100dvh;
   place-items: center;
-  background: #e5eddf;
-  color: #263d2b;
+  background: #050d09;
+  color: #d3e7aa;
   font: 600 16px/1.4 "Avenir Next", "Segoe UI", sans-serif;
 }
 

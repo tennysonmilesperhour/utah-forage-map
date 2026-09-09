@@ -108,10 +108,10 @@ export default function MapView({
 
     map.on('load', () => {
       map.setFog({
-        color: '#101715',
-        'high-color': '#1a2b29',
+        color: '#161316',
+        'high-color': '#30272e',
         'horizon-blend': 0.08,
-        'space-color': '#050807',
+        'space-color': '#090809',
         'star-intensity': 0.16,
       })
       map.addSource(SOURCE_ID, {
@@ -127,10 +127,10 @@ export default function MapView({
         source: SOURCE_ID,
         filter: ['has', 'point_count'],
         paint: {
-          'circle-color': ['step', ['get', 'point_count'], '#ca654b', 50, '#a84f3c', 250, '#78352f'],
+          'circle-color': ['step', ['get', 'point_count'], '#72616b', 50, '#5c4655', 250, '#382934'],
           'circle-radius': ['step', ['get', 'point_count'], 17, 50, 21, 250, 26],
           'circle-stroke-width': 2,
-          'circle-stroke-color': '#f0f3e9',
+          'circle-stroke-color': '#e8dfd4',
           'circle-opacity': 0.92,
         },
       })

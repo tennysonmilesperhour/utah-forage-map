@@ -99,8 +99,9 @@ export default function Sidebar({
         <div>
           <div className="panel-title-row">
             <SlidersHorizontal size={18} aria-hidden="true" />
-            <h2>Explore the archive</h2>
+            <span className="mycelial-panel-kicker">Explore the archive</span>
           </div>
+          <h2 className="mycelial-panel-title">forage<span>.</span></h2>
           <p>{loading ? 'Loading field records...' : `${sightingCount ?? 0} public field records on the map`}</p>
         </div>
         {onClose && (

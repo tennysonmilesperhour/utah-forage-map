@@ -8,7 +8,7 @@ import {
 
 const subscribeToHydration = () => () => {}
 
-export default function AnalyticsConsent() {
+export default function AnalyticsConsent({ collection = 'fungi' }) {
   const hydrated = useSyncExternalStore(subscribeToHydration, () => true, () => false)
   const [sessionChoice, setSessionChoice] = useState(undefined)
   const [settingsOpen, setSettingsOpen] = useState(false)
@@ -17,6 +17,7 @@ export default function AnalyticsConsent() {
 
   const consent = sessionChoice ?? getGoogleAnalyticsConsent()
   const open = settingsOpen || consent === null
+  const theme = collection === 'herbs' ? 'herbal-consent' : 'mycelial-theme'
 
   function choose(choice) {
     setGoogleAnalyticsConsent(choice)
@@ -27,7 +28,7 @@ export default function AnalyticsConsent() {
   if (!open) {
     return (
       <button
-        className="analytics-settings"
+        className={`analytics-settings ${theme}`}
         type="button"
         onClick={() => setSettingsOpen(true)}
         aria-label="Open analytics privacy choices"
@@ -41,7 +42,7 @@ export default function AnalyticsConsent() {
 
   return (
     <section
-      className="analytics-consent"
+      className={`analytics-consent ${theme}`}
       role="dialog"
       aria-labelledby="analytics-consent-title"
       aria-describedby="analytics-consent-copy"

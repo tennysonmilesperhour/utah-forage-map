@@ -1,10 +1,11 @@
-import { BookOpen, Globe2, Leaf, Library, Map, MapPinned, Users } from 'lucide-react'
+import { BookOpen, Globe2, Leaf, Map, MapPinned, Users } from 'lucide-react'
+import MyceliumMark from './MyceliumMark'
 
 export default function GuideHeader({ section = 'archive' }) {
   return (
     <header className="guide-site-header">
       <a className="brand-lockup" href="/" aria-label="Mushroom Forage Map home">
-        <div className="brand-mark"><Library size={21} strokeWidth={1.8} aria-hidden="true" /></div>
+        <div className="brand-mark"><MyceliumMark /></div>
         <div className="brand-copy">
           <strong><span className="brand-name-full">The Living Fungi Archive</span><span className="brand-name-short">Fungi Archive</span></strong>
           <span>Mushroom Forage Map</span>

@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { BookOpen, ChevronDown, Globe2, Leaf, Library, LogIn, LogOut, Map, NotebookPen, UserPlus, Users } from 'lucide-react'
+import { BookOpen, ChevronDown, Globe2, Leaf, LogIn, LogOut, Map, NotebookPen, UserPlus, Users } from 'lucide-react'
+import MyceliumMark from './MyceliumMark'
 
 export default function AppHeader({
   user,
@@ -23,7 +24,7 @@ export default function AppHeader({
   return (
     <header className="app-header">
       <a className="brand-lockup" href="/" onClick={event => navigate(event, 'map')} aria-label="Mushroom Forage Map home">
-        <div className="brand-mark"><Library size={21} strokeWidth={1.8} aria-hidden="true" /></div>
+        <div className="brand-mark"><MyceliumMark /></div>
         <div className="brand-copy">
           <h1><span className="brand-name-full">The Living Fungi Archive</span><span className="brand-name-short">Fungi Archive</span></h1>
           <p>Mushroom Forage Map</p>
