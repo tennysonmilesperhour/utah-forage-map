@@ -22,6 +22,16 @@ function goToStripe(url) {
   window.location.assign(target.href)
 }
 
+async function publicSupporters(offset) {
+  try { return (await axios.get('/api/supporters', { params: { offset } })).data }
+  catch (error) {
+    // A frontend preview can precede the backend release. No payment or member
+    // status is inferred when the new route is not available yet.
+    if (error.response?.status === 404) return { available: false, supporters: [], total: 0 }
+    throw error
+  }
+}
+
 export default function SupportersApp() {
   const [params] = useState(() => new URLSearchParams(typeof window === 'undefined' ? '' : window.location.search))
   const herbs = params.get('collection') === 'herbs'
@@ -34,8 +44,11 @@ export default function SupportersApp() {
   const logout = useLogout()
   const cache = useQueryClient()
   const motion = useSupporterMotion()
-  const publicList = useQuery({ queryKey: ['supporters', offset], queryFn: async () => (await axios.get('/api/supporters', { params: { offset } })).data })
-  const membership = useQuery({ queryKey: ['membership', user?.id], enabled: Boolean(user), queryFn: async () => (await axios.get('/api/billing/membership')).data })
+  const publicList = useQuery({ queryKey: ['supporters', offset], queryFn: () => publicSupporters(offset) })
+  const membership = useQuery({ queryKey: ['membership', user?.id], enabled: Boolean(user), queryFn: async () => {
+    try { return (await axios.get('/api/billing/membership')).data }
+    catch (error) { if (error.response?.status === 404) return { active: false, status: 'none', public_listing: false, can_manage: false }; throw error }
+  } })
   const confirmation = useQuery({
     queryKey: ['supporter-confirmation', user?.id, params.get('session_id'), params.get('billing')],
     enabled: Boolean(user && ((params.get('checkout') === 'success' && params.get('session_id')) || params.get('billing') === 'returned')),
