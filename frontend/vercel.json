@@ -64,6 +64,26 @@
       "destination": "/disclaimer/index.html"
     },
     {
+      "source": "/herbs/atlas",
+      "destination": "/herbs/atlas/index.html"
+    },
+    {
+      "source": "/herbs/atlas/:path*",
+      "destination": "/herbs/atlas/:path*/index.html"
+    },
+    {
+      "source": "/herbs/regions",
+      "destination": "/herbs/regions/index.html"
+    },
+    {
+      "source": "/herbs/regions/:path*",
+      "destination": "/herbs/regions/:path*/index.html"
+    },
+    {
+      "source": "/herbs/fieldcraft",
+      "destination": "/herbs/fieldcraft/index.html"
+    },
+    {
       "source": "/:path*",
       "destination": "/index.html"
     }

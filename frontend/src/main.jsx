@@ -4,6 +4,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import './index.css'
 import App from './App.jsx'
 import GuideApp from './GuideApp.jsx'
+import HerbAtlasApp from './HerbAtlasApp.jsx'
+import { isHerbGuidePath } from './data/herbGuide'
 import LazyHerbalApp from './components/LazyHerbalApp.jsx'
 import AnalyticsConsent from './components/AnalyticsConsent'
 import { initGoogleTag } from './lib/googleTag'
@@ -24,16 +26,17 @@ const queryClient = new QueryClient({
 
 const root = document.getElementById('root')
 const pathname = window.location.pathname
+const isHerbalGuidePath = isHerbGuidePath(pathname)
 const isHerbalPath = pathname === '/herbs' || pathname.startsWith('/herbs/')
 const isGuidePath = pathname === '/learn' || pathname.startsWith('/learn/') || pathname === '/regions' || pathname.startsWith('/regions/') || pathname === '/about' || pathname === '/privacy' || pathname === '/disclaimer'
 const content = (
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      {isHerbalPath ? <LazyHerbalApp /> : isGuidePath ? <GuideApp path={pathname} /> : <App />}
+      {isHerbalGuidePath ? <HerbAtlasApp path={pathname} /> : isHerbalPath ? <LazyHerbalApp /> : isGuidePath ? <GuideApp path={pathname} /> : <App />}
       <AnalyticsConsent collection={isHerbalPath ? 'herbs' : 'fungi'} />
     </QueryClientProvider>
   </StrictMode>
 )
 
-if (isGuidePath && root.hasChildNodes()) hydrateRoot(root, content)
+if ((isGuidePath || isHerbalGuidePath) && root.hasChildNodes()) hydrateRoot(root, content)
 else createRoot(root).render(content)

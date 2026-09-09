@@ -1,0 +1,3424 @@
+[
+  {
+    "slug": "stinging-nettle",
+    "name": "Stinging nettle",
+    "latin": "Urtica dioica",
+    "family": "Urticaceae",
+    "aliases": [
+      "Common nettle"
+    ],
+    "regions": [
+      "north-america",
+      "europe",
+      "asia",
+      "africa"
+    ],
+    "habitats": [
+      "wet-ground",
+      "woodland",
+      "disturbed"
+    ],
+    "uses": [
+      "food",
+      "tea",
+      "craft"
+    ],
+    "parts": [
+      "Young shoots",
+      "Leaf"
+    ],
+    "summary": "A colony-forming perennial of rich, damp ground; its young shoots have a documented cooked-food use.",
+    "marks": [
+      "Opposite, sharply toothed leaves with pointed tips.",
+      "Stinging hairs on leaves and stems; observe without touching.",
+      "Small greenish flowers in clusters at leaf joints."
+    ],
+    "range": "Widespread in temperate areas; the nettle complex includes native and introduced populations. Confirm the local taxon.",
+    "season": "Study fresh spring growth and later regrowth; the stage of the shoot matters more than the month.",
+    "stages": [
+      "fresh-growth"
+    ],
+    "preparation": "Handle with gloves and tongs. Cook identified young shoots; cooking removes the sting.",
+    "caution": "A sting is not an identification test. Do not eat raw stinging foliage.",
+    "lookalikes": [
+      {
+        "name": "Other nettles",
+        "slug": null,
+        "note": "Related nettles differ in leaf arrangement and range. Use a local botanical key."
+      }
+    ],
+    "stewardship": "Leave flowering stems and most of the patch for insects. Clip scattered shoots without uprooting.",
+    "status": "culinary",
+    "sources": [
+      {
+        "title": "NC State Extension · Urtica dioica",
+        "url": "https://plants.ces.ncsu.edu/plants/urtica-dioica/",
+        "supports": "Botanical description, range and documented use"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/stinging-nettle-1.webp",
+        "credit": "Robert Vicol",
+        "license": "CC BY 2.0",
+        "licenseUrl": "http://creativecommons.org/licenses/by/2.0/legalcode",
+        "caption": "New leaves.",
+        "source": "https://plants.ces.ncsu.edu/plants/urtica-dioica/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Urtica-dioica--Emilian-Robert-Vicol--CC-BY.jpg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      },
+      {
+        "url": "/images/herbs/atlas/stinging-nettle-2.webp",
+        "credit": "Andrey Zharkikh",
+        "license": "CC BY 2.0",
+        "licenseUrl": "http://creativecommons.org/licenses/by/2.0/legalcode",
+        "caption": "Leaf blade",
+        "source": "https://plants.ces.ncsu.edu/plants/urtica-dioica/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Urtica-dioica--Andrey-Zharkikh--CC-BY.jpg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "dandelion",
+    "name": "Dandelion",
+    "latin": "Taraxacum officinale",
+    "family": "Asteraceae",
+    "aliases": [
+      "Lion’s tooth",
+      "Common dandelion"
+    ],
+    "regions": [
+      "europe",
+      "asia",
+      "north-america"
+    ],
+    "habitats": [
+      "meadow",
+      "disturbed"
+    ],
+    "uses": [
+      "food",
+      "tea"
+    ],
+    "parts": [
+      "Leaf",
+      "Flower",
+      "Root"
+    ],
+    "summary": "A familiar rosette plant with food uses for its leaves, flowers and roasted roots.",
+    "marks": [
+      "Toothed leaves form a basal rosette.",
+      "Each leafless, hollow, unbranched stalk carries one yellow flower head.",
+      "Milky sap and a round seed head; neither feature alone proves identity."
+    ],
+    "range": "Eurasian origin; widespread introductions. Taraxacum contains difficult species groups.",
+    "season": "Young leaves during fresh growth; flowers at full opening. Root gathering destroys the plant.",
+    "stages": [
+      "fresh-growth",
+      "flowering"
+    ],
+    "preparation": "Use confirmed leaves and flowers in food; roots have a roasted beverage use.",
+    "caution": "Sap may irritate skin. Food use does not establish the safety or effectiveness of concentrated products.",
+    "lookalikes": [
+      {
+        "name": "Other yellow daisies",
+        "slug": null,
+        "note": "Check the entire rosette and unbranched flower stalk; yellow flowers alone are insufficient."
+      }
+    ],
+    "stewardship": "Choose unsprayed ground and leave flowering plants for pollinators.",
+    "status": "culinary",
+    "sources": [
+      {
+        "title": "NC State Extension · Taraxacum officinale",
+        "url": "https://plants.ces.ncsu.edu/plants/taraxacum-officinale/",
+        "supports": "Botanical description, range and documented use"
+      },
+      {
+        "title": "NCCIH · Dandelion",
+        "url": "https://www.nccih.nih.gov/health/dandelion",
+        "supports": "Safety and limits of health evidence"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/dandelion-1.webp",
+        "credit": "Cathy Dewitt",
+        "license": "CC BY 4.0",
+        "licenseUrl": "http://creativecommons.org/licenses/by/4.0/legalcode",
+        "caption": "Flower",
+        "source": "https://plants.ces.ncsu.edu/plants/taraxacum-officinale/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Taraxacum-officinate_fBiVYEzHg4XN.jpeg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      },
+      {
+        "url": "/images/herbs/atlas/dandelion-2.webp",
+        "credit": "Forest and- Kim Starr",
+        "license": "CC BY 2.0",
+        "licenseUrl": "http://creativecommons.org/licenses/by/2.0/legalcode",
+        "caption": "Rosette of leaves and a single flower.",
+        "source": "https://plants.ces.ncsu.edu/plants/taraxacum-officinale/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Taraxacum-officinale--Forest-and-Kim-Starr--CC-BY.jpg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "common-yarrow",
+    "name": "Common yarrow",
+    "latin": "Achillea millefolium",
+    "family": "Asteraceae",
+    "aliases": [
+      "Milfoil",
+      "Yarrow"
+    ],
+    "regions": [
+      "north-america",
+      "europe",
+      "asia"
+    ],
+    "habitats": [
+      "meadow",
+      "disturbed"
+    ],
+    "uses": [
+      "study",
+      "craft"
+    ],
+    "parts": [
+      "Flowering top"
+    ],
+    "summary": "A meadow perennial with finely divided foliage and clusters of miniature daisy heads.",
+    "marks": [
+      "Featherlike, deeply divided leaves; upper leaves alternate.",
+      "Flat clusters consist of tiny daisy heads, with ray and disc florets.",
+      "Upright flowering stems arise above the leafy base."
+    ],
+    "range": "Temperate Europe, Asia and North America; cultivated forms and related taxa vary.",
+    "season": "Observe a flowering plant in the local warm season before studying vegetative specimens.",
+    "stages": [
+      "flowering"
+    ],
+    "preparation": "Included for identification, flowers and documented traditional use; no medicinal preparation is supplied.",
+    "caution": "Can cause contact dermatitis. Do not identify by a flat white flower cluster alone.",
+    "lookalikes": [
+      {
+        "name": "Poison hemlock",
+        "slug": "poison-hemlock",
+        "note": "Hemlock has true umbels of individual flowers. Confirm flower structure and foliage together."
+      }
+    ],
+    "stewardship": "Leave most flower heads for pollinators and seed.",
+    "status": "study",
+    "sources": [
+      {
+        "title": "NC State Extension · Achillea millefolium",
+        "url": "https://plants.ces.ncsu.edu/plants/achillea-millefolium/",
+        "supports": "Botanical description, range and documented use"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/common-yarrow-1.webp",
+        "credit": "Petar Milošević",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "http://creativecommons.org/licenses/by-sa/4.0/legalcode",
+        "caption": "Flowers of the species",
+        "source": "https://plants.ces.ncsu.edu/plants/achillea-millefolium/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Achillea_millefolium_QzI2WwAjd95s.jpeg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      },
+      {
+        "url": "/images/herbs/atlas/common-yarrow-2.webp",
+        "credit": "Randi Hausken",
+        "license": "CC-BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0/",
+        "caption": "Flowers",
+        "source": "https://plants.ces.ncsu.edu/plants/achillea-millefolium/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Achillea-millefolium--Randi-Hausken--CC-BY-SA-2.jpg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "elderflower",
+    "name": "Black elder",
+    "latin": "Sambucus nigra",
+    "family": "Viburnaceae",
+    "aliases": [
+      "European elder",
+      "Elderflower",
+      "Elderberry"
+    ],
+    "regions": [
+      "europe"
+    ],
+    "habitats": [
+      "woodland",
+      "hedgerow",
+      "wet-ground"
+    ],
+    "uses": [
+      "food",
+      "tea"
+    ],
+    "parts": [
+      "Flower",
+      "Ripe berry"
+    ],
+    "summary": "A woody elder whose flowers and properly prepared ripe berries have culinary uses.",
+    "marks": [
+      "Opposite compound leaves with toothed leaflets.",
+      "Broad cream flower clusters on woody branches.",
+      "Ripe fruit is blue-black; fruit color alone cannot identify an elder."
+    ],
+    "range": "Native to Europe in the cited profile. Other regions have different Sambucus species.",
+    "season": "Flowers when fully open; berries only after full ripening later in the growing season.",
+    "stages": [
+      "flowering",
+      "fruiting"
+    ],
+    "preparation": "Flowers are used in cordials. Separate and cook ripe berries using a tested recipe.",
+    "caution": "Raw or unripe berries and leaves or stems contain cyanide-producing substances. Do not use them.",
+    "lookalikes": [
+      {
+        "name": "Other elders",
+        "slug": null,
+        "note": "Verify the species; common names and dark berries do not make elders interchangeable."
+      },
+      {
+        "name": "Poison hemlock",
+        "slug": "poison-hemlock",
+        "note": "Check for a woody shrub and opposite compound leaves, not just white flowers."
+      }
+    ],
+    "stewardship": "Leave abundant flowers and fruit for birds and regeneration.",
+    "status": "culinary",
+    "sources": [
+      {
+        "title": "NC State Extension · Sambucus nigra",
+        "url": "https://plants.ces.ncsu.edu/plants/sambucus-nigra/",
+        "supports": "Botanical description, range and documented use"
+      },
+      {
+        "title": "NCCIH · Elderberry",
+        "url": "https://www.nccih.nih.gov/health/elderberry",
+        "supports": "Raw plant toxicity and preparation cautions"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/elderflower-1.webp",
+        "credit": "H. Zell",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/deed.en",
+        "caption": "leaves and flowers",
+        "source": "https://plants.ces.ncsu.edu/plants/sambucus-nigra/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Sambucus_nigra_by_H._Iqz1wr8g5DVv.jpeg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      },
+      {
+        "url": "/images/herbs/atlas/elderflower-2.webp",
+        "credit": "Walter Siegmund",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "http://creativecommons.org/licenses/by-sa/4.0/legalcode",
+        "caption": "leaves and flowers",
+        "source": "https://plants.ces.ncsu.edu/plants/sambucus-nigra/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Sambucus_nigra_by_Wa_YlZ0hMicgS4q.jpeg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "wild-mint",
+    "name": "American wild mint",
+    "latin": "Mentha canadensis",
+    "family": "Lamiaceae",
+    "aliases": [
+      "Wild mint",
+      "Field mint"
+    ],
+    "regions": [
+      "north-america",
+      "asia"
+    ],
+    "habitats": [
+      "wet-ground",
+      "meadow"
+    ],
+    "uses": [
+      "study",
+      "tea"
+    ],
+    "parts": [
+      "Leaf"
+    ],
+    "summary": "An aromatic wet-ground mint that needs species-level checking before any kitchen use.",
+    "marks": [
+      "Opposite, toothed leaves on square stems.",
+      "Separated flower whorls at leaf joints, mostly subtended by normal leaves.",
+      "Mint scent supports a botanical key; it cannot replace one."
+    ],
+    "range": "North American populations are described by Go Botany; related Asian and European mint names need local verification.",
+    "season": "Study flowering shoots during active growth. Avoid deciding among mints from young leaves alone.",
+    "stages": [
+      "flowering"
+    ],
+    "preparation": "Confirm the local species with an experienced botanist before using a wild mint as a tea or flavoring.",
+    "caution": "Pennyroyal is also a mint and is harmful if eaten. Hybrids complicate identification.",
+    "lookalikes": [
+      {
+        "name": "Pennyroyal",
+        "slug": "pennyroyal",
+        "note": "Aromatic foliage and flower whorls occur in both. Use a full regional key."
+      },
+      {
+        "name": "Spearmint",
+        "slug": null,
+        "note": "Spearmint has more crowded terminal flower spikes with reduced bracts."
+      }
+    ],
+    "stewardship": "Protect soft stream banks; grow a correctly named culinary mint when identification is uncertain.",
+    "status": "study",
+    "sources": [
+      {
+        "title": "Native Plant Trust · American wild mint",
+        "url": "https://gobotany.nativeplanttrust.org/species/mentha/canadensis/",
+        "supports": "Botanical description, range and documented use"
+      },
+      {
+        "title": "RHS · Growing mint",
+        "url": "https://www.rhs.org.uk/herbs/mint/grow-your-own",
+        "supports": "Species choice and pennyroyal warning"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/wild-mint-1.webp",
+        "credit": "elik03",
+        "license": "CC BY",
+        "licenseUrl": "https://www.inaturalist.org/photos/423151349",
+        "caption": "Reference specimen (Mentha canadensis)",
+        "source": "https://www.inaturalist.org/observations/237769693",
+        "photoPage": "https://www.inaturalist.org/photos/423151349",
+        "taxonId": 77991,
+        "licenseCode": "cc-by",
+        "originalUrl": "https://inaturalist-open-data.s3.amazonaws.com/photos/423151349/large.jpeg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "red-clover",
+    "name": "Red clover",
+    "latin": "Trifolium pratense",
+    "family": "Fabaceae",
+    "aliases": [
+      "Meadow clover"
+    ],
+    "regions": [
+      "europe",
+      "asia",
+      "north-america"
+    ],
+    "habitats": [
+      "meadow",
+      "disturbed"
+    ],
+    "uses": [
+      "study",
+      "tea"
+    ],
+    "parts": [
+      "Flower head"
+    ],
+    "summary": "A common forage legume with pink flower heads; herbal products have separate safety questions.",
+    "marks": [
+      "Three leaflets, often bearing pale chevrons.",
+      "Rounded heads of many narrow pink to purple flowers.",
+      "Hairy stems and leaf stalks; leaflets commonly sit just below the flower head."
+    ],
+    "range": "Eurasian origin; extensively cultivated and introduced in temperate regions.",
+    "season": "Study newly opened heads in an unsprayed meadow during the local flowering season.",
+    "stages": [
+      "flowering"
+    ],
+    "preparation": "A documented food and herbal-use plant; this guide does not provide extracts or treatment recipes.",
+    "caution": "Check with a clinician before herbal use, especially during pregnancy, breastfeeding or when taking medicines.",
+    "lookalikes": [
+      {
+        "name": "Other clovers",
+        "slug": null,
+        "note": "Leaflets and flower-head color vary between species; never use a leaf chevron as a sole test."
+      }
+    ],
+    "stewardship": "Leave most heads for pollinators. Avoid agricultural spraying and livestock contamination.",
+    "status": "study",
+    "sources": [
+      {
+        "title": "NC State Extension · Trifolium pratense",
+        "url": "https://plants.ces.ncsu.edu/plants/trifolium-pratense/",
+        "supports": "Botanical description, range and documented use"
+      },
+      {
+        "title": "NCCIH · Red clover",
+        "url": "https://www.nccih.nih.gov/health/red-clover",
+        "supports": "Clinical evidence and safety"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/red-clover-1.webp",
+        "credit": "Sanja565658",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/deed.en",
+        "caption": "Mature plants in bloom",
+        "source": "https://plants.ces.ncsu.edu/plants/trifolium-pratense/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Trifolium_pratense-f_vr7wKxXIYhxO.jpe",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      },
+      {
+        "url": "/images/herbs/atlas/red-clover-2.webp",
+        "credit": "Ivar Leidus",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "http://creativecommons.org/licenses/by-sa/4.0/legalcode",
+        "caption": "Flower",
+        "source": "https://plants.ces.ncsu.edu/plants/trifolium-pratense/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Trifolium_pratense-f_PUQhG9uidQqS.jpe",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "greater-plantain",
+    "name": "Greater plantain",
+    "latin": "Plantago major",
+    "family": "Plantaginaceae",
+    "aliases": [
+      "Broadleaf plantain"
+    ],
+    "regions": [
+      "europe",
+      "asia",
+      "north-america"
+    ],
+    "habitats": [
+      "disturbed",
+      "meadow"
+    ],
+    "uses": [
+      "food"
+    ],
+    "parts": [
+      "Young leaf"
+    ],
+    "summary": "A broad-leaved rosette plant of compacted ground, with documented use of young leaves as cooked greens.",
+    "marks": [
+      "Broad leaves arise from a basal rosette.",
+      "Several strong ribs run from the leaf base toward the tip.",
+      "Leafless stalks carry narrow spikes of inconspicuous flowers and seeds."
+    ],
+    "range": "Eurasian origin; introduced widely, including eastern North America.",
+    "season": "Look for young, intact leaves during fresh growth; flowering spikes help confirm the plant.",
+    "stages": [
+      "fresh-growth"
+    ],
+    "preparation": "Confirmed young leaves can be cooked as greens.",
+    "caution": "Road margins, sprayed paths and pet-used lawns are poor gathering sites.",
+    "lookalikes": [
+      {
+        "name": "Other Plantago",
+        "slug": null,
+        "note": "Ribwort plantain has much narrower leaves. Confirm species rather than relying on the word plantain."
+      }
+    ],
+    "stewardship": "Take individual leaves and leave the central growing point intact.",
+    "status": "culinary",
+    "sources": [
+      {
+        "title": "NC State Extension · Plantago major",
+        "url": "https://plants.ces.ncsu.edu/plants/plantago-major/",
+        "supports": "Botanical description, range and documented use"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/greater-plantain-1.webp",
+        "credit": "Emilian Robert Vicol",
+        "license": "CC BY 2.0",
+        "licenseUrl": "http://creativecommons.org/licenses/by/2.0/legalcode",
+        "caption": "Leaf",
+        "source": "https://plants.ces.ncsu.edu/plants/plantago-major/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/plantago_major_leaf_Emilian_Robert_Vicol_ccby20.jpg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      },
+      {
+        "url": "/images/herbs/atlas/greater-plantain-2.webp",
+        "credit": "Prilfish",
+        "license": "CC BY 2.0",
+        "licenseUrl": "http://creativecommons.org/licenses/by/2.0/legalcode",
+        "caption": "Flower",
+        "source": "https://plants.ces.ncsu.edu/plants/plantago-major/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/plantago_major_flower_prilfish_ccby20.jpg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "mugwort",
+    "name": "Mugwort",
+    "latin": "Artemisia vulgaris",
+    "family": "Asteraceae",
+    "aliases": [
+      "Common mugwort"
+    ],
+    "regions": [
+      "europe",
+      "asia",
+      "africa",
+      "north-america"
+    ],
+    "habitats": [
+      "disturbed",
+      "hedgerow"
+    ],
+    "uses": [
+      "study",
+      "craft"
+    ],
+    "parts": [
+      "Leafy top"
+    ],
+    "summary": "An aromatic perennial included for botanical study and the history of herbal practice.",
+    "marks": [
+      "Alternate, deeply lobed leaves.",
+      "Leaf undersides are conspicuously pale and hairy.",
+      "Small rayless flower heads on branching upper stems."
+    ],
+    "range": "Temperate Eurasia, North Africa and Alaska; introduced elsewhere. Other Artemisia species differ.",
+    "season": "Observe leaves and mature flower heads through the local growing season.",
+    "stages": [
+      "flowering"
+    ],
+    "preparation": "No ingestion, burning or medicinal preparation is recommended here.",
+    "caution": "NCCIH advises against use during pregnancy. Evidence for claimed health effects is limited.",
+    "lookalikes": [
+      {
+        "name": "Other Artemisia",
+        "slug": null,
+        "note": "Similar aromatic species vary chemically. Silvery foliage is not enough for identification."
+      }
+    ],
+    "stewardship": "Learn whether it is invasive locally; follow land-manager guidance before removing plants.",
+    "status": "study",
+    "sources": [
+      {
+        "title": "NC State Extension · Artemisia vulgaris",
+        "url": "https://plants.ces.ncsu.edu/plants/artemisia-vulgaris/",
+        "supports": "Botanical description, range and documented use"
+      },
+      {
+        "title": "NCCIH · Mugwort",
+        "url": "https://www.nccih.nih.gov/health/mugwort",
+        "supports": "Pregnancy warning and evidence limits"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/mugwort-1.webp",
+        "credit": "Radio Tonreg",
+        "license": "CC BY 2.0",
+        "licenseUrl": "http://creativecommons.org/licenses/by/2.0/legalcode",
+        "caption": "Flowers",
+        "source": "https://plants.ces.ncsu.edu/plants/artemisia-vulgaris/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Artemisia_vulgaris___kJPw2URyV0Fq.jpg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      },
+      {
+        "url": "/images/herbs/atlas/mugwort-2.webp",
+        "credit": "Joan Simon",
+        "license": "CC-BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0/",
+        "caption": "Flowers",
+        "source": "https://plants.ces.ncsu.edu/plants/artemisia-vulgaris/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Artemisia_vulgaris_f_CS05uK0yZSwz.jfif",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "dog-rose",
+    "name": "Dog rose",
+    "latin": "Rosa canina",
+    "family": "Rosaceae",
+    "aliases": [
+      "Dog berry",
+      "Witches’ briar"
+    ],
+    "regions": [
+      "europe"
+    ],
+    "habitats": [
+      "hedgerow",
+      "woodland",
+      "meadow"
+    ],
+    "uses": [
+      "food",
+      "tea"
+    ],
+    "parts": [
+      "Petal",
+      "Hip"
+    ],
+    "summary": "A scrambling rose with hooked prickles and red hips that persist into the cooler season.",
+    "marks": [
+      "Arching branches with strongly hooked prickles.",
+      "Alternate compound leaves with toothed leaflets.",
+      "Five-petaled pink or white flowers followed by oval red hips."
+    ],
+    "range": "The cited field account covers Britain; use a regional flora for roses elsewhere.",
+    "season": "Flowers in the local late spring or summer; hips only when fully ripe.",
+    "stages": [
+      "flowering",
+      "fruiting"
+    ],
+    "preparation": "Hips have a syrup use. Remove or carefully strain out the irritating internal hairs.",
+    "caution": "Wild roses are difficult to separate. Avoid ornamental shrubs with an unknown spray history.",
+    "lookalikes": [
+      {
+        "name": "Other wild roses",
+        "slug": null,
+        "note": "Downy roses and escaped garden species can resemble dog rose; check prickles, leaf hairs and hips."
+      }
+    ],
+    "stewardship": "Leave plentiful hips for birds. Take only a small share from an abundant stand.",
+    "status": "culinary",
+    "sources": [
+      {
+        "title": "Woodland Trust · Dog rose",
+        "url": "https://www.woodlandtrust.org.uk/trees-woods-and-wildlife/plants/wild-flowers/dog-rose/",
+        "supports": "Botanical description, range and documented use"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/dog-rose-1.webp",
+        "credit": "Patrick Hacker",
+        "license": "CC BY",
+        "licenseUrl": "https://www.inaturalist.org/photos/76900043",
+        "caption": "Reference specimen (Rosa canina)",
+        "source": "https://www.inaturalist.org/observations/48467812",
+        "photoPage": "https://www.inaturalist.org/photos/76900043",
+        "taxonId": 55884,
+        "licenseCode": "cc-by",
+        "originalUrl": "https://inaturalist-open-data.s3.amazonaws.com/photos/76900043/large.jpeg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "lemon-balm",
+    "name": "Lemon balm",
+    "latin": "Melissa officinalis",
+    "family": "Lamiaceae",
+    "aliases": [
+      "Balm"
+    ],
+    "regions": [
+      "europe",
+      "north-america"
+    ],
+    "habitats": [
+      "garden",
+      "disturbed"
+    ],
+    "uses": [
+      "food",
+      "tea"
+    ],
+    "parts": [
+      "Leaf"
+    ],
+    "summary": "A cultivated and escaped mint-family herb with wrinkled leaves and a lemon fragrance.",
+    "marks": [
+      "Opposite, oval, softly wrinkled leaves with rounded teeth.",
+      "Square stems that become firmer with age.",
+      "Small white two-lipped flowers at upper leaf joints."
+    ],
+    "range": "Southern European origin; garden escapes occur beyond its native area.",
+    "season": "Tender leafy growth before or near the start of flowering.",
+    "stages": [
+      "fresh-growth"
+    ],
+    "preparation": "Leaves and flowers have a culinary flavoring and tea use. Dry tender leaves promptly with good airflow.",
+    "caution": "Scent alone does not identify a plant. Confirm leaf arrangement and flowers as well.",
+    "lookalikes": [
+      {
+        "name": "Other aromatic mints",
+        "slug": null,
+        "note": "Use a botanical key; lemon scent appears in unrelated plants too."
+      }
+    ],
+    "stewardship": "Prefer a known garden plant. Ask permission and leave enough leafy growth for recovery.",
+    "status": "culinary",
+    "sources": [
+      {
+        "title": "NC State Extension · Melissa officinalis",
+        "url": "https://plants.ces.ncsu.edu/plants/melissa-officinalis/",
+        "supports": "Botanical description, range and documented use"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/lemon-balm-1.webp",
+        "credit": "Forest and Kim Starr",
+        "license": "CC BY 2.0",
+        "licenseUrl": "http://creativecommons.org/licenses/by/2.0/legalcode",
+        "caption": "Melissa officinalis",
+        "source": "https://plants.ces.ncsu.edu/plants/melissa-officinalis/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Melissa-officinalis--Forest-and-Kim-Starr-1--CC-BY.jpg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      },
+      {
+        "url": "/images/herbs/atlas/lemon-balm-2.webp",
+        "credit": "Forest and Kim Starr",
+        "license": "CC BY 2.0",
+        "licenseUrl": "http://creativecommons.org/licenses/by/2.0/legalcode",
+        "caption": "Melissa officinalis",
+        "source": "https://plants.ces.ncsu.edu/plants/melissa-officinalis/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Melissa-officinalis--Forest-and-Kim-Starr--CC-BY.jpg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "german-chamomile",
+    "name": "German chamomile",
+    "latin": "Matricaria chamomilla",
+    "family": "Asteraceae",
+    "aliases": [
+      "Matricaria recutita",
+      "Chamomilla recutita",
+      "Chamomile"
+    ],
+    "regions": [
+      "europe",
+      "asia"
+    ],
+    "habitats": [
+      "garden",
+      "disturbed"
+    ],
+    "uses": [
+      "tea"
+    ],
+    "parts": [
+      "Flower head"
+    ],
+    "summary": "An annual daisy used for flower tea, distinct from Roman chamomile and other similar daisies.",
+    "marks": [
+      "Finely divided, threadlike leaf segments.",
+      "White rays surround a raised yellow central disc.",
+      "Confirm the hollow receptacle with a regional key."
+    ],
+    "range": "Temperate Eurasia to Indochina; widely cultivated beyond this range.",
+    "season": "Fully open flower heads in dry conditions during the local flowering season.",
+    "stages": [
+      "flowering"
+    ],
+    "preparation": "Use correctly identified flowers for ordinary food or tea preparations.",
+    "caution": "Allergic reactions can be severe, especially with daisy-family allergies. Medicine interactions are possible.",
+    "lookalikes": [
+      {
+        "name": "Other chamomiles and mayweeds",
+        "slug": null,
+        "note": "Similar white daisies require checking leaf, scent and receptacle characters together."
+      }
+    ],
+    "stewardship": "Grow a named culinary plant and leave some flower heads for seed.",
+    "status": "culinary",
+    "sources": [
+      {
+        "title": "NC State Extension · Matricaria chamomilla",
+        "url": "https://plants.ces.ncsu.edu/plants/matricaria-chamomilla/",
+        "supports": "Botanical description, range and documented use"
+      },
+      {
+        "title": "NCCIH · Chamomile",
+        "url": "https://www.nccih.nih.gov/health/chamomile",
+        "supports": "Allergy, interactions and evidence limits"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/german-chamomile-1.webp",
+        "credit": "Eran Finkle",
+        "license": "CC BY 2.0",
+        "licenseUrl": "http://creativecommons.org/licenses/by/2.0/legalcode",
+        "caption": "Matricaria recutita",
+        "source": "https://plants.ces.ncsu.edu/plants/matricaria-chamomilla/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Matricaria-recutita--Eran-Finkle--CC-BY.jpg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      },
+      {
+        "url": "/images/herbs/atlas/german-chamomile-2.webp",
+        "credit": "Eran Finkle",
+        "license": "CC BY 2.0",
+        "licenseUrl": "http://creativecommons.org/licenses/by/2.0/legalcode",
+        "caption": "Matricaria recutita",
+        "source": "https://plants.ces.ncsu.edu/plants/matricaria-chamomilla/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Matricaria-recutita--Eran-Finkle-1--CC-BY.jpg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "calendula",
+    "name": "Calendula",
+    "latin": "Calendula officinalis",
+    "family": "Asteraceae",
+    "aliases": [
+      "Pot marigold"
+    ],
+    "regions": [
+      "europe"
+    ],
+    "habitats": [
+      "garden",
+      "disturbed"
+    ],
+    "uses": [
+      "food",
+      "craft"
+    ],
+    "parts": [
+      "Petal"
+    ],
+    "summary": "A garden annual valued for orange or yellow flower heads and culinary petals.",
+    "marks": [
+      "Oblong to lance-shaped, aromatic leaves.",
+      "Large yellow or orange daisy heads, sometimes with many petal layers.",
+      "Branching leafy stems; check seed and foliage as well as flower color."
+    ],
+    "range": "Mediterranean origin in the cited account; mostly encountered in cultivation.",
+    "season": "Newly opened, healthy flower heads during the local growing season.",
+    "stages": [
+      "flowering"
+    ],
+    "preparation": "Identified petals add color to food. Use plants raised for culinary use.",
+    "caution": "The common name marigold also refers to Tagetes. Ornamental nursery plants may have unsuitable pesticide treatments.",
+    "lookalikes": [
+      {
+        "name": "Tagetes marigolds",
+        "slug": null,
+        "note": "A shared common name does not make different genera interchangeable."
+      }
+    ],
+    "stewardship": "Take from your own or a permitted garden; leave flowers for insects and seed.",
+    "status": "culinary",
+    "sources": [
+      {
+        "title": "NC State Extension · Calendula officinalis",
+        "url": "https://plants.ces.ncsu.edu/plants/calendula-officinalis/",
+        "supports": "Botanical description, range and documented use"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/calendula-1.webp",
+        "credit": "Roberto Verozo",
+        "license": "CC BY 2.0",
+        "licenseUrl": "http://creativecommons.org/licenses/by/2.0/legalcode",
+        "caption": "",
+        "source": "https://plants.ces.ncsu.edu/plants/calendula-officinalis/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Calendula-officinalis--Roberto-Verzo--CC-BY.jpg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      },
+      {
+        "url": "/images/herbs/atlas/calendula-2.webp",
+        "credit": "Hope Duckworth",
+        "license": "CC BY 4.0",
+        "licenseUrl": "http://creativecommons.org/licenses/by/4.0/legalcode",
+        "caption": "Young Flower (Cabarrus County,NC)",
+        "source": "https://plants.ces.ncsu.edu/plants/calendula-officinalis/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/calendula_officinali_EPN9mkZtsefa.jpg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "wild-garlic",
+    "name": "Wild garlic",
+    "latin": "Allium ursinum",
+    "family": "Amaryllidaceae",
+    "aliases": [
+      "Ramsons",
+      "Bear’s garlic"
+    ],
+    "regions": [
+      "europe"
+    ],
+    "habitats": [
+      "woodland",
+      "wet-ground"
+    ],
+    "uses": [
+      "food"
+    ],
+    "parts": [
+      "Leaf"
+    ],
+    "summary": "A spring woodland allium whose leaves are repeatedly confused with dangerous plants.",
+    "marks": [
+      "Broad, lance-shaped leaves on individual stalks.",
+      "White star-shaped flowers in a cluster when flowering.",
+      "Garlic aroma is a supporting feature, never a sufficient test."
+    ],
+    "range": "Shady, nutrient-rich European deciduous and mixed woodland; verify local occurrence.",
+    "season": "Fresh leaves in local spring. Learn the whole plant in flower before attempting leaf gathering.",
+    "stages": [
+      "fresh-growth"
+    ],
+    "preparation": "Only use leaves after expert-confirmed identification, checking every leaf separately.",
+    "caution": "Lily of the valley and autumn crocus can grow among ramsons. Garlic scent transferred to hands can mislead.",
+    "lookalikes": [
+      {
+        "name": "Lily of the valley",
+        "slug": "lily-of-the-valley",
+        "note": "Its leaves wrap a shared basal stalk; flowers are hanging bells."
+      },
+      {
+        "name": "Autumn crocus",
+        "slug": "autumn-crocus",
+        "note": "Spring leaf clusters lack the autumn flowers. Mixed handfuls are dangerous."
+      }
+    ],
+    "stewardship": "Clip individual leaves from abundant, permitted patches; leave bulbs in the soil.",
+    "status": "caution",
+    "sources": [
+      {
+        "title": "BfR · Wild garlic confusion and poisoning",
+        "url": "https://www.bfr.bund.de/en/press-release/wild-garlic-confusion-often-leads-to-poisoning/",
+        "supports": "Botanical description, range and documented use"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/wild-garlic-1.webp",
+        "credit": "Ulrika",
+        "license": "CC BY",
+        "licenseUrl": "https://www.inaturalist.org/photos/10674",
+        "caption": "Reference specimen (Allium ursinum)",
+        "source": "https://www.inaturalist.org/taxa/56152",
+        "photoPage": "https://www.inaturalist.org/photos/10674",
+        "taxonId": 56152,
+        "licenseCode": "cc-by",
+        "originalUrl": "https://inaturalist-open-data.s3.amazonaws.com/photos/10674/large.jpg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "purslane",
+    "name": "Common purslane",
+    "latin": "Portulaca oleracea",
+    "family": "Portulacaceae",
+    "aliases": [
+      "Verdolaga"
+    ],
+    "regions": [
+      "europe",
+      "asia",
+      "africa",
+      "north-america",
+      "south-america",
+      "oceania"
+    ],
+    "habitats": [
+      "disturbed",
+      "garden"
+    ],
+    "uses": [
+      "food"
+    ],
+    "parts": [
+      "Leaf",
+      "Stem"
+    ],
+    "summary": "A low, fleshy warm-season plant with culinary use across many regions.",
+    "marks": [
+      "Smooth, thick, succulent leaves clustered at joints.",
+      "Round, fleshy branching stems often tinged red.",
+      "Small yellow five-petaled flowers near shoot tips."
+    ],
+    "range": "Cosmopolitan, with extensive human-assisted distribution.",
+    "season": "Active succulent growth in warm conditions, often following rain or irrigation.",
+    "stages": [
+      "fresh-growth"
+    ],
+    "preparation": "Confirmed leaves and stems are used raw or cooked as vegetables.",
+    "caution": "Contains oxalates; avoid large intakes. Rule out spurges before any food use.",
+    "lookalikes": [
+      {
+        "name": "Spotted spurge",
+        "slug": "spotted-spurge",
+        "note": "Spurge has thin, often hairy stems and irritating milky sap; purslane is fleshy."
+      }
+    ],
+    "stewardship": "Gather from clean garden beds; leave surrounding vegetation and soil undisturbed.",
+    "status": "caution",
+    "sources": [
+      {
+        "title": "NC State Extension · Portulaca oleracea",
+        "url": "https://plants.ces.ncsu.edu/plants/portulaca-oleracea/",
+        "supports": "Botanical description, range and documented use"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/purslane-1.webp",
+        "credit": "Harry Rose",
+        "license": "CC BY 2.0",
+        "licenseUrl": "http://creativecommons.org/licenses/by/2.0/legalcode",
+        "caption": "Maroon stems",
+        "source": "https://plants.ces.ncsu.edu/plants/portulaca-oleracea/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Portulacaceae_oleracea_harry_rose_ccby20.jpg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      },
+      {
+        "url": "/images/herbs/atlas/purslane-2.webp",
+        "credit": "Andreas Rockstein",
+        "license": "CC-BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0/",
+        "caption": "Portulaca oleracea close up of stem",
+        "source": "https://plants.ces.ncsu.edu/plants/portulaca-oleracea/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/portulaca_oleracea_A_RzEDHrGG8Rvr.jfif",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "chickweed",
+    "name": "Common chickweed",
+    "latin": "Stellaria media",
+    "family": "Caryophyllaceae",
+    "aliases": [
+      "Chickweed"
+    ],
+    "regions": [
+      "europe",
+      "asia",
+      "africa",
+      "north-america"
+    ],
+    "habitats": [
+      "disturbed",
+      "garden"
+    ],
+    "uses": [
+      "food"
+    ],
+    "parts": [
+      "Leafy shoot"
+    ],
+    "summary": "A cool-season annual forming soft green patches with tiny, deeply divided white petals.",
+    "marks": [
+      "Opposite, oval leaves with smooth margins.",
+      "A line of hairs along the otherwise soft stem.",
+      "Five white petals split deeply enough to resemble ten."
+    ],
+    "range": "Eurasia and North Africa; introduced widely, including North America.",
+    "season": "Cool, moist growing conditions; learn flowering plants before gathering tender shoots.",
+    "stages": [
+      "fresh-growth"
+    ],
+    "preparation": "Correctly identified shoots have raw and lightly cooked food uses.",
+    "caution": "Avoid mixing several groundcover species. Flowerless fragments are especially easy to confuse.",
+    "lookalikes": [
+      {
+        "name": "Scarlet pimpernel",
+        "slug": null,
+        "note": "This harmful lookalike has unnotched, usually orange-red or blue petals; consult a local key."
+      }
+    ],
+    "stewardship": "Clip a few shoots rather than pulling mats from the soil.",
+    "status": "culinary",
+    "sources": [
+      {
+        "title": "NC State Extension · Stellaria media",
+        "url": "https://plants.ces.ncsu.edu/plants/stellaria-media/",
+        "supports": "Botanical description, range and documented use"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/chickweed-1.webp",
+        "credit": "Bill Starkey",
+        "license": "CC0",
+        "licenseUrl": "https://creativecommons.org/about/cc0/",
+        "caption": "In Turf",
+        "source": "https://plants.ces.ncsu.edu/plants/stellaria-media/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Stellaria_media-Bill_jp797nsVBu5z.jpeg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      },
+      {
+        "url": "/images/herbs/atlas/chickweed-2.webp",
+        "credit": "Kira Sims",
+        "license": "CC0",
+        "licenseUrl": "https://creativecommons.org/about/cc0/",
+        "caption": "Environment",
+        "source": "https://plants.ces.ncsu.edu/plants/stellaria-media/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Stellaria_media-envi_1SHXzVIjVMvU.jpg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "yellow-wood-sorrel",
+    "name": "Yellow wood sorrel",
+    "latin": "Oxalis stricta",
+    "family": "Oxalidaceae",
+    "aliases": [
+      "Common yellow woodsorrel"
+    ],
+    "regions": [
+      "north-america",
+      "europe",
+      "asia"
+    ],
+    "habitats": [
+      "woodland",
+      "disturbed"
+    ],
+    "uses": [
+      "food"
+    ],
+    "parts": [
+      "Leaf",
+      "Flower"
+    ],
+    "summary": "A small yellow-flowered herb with three heart-shaped leaflets and significant oxalic acid.",
+    "marks": [
+      "Three distinctly heart-shaped leaflets per leaf.",
+      "Small five-petaled yellow flowers.",
+      "Slender upright growth with elongated seed capsules."
+    ],
+    "range": "North America and Eurasia in the cited account.",
+    "season": "Identify flowering plants during active growth.",
+    "stages": [
+      "flowering"
+    ],
+    "preparation": "Documented as a tart food accent in small amounts, not as a bulk green.",
+    "caution": "Large amounts can be harmful because of oxalates. Sour taste is never an identification test.",
+    "lookalikes": [
+      {
+        "name": "Clovers",
+        "slug": null,
+        "note": "Clover leaflets and dense pea-flower heads differ; check flowers and fruit as well as leaves."
+      }
+    ],
+    "stewardship": "Leave flowers and capsules; avoid uprooting small plants.",
+    "status": "caution",
+    "sources": [
+      {
+        "title": "NC State Extension · Oxalis stricta",
+        "url": "https://plants.ces.ncsu.edu/plants/oxalis-stricta/",
+        "supports": "Botanical description, range and documented use"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/yellow-wood-sorrel-1.webp",
+        "credit": "Kira Sims",
+        "license": "CC0",
+        "licenseUrl": "https://creativecommons.org/about/cc0/",
+        "caption": "Flowers",
+        "source": "https://plants.ces.ncsu.edu/plants/oxalis-stricta/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Oxalis_stricta-flowe_UPSyBrLbsquX.jpg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      },
+      {
+        "url": "/images/herbs/atlas/yellow-wood-sorrel-2.webp",
+        "credit": "Kira Sims",
+        "license": "CC0",
+        "licenseUrl": "https://creativecommons.org/about/cc0/",
+        "caption": "Flowers",
+        "source": "https://plants.ces.ncsu.edu/plants/oxalis-stricta/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Oxalis_stricta-flowe_ukbPSyoIfO9L.jfif",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "sheep-sorrel",
+    "name": "Sheep sorrel",
+    "latin": "Rumex acetosella",
+    "family": "Polygonaceae",
+    "aliases": [
+      "Red sorrel"
+    ],
+    "regions": [
+      "europe",
+      "asia",
+      "north-america"
+    ],
+    "habitats": [
+      "meadow",
+      "disturbed"
+    ],
+    "uses": [
+      "food"
+    ],
+    "parts": [
+      "Leaf"
+    ],
+    "summary": "A small sorrel with arrow-shaped leaves, used sparingly for a tart flavor.",
+    "marks": [
+      "Basal leaves have two outward-pointing lobes near the base.",
+      "Slender ridged stalks carry tiny greenish or reddish flowers.",
+      "Leaves and flower stalks arise from a low perennial base."
+    ],
+    "range": "Eurasian origin; widespread introductions.",
+    "season": "Young leaves during fresh growth, after confirming the plant in flower.",
+    "stages": [
+      "fresh-growth"
+    ],
+    "preparation": "A small culinary flavoring; avoid treating it as an unrestricted salad green.",
+    "caution": "Contains substantial oxalic acid. Do not taste uncertain arrow-shaped leaves.",
+    "lookalikes": [
+      {
+        "name": "Arums",
+        "slug": null,
+        "note": "Poisonous arums can have arrow-shaped leaves; their fleshy flower spathes and leaf structure differ."
+      }
+    ],
+    "stewardship": "Take scattered leaves from abundant plants, leaving the crown intact.",
+    "status": "caution",
+    "sources": [
+      {
+        "title": "NC State Extension · Rumex acetosella",
+        "url": "https://plants.ces.ncsu.edu/plants/rumex-acetosella/",
+        "supports": "Botanical description, range and documented use"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/sheep-sorrel-1.webp",
+        "credit": "Forest and Kim Starr",
+        "license": "CC BY 2.0",
+        "licenseUrl": "http://creativecommons.org/licenses/by/2.0/legalcode",
+        "caption": "Whole plant",
+        "source": "https://plants.ces.ncsu.edu/plants/rumex-acetosella/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Rumex_acetosella_whole_forest_kim_starr_ccby20.jpg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      },
+      {
+        "url": "/images/herbs/atlas/sheep-sorrel-2.webp",
+        "credit": "Forest and Kim Starr",
+        "license": "CC BY 2.0",
+        "licenseUrl": "http://creativecommons.org/licenses/by/2.0/legalcode",
+        "caption": "Whole plant",
+        "source": "https://plants.ces.ncsu.edu/plants/rumex-acetosella/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Rumex_acetosella_sm_forest_kim_starr_ccby20.jpg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "garlic-mustard",
+    "name": "Garlic mustard",
+    "latin": "Alliaria petiolata",
+    "family": "Brassicaceae",
+    "aliases": [
+      "Jack-by-the-hedge"
+    ],
+    "regions": [
+      "europe",
+      "asia",
+      "africa",
+      "north-america"
+    ],
+    "habitats": [
+      "woodland",
+      "hedgerow",
+      "disturbed"
+    ],
+    "uses": [
+      "food"
+    ],
+    "parts": [
+      "Young leaf"
+    ],
+    "summary": "A biennial with garlic-scented foliage and white cross-shaped flowers; invasive in some regions.",
+    "marks": [
+      "First-year rounded leaves form a low rosette.",
+      "Second-year leaves become triangular and coarsely toothed.",
+      "Four white petals form a cross; narrow upright seed pods follow."
+    ],
+    "range": "Native to Europe, parts of Asia and Africa; introduced in North America.",
+    "season": "Young leaves before they become tough; flowering helps confirm identity.",
+    "stages": [
+      "fresh-growth"
+    ],
+    "preparation": "Documented culinary use of young leaves in sauces and salads.",
+    "caution": "A garlic smell alone cannot identify it. Do not spread mature seed during collection.",
+    "lookalikes": [
+      {
+        "name": "Other mustard rosettes",
+        "slug": null,
+        "note": "Confirm the four-petaled flowers and foliage before using young leaves."
+      }
+    ],
+    "stewardship": "Follow local invasive-plant disposal advice; keep mature seed out of compost and new sites.",
+    "status": "culinary",
+    "sources": [
+      {
+        "title": "NC State Extension · Alliaria petiolata",
+        "url": "https://plants.ces.ncsu.edu/plants/alliaria-petiolata/",
+        "supports": "Botanical description, range and documented use"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/garlic-mustard-1.webp",
+        "credit": "hspauldi",
+        "license": "CC-BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0/",
+        "caption": "Full plant view",
+        "source": "https://plants.ces.ncsu.edu/plants/alliaria-petiolata/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Alliaria_petiolata_hspauldi_cccbysa20.jpg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      },
+      {
+        "url": "/images/herbs/atlas/garlic-mustard-2.webp",
+        "credit": "NY State IPM Program",
+        "license": "CC BY 2.0",
+        "licenseUrl": "http://creativecommons.org/licenses/by/2.0/legalcode",
+        "caption": "Full plant",
+        "source": "https://plants.ces.ncsu.edu/plants/alliaria-petiolata/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Alliaria_petiolata_nyc_ipm_ccby20.jpg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "cleavers",
+    "name": "Cleavers",
+    "latin": "Galium aparine",
+    "family": "Rubiaceae",
+    "aliases": [
+      "Goosegrass",
+      "Sticky willy",
+      "Catchweed bedstraw"
+    ],
+    "regions": [
+      "north-america",
+      "europe",
+      "asia"
+    ],
+    "habitats": [
+      "hedgerow",
+      "woodland",
+      "disturbed"
+    ],
+    "uses": [
+      "study",
+      "craft"
+    ],
+    "parts": [
+      "Young shoot"
+    ],
+    "summary": "A scrambling annual whose hooked hairs attach to neighboring plants and clothing.",
+    "marks": [
+      "Narrow leaves in whorls of usually six to eight.",
+      "Weak four-sided stems with backward-pointing hooks.",
+      "Tiny white or greenish four-petaled flowers and bristly paired fruits."
+    ],
+    "range": "Widespread in North America, Europe and northern Asia; native status varies.",
+    "season": "Observe young shoots, flowers and hooked fruits through the local growing season.",
+    "stages": [
+      "flowering"
+    ],
+    "preparation": "Included for study; cooked shoots have documented use but rough hairs make raw gathering unsuitable.",
+    "caution": "Other bedstraws differ chemically. Do not infer edibility from a sticky stem.",
+    "lookalikes": [
+      {
+        "name": "Other Galium",
+        "slug": null,
+        "note": "Confirm leaf-whorl counts, hooked hairs, flowers and fruit with a local key."
+      }
+    ],
+    "stewardship": "Avoid pulling surrounding hedgerow plants when observing this scrambling species.",
+    "status": "study",
+    "sources": [
+      {
+        "title": "NC State Extension · Galium aparine",
+        "url": "https://plants.ces.ncsu.edu/plants/galium-aparine/",
+        "supports": "Botanical description, range and documented use"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/cleavers-1.webp",
+        "credit": "Marianne Perdomo",
+        "license": "CC-BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0/",
+        "caption": "Whorled leaves",
+        "source": "https://plants.ces.ncsu.edu/plants/galium-aparine/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Galium-aparine--Marianne-Perdomo--CC-BY-SA.jpg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      },
+      {
+        "url": "/images/herbs/atlas/cleavers-2.webp",
+        "credit": "Pietila4",
+        "license": "CC-BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0/",
+        "caption": "Form",
+        "source": "https://plants.ces.ncsu.edu/plants/galium-aparine/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Galium-aparine--pietila4--CC-BY-SA.jpg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "fennel",
+    "name": "Fennel",
+    "latin": "Foeniculum vulgare",
+    "family": "Apiaceae",
+    "aliases": [
+      "Wild fennel"
+    ],
+    "regions": [
+      "europe",
+      "africa",
+      "north-america",
+      "oceania"
+    ],
+    "habitats": [
+      "disturbed",
+      "coastal",
+      "garden"
+    ],
+    "uses": [
+      "food"
+    ],
+    "parts": [
+      "Leaf",
+      "Seed"
+    ],
+    "summary": "An aromatic Mediterranean herb with fine foliage and yellow umbels; wild identification needs particular care.",
+    "marks": [
+      "Very finely divided, threadlike leaves.",
+      "Yellow flowers in large compound umbels.",
+      "Tall branching herb; aromatic foliage is supporting evidence only."
+    ],
+    "range": "Mediterranean origin; naturalized around the world, sometimes invasive.",
+    "season": "Confirm mature flowering plants; leafy growth and fully mature seeds are different collection stages.",
+    "stages": [
+      "fresh-growth",
+      "seed"
+    ],
+    "preparation": "Prefer a correctly named garden plant for culinary leaves and seeds.",
+    "caution": "Carrot-family mistakes can be fatal. Do not gather an unknown umbellifer by smell.",
+    "lookalikes": [
+      {
+        "name": "Poison hemlock",
+        "slug": "poison-hemlock",
+        "note": "Hemlock has white umbels and broader divided leaf segments; young plants still need a full key."
+      },
+      {
+        "name": "Water hemlock",
+        "slug": "water-hemlock",
+        "note": "A deadly wetland plant; habitat alone cannot exclude it."
+      }
+    ],
+    "stewardship": "Prevent seed spread where fennel is invasive. Never strip wild stands.",
+    "status": "caution",
+    "sources": [
+      {
+        "title": "NC State Extension · Foeniculum vulgare",
+        "url": "https://plants.ces.ncsu.edu/plants/foeniculum-vulgare/",
+        "supports": "Botanical description, range and documented use"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/fennel-1.webp",
+        "credit": "Quinn Dombrowski",
+        "license": "CC-BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0/",
+        "caption": "Foeniculum vulgare",
+        "source": "https://plants.ces.ncsu.edu/plants/foeniculum-vulgare/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Foeniculum-vulgare--Quinn-Dombrowski--CC-BY-SA.jpg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      },
+      {
+        "url": "/images/herbs/atlas/fennel-2.webp",
+        "credit": "John Tann",
+        "license": "CC BY 2.0",
+        "licenseUrl": "http://creativecommons.org/licenses/by/2.0/legalcode",
+        "caption": "Foeniculum vulgare",
+        "source": "https://plants.ces.ncsu.edu/plants/foeniculum-vulgare/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Foeniculum-vulgare--John-Tann-CC-BY.jpg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "watercress",
+    "name": "Watercress",
+    "latin": "Nasturtium officinale",
+    "family": "Brassicaceae",
+    "aliases": [
+      "Two-rowed watercress",
+      "Rorippa nasturtium-aquaticum"
+    ],
+    "regions": [
+      "europe",
+      "north-america"
+    ],
+    "habitats": [
+      "wet-ground"
+    ],
+    "uses": [
+      "food"
+    ],
+    "parts": [
+      "Leafy shoot"
+    ],
+    "summary": "A freshwater mustard whose food use must be separated from the risks of wild water sources.",
+    "marks": [
+      "Once-pinnate leaves with rounded leaflets.",
+      "Small white four-petaled flowers.",
+      "Seed pods have seeds in two rows per chamber; related watercresses differ."
+    ],
+    "range": "European origin and introduced in North America; consult local floras elsewhere.",
+    "season": "Learn flowering and fruiting plants; a green patch in flowing water is not evidence of safety.",
+    "stages": [
+      "fresh-growth"
+    ],
+    "preparation": "Choose food-grown watercress from a controlled source rather than raw wild aquatic plants.",
+    "caution": "Wild watercress can carry liver flukes and contaminants. Clear water and rinsing do not establish safety.",
+    "lookalikes": [
+      {
+        "name": "Other watercresses",
+        "slug": null,
+        "note": "Related species and hybrids require fruit characters; common names are unreliable."
+      }
+    ],
+    "stewardship": "Avoid disturbing watercourses; never divert or enter unsafe water to gather.",
+    "status": "caution",
+    "sources": [
+      {
+        "title": "Native Plant Trust · Watercress",
+        "url": "https://gobotany.nativeplanttrust.org/species/nasturtium/officinale/",
+        "supports": "Botanical description, range and documented use"
+      },
+      {
+        "title": "CDC · Liver flukes",
+        "url": "https://www.cdc.gov/liver-flukes/about/index.html",
+        "supports": "Fasciola transmission through raw freshwater plants"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/watercress-1.webp",
+        "credit": "Andrew Tree",
+        "license": "CC BY",
+        "licenseUrl": "https://www.inaturalist.org/photos/203236672",
+        "caption": "Reference specimen (Nasturtium officinale)",
+        "source": "https://www.inaturalist.org/taxa/78174",
+        "photoPage": "https://www.inaturalist.org/photos/203236672",
+        "taxonId": 78174,
+        "licenseCode": "cc-by",
+        "originalUrl": "https://inaturalist-open-data.s3.amazonaws.com/photos/203236672/large.jpeg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "selfheal",
+    "name": "Selfheal",
+    "latin": "Prunella vulgaris",
+    "family": "Lamiaceae",
+    "aliases": [
+      "Heal-all",
+      "Common selfheal"
+    ],
+    "regions": [
+      "north-america",
+      "europe",
+      "asia"
+    ],
+    "habitats": [
+      "meadow",
+      "disturbed",
+      "wet-ground"
+    ],
+    "uses": [
+      "study"
+    ],
+    "parts": [
+      "Flowering top"
+    ],
+    "summary": "A low mint-family perennial with compact purple flower heads, included for botanical and traditional-use study.",
+    "marks": [
+      "Opposite simple leaves, usually ovate to oblong.",
+      "Two-lipped purple flowers in a compact terminal head.",
+      "Persistent overlapping bracts remain after flowering."
+    ],
+    "range": "Widespread; Go Botany distinguishes native and introduced subspecies in North America.",
+    "season": "Study flowering heads and stem leaves together in the local growing season.",
+    "stages": [
+      "flowering"
+    ],
+    "preparation": "No medicinal preparation or treatment advice is supplied.",
+    "caution": "The common name heal-all is historical language, not evidence of medical effectiveness.",
+    "lookalikes": [
+      {
+        "name": "Other Prunella",
+        "slug": null,
+        "note": "Leaf lobing and flower color help separate relatives; confirm with the regional key."
+      }
+    ],
+    "stewardship": "Leave flowering patches for insects and record observations without picking.",
+    "status": "study",
+    "sources": [
+      {
+        "title": "Native Plant Trust · Selfheal",
+        "url": "https://gobotany.nativeplanttrust.org/species/prunella/vulgaris/",
+        "supports": "Botanical description, range and documented use"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/selfheal-1.webp",
+        "credit": "Millie Basden",
+        "license": "CC BY",
+        "licenseUrl": "https://www.inaturalist.org/photos/497367631",
+        "caption": "Reference specimen (Prunella vulgaris)",
+        "source": "https://www.inaturalist.org/observations/276985381",
+        "photoPage": "https://www.inaturalist.org/photos/497367631",
+        "taxonId": 52764,
+        "licenseCode": "cc-by",
+        "originalUrl": "https://inaturalist-open-data.s3.amazonaws.com/photos/497367631/large.jpeg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "common-blue-violet",
+    "name": "Common blue violet",
+    "latin": "Viola sororia",
+    "family": "Violaceae",
+    "aliases": [
+      "Blue violet",
+      "Wood violet"
+    ],
+    "regions": [
+      "north-america"
+    ],
+    "habitats": [
+      "woodland",
+      "meadow",
+      "garden"
+    ],
+    "uses": [
+      "food"
+    ],
+    "parts": [
+      "Young leaf",
+      "Flower"
+    ],
+    "summary": "A North American violet with basal heart-shaped leaves and edible flowers and young leaves.",
+    "marks": [
+      "Heart-shaped basal leaves with toothed edges.",
+      "Five unequal petals, usually blue-violet, sometimes white.",
+      "Flowers on separate stalks; lateral petals commonly bear hairs."
+    ],
+    "range": "Eastern and central North America. This profile does not cover every violet.",
+    "season": "Confirm flowering plants during the local spring; study young leaf growth on the same plants.",
+    "stages": [
+      "fresh-growth",
+      "flowering"
+    ],
+    "preparation": "Identified young leaves and flowers have salad and cooked-food uses.",
+    "caution": "Do not identify a plant from a heart-shaped leaf alone. Ornamental African violets are unrelated.",
+    "lookalikes": [
+      {
+        "name": "Other violets",
+        "slug": null,
+        "note": "Species identification may require petal hairs, stipules and fruit; consult a local flora."
+      }
+    ],
+    "stewardship": "Leave flowers for insects and roots in place.",
+    "status": "culinary",
+    "sources": [
+      {
+        "title": "NC State Extension · Viola sororia",
+        "url": "https://plants.ces.ncsu.edu/plants/viola-sororia/",
+        "supports": "Botanical description, range and documented use"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/common-blue-violet-1.webp",
+        "credit": "Jack Pearce",
+        "license": "CC-BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0/",
+        "caption": "Whole plant",
+        "source": "https://plants.ces.ncsu.edu/plants/viola-sororia/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Viola_papilionacea2_jack_pearce_ccbysa20.jpg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      },
+      {
+        "url": "/images/herbs/atlas/common-blue-violet-2.webp",
+        "credit": "Josh Mayer",
+        "license": "CC-BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0/",
+        "caption": "Flower",
+        "source": "https://plants.ces.ncsu.edu/plants/viola-sororia/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Viola_papilionacea_flower_josh_mayer_ccbysa20.jpg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "gotu-kola",
+    "name": "Gotu kola",
+    "latin": "Centella asiatica",
+    "family": "Apiaceae",
+    "aliases": [
+      "Indian pennywort",
+      "Pegaga"
+    ],
+    "regions": [
+      "asia"
+    ],
+    "habitats": [
+      "wet-ground",
+      "garden"
+    ],
+    "uses": [
+      "food",
+      "study"
+    ],
+    "parts": [
+      "Leaf"
+    ],
+    "summary": "A creeping tropical herb with kidney-shaped leaves and documented regional food uses.",
+    "marks": [
+      "Rounded to kidney-shaped leaves with shallow rounded teeth.",
+      "Long leaf stalks arise along creeping runners.",
+      "Small clustered flowers near the ground."
+    ],
+    "range": "Tropical and subtropical Asia; the cited Singapore record lists regional native distribution.",
+    "season": "Fresh healthy leaves during active moist-season growth; there is no universal northern calendar.",
+    "stages": [
+      "fresh-growth"
+    ],
+    "preparation": "Leaves have food uses in parts of Asia. Prefer known cultivated material from clean soil.",
+    "caution": "Wild wet-ground plants can be contaminated. Food use is not evidence for concentrated supplements or treatment claims.",
+    "lookalikes": [
+      {
+        "name": "Other pennyworts",
+        "slug": null,
+        "note": "Hydrocotyle species share the name. Compare leaf attachment, margins and reproductive characters."
+      }
+    ],
+    "stewardship": "Avoid wild wetland disturbance; cultivate a verified plant.",
+    "status": "culinary",
+    "sources": [
+      {
+        "title": "Singapore NParks · Centella asiatica",
+        "url": "https://www.nparks.gov.sg/florafaunaweb/flora/5/3/5347",
+        "supports": "Botanical description, range and documented use"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/gotu-kola-1.webp",
+        "credit": "Matt Berger",
+        "license": "CC BY",
+        "licenseUrl": "https://www.inaturalist.org/photos/591064867",
+        "caption": "Leaves and creeping growth of Centella asiatica",
+        "source": "https://www.inaturalist.org/observations/326371331",
+        "photoPage": "https://www.inaturalist.org/photos/591064867",
+        "taxonId": 160294,
+        "licenseCode": "cc-by",
+        "originalUrl": "https://inaturalist-open-data.s3.amazonaws.com/photos/591064867/large.jpg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      },
+      {
+        "url": "/images/herbs/atlas/gotu-kola-2.webp",
+        "credit": "葉子",
+        "license": "CC0",
+        "licenseUrl": "https://www.inaturalist.org/photos/60949630",
+        "caption": "Tiny flower of Centella asiatica (close-up)",
+        "source": "https://www.inaturalist.org/taxa/160294",
+        "photoPage": "https://www.inaturalist.org/photos/60949630",
+        "taxonId": 160294,
+        "licenseCode": "cc0",
+        "originalUrl": "https://inaturalist-open-data.s3.amazonaws.com/photos/60949630/large.jpeg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "lemongrass",
+    "name": "Lemongrass",
+    "latin": "Cymbopogon citratus",
+    "family": "Poaceae",
+    "aliases": [
+      "West Indian lemongrass",
+      "Sereh"
+    ],
+    "regions": [
+      "asia",
+      "africa",
+      "south-america",
+      "oceania"
+    ],
+    "habitats": [
+      "garden"
+    ],
+    "uses": [
+      "food",
+      "tea"
+    ],
+    "parts": [
+      "Leaf",
+      "Leaf base"
+    ],
+    "summary": "A clump-forming tropical culinary grass with lemon-scented blades and thick overlapping leaf bases.",
+    "marks": [
+      "Long straplike leaves with parallel veins.",
+      "Dense clumps; the apparent stalk is overlapping leaf sheaths.",
+      "Flowering is uncommon in cultivation."
+    ],
+    "range": "Widely cultivated through the tropics; native origin is uncertain in the NParks account.",
+    "season": "Active warm-season growth on an established cultivated clump.",
+    "stages": [
+      "fresh-growth"
+    ],
+    "preparation": "Leaf blades flavor tea and broth; prepared leaf bases are used in cooking. Remove tough fibers as the recipe requires.",
+    "caution": "Other Cymbopogon species are grown for fragrance or oils. A lemon scent does not make them interchangeable.",
+    "lookalikes": [
+      {
+        "name": "Citronella grasses",
+        "slug": null,
+        "note": "Use a correctly named culinary plant; young grasses are difficult to distinguish."
+      }
+    ],
+    "stewardship": "Take a few outer shoots without uprooting the whole clump.",
+    "status": "culinary",
+    "sources": [
+      {
+        "title": "Singapore NParks · Lemongrass",
+        "url": "https://www.nparks.gov.sg/florafaunaweb/flora/1/9/1918",
+        "supports": "Botanical description, range and documented use"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/lemongrass-1.webp",
+        "credit": "Forest and Kim Starr",
+        "license": "CC BY 2.0",
+        "licenseUrl": "http://creativecommons.org/licenses/by/2.0/legalcode",
+        "caption": "Cymbopogon citratus. Form.",
+        "source": "https://plants.ces.ncsu.edu/plants/cymbopogon-citratus/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Cymbopogon_citratus__4Khl4Jmg8hE3.jpeg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      },
+      {
+        "url": "/images/herbs/atlas/lemongrass-2.webp",
+        "credit": "Forest and Kim Starr",
+        "license": "CC BY 2.0",
+        "licenseUrl": "http://creativecommons.org/licenses/by/2.0/legalcode",
+        "caption": "Cymbopogon citratus. Foliage.",
+        "source": "https://plants.ces.ncsu.edu/plants/cymbopogon-citratus/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Cymbopogon_citratus__83TGa7XeHKNN.jpeg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "roselle",
+    "name": "Roselle",
+    "latin": "Sabdariffa gossypiifolia",
+    "family": "Malvaceae",
+    "aliases": [
+      "Hibiscus sabdariffa",
+      "Bissap",
+      "Jamaica",
+      "Sorrel"
+    ],
+    "regions": [
+      "africa",
+      "asia",
+      "south-america",
+      "north-america"
+    ],
+    "habitats": [
+      "garden"
+    ],
+    "uses": [
+      "food",
+      "tea"
+    ],
+    "parts": [
+      "Calyx",
+      "Leaf"
+    ],
+    "summary": "A tropical crop famous for tart red calyces. The familiar botanical name is Hibiscus sabdariffa.",
+    "marks": [
+      "Upright reddish stems.",
+      "Mature leaves commonly have three to five lobes.",
+      "Hibiscus-like flowers with a dark center; fleshy calyces develop around fruit."
+    ],
+    "range": "African origin; cultivated widely in tropical and subtropical regions.",
+    "season": "Calyces after flowering while fleshy; timing depends on cultivar, day length and local climate.",
+    "stages": [
+      "fruiting"
+    ],
+    "preparation": "Food-grown calyces are used in drinks and preserves. Follow a reliable recipe.",
+    "caution": "Do not substitute ornamental hibiscus or identify by a red flower alone.",
+    "lookalikes": [
+      {
+        "name": "Other hibiscus relatives",
+        "slug": null,
+        "note": "Verify the crop and edible plant part. Common names can cover several species."
+      }
+    ],
+    "stewardship": "Prefer cultivated plants and leave selected fruit for seed.",
+    "status": "culinary",
+    "sources": [
+      {
+        "title": "NC State Extension · Roselle",
+        "url": "https://plants.ces.ncsu.edu/plants/hibiscus-sabdariffa/",
+        "supports": "Botanical description, range and documented use"
+      },
+      {
+        "title": "Kew POWO · Accepted roselle name",
+        "url": "https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:77361038-1/general-information",
+        "supports": "Accepted name and Hibiscus sabdariffa synonym"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/roselle-1.webp",
+        "credit": "Joanne Celinski",
+        "license": "CC0",
+        "licenseUrl": "https://creativecommons.org/about/cc0/",
+        "caption": "Flower close up",
+        "source": "https://plants.ces.ncsu.edu/plants/hibiscus-sabdariffa/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Roselle1_hrwuToxVnBVq.jpeg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      },
+      {
+        "url": "/images/herbs/atlas/roselle-2.webp",
+        "credit": "Joanne Celinski",
+        "license": "CC0",
+        "licenseUrl": "https://creativecommons.org/about/cc0/",
+        "caption": "Flower and foliage",
+        "source": "https://plants.ces.ncsu.edu/plants/hibiscus-sabdariffa/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Roselle10_huxtUG8yX9B4.jfif",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "moringa",
+    "name": "Moringa",
+    "latin": "Moringa oleifera",
+    "family": "Moringaceae",
+    "aliases": [
+      "Drumstick tree"
+    ],
+    "regions": [
+      "asia",
+      "africa",
+      "south-america"
+    ],
+    "habitats": [
+      "garden"
+    ],
+    "uses": [
+      "food"
+    ],
+    "parts": [
+      "Leaf",
+      "Immature pod"
+    ],
+    "summary": "A tropical cultivated tree with compound leaves and long angular pods used as vegetables.",
+    "marks": [
+      "Leaves divided two or three times into small rounded leaflets.",
+      "White fragrant flowers in branching clusters.",
+      "Long, slender three-angled pods."
+    ],
+    "range": "Indian origin; widely cultivated in tropical and subtropical regions.",
+    "season": "Fresh leafy growth and tender immature pods during active growth.",
+    "stages": [
+      "fresh-growth",
+      "fruiting"
+    ],
+    "preparation": "Identified leaves are cooked as greens; immature pods have established culinary uses.",
+    "caution": "This entry covers food parts only. Do not infer that roots, bark, extracts or water-treatment claims are safe.",
+    "lookalikes": [
+      {
+        "name": "Other compound-leaved trees",
+        "slug": null,
+        "note": "Match flowers and pods as well as leaves; seedling foliage alone is insufficient."
+      }
+    ],
+    "stewardship": "Harvest from a known, permitted tree without stripping branches.",
+    "status": "culinary",
+    "sources": [
+      {
+        "title": "Singapore NParks · Moringa",
+        "url": "https://www.nparks.gov.sg/FloraFaunaWeb/Flora/3/0/3034",
+        "supports": "Botanical description, range and documented use"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/moringa-1.webp",
+        "credit": "Ricard Busquets Reverte",
+        "license": "CC BY",
+        "licenseUrl": "https://www.inaturalist.org/photos/199982007",
+        "caption": "Reference specimen (Moringa oleifera)",
+        "source": "https://www.inaturalist.org/observations/118369484",
+        "photoPage": "https://www.inaturalist.org/photos/199982007",
+        "taxonId": 165529,
+        "licenseCode": "cc-by",
+        "originalUrl": "https://inaturalist-open-data.s3.amazonaws.com/photos/199982007/large.jpeg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "culantro",
+    "name": "Culantro",
+    "latin": "Eryngium foetidum",
+    "family": "Apiaceae",
+    "aliases": [
+      "Sawtooth coriander",
+      "Recao",
+      "Chadon beni"
+    ],
+    "regions": [
+      "north-america",
+      "south-america",
+      "asia"
+    ],
+    "habitats": [
+      "garden",
+      "woodland",
+      "disturbed"
+    ],
+    "uses": [
+      "food"
+    ],
+    "parts": [
+      "Leaf"
+    ],
+    "summary": "A tropical seasoning herb with long toothed leaves, used in Caribbean, Latin American and Asian cooking.",
+    "marks": [
+      "Long, smooth leaves in a basal rosette.",
+      "Finely toothed to spiny leaf edges.",
+      "Compact cylindrical greenish-white flower heads with pointed bracts."
+    ],
+    "range": "Native from Mexico through tropical America; cultivated in Southeast Asia.",
+    "season": "Tender leaves before flowering makes them tougher; active growth can continue in humid tropical conditions.",
+    "stages": [
+      "fresh-growth"
+    ],
+    "preparation": "Use leaves from a confirmed culinary plant as a seasoning.",
+    "caution": "Leaf edges and flowering bracts can be sharp. It is not the same species as coriander.",
+    "lookalikes": [
+      {
+        "name": "Other Eryngium",
+        "slug": null,
+        "note": "Many relatives have spiny foliage; verify the species and full flowering structure."
+      }
+    ],
+    "stewardship": "Take a few outer leaves and leave the central growing point.",
+    "status": "culinary",
+    "sources": [
+      {
+        "title": "Singapore NParks · Culantro",
+        "url": "https://www.nparks.gov.sg/florafaunaweb/flora/4/8/4850",
+        "supports": "Botanical description, range and documented use"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/culantro-1.webp",
+        "credit": "Ricard Busquets Reverte",
+        "license": "CC BY",
+        "licenseUrl": "https://www.inaturalist.org/photos/331717880",
+        "caption": "Reference specimen (Eryngium foetidum)",
+        "source": "https://www.inaturalist.org/observations/189372141",
+        "photoPage": "https://www.inaturalist.org/photos/331717880",
+        "taxonId": 162702,
+        "licenseCode": "cc-by",
+        "originalUrl": "https://inaturalist-open-data.s3.amazonaws.com/photos/331717880/large.jpeg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "epazote",
+    "name": "Epazote",
+    "latin": "Dysphania ambrosioides",
+    "family": "Amaranthaceae",
+    "aliases": [
+      "Mexican tea",
+      "Chenopodium ambrosioides"
+    ],
+    "regions": [
+      "north-america",
+      "south-america"
+    ],
+    "habitats": [
+      "disturbed",
+      "garden"
+    ],
+    "uses": [
+      "study",
+      "food"
+    ],
+    "parts": [
+      "Leaf"
+    ],
+    "summary": "A pungent tropical American herb with culinary history and important toxicity concerns.",
+    "marks": [
+      "Alternate elongated leaves with variable toothed or lobed margins.",
+      "Oil glands on foliage and largely hairless stems.",
+      "Tiny green flowers densely clustered along upper spikes."
+    ],
+    "range": "Tropical Americas; introduced beyond its original range.",
+    "season": "Study mature leaves and flowering shoots during warm-season growth.",
+    "stages": [
+      "flowering"
+    ],
+    "preparation": "Documented culinary leaf use does not justify making concentrated tea, essential oil or medicinal extracts.",
+    "caution": "Seeds in quantity and concentrated preparations can be dangerous. This guide supplies no home remedy or dose.",
+    "lookalikes": [
+      {
+        "name": "Other Dysphania and goosefoots",
+        "slug": null,
+        "note": "Odor is not sufficient; flower, leaf and seed characters need a regional key."
+      }
+    ],
+    "stewardship": "Prefer a verified culinary source; avoid spreading seeds.",
+    "status": "study",
+    "sources": [
+      {
+        "title": "NC State Extension · Dysphania ambrosioides",
+        "url": "https://plants.ces.ncsu.edu/plants/dysphania-ambrosioides/",
+        "supports": "Botanical description, range and documented use"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/epazote-1.webp",
+        "credit": "Stanislav Doroneko",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/deed.en",
+        "caption": "leaves",
+        "source": "https://plants.ces.ncsu.edu/plants/dysphania-ambrosioides/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Chenopodium_ambrosio_DHjCr10o1gUa.jpe",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      },
+      {
+        "url": "/images/herbs/atlas/epazote-2.webp",
+        "credit": "Forrest & Kim Starr",
+        "license": "CC BY-SA 2.5",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5/",
+        "caption": "leaves",
+        "source": "https://plants.ces.ncsu.edu/plants/dysphania-ambrosioides/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Chenopodium_ambrosio_DpeVQtynqaJG.jpe",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "lemon-verbena",
+    "name": "Lemon verbena",
+    "latin": "Aloysia citrodora",
+    "family": "Verbenaceae",
+    "aliases": [
+      "Cedrón",
+      "Yerba luisa",
+      "Aloysia triphylla"
+    ],
+    "regions": [
+      "south-america"
+    ],
+    "habitats": [
+      "garden",
+      "scrub"
+    ],
+    "uses": [
+      "food",
+      "tea"
+    ],
+    "parts": [
+      "Leaf"
+    ],
+    "summary": "A South American aromatic shrub with narrow leaves, widely cultivated for flavoring and herbal tea.",
+    "marks": [
+      "Lance-shaped leaves usually in whorls of three, sometimes opposite.",
+      "Strong lemon fragrance supports other characters.",
+      "Small flowers arranged in slender spike-like clusters."
+    ],
+    "range": "Native to southern Bolivia and northwestern Argentina in the Kew account; widely cultivated.",
+    "season": "Healthy leaves during active growth on an established shrub.",
+    "stages": [
+      "fresh-growth"
+    ],
+    "preparation": "Identified cultivated leaves have a documented herbal-tea and flavoring use.",
+    "caution": "Several plants are called verbena or yerba luisa. Do not substitute on the common name alone.",
+    "lookalikes": [
+      {
+        "name": "Other Aloysia",
+        "slug": null,
+        "note": "Closely related shrubs can share a lemon scent and whorled leaves; consult the regional key."
+      }
+    ],
+    "stewardship": "Clip a few leafy tips from a permitted garden shrub.",
+    "status": "culinary",
+    "sources": [
+      {
+        "title": "Kew POWO · Lemon verbena",
+        "url": "https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:1015994-1/general-information",
+        "supports": "Botanical description, range and documented use"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/lemon-verbena-1.webp",
+        "credit": "M a n u e l",
+        "license": "CC BY-SA",
+        "licenseUrl": "https://www.inaturalist.org/photos/2332506",
+        "caption": "Reference specimen (Aloysia citrodora)",
+        "source": "https://www.inaturalist.org/taxa/332455",
+        "photoPage": "https://www.inaturalist.org/photos/2332506",
+        "taxonId": 332455,
+        "licenseCode": "cc-by-sa",
+        "originalUrl": "https://inaturalist-open-data.s3.amazonaws.com/photos/2332506/large.jpg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "perilla",
+    "name": "Perilla",
+    "latin": "Perilla frutescens",
+    "family": "Lamiaceae",
+    "aliases": [
+      "Shiso",
+      "Beefsteak plant",
+      "Kkaennip"
+    ],
+    "regions": [
+      "asia",
+      "north-america"
+    ],
+    "habitats": [
+      "garden",
+      "disturbed"
+    ],
+    "uses": [
+      "food"
+    ],
+    "parts": [
+      "Leaf"
+    ],
+    "summary": "An Asian culinary mint-family annual with broad aromatic leaves and cultivated green or purple forms.",
+    "marks": [
+      "Opposite broad, wrinkled, toothed leaves.",
+      "Hairy square stems, green or purple.",
+      "Small pale two-lipped flowers on slender spikes."
+    ],
+    "range": "Himalayan and Southeast Asian origin; cultivated and introduced elsewhere.",
+    "season": "Tender leaves during active growth on a confirmed culinary plant.",
+    "stages": [
+      "fresh-growth"
+    ],
+    "preparation": "Use a correctly named culinary cultivar for leaf seasoning.",
+    "caution": "Color and aroma alone do not identify perilla. Keep it out of livestock grazing areas.",
+    "lookalikes": [
+      {
+        "name": "Other mint-family herbs",
+        "slug": null,
+        "note": "Check flowers, stem and leaf characters; do not infer edibility from a square stem."
+      }
+    ],
+    "stewardship": "Avoid seed escape where locally invasive; grow in a managed garden.",
+    "status": "culinary",
+    "sources": [
+      {
+        "title": "NC State Extension · Perilla frutescens",
+        "url": "https://plants.ces.ncsu.edu/plants/perilla-frutescens/",
+        "supports": "Botanical description, range and documented use"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/perilla-1.webp",
+        "credit": "Manuel",
+        "license": "CC BY 2.0",
+        "licenseUrl": "http://creativecommons.org/licenses/by/2.0/legalcode",
+        "caption": "Leaves",
+        "source": "https://plants.ces.ncsu.edu/plants/perilla-frutescens/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Perilla-frutescens--Manuel--CC-BY.jpg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      },
+      {
+        "url": "/images/herbs/atlas/perilla-2.webp",
+        "credit": "Far Out Flora",
+        "license": "CC BY 2.0",
+        "licenseUrl": "http://creativecommons.org/licenses/by/2.0/legalcode",
+        "caption": "Perilla frutescens 'Purple Shiso'",
+        "source": "https://plants.ces.ncsu.edu/plants/perilla-frutescens/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Perilla-frutescens-Purple-Shiso--FarOutFlora--CC-BY.jpg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "warrigal-greens",
+    "name": "Warrigal greens",
+    "latin": "Tetragonia tetragonoides",
+    "family": "Aizoaceae",
+    "aliases": [
+      "New Zealand spinach",
+      "Tetragonia tetragonioides"
+    ],
+    "regions": [
+      "oceania"
+    ],
+    "habitats": [
+      "coastal",
+      "garden"
+    ],
+    "uses": [
+      "food"
+    ],
+    "parts": [
+      "Young leaf"
+    ],
+    "summary": "A sprawling coastal plant used as a cooked green, with preparation needed to reduce oxalic acid.",
+    "marks": [
+      "Fleshy light-green leaves, oval to diamond-shaped.",
+      "Leaves have a velvety or granular-looking surface.",
+      "Low sprawling stems; confirm flowers and distinctive fruit with a local flora."
+    ],
+    "range": "Australia and New Zealand in the cited NParks account; also cultivated elsewhere.",
+    "season": "Healthy young leaves in active growth, often following rain in suitable climates.",
+    "stages": [
+      "fresh-growth"
+    ],
+    "preparation": "Blanch identified leaves and discard the cooking water, following a reliable food recipe.",
+    "caution": "Contains oxalic acid; do not present it as a raw salad green or unrestricted spinach substitute.",
+    "lookalikes": [
+      {
+        "name": "Other Tetragonia",
+        "slug": null,
+        "note": "Species differ; a fleshy coastal leaf is not enough for identification."
+      }
+    ],
+    "stewardship": "Prefer cultivation and protect dunes, saltmarsh edges and nesting habitat.",
+    "status": "caution",
+    "sources": [
+      {
+        "title": "Singapore NParks · Warrigal greens",
+        "url": "https://www.nparks.gov.sg/florafaunaweb/flora/7/1/7178",
+        "supports": "Botanical description, range and documented use"
+      },
+      {
+        "title": "Kew POWO · Tetragonia name usage",
+        "url": "https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:364742-1",
+        "supports": "Current spelling and historical tetragonioides usage"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/warrigal-greens-1.webp",
+        "credit": "Greg Tasney",
+        "license": "CC BY-SA",
+        "licenseUrl": "https://www.inaturalist.org/photos/112122676",
+        "caption": "Reference specimen (Tetragonia tetragonoides)",
+        "source": "https://www.inaturalist.org/observations/69164789",
+        "photoPage": "https://www.inaturalist.org/photos/112122676",
+        "taxonId": 418653,
+        "licenseCode": "cc-by-sa",
+        "originalUrl": "https://inaturalist-open-data.s3.amazonaws.com/photos/112122676/large.jpeg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "lemon-myrtle",
+    "name": "Lemon myrtle",
+    "latin": "Backhousia citriodora",
+    "family": "Myrtaceae",
+    "aliases": [
+      "Lemon ironwood",
+      "Lemon-scented myrtle"
+    ],
+    "regions": [
+      "oceania"
+    ],
+    "habitats": [
+      "woodland",
+      "garden"
+    ],
+    "uses": [
+      "food",
+      "tea"
+    ],
+    "parts": [
+      "Leaf"
+    ],
+    "summary": "A Queensland rainforest tree with aromatic leaves, also cultivated as a bush-food ingredient.",
+    "marks": [
+      "Opposite oval to lance-shaped leaves with visible veins.",
+      "Fresh green leaves, reddish young growth and a strong lemon scent.",
+      "Clusters of small white flowers with conspicuous stamens."
+    ],
+    "range": "Coastal Queensland rainforest, Australia; cultivated elsewhere in suitable conditions.",
+    "season": "Mature healthy leaves during active growth on a known cultivated tree.",
+    "stages": [
+      "fresh-growth"
+    ],
+    "preparation": "Use identified food-grown leaves as a flavoring; this is not a guide to essential-oil ingestion.",
+    "caution": "Other aromatic rainforest trees can resemble it. Confirm a named plant before use.",
+    "lookalikes": [
+      {
+        "name": "Other Backhousia",
+        "slug": null,
+        "note": "Several species are aromatic; compare flowers and full foliage characters."
+      }
+    ],
+    "stewardship": "Favor cultivated or locally guided sources and respect First Nations knowledge and access rights.",
+    "status": "culinary",
+    "sources": [
+      {
+        "title": "Australian National Botanic Gardens · Lemon myrtle",
+        "url": "https://www.anbg.gov.au/gnp/gnp14/backhousia-citriodora.html",
+        "supports": "Botanical description, range and documented use"
+      },
+      {
+        "title": "Botanic Gardens of Sydney · Bush-food gardens",
+        "url": "https://www.botanicgardens.org.au/discover-and-learn/gardening-home/growing-native-gardens-and-bush-foods/tuck-bush-tucker-garden",
+        "supports": "Culinary cultivation context"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/lemon-myrtle-1.webp",
+        "credit": "Greg Tasney",
+        "license": "CC BY-SA",
+        "licenseUrl": "https://www.inaturalist.org/photos/239953767",
+        "caption": "Reference specimen (Backhousia citriodora)",
+        "source": "https://www.inaturalist.org/observations/140207494",
+        "photoPage": "https://www.inaturalist.org/photos/239953767",
+        "taxonId": 122826,
+        "licenseCode": "cc-by-sa",
+        "originalUrl": "https://inaturalist-open-data.s3.amazonaws.com/photos/239953767/large.jpeg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "kapokbos",
+    "name": "Kapokbos",
+    "latin": "Eriocephalus africanus",
+    "family": "Asteraceae",
+    "aliases": [
+      "Wild rosemary",
+      "Wilderoosmaryn"
+    ],
+    "regions": [
+      "africa"
+    ],
+    "habitats": [
+      "scrub",
+      "coastal",
+      "garden"
+    ],
+    "uses": [
+      "study",
+      "craft"
+    ],
+    "parts": [
+      "Flowering top"
+    ],
+    "summary": "A silvery Cape shrub with narrow aromatic leaves and woolly fruit heads; distinct from culinary rosemary.",
+    "marks": [
+      "Small narrow grey leaves clustered along branches.",
+      "Small white daisy heads with darker centers.",
+      "Fluffy white fruit heads follow flowering."
+    ],
+    "range": "South African Cape regions; leaf form varies between coastal and inland populations.",
+    "season": "Best studied in flower and fruit; flowering often occurs in the local cooler, wetter season.",
+    "stages": [
+      "flowering"
+    ],
+    "preparation": "Included for botanical study and documented regional plant-use history; no remedy is supplied.",
+    "caution": "The name wild rosemary covers unrelated plants. Do not substitute it for culinary rosemary or ingest oils.",
+    "lookalikes": [
+      {
+        "name": "Other Eriocephalus",
+        "slug": null,
+        "note": "Several related shrubs share woolly fruit heads and aromatic leaves."
+      }
+    ],
+    "stewardship": "Observe wild shrubs without stripping branches; favor a cultivated specimen.",
+    "status": "study",
+    "sources": [
+      {
+        "title": "SANBI PlantZAfrica · Kapokbos",
+        "url": "https://pza.sanbi.org/eriocephalus-africanus",
+        "supports": "Botanical description, range and documented use"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/kapokbos-1.webp",
+        "credit": "Deon van Eeden",
+        "license": "CC BY-SA",
+        "licenseUrl": "https://www.inaturalist.org/photos/297001013",
+        "caption": "Reference specimen (Eriocephalus africanus)",
+        "source": "https://www.inaturalist.org/observations/171173077",
+        "photoPage": "https://www.inaturalist.org/photos/297001013",
+        "taxonId": 430981,
+        "licenseCode": "cc-by-sa",
+        "originalUrl": "https://inaturalist-open-data.s3.amazonaws.com/photos/297001013/large.jpg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "rooibos",
+    "name": "Rooibos",
+    "latin": "Aspalathus linearis",
+    "family": "Fabaceae",
+    "aliases": [
+      "Red bush"
+    ],
+    "regions": [
+      "africa"
+    ],
+    "habitats": [
+      "scrub",
+      "garden"
+    ],
+    "uses": [
+      "tea"
+    ],
+    "parts": [
+      "Leaf",
+      "Fine stem"
+    ],
+    "summary": "A South African fynbos shrub cultivated for tea, with a history rooted in the Cederberg region.",
+    "marks": [
+      "Fine, needlelike green leaves on slender branches.",
+      "Small yellow pea-family flowers.",
+      "Upright shrub; wild forms vary in growth and regeneration."
+    ],
+    "range": "Southwestern South Africa, especially the Cederberg and neighboring mountain areas.",
+    "season": "Cultivated crop timing follows local production practice, not a global monthly calendar.",
+    "stages": [
+      "fresh-growth"
+    ],
+    "preparation": "Use traceable, prepared rooibos tea. Processing differs between green and oxidized products.",
+    "caution": "Do not identify or harvest an unfamiliar fynbos shrub by needlelike leaves alone.",
+    "lookalikes": [
+      {
+        "name": "Other Aspalathus",
+        "slug": null,
+        "note": "This large genus includes many similar shrubs. A regional expert is needed for wild identification."
+      }
+    ],
+    "stewardship": "Choose cultivated, traceable supplies; leave wild populations and local harvesting rights undisturbed.",
+    "status": "culinary",
+    "sources": [
+      {
+        "title": "SANBI PlantZAfrica · Rooibos",
+        "url": "https://pza.sanbi.org/aspalathus-linearis",
+        "supports": "Botanical description, range and documented use"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/rooibos-1.webp",
+        "credit": "Nicola van Berkel",
+        "license": "CC BY-SA",
+        "licenseUrl": "https://www.inaturalist.org/photos/76748787",
+        "caption": "Reference specimen (Aspalathus linearis)",
+        "source": "https://www.inaturalist.org/observations/48374118",
+        "photoPage": "https://www.inaturalist.org/photos/76748787",
+        "taxonId": 447656,
+        "licenseCode": "cc-by-sa",
+        "originalUrl": "https://inaturalist-open-data.s3.amazonaws.com/photos/76748787/large.jpeg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "buchu",
+    "name": "Round-leaf buchu",
+    "latin": "Agathosma betulina",
+    "family": "Rutaceae",
+    "aliases": [
+      "Bergboegoe",
+      "Round-leaved buchu",
+      "Barosma betulina"
+    ],
+    "regions": [
+      "africa"
+    ],
+    "habitats": [
+      "scrub"
+    ],
+    "uses": [
+      "study"
+    ],
+    "parts": [
+      "Leaf"
+    ],
+    "summary": "A Cape aromatic shrub included to explain botanical identity, traditional use and harvest pressure.",
+    "marks": [
+      "Small rounded to broadly oval leaves.",
+      "Oil glands and toothed leaf edges require close inspection.",
+      "Use a regional key and a verified flowering specimen."
+    ],
+    "range": "Restricted South African range; the cited SANBI assessment records harvesting impacts.",
+    "season": "Observe an intact flowering shrub with a local specialist; no gathering window is offered.",
+    "stages": [
+      "flowering"
+    ],
+    "preparation": "Study only. No essential oil, infusion or medicinal preparation is provided.",
+    "caution": "Related buchus differ chemically. A traditional name does not identify a species or establish safety.",
+    "lookalikes": [
+      {
+        "name": "Other Agathosma",
+        "slug": null,
+        "note": "Round-leaf and long-leaf buchus are distinct; confirm with a local botanical expert."
+      }
+    ],
+    "stewardship": "Do not gather wild plants. Favor documented cultivated sources; repeated heavy cutting has caused local declines.",
+    "status": "study",
+    "sources": [
+      {
+        "title": "SANBI Red List · Round-leaf buchu",
+        "url": "https://redlist.sanbi.org/species.php?species=3359-22",
+        "supports": "Botanical description, range and documented use"
+      },
+      {
+        "title": "SANBI · Buchu botanical monograph",
+        "url": "https://pza.sanbi.org/sites/default/files/info_library/agathosmabetulina%20%281%29.pdf",
+        "supports": "Diagnostic botanical characters"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/buchu-1.webp",
+        "credit": "magriet b",
+        "license": "CC BY-SA",
+        "licenseUrl": "https://www.inaturalist.org/photos/23131661",
+        "caption": "Reference specimen (Agathosma betulina)",
+        "source": "https://www.inaturalist.org/taxa/579225",
+        "photoPage": "https://www.inaturalist.org/photos/23131661",
+        "taxonId": 579225,
+        "licenseCode": "cc-by-sa",
+        "originalUrl": "https://inaturalist-open-data.s3.amazonaws.com/photos/23131661/large.jpg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "poison-hemlock",
+    "name": "Poison hemlock",
+    "latin": "Conium maculatum",
+    "family": "Apiaceae",
+    "aliases": [
+      "Hemlock"
+    ],
+    "regions": [
+      "europe",
+      "north-america"
+    ],
+    "habitats": [
+      "disturbed",
+      "wet-ground"
+    ],
+    "uses": [
+      "toxic"
+    ],
+    "parts": [],
+    "summary": "A potentially fatal carrot-family plant that must be learned alongside edible-looking umbels.",
+    "marks": [
+      "Smooth, hollow stems often marked with purple blotches.",
+      "Alternate, finely divided, roughly triangular leaves.",
+      "White flowers in compound umbels; first-year plants may have only a rosette."
+    ],
+    "range": "European and Mediterranean origin; naturalized widely, including North America.",
+    "season": "Hazard exists at every growth stage, including before flowers appear.",
+    "stages": [
+      "all-stages"
+    ],
+    "preparation": "Do not eat, brew, taste or collect for the pantry.",
+    "caution": "All parts are highly poisonous. Small amounts can be fatal; obtain urgent poison-service advice after exposure.",
+    "lookalikes": [
+      {
+        "name": "Fennel",
+        "slug": "fennel",
+        "note": "Fennel has yellow umbels; young plants still require a full botanical key."
+      },
+      {
+        "name": "Common yarrow",
+        "slug": "common-yarrow",
+        "note": "Yarrow has miniature daisy heads, not true umbels."
+      }
+    ],
+    "stewardship": "Keep a distance and report suspected plants to the local land manager; do not improvise removal.",
+    "status": "toxic",
+    "sources": [
+      {
+        "title": "University of Minnesota Extension · Poison hemlock",
+        "url": "https://extension.umn.edu/natural-resources/forestry-and-wildlife/invasive-species/poison-hemlock",
+        "supports": "Botanical description, range and documented use"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/poison-hemlock-1.webp",
+        "credit": "Eric Coombs",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
+        "caption": "White flower clusters.",
+        "source": "https://plants.ces.ncsu.edu/plants/conium-maculatum/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Conium_maculatum_by__1riBnLB4B5p9.jpe",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      },
+      {
+        "url": "/images/herbs/atlas/poison-hemlock-2.webp",
+        "credit": "Mick Talbots",
+        "license": "CC BY 2.0",
+        "licenseUrl": "http://creativecommons.org/licenses/by/2.0/legalcode",
+        "caption": "White flowers with one purple one in the center.",
+        "source": "https://plants.ces.ncsu.edu/plants/conium-maculatum/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Conium_maculatum_by__cPKdPQbTWe6O.jpg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "water-hemlock",
+    "name": "Spotted water hemlock",
+    "latin": "Cicuta maculata",
+    "family": "Apiaceae",
+    "aliases": [
+      "Water hemlock"
+    ],
+    "regions": [
+      "north-america"
+    ],
+    "habitats": [
+      "wet-ground"
+    ],
+    "uses": [
+      "toxic"
+    ],
+    "parts": [],
+    "summary": "A highly poisonous North American wetland plant; other Cicuta species are also dangerous.",
+    "marks": [
+      "Compound leaves with narrow, sharply toothed leaflets.",
+      "Leaflet veins commonly end in notches between the teeth.",
+      "White compound umbels and hollow, sometimes purple-marked stems."
+    ],
+    "range": "North America; this profile does not cover all regional water hemlocks.",
+    "season": "Dangerous throughout its life cycle; a nonflowering plant is still hazardous.",
+    "stages": [
+      "all-stages"
+    ],
+    "preparation": "Do not eat or collect. Do not dig roots or cut stems to attempt identification.",
+    "caution": "All parts are toxic and ingestion can be fatal. Seek urgent poison-service advice.",
+    "lookalikes": [
+      {
+        "name": "Other wetland umbels",
+        "slug": null,
+        "note": "Several edible-looking wetland plants resemble Cicuta. Habitat and one vein feature are insufficient."
+      },
+      {
+        "name": "Fennel",
+        "slug": "fennel",
+        "note": "An aromatic herb name cannot rule out a poisonous umbellifer."
+      }
+    ],
+    "stewardship": "Observe and photograph from a safe position; protect wetland soils.",
+    "status": "toxic",
+    "sources": [
+      {
+        "title": "NC State Extension · Cicuta maculata",
+        "url": "https://plants.ces.ncsu.edu/plants/cicuta-maculata/",
+        "supports": "Botanical description, range and documented use"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/water-hemlock-1.webp",
+        "credit": "Mart Bumgarner",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "http://creativecommons.org/licenses/by-sa/4.0/legalcode",
+        "caption": "Leaflets with serrate margins. Veins end in sinuses.",
+        "source": "https://plants.ces.ncsu.edu/plants/cicuta-maculata/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Cicuta-maculata-leaf_XD1Zunw0SPqc.jpeg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      },
+      {
+        "url": "/images/herbs/atlas/water-hemlock-2.webp",
+        "credit": "Mart Bumgarner",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "http://creativecommons.org/licenses/by-sa/4.0/legalcode",
+        "caption": "Leaflet margins serrate. Veins end in sinuses between teeth.",
+        "source": "https://plants.ces.ncsu.edu/plants/cicuta-maculata/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Cicuta-maculata-leaf_XrlgHFSMwF8h.jpeg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "lily-of-the-valley",
+    "name": "Lily of the valley",
+    "latin": "Convallaria majalis",
+    "family": "Asparagaceae",
+    "aliases": [
+      "May bells"
+    ],
+    "regions": [
+      "europe",
+      "asia",
+      "north-america"
+    ],
+    "habitats": [
+      "woodland",
+      "garden"
+    ],
+    "uses": [
+      "toxic"
+    ],
+    "parts": [],
+    "summary": "A poisonous woodland and garden plant whose spring leaves can be mixed with wild garlic.",
+    "marks": [
+      "Broad parallel-veined leaves, usually paired around a shared basal stalk.",
+      "One-sided clusters of hanging white bell-shaped flowers.",
+      "Orange-red berries later in the season; flowers may be absent when leaves emerge."
+    ],
+    "range": "Eurasian origin; cultivated and naturalized elsewhere.",
+    "season": "Toxic in leaf, flower and fruit; spring leaf emergence is a key confusion period.",
+    "stages": [
+      "all-stages"
+    ],
+    "preparation": "Do not eat, brew or add to gathered leaves.",
+    "caution": "Can cause serious poisoning including heart-rhythm disturbances. Seek prompt poison-service advice after ingestion.",
+    "lookalikes": [
+      {
+        "name": "Wild garlic",
+        "slug": "wild-garlic",
+        "note": "Ramsons has star-shaped flowers, but leaves are often gathered before either plant flowers."
+      }
+    ],
+    "stewardship": "Keep children and gathered food away from patches; avoid mixing handfuls of woodland leaves.",
+    "status": "toxic",
+    "sources": [
+      {
+        "title": "NC State Extension · Convallaria majalis",
+        "url": "https://plants.ces.ncsu.edu/plants/convallaria-majalis/",
+        "supports": "Botanical description, range and documented use"
+      },
+      {
+        "title": "BfR · Wild garlic confusion and poisoning",
+        "url": "https://www.bfr.bund.de/en/press-release/wild-garlic-confusion-often-leads-to-poisoning/",
+        "supports": "Documented confusion and toxicity"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/lily-of-the-valley-1.webp",
+        "credit": "H Zell",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/deed.en",
+        "caption": "White bell-shaped flowers",
+        "source": "https://plants.ces.ncsu.edu/plants/convallaria-majalis/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Convallaria_majalis__rssHShKjFDTo.jfif",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      },
+      {
+        "url": "/images/herbs/atlas/lily-of-the-valley-2.webp",
+        "credit": "Evelyn Simak",
+        "license": "CC-BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0/",
+        "caption": "Mass planting along a foundation.",
+        "source": "https://plants.ces.ncsu.edu/plants/convallaria-majalis/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Convallaria_majalis__50LxtOdeEgKL.jfif",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "autumn-crocus",
+    "name": "Autumn crocus",
+    "latin": "Colchicum autumnale",
+    "family": "Colchicaceae",
+    "aliases": [
+      "Meadow saffron",
+      "Naked ladies"
+    ],
+    "regions": [
+      "europe"
+    ],
+    "habitats": [
+      "meadow",
+      "garden"
+    ],
+    "uses": [
+      "toxic"
+    ],
+    "parts": [],
+    "summary": "A potentially fatal poisonous plant whose spring leaves appear separately from its autumn flowers.",
+    "marks": [
+      "Clusters of broad leaves emerge in spring.",
+      "Pink to lilac flowers emerge without leaves later in the year.",
+      "Seasonally separated foliage and flowers make casual identification unreliable."
+    ],
+    "range": "Central and southeastern Europe; also cultivated outside its native range.",
+    "season": "Hazard in every season; spring leaves are an important wild-garlic lookalike.",
+    "stages": [
+      "all-stages"
+    ],
+    "preparation": "Never eat, brew or substitute for saffron.",
+    "caution": "Colchicine poisoning can be fatal and symptoms may be delayed. Do not wait for illness before seeking help.",
+    "lookalikes": [
+      {
+        "name": "Wild garlic",
+        "slug": "wild-garlic",
+        "note": "Never gather mixed leaf clusters. A garlic smell on the hands can mask a mistaken leaf."
+      }
+    ],
+    "stewardship": "Do not dig or collect the plant for comparison; use photographs and expert help.",
+    "status": "toxic",
+    "sources": [
+      {
+        "title": "NC State Extension · Colchicum autumnale",
+        "url": "https://plants.ces.ncsu.edu/plants/colchicum-autumnale/",
+        "supports": "Botanical description, range and documented use"
+      },
+      {
+        "title": "BfR · Wild garlic confusion and poisoning",
+        "url": "https://www.bfr.bund.de/en/press-release/wild-garlic-confusion-often-leads-to-poisoning/",
+        "supports": "Fatal confusion and delayed poisoning"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/autumn-crocus-1.webp",
+        "credit": "Markus Krieger",
+        "license": "CC BY",
+        "licenseUrl": "https://www.inaturalist.org/photos/101081760",
+        "caption": "Reference specimen (Colchicum autumnale)",
+        "source": "https://www.inaturalist.org/observations/63026448",
+        "photoPage": "https://www.inaturalist.org/photos/101081760",
+        "taxonId": 131586,
+        "licenseCode": "cc-by",
+        "originalUrl": "https://inaturalist-open-data.s3.amazonaws.com/photos/101081760/large.jpg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "foxglove",
+    "name": "Foxglove",
+    "latin": "Digitalis purpurea",
+    "family": "Plantaginaceae",
+    "aliases": [
+      "Common foxglove"
+    ],
+    "regions": [
+      "europe",
+      "north-america"
+    ],
+    "habitats": [
+      "woodland",
+      "disturbed",
+      "garden"
+    ],
+    "uses": [
+      "toxic"
+    ],
+    "parts": [],
+    "summary": "A poisonous biennial often first seen as a low rosette, before its conspicuous flower spike develops.",
+    "marks": [
+      "Coarse, wrinkled, hairy leaves in a first-year rosette.",
+      "Alternate smaller leaves on the later flowering stem.",
+      "Tall spikes of hanging tubular flowers, often internally spotted."
+    ],
+    "range": "Western European origin; widely grown and naturalized elsewhere.",
+    "season": "The leaf-only rosette is dangerous as well as the flowering plant.",
+    "stages": [
+      "all-stages"
+    ],
+    "preparation": "Do not eat, brew or use in home remedies.",
+    "caution": "Cardiac glycosides can cause serious, potentially fatal poisoning. Seek urgent advice after ingestion.",
+    "lookalikes": [
+      {
+        "name": "Comfrey",
+        "slug": "comfrey",
+        "note": "Both can have coarse hairy leaves; flowers and stem attachment differ. Neither is a pantry herb here."
+      }
+    ],
+    "stewardship": "Leave intact and keep separate from all food gathering.",
+    "status": "toxic",
+    "sources": [
+      {
+        "title": "NC State Extension · Digitalis purpurea",
+        "url": "https://plants.ces.ncsu.edu/plants/digitalis-purpurea/",
+        "supports": "Botanical description, range and documented use"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/foxglove-1.webp",
+        "credit": "Parent Gery",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/deed.en",
+        "caption": "Digitalis purpurea",
+        "source": "https://plants.ces.ncsu.edu/plants/digitalis-purpurea/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Digitalis_purpurea_L_MYDZRfiM10nW.jpeg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      },
+      {
+        "url": "/images/herbs/atlas/foxglove-2.webp",
+        "credit": "Nevit Dilmen",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/deed.en",
+        "caption": "Digitalis purpurea",
+        "source": "https://plants.ces.ncsu.edu/plants/digitalis-purpurea/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Digitalis_purpurea__WEHK3fx5gh79.jpeg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "pennyroyal",
+    "name": "Pennyroyal",
+    "latin": "Mentha pulegium",
+    "family": "Lamiaceae",
+    "aliases": [
+      "Flea mint",
+      "Churchwort"
+    ],
+    "regions": [
+      "europe",
+      "asia",
+      "africa"
+    ],
+    "habitats": [
+      "wet-ground",
+      "garden"
+    ],
+    "uses": [
+      "toxic"
+    ],
+    "parts": [],
+    "summary": "An aromatic mint that is harmful if eaten; mint fragrance is not an edibility guarantee.",
+    "marks": [
+      "Creeping and upright stems with opposite leaves.",
+      "Small lilac flowers in whorls.",
+      "Strong mint fragrance shared with edible and non-edible relatives."
+    ],
+    "range": "Europe to Iran and Ethiopia in the RHS account; cultivated and introduced elsewhere.",
+    "season": "Treat every stage as unsuitable for food gathering.",
+    "stages": [
+      "all-stages"
+    ],
+    "preparation": "Do not make tea, ingest essential oil or use as a home remedy.",
+    "caution": "The RHS explicitly identifies pennyroyal as non-edible and harmful if eaten.",
+    "lookalikes": [
+      {
+        "name": "American wild mint",
+        "slug": "wild-mint",
+        "note": "Both are aromatic and bear flower whorls. A full botanical key is essential."
+      }
+    ],
+    "stewardship": "Do not include in a culinary mint bed without clear identification and labeling.",
+    "status": "toxic",
+    "sources": [
+      {
+        "title": "RHS · Pennyroyal",
+        "url": "https://www.rhs.org.uk/plants/59137/mentha-pulegium/details",
+        "supports": "Botanical description, range and documented use"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/pennyroyal-1.webp",
+        "credit": "zebedeugalinha",
+        "license": "CC BY",
+        "licenseUrl": "https://www.inaturalist.org/photos/607923121",
+        "caption": "Reference specimen (Mentha pulegium)",
+        "source": "https://www.inaturalist.org/observations/334725457",
+        "photoPage": "https://www.inaturalist.org/photos/607923121",
+        "taxonId": 57116,
+        "licenseCode": "cc-by",
+        "originalUrl": "https://inaturalist-open-data.s3.amazonaws.com/photos/607923121/large.jpg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "spotted-spurge",
+    "name": "Spotted spurge",
+    "latin": "Euphorbia maculata",
+    "family": "Euphorbiaceae",
+    "aliases": [
+      "Chamaesyce maculata"
+    ],
+    "regions": [
+      "north-america",
+      "south-america",
+      "europe",
+      "asia",
+      "oceania"
+    ],
+    "habitats": [
+      "disturbed",
+      "garden"
+    ],
+    "uses": [
+      "toxic"
+    ],
+    "parts": [],
+    "summary": "A low mat-forming spurge with irritating milky sap, easily overlooked among purslane.",
+    "marks": [
+      "Thin, often hairy, branching stems close to the ground.",
+      "Small opposite leaves, sometimes with a dark central blotch.",
+      "Milky latex in damaged tissue; do not break it deliberately to test."
+    ],
+    "range": "American origin; introduced in many warm and temperate areas.",
+    "season": "Warm-season growth; absence of a leaf blotch does not make a plant safe.",
+    "stages": [
+      "all-stages"
+    ],
+    "preparation": "Do not eat or put in a mixed gathering.",
+    "caution": "Sap can injure skin and eyes; ingestion irritates the mouth and digestive tract.",
+    "lookalikes": [
+      {
+        "name": "Purslane",
+        "slug": "purslane",
+        "note": "Purslane has thick succulent leaves and stems; inspect the complete plant without tasting."
+      }
+    ],
+    "stewardship": "Avoid sap contact. Keep it out of food baskets and wash after accidental handling.",
+    "status": "toxic",
+    "sources": [
+      {
+        "title": "NC State Extension · Euphorbia maculata",
+        "url": "https://plants.ces.ncsu.edu/plants/euphorbia-maculata/",
+        "supports": "Botanical description, range and documented use"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/spotted-spurge-1.webp",
+        "credit": "Auckland Museum",
+        "license": "CC BY 4.0",
+        "licenseUrl": "http://creativecommons.org/licenses/by/4.0/legalcode",
+        "caption": "Leaves and Form",
+        "source": "https://plants.ces.ncsu.edu/plants/euphorbia-maculata/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Chamaesyce_maculata__NVQi8AXDem9c.jpg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      },
+      {
+        "url": "/images/herbs/atlas/spotted-spurge-2.webp",
+        "credit": "Cynthia Lauderdale",
+        "license": "CC BY 4.0",
+        "licenseUrl": "http://creativecommons.org/licenses/by/4.0/legalcode",
+        "caption": "Leaves and Seeds (Wilson County,NC)",
+        "source": "https://plants.ces.ncsu.edu/plants/euphorbia-maculata/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/Euphorbia_maculata-l_mHq8fWUgHPC6.jpeg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  },
+  {
+    "slug": "comfrey",
+    "name": "Common comfrey",
+    "latin": "Symphytum officinale",
+    "family": "Boraginaceae",
+    "aliases": [
+      "Knitbone"
+    ],
+    "regions": [
+      "europe",
+      "asia",
+      "north-america"
+    ],
+    "habitats": [
+      "wet-ground",
+      "garden",
+      "disturbed"
+    ],
+    "uses": [
+      "study",
+      "craft"
+    ],
+    "parts": [],
+    "summary": "A coarse perennial with a history of herbal use, included here as an observe-only plant.",
+    "marks": [
+      "Large rough, hairy leaves.",
+      "Upper leaf bases extend down the stem as wings.",
+      "Drooping clusters of tubular purple to pale flowers."
+    ],
+    "range": "Europe and western Asia; cultivated and naturalized elsewhere.",
+    "season": "Study flowering plants; rosettes can resemble poisonous foxglove.",
+    "stages": [
+      "flowering"
+    ],
+    "preparation": "Do not ingest or add to tea. This guide does not provide topical treatment instructions.",
+    "caution": "Ingestion can damage the liver. A history of medicinal use does not establish safety.",
+    "lookalikes": [
+      {
+        "name": "Foxglove",
+        "slug": "foxglove",
+        "note": "Hairy leaf rosettes can be confused; foxglove also poses a potentially fatal poisoning risk."
+      }
+    ],
+    "stewardship": "Observe a known garden specimen and keep all cut material out of the pantry.",
+    "status": "study",
+    "sources": [
+      {
+        "title": "NC State Extension · Symphytum officinale",
+        "url": "https://plants.ces.ncsu.edu/plants/symphytum-officinale/",
+        "supports": "Botanical description, range and documented use"
+      }
+    ],
+    "photos": [
+      {
+        "url": "/images/herbs/atlas/comfrey-1.webp",
+        "credit": "Linda Snider",
+        "license": "CC BY 4.0",
+        "licenseUrl": "http://creativecommons.org/licenses/by/4.0/legalcode",
+        "caption": "Plant",
+        "source": "https://plants.ces.ncsu.edu/plants/symphytum-officinale/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/B11CB5C9-C1F3-4530-8_IO2B0epENVcB.jpg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      },
+      {
+        "url": "/images/herbs/atlas/comfrey-2.webp",
+        "credit": "Linda Snider",
+        "license": "CC BY 4.0",
+        "licenseUrl": "http://creativecommons.org/licenses/by/4.0/legalcode",
+        "caption": "Flowers",
+        "source": "https://plants.ces.ncsu.edu/plants/symphytum-officinale/",
+        "originalUrl": "https://eit-planttoolbox-prod.s3.amazonaws.com/media/images/D93236A6-1A28-442E-9_EhE4Y4teuxTO.jpg",
+        "modification": "Resized and converted to WebP; may be cropped by the interface."
+      }
+    ],
+    "sourceChecked": "2026-09-09",
+    "reviewStatus": "Source checked; specialist field review pending"
+  }
+]

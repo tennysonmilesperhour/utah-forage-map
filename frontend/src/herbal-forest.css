@@ -78,12 +78,12 @@
 .herbal-shell--forest .seasonal-list button > span { padding: 66px 22px 23px; border: 0; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; background: linear-gradient(transparent, #011109cc 46%, #010b07eb); }
 .herbal-shell--forest .seasonal-list strong { font-size: 23px; font-weight: 400; }
 .herbal-shell--forest .seasonal-list small { color: #ccdfd3; }
-.herbal-shell--forest .herb-field-practice { margin: 12px 64px 36px; padding: 45px 38px 28px; border-radius: 10px; background: linear-gradient(100deg, #071d15f0, #071d1580), url('/images/herbs/forest-immersion.webp') center 58% / cover; border-color: #d5eddf25; box-shadow: inset 0 1px 0 #f2fff410; }
+.herbal-shell--forest .herb-field-practice { margin: 12px 64px 36px; padding: 45px 38px 28px; border-radius: 10px; background: linear-gradient(100deg, #071d15f0, #071d1580), url('/images/herbs/hoh-rainforest-griffin-quinn.webp') center 58% / cover; border-color: #d5eddf25; box-shadow: inset 0 1px 0 #f2fff410; }
 .herbal-shell--forest .field-practice-heading h2 { font-size: 33px; font-weight: 300; }
 .herbal-shell--forest .herb-callouts { margin: 0 64px 65px; gap: 40px; }
 .herbal-shell--forest .herb-callouts button { border-radius: 0; border: 0; border-top: 1px solid #cee6d832; background: none; box-shadow: none; padding: 28px 0; backdrop-filter: none; -webkit-backdrop-filter: none; }
 .herbal-shell--forest .herb-callouts button:hover { background: #c6ded107; }
-.herbal-shell--forest .herbal-main:not(.herbal-today) { background: linear-gradient(#020d09a6, #030b09 470px), url('/images/herbs/forest-immersion.webp') center top / 100% auto no-repeat; }
+.herbal-shell--forest .herbal-main:not(.herbal-today) { background: linear-gradient(#020d09a6, #030b09 470px), url('/images/herbs/hoh-rainforest-griffin-quinn.webp') center top / 100% auto no-repeat; }
 .herbal-shell--forest .atlas-heading { padding: 74px 64px 38px; }
 .herbal-shell--forest .atlas-heading h1 { font-size: clamp(46px, 6.1vw, 94px); font-weight: 300; letter-spacing: -.055em; }
 .herbal-shell--forest .atlas-heading > p { color: #bfd0c7; max-width: 345px; }
@@ -167,3 +167,7 @@
 @media (prefers-reduced-motion: reduce) {
   .herbal-shell--forest .seasonal-list img, .herbal-shell--forest .herb-folio img { transition: none; }
 }
+
+.herb-calendar-context { color: #b2c8ba; font-size: 11px; line-height: 1.8; max-width: 830px; margin: -5px 0 25px; }
+.forest-hero-foot a.forest-source-credit { font-size: 9px; opacity: .85; }
+@media (max-width: 640px) { .forest-hero-foot { flex-wrap: wrap; } .forest-hero-foot a.forest-source-credit { order: 3; width: 100%; font-size: 8px; } }
