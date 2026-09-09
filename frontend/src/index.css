@@ -7901,6 +7901,10 @@ textarea::placeholder {
 .moon-copy dl div + div { border-left: 1px solid #6f6077; padding-left: 22px; }
 .moon-copy dt { color: #a998af; font-size: 10px; text-transform: uppercase; }
 .moon-copy dd { margin: 5px 0 0; font: 500 27px var(--herb-serif); }
+.moon-devotional { margin: 0 0 24px; border-left: 2px solid var(--herb-gold); padding-left: 17px; }
+.moon-devotional > span { color: #df9db1; font-size: 10px; font-weight: 800; text-transform: uppercase; }
+.moon-devotional p { margin: 7px 0; color: #eee5ef; font: 500 18px/1.5 var(--herb-serif); }
+.moon-devotional small { color: #b9abbf; font-style: italic; }
 .tradition-note { display: flex; gap: 8px; margin: 0; color: #b9abbf; font-size: 12px; line-height: 1.55; }
 .tradition-note svg { flex: 0 0 auto; margin-top: 2px; color: #df9db1; }
 
@@ -7946,7 +7950,7 @@ textarea::placeholder {
 .seasonal-list em { color: var(--herb-muted); font: italic 15px var(--herb-serif); }
 .seasonal-list small { margin-top: 4px; color: var(--herb-leaf); font-size: 11px; text-transform: uppercase; }
 .ledger-footnote { margin: 18px 0 0; color: var(--herb-muted); font-size: 12px; }
-.herb-callouts { display: grid; grid-template-columns: 1fr 1fr; background: var(--herb-paper-deep); border-top: 1px solid var(--herb-line); }
+.herb-callouts { display: grid; grid-template-columns: repeat(3, 1fr); background: var(--herb-paper-deep); border-top: 1px solid var(--herb-line); }
 .herb-callouts button { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 17px; min-height: 126px; border: 0; background: transparent; padding: 26px 48px; color: var(--herb-leaf); text-align: left; cursor: pointer; }
 .herb-callouts button + button { border-left: 1px solid var(--herb-line); color: var(--herb-pink); }
 .herb-callouts button > span { display: grid; gap: 4px; color: var(--herb-ink); }
@@ -7995,7 +7999,86 @@ textarea::placeholder {
 .herb-tradition svg { flex: 0 0 auto; margin-top: 2px; }
 .herb-caution span,
 .herb-tradition span { display: grid; gap: 2px; }
+.plant-spirit-note { margin-top: 28px; border-top: 1px solid var(--herb-line); padding-top: 25px; }
+.plant-spirit-note h3 { margin: 0 0 18px; font: 600 27px/1.2 var(--herb-serif); }
+.plant-spirit-note dl { display: grid; gap: 13px; margin: 0; }
+.plant-spirit-note dl div { border-left: 2px solid var(--herb-gold); padding-left: 13px; }
+.plant-spirit-note dt { margin-bottom: 3px; color: var(--herb-pink); font-size: 10px; font-weight: 900; text-transform: uppercase; }
+.plant-spirit-note dd { margin: 0; font-size: 13px; line-height: 1.6; }
 .specimen-actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 28px; }
+
+.practice-library-main { background: var(--herb-paper); }
+.practice-hero { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr); align-items: end; gap: 56px; padding: 70px 48px 58px; }
+.practice-hero h1 { margin: 0; font: 500 78px/0.94 var(--herb-serif); }
+.practice-hero > div:last-child > p { margin: 0; color: var(--herb-muted); font-size: 16px; line-height: 1.7; }
+.practice-hero .practice-vow { margin-top: 18px; border-left: 2px solid var(--herb-gold); padding-left: 15px; color: var(--herb-leaf); font: italic 19px/1.5 var(--herb-serif); }
+.practice-section { border-top: 1px solid var(--herb-line); padding: 58px 48px 70px; }
+.practice-section:nth-child(even) { background: var(--herb-paper-bright); }
+.practice-section-heading { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 0.62fr); align-items: end; gap: 44px; margin-bottom: 34px; }
+.practice-section-heading .herb-kicker { grid-column: 1 / -1; margin-bottom: -24px; }
+.practice-section-heading h2 { margin: 0; font: 600 48px/1 var(--herb-serif); }
+.practice-section-heading > p:not(.herb-kicker) { margin: 0; color: var(--herb-muted); font-size: 14px; line-height: 1.65; }
+.rite-steps { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; margin: 0; border-top: 1px solid var(--herb-line); padding: 0; list-style: none; }
+.rite-steps li { display: grid; grid-template-columns: 46px 1fr; gap: 15px; border-bottom: 1px solid var(--herb-line); padding: 25px 26px 27px 0; }
+.rite-steps li:nth-child(odd) { border-right: 1px solid var(--herb-line); }
+.rite-steps li:nth-child(even) { padding-left: 26px; }
+.rite-steps li > span { color: var(--herb-pink); font-size: 11px; font-weight: 900; }
+.rite-steps h3 { margin: 0 0 7px; font: 600 26px var(--herb-serif); }
+.rite-steps p { margin: 0; color: var(--herb-muted); font-size: 13px; line-height: 1.65; }
+.rite-steps small { display: block; margin-top: 12px; color: var(--herb-leaf); font-size: 12px; line-height: 1.55; }
+.part-window-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--herb-line); border-left: 1px solid var(--herb-line); }
+.part-window-grid article { min-width: 0; border-right: 1px solid var(--herb-line); border-bottom: 1px solid var(--herb-line); padding: 25px; }
+.part-window-grid article > p { margin: 0 0 5px; color: var(--herb-pink); font-size: 10px; font-weight: 800; text-transform: uppercase; }
+.part-window-grid h3 { margin: 0 0 19px; font: 600 28px var(--herb-serif); }
+.part-window-grid dl { display: grid; gap: 14px; margin: 0; }
+.part-window-grid dt { margin-bottom: 3px; color: var(--herb-leaf); font-size: 10px; font-weight: 900; text-transform: uppercase; }
+.part-window-grid dd { margin: 0; color: var(--herb-muted); font-size: 12px; line-height: 1.55; }
+.moon-round { background: var(--herb-night) !important; color: #f6f0e5; }
+.moon-round .practice-section-heading > p:not(.herb-kicker) { color: #b9abbf; }
+.moon-practice-grid { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid #6f6077; border-left: 1px solid #6f6077; }
+.moon-practice-grid article { display: grid; grid-template-columns: 42px 1fr; gap: 13px; min-height: 245px; border-right: 1px solid #6f6077; border-bottom: 1px solid #6f6077; padding: 24px 20px; }
+.phase-mark { position: relative; display: block; width: 36px; height: 36px; overflow: hidden; border: 1px solid #dfc783; border-radius: 50%; background: #dfc783; }
+.phase-mark i { position: absolute; inset: 0; border-radius: 50%; background: var(--herb-night); }
+.phase-1 i, .phase-2 i, .phase-3 i { transform: translateX(-12px); }
+.phase-2 i { transform: translateX(-22px); }
+.phase-3 i { transform: translateX(-32px); }
+.phase-4 i { display: none; }
+.phase-5 i, .phase-6 i, .phase-7 i { transform: translateX(12px); }
+.phase-6 i { transform: translateX(22px); }
+.phase-7 i { transform: translateX(32px); }
+.phase-0 { background: var(--herb-night); }
+.moon-practice-grid article p:first-child { margin: 0 0 4px; color: #df9db1; font-size: 9px; font-weight: 800; text-transform: uppercase; }
+.moon-practice-grid h3 { margin: 0 0 11px; font: 600 24px var(--herb-serif); }
+.moon-practice-grid article p:not(:first-child) { margin: 0; color: #c9becb; font-size: 12px; line-height: 1.6; }
+.moon-practice-grid small { display: block; margin-top: 12px; color: #dfc783; font-size: 11px; font-style: italic; line-height: 1.45; }
+.sky-way-list { border-top: 1px solid var(--herb-line); }
+.sky-way-list article { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 16px; border-bottom: 1px solid var(--herb-line); padding: 24px 0; }
+.sky-way-list article > svg { margin-top: 4px; color: var(--herb-gold); }
+.sky-way-list article p { margin: 0 0 3px; color: var(--herb-pink); font-size: 10px; font-weight: 800; text-transform: uppercase; }
+.sky-way-list h3 { margin: 0 0 7px; font: 600 27px var(--herb-serif); }
+.sky-way-list span { display: block; max-width: 900px; color: var(--herb-muted); font-size: 13px; line-height: 1.65; }
+.lineage-guidance { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--herb-line); }
+.lineage-guidance article { border-bottom: 1px solid var(--herb-line); padding: 25px 26px 25px 0; }
+.lineage-guidance article + article { border-left: 1px solid var(--herb-line); padding-left: 26px; }
+.lineage-guidance h3 { margin: 0 0 8px; font: 600 25px var(--herb-serif); }
+.lineage-guidance p { margin: 0; color: var(--herb-muted); font-size: 13px; line-height: 1.65; }
+.journal-section { display: grid; grid-template-columns: minmax(300px, 0.72fr) minmax(420px, 1.28fr); gap: 60px; }
+.journal-section .practice-section-heading { display: block; margin: 0; }
+.journal-section .practice-section-heading .herb-kicker { margin-bottom: 8px; }
+.journal-section .practice-section-heading h2 { margin-bottom: 18px; }
+.journal-prompts { margin: 0; border-top: 1px solid var(--herb-line); padding: 0; list-style: none; counter-reset: journal; }
+.journal-prompts li { counter-increment: journal; border-bottom: 1px solid var(--herb-line); padding: 14px 0 14px 42px; color: var(--herb-ink); font-size: 13px; line-height: 1.55; }
+.journal-prompts li::before { float: left; width: 32px; margin-left: -42px; color: var(--herb-pink); font-size: 10px; font-weight: 900; content: counter(journal, decimal-leading-zero); }
+.reading-room { background: var(--herb-paper-deep) !important; }
+.tradition-shelf { display: grid; grid-template-columns: repeat(2, 1fr); border-top: 1px solid var(--herb-line); }
+.tradition-shelf a { display: grid; grid-template-columns: 1fr auto; gap: 4px 18px; border-bottom: 1px solid var(--herb-line); padding: 20px 22px 21px 0; color: inherit; text-decoration: none; }
+.tradition-shelf a:nth-child(odd) { border-right: 1px solid var(--herb-line); }
+.tradition-shelf a:nth-child(even) { padding-left: 22px; }
+.tradition-shelf a:hover h3 { color: var(--herb-pink); }
+.tradition-shelf h3 { margin: 0; font: 600 22px var(--herb-serif); }
+.tradition-shelf a > svg { grid-column: 2; grid-row: 1 / 4; align-self: center; color: var(--herb-leaf); }
+.tradition-shelf p { margin: 3px 0 0; color: var(--herb-muted); font-size: 11px; line-height: 1.45; }
+.tradition-shelf small { color: var(--herb-leaf); font-size: 10px; }
 
 .herb-guest-gate { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 26px; margin: 0 48px 64px; border-top: 1px solid var(--herb-line); border-bottom: 1px solid var(--herb-line); padding: 34px 0; }
 .herb-guest-gate > span { display: inline-flex; align-items: center; justify-content: center; width: 62px; height: 62px; border-radius: 50%; background: var(--herb-paper-deep); color: var(--herb-leaf); }
@@ -8146,7 +8229,7 @@ textarea::placeholder {
   .herbal-header { grid-template-columns: 1fr auto auto; }
   .herbal-header .world-switch { grid-column: 2; }
   .herbal-header nav { position: absolute; top: 71px; right: 0; left: 0; display: none; height: auto; margin: 0; border-bottom: 1px solid var(--herb-line); background: var(--herb-paper-bright); padding: 9px; }
-  .herbal-header nav.open { display: grid; grid-template-columns: repeat(4, 1fr); }
+  .herbal-header nav.open { display: grid; grid-template-columns: repeat(5, 1fr); }
   .herbal-header nav button { min-height: 48px; justify-content: center; }
   .herbal-header nav button svg { display: block; }
   .herbal-menu-button { display: inline-flex; }
@@ -8163,6 +8246,9 @@ textarea::placeholder {
   .herb-specimen-copy { padding: 54px 34px 80px; }
   .watch-workspace { grid-template-columns: 1fr; }
   .watch-form { border-right: 0; border-bottom: 1px solid var(--herb-line); }
+  .part-window-grid { grid-template-columns: repeat(2, 1fr); }
+  .moon-practice-grid { grid-template-columns: repeat(2, 1fr); }
+  .journal-section { grid-template-columns: 1fr; gap: 32px; }
 }
 
 @media (max-width: 700px) {
@@ -8179,7 +8265,8 @@ textarea::placeholder {
   .herbal-account-actions .herb-solid-button { min-height: 38px; padding: 0 10px; }
   .herbal-intro { gap: 18px; padding: 42px 20px 28px; }
   .herbal-intro h1,
-  .atlas-heading h1 { font-size: 49px; }
+  .atlas-heading h1,
+  .practice-hero h1 { font-size: 49px; }
   .herbal-intro > p,
   .atlas-heading > p { font-size: 14px; }
   .moon-observatory { grid-template-columns: 1fr; }
@@ -8207,6 +8294,21 @@ textarea::placeholder {
   .herb-callouts { grid-template-columns: 1fr; }
   .herb-callouts button { padding: 24px 20px; }
   .herb-callouts button + button { border-top: 1px solid var(--herb-line); border-left: 0; }
+  .practice-hero { grid-template-columns: 1fr; gap: 24px; padding: 46px 20px 38px; }
+  .practice-section { padding: 43px 20px 52px; }
+  .practice-section-heading { grid-template-columns: 1fr; gap: 14px; }
+  .practice-section-heading .herb-kicker { grid-column: 1; margin-bottom: 0; }
+  .practice-section-heading h2 { font-size: 38px; }
+  .rite-steps { grid-template-columns: 1fr; }
+  .rite-steps li:nth-child(odd) { border-right: 0; }
+  .rite-steps li:nth-child(even) { padding-left: 0; }
+  .part-window-grid,
+  .moon-practice-grid,
+  .lineage-guidance,
+  .tradition-shelf { grid-template-columns: 1fr; }
+  .lineage-guidance article + article { border-left: 0; padding-left: 0; }
+  .tradition-shelf a:nth-child(odd) { border-right: 0; }
+  .tradition-shelf a:nth-child(even) { padding-left: 0; }
   .atlas-heading { padding: 42px 20px 26px; }
   .herb-atlas-tools { grid-template-columns: 1fr; padding: 0 20px 22px; }
   .herb-folio { grid-template-columns: 1fr; }

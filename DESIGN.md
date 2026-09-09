@@ -53,6 +53,6 @@ Fungi tokens are scoped to `.mycelial-theme`; herbs uses `.herbal-shell--forest`
 - Sidebars become drawers on phones. Overlays must preserve close controls, readable content, and scrolling at narrow sizes.
 - Preserve all existing data, field-safety wording, credits, source links, privacy choices, and account workflows.
 - Respect reduced-motion preferences. Do not animate full-screen artwork. Fungi glass has an opaque fallback for reduced-transparency preferences.
-- Moon phase remains a calculated illustration with text for phase and illumination. Traditional correspondences must remain distinct from astronomical or scientific claims.
+- Moon phase remains a calculated illustration with text for phase and illumination. Its spiritual guidance should name the lineage or identify itself as a personal synthesis, without requiring academic validation or overriding identity, consent, habitat health, and lawful access.
 
 See [the fungi implementation and artwork provenance](docs/MYCELIAL_DESIGN.md), [approved herbal B](docs/HERBAL_FOREST_ALTERNATIVE.md), and [the earlier herbal reference history](docs/HERBAL_DESIGN.md).
