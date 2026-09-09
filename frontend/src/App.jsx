@@ -22,7 +22,7 @@ import { trackPageView } from './lib/googleTag'
 import './mycelial.css'
 
 const MapView = lazy(() => import('./components/MapView'))
-export default function App({ path = '/' }) {
+export default function App({ path = '/map' }) {
   const initialParams = new URLSearchParams(typeof window === 'undefined' ? '' : window.location.search)
   const initialTaxonId = Number(initialParams.get('taxon')) || undefined
   const initialRegion = regionBySlug[initialParams.get('region')]
@@ -102,7 +102,7 @@ export default function App({ path = '/' }) {
       .catch(() => setToast('That field bulletin could not be created.'))
       .finally(() => {
         setFollowHandled(true)
-        window.history.replaceState({}, '', '/')
+        window.history.replaceState({}, '', '/map')
       })
     // The handoff is consumed once after authentication resolves.
     // eslint-disable-next-line react-hooks/exhaustive-deps

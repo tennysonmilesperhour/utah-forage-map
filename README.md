@@ -76,6 +76,8 @@ Set `VITE_MAPBOX_TOKEN` in `frontend/.env`. Vite proxies `/api` to `http://127.0
 
 Open [http://127.0.0.1:5173](http://127.0.0.1:5173).
 
+The home page (`/`) is the **Fungi Library**. The observation map lives at `/map`; fungi logos and collection switches return to the library. `/learn` redirects home, while `/learn/species/*` and `/learn/foraging/*` retain their URLs. Old root links with map filters or account-action tokens redirect to `/map` with their query parameters preserved. The herb landing page remains `/herbs`.
+
 ## Verification
 
 ```bash

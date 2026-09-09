@@ -7,6 +7,23 @@ const origin = 'https://worldmushroomforaging.org'
 const reference = JSON.parse(await readFile(new URL('reference/index.json', dist), 'utf8'))
 const pages = new Map(await Promise.all(reference.pages.map(async page => [new URL(page.url).pathname, load(await readFile(new URL(`${new URL(page.url).pathname.slice(1)}${page.url.endsWith('/') ? '' : '/'}index.html`, dist), 'utf8'))])))
 
+test('the home page serves the fungi library and the map has its own canonical page', () => {
+  const home = pages.get('/')
+  const map = pages.get('/map')
+  assert.ok(home && map)
+  assert.match(home('title').text(), /Fungi Library/)
+  assert.ok(home('.learn-hero').length)
+  assert.equal(home('.guide-species-card').length, 30)
+  assert.equal(home('.collection-nav a[aria-current="page"]').text().trim(), 'Library')
+  assert.ok(home('a[href="/map"]').length)
+  assert.ok(map('.map-stage').length)
+  assert.equal(map('.collection-nav a[aria-current="page"]').text().trim(), 'Field map')
+  assert.equal(map('link[rel="canonical"]').attr('href'), origin + '/map')
+  assert.ok(!pages.has('/learn'))
+  assert.equal(reference.pages.find(page => page.url === origin + '/').text, origin + '/reference/library.md')
+  assert.equal(reference.pages.find(page => page.url === origin + '/map').text, origin + '/reference/map.md')
+})
+
 test('every canonical page has readable HTML, unique metadata, one canonical, and valid structured data', () => {
   const titles = new Set()
   for (const [path, $] of pages) {

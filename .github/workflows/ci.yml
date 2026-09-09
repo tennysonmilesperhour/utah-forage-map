@@ -24,6 +24,7 @@ jobs:
       - run: npm run test:herbs
       - run: npm run test:map
       - run: npm run test:motion
+      - run: npm run test:navigation
       - run: npm run test:seo
 
   backend:

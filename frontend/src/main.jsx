@@ -2,6 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot, hydrateRoot } from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import './index.css'
+import { legacyFungiRedirect } from './lib/navigation'
 import AnalyticsConsent from './components/AnalyticsConsent'
 import { initGoogleTag } from './lib/googleTag'
 import { initAdSense } from './lib/adsense'
@@ -25,8 +26,10 @@ const isSupporterPath = /^\/supporters\/?$/.test(pathname)
 const isHerbMapPath = /^\/herbs\/map\/?$/.test(pathname)
 const isHerbalGuidePath = /^\/herbs\/(atlas|regions|fieldcraft)(\/|$)/.test(pathname)
 const isHerbalPath = pathname === '/herbs' || pathname.startsWith('/herbs/')
-const isGuidePath = pathname === '/learn' || pathname.startsWith('/learn/') || pathname === '/regions' || pathname.startsWith('/regions/') || pathname === '/about' || pathname === '/privacy' || pathname === '/disclaimer'
+const isGuidePath = pathname === '/' || pathname === '/learn' || pathname.startsWith('/learn/') || pathname === '/regions' || pathname.startsWith('/regions/') || pathname === '/about' || pathname === '/privacy' || pathname === '/disclaimer'
 async function mount() {
+  const redirect = legacyFungiRedirect(pathname, window.location.search, window.location.hash)
+  if (redirect) { window.location.replace(redirect); return }
   const { default: Page } = isSupporterPath ? await import('./SupportersApp.jsx') : isHerbMapPath ? await import('./HerbMapApp.jsx') : isHerbalGuidePath ? await import('./HerbAtlasApp.jsx')
     : isHerbalPath ? await import('./HerbalApp.jsx')
       : isGuidePath ? await import('./GuideApp.jsx') : await import('./App.jsx')

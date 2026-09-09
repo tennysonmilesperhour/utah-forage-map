@@ -27,7 +27,7 @@ Use this checklist to organize observations for a field guide or qualified local
 Keep photographs of a single specimen together. Do not combine the cap of one mushroom with the underside of another similar-looking mushroom. Leave uncertain observations labeled as uncertain.
 
 ## Use the field profiles as comparisons
-The [species archive](/learn) separates field marks, lookalikes, habitat, source links and public observation signals. Start with the underlying structures, not the color of the card or an edibility badge. Follow cited references and check whether they describe your region. Some groups require microscopy or other specialist evidence beyond what this website contains.
+The [fungi library](/) separates field marks, lookalikes, habitat, source links and public observation signals. Start with the underlying structures, not the color of the card or an edibility badge. Follow cited references and check whether they describe your region. Some groups require microscopy or other specialist evidence beyond what this website contains.
 
 For a concrete study pair, compare the [morel](/learn/species/morel) and [false morel](/learn/species/false-morel) profiles with the [morel lookalike discussion](/learn/foraging/morel-lookalikes). Matching a few listed features is not a food-safety decision.
 

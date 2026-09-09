@@ -2,7 +2,7 @@ import { foragingGuides, foragingBySlug } from '../content/foraging.generated'
 import { speciesBySlug, speciesGuides } from '../content/species.generated'
 import { regionBySlug, regions } from '../data/regions'
 
-import { SITE_URL, DEFAULT_IMAGE, siteEntities, applyMetadata, breadcrumb } from './siteIdentity'
+import { SITE_URL, DEFAULT_IMAGE, FUNGI_LIBRARY_METADATA, siteEntities, applyMetadata, breadcrumb } from './siteIdentity'
 export const GUIDE_SITE_URL = SITE_URL
 
 const DATASET_CREATOR = {
@@ -20,10 +20,7 @@ const DATASET_LICENSE = {
 
 const FIXED_METADATA = {
   '/learn/foraging': { title: 'Mushroom & Wild Herb Foraging Guides | Field Skills', description: 'Practical guides to mushroom identification, seasonal records, wild herb gathering, poisonous lookalikes, land access, and documenting finds.' },
-  '/learn': {
-    title: 'Mushroom Identification Guide | Field Marks, Lookalikes and Live Finds',
-    description: 'Study 30 mushrooms with concise field marks, dangerous lookalike checks, licensed photos, cited safety guidance, and recent reviewed observations.',
-  },
+  '/': FUNGI_LIBRARY_METADATA,
   '/learn/safety': {
     title: 'Wild Mushroom Safety and Poison Response | Mushroom Forage Map',
     description: 'Learn the non-negotiable rules of wild mushroom identification and what to do immediately after a suspected mushroom poisoning.',
@@ -47,8 +44,8 @@ const FIXED_METADATA = {
 }
 
 function normalizedPath(pathname) {
-  if (!pathname || pathname === '/') return '/learn'
-  return pathname.length > 1 ? pathname.replace(/\/$/, '') : pathname
+  const path = pathname?.replace(/\/$/, '') || '/'
+  return path === '/learn' ? '/' : path
 }
 
 export function guideMetadataForPath(pathname) {
@@ -97,7 +94,7 @@ export function guideStructuredData(pathname) {
     name: 'Mushroom Forage Map',
   }
   const breadcrumbItems = [
-    { '@type': 'ListItem', position: 1, name: 'Mushroom guide', item: `${GUIDE_SITE_URL}/learn` },
+    { '@type': 'ListItem', position: 1, name: 'Fungi library', item: `${GUIDE_SITE_URL}/` },
   ]
 
   if (metadata.article || metadata.path === '/learn/foraging') {
@@ -109,7 +106,7 @@ export function guideStructuredData(pathname) {
       inLanguage: 'en', isAccessibleForFree: true, isPartOf: { '@id': website['@id'] },
       publisher: { '@id': `${SITE_URL}/#organization` },
       ...(article ? { author: { '@type': 'Organization', name: article.author, url: `${SITE_URL}/about#editorial` }, datePublished: article.published, dateModified: article.updated, citation: article.sources.map(source => source.url) } : { mainEntity: { '@type': 'ItemList', itemListElement: foragingGuides.map((guide, index) => ({ '@type': 'ListItem', position: index + 1, name: guide.title, url: `${SITE_URL}/learn/foraging/${guide.slug}` })) } }),
-    }, breadcrumb([['Mushroom guide', '/learn'], ['Field skills', '/learn/foraging'], ...(article ? [[article.title, metadata.path]] : [])])] }
+    }, breadcrumb([['Fungi library', '/'], ['Field skills', '/learn/foraging'], ...(article ? [[article.title, metadata.path]] : [])])] }
   }
 
   if (metadata.region) {
@@ -141,7 +138,7 @@ export function guideStructuredData(pathname) {
     return {
       '@context': 'https://schema.org',
       '@graph': [...siteEntities(), {
-        '@type': metadata.path === '/learn' ? 'CollectionPage' : 'WebPage',
+        '@type': metadata.path === '/' ? 'CollectionPage' : 'WebPage',
         name: metadata.title,
         description: metadata.description,
         url: canonical,
@@ -194,7 +191,7 @@ export function applyGuideMetadata(pathname) {
 
 export function guideRoutes() {
   return [
-    '/learn',
+    '/',
     '/learn/foraging',
     ...foragingGuides.map(guide => `/learn/foraging/${guide.slug}`),
     ...speciesGuides.map(species => `/learn/species/${species.slug}`),

@@ -40,6 +40,7 @@ class HistogramResponse:
 
 
 def token_from_last_link(name):
+    assert urlparse(sent_links[-1]).path == "/map", "Account actions must open the map app, not the library"
     return parse_qs(urlparse(sent_links[-1]).query)[name][0]
 
 

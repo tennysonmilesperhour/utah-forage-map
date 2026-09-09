@@ -12,7 +12,7 @@ const renderer = await import(pathToFileURL(path.join(root, '.ssr', 'ssr.js')).h
 const routes = renderer.guideRoutes()
 const herbRoutes = renderer.herbGuideRoutes()
 const siteUrl = 'https://worldmushroomforaging.org'
-const appRoutes = ['/', '/community', '/field-guide', '/herbs', '/herbs/map', '/supporters']
+const appRoutes = ['/map', '/community', '/field-guide', '/herbs', '/herbs/map', '/supporters']
 // Public, aggregate responses only. An unavailable upstream must never break the static guide.
 const publicQueries = [
   { key: ['guide-species-summaries'], endpoint: '/api/guide/species' },
@@ -35,7 +35,7 @@ await Promise.all(Array.from({ length: 3 }, async () => {
 }))
 function snapshotFor(route) {
   return snapshots.filter(entry =>
-    (entry.key[0] === 'guide-species-summaries' && (route === '/learn' || route.startsWith('/learn/species/'))) ||
+    (entry.key[0] === 'guide-species-summaries' && (route === '/' || route.startsWith('/learn/species/'))) ||
     (entry.key[0] === 'regions' && route === '/regions') ||
     (entry.key[0] === 'region' && route === `/regions/${entry.key[1]}`))
 }
@@ -165,7 +165,7 @@ const latestSpeciesReview = latestDate(...speciesMetadata.map(metadata => metada
 
 const pageEntries = [
   ...appRoutes.map(pathname => ({ path: pathname, lastmod: appLastModified })),
-  { path: '/learn', lastmod: latestDate(guideLastModified, latestSpeciesReview) },
+  { path: '/', lastmod: latestDate(guideLastModified, latestSpeciesReview) },
   { path: '/learn/safety', lastmod: guideLastModified },
   { path: '/learn/foraging', lastmod: gitLastModified(['content/foraging']) || '2026-09-09' },
   ...routes.map(route => renderer.guideMetadataForPath(route)).filter(metadata => metadata.article).map(metadata => ({ path: metadata.path, lastmod: metadata.article.updated })),
@@ -241,7 +241,7 @@ for (const route of [...appRoutes, ...routes, ...herbRoutes]) {
   })
   main.find('h1, h2, h3, p, li, dt, dd, tr, section, article, nav, div').each((index, element) => { $(element).append('\n\n'); if (/h[123]/.test(element.tagName)) $(element).prepend('#'.repeat(Number(element.tagName[1])) + ' ') })
   const body = main.text().replace(/[ \t]+/g, ' ').replace(/\n\s*\n\s*\n/g, '\n\n').trim()
-  const filename = route === '/' ? 'map.md' : `${route.slice(1).replaceAll('/', '--')}.md`
+  const filename = route === '/' ? 'library.md' : `${route.slice(1).replaceAll('/', '--')}.md`
   await writeFile(path.join(dist, 'reference', filename), `# ${metadata.title}\n\nCanonical: ${siteUrl}${route}\n\n${metadata.description}\n\nThis text mirrors the public page. Consult the canonical page for current observations, source credits, and review status. Educational reference only; it does not establish edibility or land access.\n\n${body}\n`)
   referencePages.push({ title: metadata.title, description: metadata.description, url: `${siteUrl}${route}`, text: `${siteUrl}/reference/${filename}` })
 }
@@ -253,8 +253,8 @@ await writeFile(path.join(dist, 'llms.txt'), `# Mushroom Forage Map and The Verd
 Observation records are not identification, proof of edibility, or access permission. Traditional herb associations are distinguished from scientific evidence. Photographs retain their source licenses; the decorative fungi hero includes disclosed AI outpainting.
 
 ## Start here
-- [Mushroom map](${siteUrl}/): Filter dated public observations by species and place.
-- [Mushroom identification atlas](${siteUrl}/learn): Field marks, lookalikes, photographs, sources, and recent observations.
+- [Fungi library](${siteUrl}/): Mushroom field marks, lookalikes, photographs, sources, and recent observations.
+- [Mushroom map](${siteUrl}/map): Filter dated public observations by species and place.
 - [Global herb observation map](${siteUrl}/herbs/map): Real wild plant records by place, plant, date and month.
 - [Wild plant atlas](${siteUrl}/herbs/atlas): Plant identification, toxic lookalikes, regional context, and source notes.
 - [Practical foraging guides](${siteUrl}/learn/foraging): Identification process, seasons, land access, and recording finds.

@@ -35,9 +35,100 @@
       "source": "/:path*/index.html",
       "destination": "/:path*",
       "permanent": true
+    },
+    {
+      "source": "/learn",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/reference/learn.md",
+      "destination": "/reference/library.md",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "taxon"
+        }
+      ],
+      "destination": "/map",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "region"
+        }
+      ],
+      "destination": "/map",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "observation"
+        }
+      ],
+      "destination": "/map",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "follow"
+        }
+      ],
+      "destination": "/map",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "verify"
+        }
+      ],
+      "destination": "/map",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "reset"
+        }
+      ],
+      "destination": "/map",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "submit"
+        }
+      ],
+      "destination": "/map",
+      "permanent": true
     }
   ],
   "rewrites": [
+    {
+      "source": "/map",
+      "destination": "/map/index.html"
+    },
     {
       "source": "/herb-observations",
       "destination": "/api/herb-observations"
@@ -61,10 +152,6 @@
     {
       "source": "/field-guide",
       "destination": "/field-guide/index.html"
-    },
-    {
-      "source": "/learn",
-      "destination": "/learn/index.html"
     },
     {
       "source": "/learn/:path*",
@@ -112,7 +199,7 @@
     },
     {
       "source": "/account",
-      "destination": "/index.html"
+      "destination": "/map/index.html"
     },
     {
       "source": "/privacy",

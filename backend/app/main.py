@@ -480,7 +480,7 @@ def register(
         "Verify your field account",
         "Confirm this email so you can always recover your logbook.",
         "Verify email",
-        f"/?verify={verification_token}",
+        f"/map?verify={verification_token}",
     )
     return user
 
@@ -557,7 +557,7 @@ def resend_verification(
         "Verify your field account",
         "Confirm this email so you can always recover your logbook.",
         "Verify email",
-        f"/?verify={token}",
+        f"/map?verify={token}",
     )
     return {"message": "Verification email requested"}
 
@@ -582,7 +582,7 @@ def forgot_password(
             "Reset your password",
             "Use this link to choose a new password for your field account.",
             "Reset password",
-            f"/?reset={token}",
+            f"/map?reset={token}",
         )
     else:
         db.commit()
@@ -1616,11 +1616,11 @@ def send_weekly_alerts(
                 if not zone_snapshot["readiness"]["ready"]:
                     continue
                 label = subscription.name
-                path = f"/?taxon={subscription.species.inaturalist_taxon_id}"
+                path = f"/map?taxon={subscription.species.inaturalist_taxon_id}"
             elif subscription.kind == "species":
                 query = query.filter(Sighting.species_id == subscription.species_id)
                 label = subscription.species.common_name
-                path = f"/?taxon={subscription.species.inaturalist_taxon_id}"
+                path = f"/map?taxon={subscription.species.inaturalist_taxon_id}"
             else:
                 region = get_region(subscription.region_slug)
                 if region is None:
