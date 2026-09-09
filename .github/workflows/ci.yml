@@ -23,6 +23,7 @@ jobs:
       - run: npm run build
       - run: npm run test:herbs
       - run: npm run test:map
+      - run: npm run test:seo
 
   backend:
     runs-on: ubuntu-latest

@@ -2,11 +2,6 @@ import { StrictMode } from 'react'
 import { createRoot, hydrateRoot } from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import './index.css'
-import App from './App.jsx'
-import GuideApp from './GuideApp.jsx'
-import HerbAtlasApp from './HerbAtlasApp.jsx'
-import { isHerbGuidePath } from './data/herbGuide'
-import LazyHerbalApp from './components/LazyHerbalApp.jsx'
 import AnalyticsConsent from './components/AnalyticsConsent'
 import { initGoogleTag } from './lib/googleTag'
 import { initAdSense } from './lib/adsense'
@@ -26,17 +21,19 @@ const queryClient = new QueryClient({
 
 const root = document.getElementById('root')
 const pathname = window.location.pathname
-const isHerbalGuidePath = isHerbGuidePath(pathname)
+const isHerbalGuidePath = /^\/herbs\/(atlas|regions|fieldcraft)(\/|$)/.test(pathname)
 const isHerbalPath = pathname === '/herbs' || pathname.startsWith('/herbs/')
 const isGuidePath = pathname === '/learn' || pathname.startsWith('/learn/') || pathname === '/regions' || pathname.startsWith('/regions/') || pathname === '/about' || pathname === '/privacy' || pathname === '/disclaimer'
-const content = (
-  <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      {isHerbalGuidePath ? <HerbAtlasApp path={pathname} /> : isHerbalPath ? <LazyHerbalApp /> : isGuidePath ? <GuideApp path={pathname} /> : <App />}
-      <AnalyticsConsent collection={isHerbalPath ? 'herbs' : 'fungi'} />
-    </QueryClientProvider>
-  </StrictMode>
-)
-
-if ((isGuidePath || isHerbalGuidePath) && root.hasChildNodes()) hydrateRoot(root, content)
-else createRoot(root).render(content)
+async function mount() {
+  const { default: Page } = isHerbalGuidePath ? await import('./HerbAtlasApp.jsx')
+    : isHerbalPath ? await import('./HerbalApp.jsx')
+      : isGuidePath ? await import('./GuideApp.jsx') : await import('./App.jsx')
+  const snapshot = document.getElementById('public-query-snapshot')
+  if (snapshot) {
+    for (const entry of JSON.parse(snapshot.textContent)) queryClient.setQueryData(entry.key, entry.data, { updatedAt: entry.updatedAt })
+  }
+  const content = <StrictMode><QueryClientProvider client={queryClient}><Page path={pathname} /><AnalyticsConsent collection={isHerbalPath ? 'herbs' : 'fungi'} /></QueryClientProvider></StrictMode>
+  if ((isGuidePath || isHerbalGuidePath) && root.hasChildNodes()) hydrateRoot(root, content)
+  else createRoot(root).render(content)
+}
+mount()

@@ -15,6 +15,7 @@ warning: The toothed group is distinctive, but regional Hydnum taxonomy is compl
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-08-15
+last_updated: "2026-09-09"
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/334621381/large.jpg
   alt: Tan hedgehog mushroom showing pale teeth beneath its cap
@@ -35,18 +36,31 @@ lookalikes:
     check: These toothed fungi are woody or corky rather than brittle and tender.
 ---
 
-## Identification
+## What distinguishes a hedgehog mushroom?
 
-Turn the cap over first: hedgehog mushrooms have soft, pale spines that detach when rubbed. The cap is irregular and dull orange to tan, the flesh is brittle and pale, and there is no ring or volva. They grow from soil rather than shelving from wood.
+A pale, toothed underside is the first feature to document. The [Missouri Department of Conservation](https://mdc.mo.gov/discover-nature/field-guide/hedgehog-mushroom) describes *Hydnum repandum* with an uneven tan to orange cap, pale spines extending toward the stalk, and a white spore print. It grows from the ground in woodland. These are comparison features, not an edibility test.
 
-## Uses and ecology
+Record a top view, a sharply focused underside, the stem and base, and the surrounding habitat. Include a scale and keep photographs from the same specimen together. Our [identification documentation guide](/learn/foraging/mushroom-identification) explains how to assemble a useful record for local expert review.
 
-Hydnum species are mycorrhizal forest partners and are commonly cooked much like chanterelles. Older specimens can become bitter. No dangerous toothed, soil-growing lookalike is generally recognized, but that does not remove the need to confirm the whole mushroom and its habitat.
+## Hedgehog mushroom lookalikes and shared names
 
-## Memorable fact
+The word “hedgehog” is not a unique scientific identification. The Missouri guide also notes that *Hericium erinaceus* can carry that common name, although it forms a hanging, beardlike mass on wood. Compare its growth form with our [lion’s mane profile](/learn/species/lions-mane).
 
-DNA evidence places hedgehogs in the same order as chanterelles, which helps explain their similar culinary character.
+Chanterelles have folds rather than separate teeth. Photograph the actual underside instead of judging by cap color. Other toothed fungi and regional *Hydnum* species still require a local reference; teeth alone do not settle the identification. Keep uncertain records at the broadest identification the evidence supports.
+
+## Habitat, season and observation records
+
+The Missouri reference describes ground-growing mushrooms in mixed woodland and a July–November season in that state. That calendar should not be applied worldwide. Climate, local species and observation effort change what appears in the records.
+
+Use the seasonal chart as a record of submissions, then open the map for the region you intend to visit. A sparse chart may reflect limited reporting. A photograph from last year does not establish current fruiting, and a public marker does not grant collecting permission. See [reading mushroom seasons](/learn/foraging/mushroom-season).
+
+## Ecology and food-use limits
+
+Hydnum fungi form mycorrhizal partnerships with trees. Preserving the habitat is part of responsible field study. Where collecting is allowed, make only the collection needed for an agreed identification or documentation purpose.
+
+An edible label describes an identified taxon. It does not identify a mushroom in your hand. Obtain qualified local confirmation before considering consumption, and use [mushroom safety and poison-response guidance](/learn/safety) for suspected exposure.
 
 ## Sources
 
+- [Missouri Department of Conservation: Hedgehog Mushroom](https://mdc.mo.gov/discover-nature/field-guide/hedgehog-mushroom)
 - [iNaturalist taxon reference](https://www.inaturalist.org/taxa/48641)

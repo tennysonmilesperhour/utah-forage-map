@@ -1,7 +1,9 @@
+import { foragingGuides, foragingBySlug } from '../content/foraging.generated'
 import { speciesBySlug, speciesGuides } from '../content/species.generated'
 import { regionBySlug, regions } from '../data/regions'
 
-export const GUIDE_SITE_URL = 'https://worldmushroomforaging.org'
+import { SITE_URL, DEFAULT_IMAGE, siteEntities, applyMetadata, breadcrumb } from './siteIdentity'
+export const GUIDE_SITE_URL = SITE_URL
 
 const DATASET_CREATOR = {
   '@type': 'Organization',
@@ -17,6 +19,7 @@ const DATASET_LICENSE = {
 }
 
 const FIXED_METADATA = {
+  '/learn/foraging': { title: 'Mushroom & Wild Herb Foraging Guides | Field Skills', description: 'Practical guides to mushroom identification, seasonal records, wild herb gathering, poisonous lookalikes, land access, and documenting finds.' },
   '/learn': {
     title: 'Mushroom Identification Guide | Field Marks, Lookalikes and Live Finds',
     description: 'Study 30 mushrooms with concise field marks, dangerous lookalike checks, licensed photos, cited safety guidance, and recent reviewed observations.',
@@ -50,6 +53,11 @@ function normalizedPath(pathname) {
 
 export function guideMetadataForPath(pathname) {
   const path = normalizedPath(pathname)
+  const topicMatch = path.match(/^\/learn\/foraging\/([^/]+)$/)
+  if (topicMatch && foragingBySlug[topicMatch[1]]) {
+    const article = foragingBySlug[topicMatch[1]]
+    return { path, title: `${article.title} | Mushroom Forage Map`, description: article.summary, article, image: DEFAULT_IMAGE }
+  }
   const speciesMatch = path.match(/^\/learn\/species\/([^/]+)$/)
   if (speciesMatch) {
     const species = speciesBySlug[speciesMatch[1]]
@@ -59,6 +67,8 @@ export function guideMetadataForPath(pathname) {
         title: `${species.common_name} Identification Guide | Lookalikes and Recent Finds`,
         description: `${species.summary} Compare field marks and lookalikes, then see recent reviewed ${species.common_name.toLowerCase()} observations.`,
         species,
+        image: species.image.url,
+        imageAlt: species.image.alt,
       }
     }
   }
@@ -70,11 +80,11 @@ export function guideMetadataForPath(pathname) {
         path,
         title: `${region.name} Mushroom Season Report | Recent Field Records`,
         description: `See recent reviewed mushroom observations, current field signals, and monthly seasonal evidence for ${region.name}.`,
-        region,
+        region, image: DEFAULT_IMAGE,
       }
     }
   }
-  return { path, ...(FIXED_METADATA[path] ?? FIXED_METADATA['/learn']) }
+  return { path, image: DEFAULT_IMAGE, ...(FIXED_METADATA[path] ?? { title: 'Page Not Found | Mushroom Forage Map', description: 'Browse mushroom and wild herb field guides.', missing: true }) }
 }
 
 export function guideStructuredData(pathname) {
@@ -90,12 +100,24 @@ export function guideStructuredData(pathname) {
     { '@type': 'ListItem', position: 1, name: 'Mushroom guide', item: `${GUIDE_SITE_URL}/learn` },
   ]
 
+  if (metadata.article || metadata.path === '/learn/foraging') {
+    const article = metadata.article
+    return { '@context': 'https://schema.org', '@graph': [...siteEntities(), {
+      '@type': article ? 'Article' : 'CollectionPage', '@id': `${canonical}#article`,
+      name: metadata.title, headline: article?.title || metadata.title, description: metadata.description,
+      url: canonical, mainEntityOfPage: canonical, image: DEFAULT_IMAGE,
+      inLanguage: 'en', isAccessibleForFree: true, isPartOf: { '@id': website['@id'] },
+      publisher: { '@id': `${SITE_URL}/#organization` },
+      ...(article ? { author: { '@type': 'Organization', name: article.author, url: `${SITE_URL}/about#editorial` }, datePublished: article.published, dateModified: article.updated, citation: article.sources.map(source => source.url) } : { mainEntity: { '@type': 'ItemList', itemListElement: foragingGuides.map((guide, index) => ({ '@type': 'ListItem', position: index + 1, name: guide.title, url: `${SITE_URL}/learn/foraging/${guide.slug}` })) } }),
+    }, breadcrumb([['Mushroom guide', '/learn'], ['Field skills', '/learn/foraging'], ...(article ? [[article.title, metadata.path]] : [])])] }
+  }
+
   if (metadata.region) {
     breadcrumbItems[0] = { '@type': 'ListItem', position: 1, name: 'Regional collections', item: `${GUIDE_SITE_URL}/regions` }
     breadcrumbItems.push({ '@type': 'ListItem', position: 2, name: metadata.region.name, item: canonical })
     return {
       '@context': 'https://schema.org',
-      '@graph': [website, {
+      '@graph': [...siteEntities(), {
         '@type': 'CollectionPage',
         name: metadata.title,
         description: metadata.description,
@@ -118,7 +140,7 @@ export function guideStructuredData(pathname) {
   if (!metadata.species) {
     return {
       '@context': 'https://schema.org',
-      '@graph': [website, {
+      '@graph': [...siteEntities(), {
         '@type': metadata.path === '/learn' ? 'CollectionPage' : 'WebPage',
         name: metadata.title,
         description: metadata.description,
@@ -133,14 +155,18 @@ export function guideStructuredData(pathname) {
   })
   return {
     '@context': 'https://schema.org',
-    '@graph': [website, {
+    '@graph': [...siteEntities(), {
       '@type': 'Article',
       headline: `${metadata.species.common_name} identification guide`,
       description: metadata.description,
       url: canonical,
       mainEntityOfPage: canonical,
-      author: { '@type': 'Organization', name: metadata.species.author },
-      dateModified: metadata.species.last_reviewed,
+      author: { '@type': 'Organization', name: metadata.species.author, url: `${SITE_URL}/about#editorial` },
+      publisher: { '@id': `${SITE_URL}/#organization` },
+      inLanguage: 'en', isAccessibleForFree: true,
+      citation: metadata.species.sources?.map(source => source.url),
+      about: { '@type': 'Thing', name: metadata.species.latin_name, alternateName: metadata.species.common_name, sameAs: `https://www.inaturalist.org/taxa/${metadata.species.taxon_id}` },
+      dateModified: metadata.species.last_updated || metadata.species.last_reviewed,
       image: {
         '@type': 'ImageObject',
         contentUrl: metadata.species.image.url,
@@ -162,37 +188,15 @@ export function guideStructuredData(pathname) {
   }
 }
 
-function setMeta(selector, attribute, value) {
-  const element = document.head.querySelector(selector)
-  if (element) element.setAttribute(attribute, value)
-}
-
 export function applyGuideMetadata(pathname) {
-  const metadata = guideMetadataForPath(pathname)
-  const canonical = `${GUIDE_SITE_URL}${metadata.path}`
-  document.title = metadata.title
-  setMeta('meta[name="description"]', 'content', metadata.description)
-  setMeta('meta[property="og:title"]', 'content', metadata.title)
-  setMeta('meta[property="og:description"]', 'content', metadata.description)
-  setMeta('meta[property="og:url"]', 'content', canonical)
-  setMeta('meta[property="og:type"]', 'content', metadata.species ? 'article' : 'website')
-  setMeta('meta[name="twitter:title"]', 'content', metadata.title)
-  setMeta('meta[name="twitter:description"]', 'content', metadata.description)
-  setMeta('link[rel="canonical"]', 'href', canonical)
-
-  let script = document.head.querySelector('#guide-structured-data')
-  if (!script) {
-    script = document.createElement('script')
-    script.id = 'guide-structured-data'
-    script.type = 'application/ld+json'
-    document.head.append(script)
-  }
-  script.textContent = JSON.stringify(guideStructuredData(pathname))
+  applyMetadata(guideMetadataForPath(pathname), guideStructuredData(pathname))
 }
 
 export function guideRoutes() {
   return [
     '/learn',
+    '/learn/foraging',
+    ...foragingGuides.map(guide => `/learn/foraging/${guide.slug}`),
     ...speciesGuides.map(species => `/learn/species/${species.slug}`),
     '/learn/safety',
     '/regions',

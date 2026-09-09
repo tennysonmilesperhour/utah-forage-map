@@ -112,6 +112,7 @@ export default function Sidebar({
       </div>
 
       <div className="filter-scroll">
+        <p className="map-guide-link"><a href="/learn/foraging/mushroom-foraging-near-me">Plan a foraging visit near you</a></p>
         <section className="field-lenses" aria-labelledby={`${idPrefix}-field-lenses`}>
           <div className="lens-heading">
             <div><h3 id={`${idPrefix}-field-lenses`}>Field lenses</h3><p>Fast ways to focus the map</p></div>

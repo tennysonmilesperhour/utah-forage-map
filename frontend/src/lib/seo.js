@@ -1,4 +1,5 @@
-export const SITE_URL = 'https://worldmushroomforaging.org'
+import { SITE_URL, DEFAULT_IMAGE, HERB_IMAGE, siteEntities, applyMetadata } from './siteIdentity'
+export { SITE_URL } from './siteIdentity'
 
 const PAGE_METADATA = {
   map: {
@@ -18,8 +19,8 @@ const PAGE_METADATA = {
   },
   herbs: {
     path: '/herbs',
-    title: 'The Verdant Hours | Herbal Gathering Almanac',
-    description: 'Explore a safety-led herbal field atlas with seasonal harvest windows, local weather, optional lunar tradition, private watch zones, gathered inventory, and a wish list.',
+    title: 'Wild Herb Foraging Guide & Plant Atlas | The Verdant Hours',
+    description: 'Explore 44 wild plant profiles, toxic lookalikes, regional seasons, and responsible herb gathering. Plan field visits with The Verdant Hours almanac.',
   },
 }
 
@@ -35,53 +36,42 @@ export function pathForView(view) {
 }
 
 export function pageMetadataForPath(pathname) {
-  return PAGE_METADATA[viewFromPathname(pathname)] ?? PAGE_METADATA.map
+  const metadata = PAGE_METADATA[viewFromPathname(pathname)] ?? PAGE_METADATA.map
+  return { ...metadata, image: metadata.path === '/herbs' ? HERB_IMAGE : DEFAULT_IMAGE }
 }
 
 export function pageStructuredDataForPath(pathname) {
-  if (viewFromPathname(pathname) !== 'herbs') return null
-  return {
-    '@context': 'https://schema.org',
-    '@graph': [{
-      '@type': 'WebApplication',
-      name: 'The Verdant Hours',
-      url: `${SITE_URL}/herbs`,
-      applicationCategory: 'LifestyleApplication',
-      operatingSystem: 'Any',
-      isAccessibleForFree: true,
-      description: PAGE_METADATA.herbs.description,
-      featureList: [
-        'Seasonal herbal field atlas',
-        'Local weather gathering signals',
-        'Astronomical moon phase and lunar sign',
-        'Private herb watch zones',
-        'Gathered inventory and wish list',
-      ],
-    }, {
-      '@type': 'CollectionPage',
-      name: 'Herbal gathering atlas',
-      url: `${SITE_URL}/herbs`,
-      description: PAGE_METADATA.herbs.description,
-      about: { '@type': 'Thing', name: 'Responsible herbal foraging' },
-      isPartOf: { '@id': `${SITE_URL}/#website` },
-    }],
+  const metadata = pageMetadataForPath(pathname)
+  const herbs = metadata.path === '/herbs'
+  const canonical = `${SITE_URL}${metadata.path}`
+  const page = {
+    '@type': metadata.path === '/community' ? 'CollectionPage' : 'WebPage',
+    '@id': `${canonical}#webpage`, name: metadata.title, description: metadata.description,
+    url: canonical, inLanguage: 'en', isPartOf: { '@id': `${SITE_URL}/#website` },
+    publisher: { '@id': `${SITE_URL}/#organization` }, isAccessibleForFree: true,
   }
-}
-
-function setMeta(selector, attribute, value) {
-  const element = document.head.querySelector(selector)
-  if (element) element.setAttribute(attribute, value)
+  const graph = [...siteEntities(), page]
+  if (herbs || metadata.path === '/') graph.push({
+    '@type': 'WebApplication', '@id': `${canonical}#application`,
+    name: herbs ? 'The Verdant Hours' : 'Mushroom Forage Map', url: canonical,
+    description: metadata.description, applicationCategory: 'LifestyleApplication',
+    operatingSystem: 'Any', isAccessibleForFree: true,
+    publisher: { '@id': `${SITE_URL}/#organization` },
+    featureList: herbs ? ['Wild herb field atlas', 'Regional plant references', 'Seasonal almanac', 'Private watch zones and pantry'] : ['Worldwide mushroom observation map', 'Country opening view', 'Species and date filters', 'Privacy-safe public records'],
+  })
+  if (metadata.path === '/') graph.push({
+    '@type': 'Dataset', '@id': `${SITE_URL}/#dataset`, name: 'Recent public mushroom observations',
+    description: 'Reviewed public mushroom records with dates, source attribution, species and privacy-safe locality. Coverage varies by place and observation effort.',
+    url: canonical, creator: { '@id': `${SITE_URL}/#organization` },
+    license: `${SITE_URL}/about#data-license`, isAccessibleForFree: true,
+    spatialCoverage: { '@type': 'Place', name: 'Worldwide' },
+  })
+  return { '@context': 'https://schema.org', '@graph': graph }
 }
 
 export function applyPageMetadata(view) {
-  const metadata = PAGE_METADATA[view] ?? PAGE_METADATA.map
-  const canonicalUrl = `${SITE_URL}${metadata.path}`
-  document.title = metadata.title
-  setMeta('meta[name="description"]', 'content', metadata.description)
-  setMeta('meta[property="og:title"]', 'content', metadata.title)
-  setMeta('meta[property="og:description"]', 'content', metadata.description)
-  setMeta('meta[property="og:url"]', 'content', canonicalUrl)
-  setMeta('meta[name="twitter:title"]', 'content', metadata.title)
-  setMeta('meta[name="twitter:description"]', 'content', metadata.description)
-  setMeta('link[rel="canonical"]', 'href', canonicalUrl)
+  const metadata = pageMetadataForPath(PAGE_METADATA[view]?.path || '/')
+  const params = new URLSearchParams(window.location.search)
+  const privatePage = window.location.pathname === '/account' || ['reset', 'verify', 'follow'].some(key => params.has(key))
+  applyMetadata({ ...metadata, noindex: privatePage }, pageStructuredDataForPath(metadata.path))
 }

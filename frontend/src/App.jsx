@@ -22,8 +22,8 @@ import { trackPageView } from './lib/googleTag'
 import './mycelial.css'
 
 const MapView = lazy(() => import('./components/MapView'))
-export default function App() {
-  const initialParams = new URLSearchParams(window.location.search)
+export default function App({ path = '/' }) {
+  const initialParams = new URLSearchParams(typeof window === 'undefined' ? '' : window.location.search)
   const initialTaxonId = Number(initialParams.get('taxon')) || undefined
   const initialRegion = regionBySlug[initialParams.get('region')]
   const initialObservationId = initialParams.get('observation')
@@ -37,7 +37,7 @@ export default function App() {
   const [pendingAction, setPendingAction] = useState(null)
   const [pendingSaveTarget, setPendingSaveTarget] = useState(null)
   const [filtersOpen, setFiltersOpen] = useState(false)
-  const [activeView, setActiveView] = useState(() => viewFromPathname(window.location.pathname))
+  const [activeView, setActiveView] = useState(() => viewFromPathname(typeof window === 'undefined' ? path : window.location.pathname))
   const [submissionOpen, setSubmissionOpen] = useState(false)
   const [accountOpen, setAccountOpen] = useState(false)
   const [accountInitialTab, setAccountInitialTab] = useState(() => initialParams.get('tab') || 'logbook')
@@ -46,7 +46,7 @@ export default function App() {
   const [observationHandled, setObservationHandled] = useState(false)
   const [toast, setToast] = useState('')
   const [guestPromptVisible, setGuestPromptVisible] = useState(
-    () => window.localStorage.getItem('ufm:onboarding:guest-message:v1') !== 'true',
+    () => typeof window === 'undefined' || window.localStorage.getItem('ufm:onboarding:guest-message:v1') !== 'true',
   )
 
   const { system: unitSystem } = useUnitSystem()
