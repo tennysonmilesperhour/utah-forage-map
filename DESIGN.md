@@ -77,7 +77,7 @@ The interface combines a field instrument, a specimen archive, and a quiet museu
 
 This system rejects account walls, generic SaaS landing-page composition, dense directory treatment, brown or beige outdoor palettes, novelty wilderness motifs, and tiny low-contrast controls. Responsive behavior is structural: side panels become drawers, toolbars simplify, and the map retains a useful viewport at every size.
 
-The herbal collection is a deliberately different visual world called **The Verdant Hours**. It uses a bright celadon field-paper ground, plum astronomical panels, leaf green, foxglove pink, pressed-flower photography, Cormorant Garamond display type, and ledger-like structures. The switch between Fungi and Herbs is persistent, compact, and explicit; identity, authentication, and private records remain shared underneath.
+The herbal collection is a deliberately different visual world called **The Verdant Hours**. Its visual reference is the user’s [App Design Pinterest board](https://www.pinterest.com/thekiwipop/app-design/), confirmed September 8, 2026. It uses immersive woodland photography, deep forest and sage greens, translucent botanical glass, warm ivory text, rounded panels, and spacious Avenir typography. See [the herbal design specification](docs/HERBAL_DESIGN.md) for the reference pins, component rules, and asset provenance. The switch between Fungi and Herbs is persistent, compact, and explicit; identity, authentication, and private records remain shared underneath.
 
 **Key Characteristics:**
 
@@ -121,7 +121,7 @@ The palette begins with green-black gallery surfaces, then uses lichen green for
 
 **The Map Signal Rule.** Accent colors identify actions or data states; they are never scattered as decoration.
 
-**The Two Worlds Rule.** Fungi behaves like a nocturnal museum instrument; Herbs behaves like a daylight botanical almanac. Shared controls keep their function and accessibility even when color, type, composition, and atmosphere change.
+**The Two Worlds Rule.** Fungi behaves like a nocturnal museum instrument; Herbs behaves like a sunlit forest almanac with glass surfaces. Shared controls keep their function and accessibility even when color, type, composition, and atmosphere change.
 
 **The Honest Almanac Rule.** Season and weather are practical field signals. Moon phase and zodiac are offered as an optional cultural timing practice and must never be presented as scientifically established improvements to potency, safety, or efficacy.
 
@@ -154,7 +154,7 @@ The system is flat by default. Borders and tonal layers organize persistent pane
 
 ### Named Rules
 
-**The Flat-at-Rest Rule.** Persistent panels do not float; elevation communicates temporary layering or active interaction.
+**The Flat-at-Rest Rule (Fungi).** Persistent fungal panels do not float; elevation communicates temporary layering or active interaction. The herbal collection follows the botanical glass system in docs/HERBAL_DESIGN.md, including rounded translucent surfaces and floating mobile navigation.
 
 ## 5. Components
 
