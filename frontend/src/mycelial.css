@@ -1,25 +1,25 @@
-/* Shared Forest immersion composition; fungi takes its color from bark and mycelium. */
+/* Forest-floor colors: copper caps, moss, violet gills and dark mycelial earth. */
 .mycelial-theme {
-  --canvas: #0b090c;
-  --surface: #181419;
-  --surface-muted: #282129;
+  --canvas: #100c12;
+  --surface: #211821;
+  --surface-muted: #322334;
   --museum-black: #070608;
   --ink: #f1eae1;
   --ink-muted: #bfb4ba;
   --border: #51464f;
-  --field-pine: #c8c8ad;
-  --field-pine-deep: #565a47;
-  --spore-coral: #ded0c1;
-  --spore-coral-deep: #6a5261;
-  --trail-blue: #c4b5ce;
-  --museum-bronze: #d6bfa9;
-  --museum-sage: #c8c8ad;
+  --field-pine: #afd19a;
+  --field-pine-deep: #42684c;
+  --spore-coral: #e5ac79;
+  --spore-coral-deep: #9e633f;
+  --trail-blue: #c6a7dc;
+  --museum-bronze: #e5ac79;
+  --museum-sage: #afd19a;
   --safety-amber: #e0b765;
   --danger-red: #ed907e;
   --focus: #dccae8;
   --museum-serif: "Avenir Next", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
-  --mycelial-edge: rgb(240 222 232 / 19%);
-  --mycelial-glass: linear-gradient(135deg, rgb(242 227 237 / 8%), rgb(31 22 31 / 64%) 52%, rgb(15 10 17 / 84%));
+  --mycelial-edge: rgb(216 178 144 / 25%);
+  --mycelial-glass: linear-gradient(135deg, rgb(212 161 110 / 13%), rgb(63 32 58 / 52%) 52%, rgb(13 34 30 / 70%));
   color-scheme: dark;
   font-family: var(--museum-serif);
   background: var(--canvas);
@@ -31,12 +31,12 @@
 .mycelial-theme :is(input, select, textarea) { border-radius: 7px; background: #f5e8f008; border-color: #7e6e7a; }
 .mycelial-theme select option { background: #181419; color: var(--ink); }
 .mycelial-theme :is(.button, .icon-button, .account-trigger, .follow-button) { border-radius: 8px; font-weight: 500; }
-.mycelial-theme .button-primary { border: 1px solid #fff7e962; background: linear-gradient(140deg, #efe5dbeF, #cdbbadE8); color: #211a20; }
-.mycelial-theme .button-primary:hover:not(:disabled) { background: #f0e5d9; color: #211a20; }
+.mycelial-theme .button-primary { border: 1px solid #f7cc946e; background: linear-gradient(140deg, #ecc493, #dba16f); color: #271b18; }
+.mycelial-theme .button-primary:hover:not(:disabled) { background: #f1d0a5; color: #271b18; }
 .mycelial-theme :is(.button-secondary, .button-inverse, .button-ghost, .icon-button) { border-color: var(--mycelial-edge); background: #f4e8ee07; color: var(--ink); }
 .mycelial-theme :is(.button-secondary, .button-inverse, .button-ghost, .icon-button):hover:not(:disabled) { border-color: #decbd05c; background: #f4e8ee14; }
-.mycelial-theme :is(.app-header, .guide-site-header) { height: 88px; min-height: 88px; flex-basis: 88px; padding: 0 30px; gap: 18px; grid-template-columns: minmax(220px, 1fr) auto auto minmax(190px, 1fr); border-color: #e8dbe31c; background: #0c090df0; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
-.mycelial-theme :is(.app-header, .guide-site-header) .brand-mark { width: 29px; height: 38px; flex-basis: 29px; border: 0; border-radius: 0; color: #dfd3c5; }
+.mycelial-theme :is(.app-header, .guide-site-header) { height: 88px; min-height: 88px; flex-basis: 88px; padding: 0 30px; gap: 18px; grid-template-columns: minmax(220px, 1fr) auto auto minmax(190px, 1fr); border-color: #cb986631; background: linear-gradient(105deg, #241720f2, #131516f5 65%, #10231ef2); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+.mycelial-theme :is(.app-header, .guide-site-header) .brand-mark { width: 29px; height: 38px; flex-basis: 29px; border: 0; border-radius: 0; color: var(--spore-coral); }
 .mycelial-theme .brand-lockup { gap: 10px; }
 .mycelial-theme .brand-copy h1, .mycelial-theme .guide-site-header .brand-copy strong { font-size: 16px; font-weight: 400; letter-spacing: -.3px; }
 .mycelial-theme .brand-copy p, .mycelial-theme .guide-site-header .brand-copy > span { margin-top: 5px; font-size: 8px; letter-spacing: 1.4px; color: #b5a8ae; }
@@ -44,48 +44,48 @@
 .mycelial-theme :is(.primary-nav, .guide-global-nav) { gap: 2px; }
 .mycelial-theme :is(.nav-item, .guide-global-nav a) { font-size: 12px; font-weight: 400; padding: 8px 10px; }
 .mycelial-theme :is(.nav-item, .guide-global-nav a) > svg { display: none; }
-.mycelial-theme :is(.nav-item, .guide-global-nav a)::after { height: 1px; background: #d9c8d1; }
+.mycelial-theme :is(.nav-item, .guide-global-nav a)::after { height: 2px; background: var(--spore-coral); }
 .mycelial-theme .header-actions .button, .mycelial-theme .guide-map-link { font-size: 11px; }
 .mycelial-theme .world-switch { height: 36px; border-radius: 8px; border-color: var(--mycelial-edge); background: #fff6f603; }
 .mycelial-theme .world-switch a { font-weight: 400; font-size: 11px; }
-.mycelial-theme .world-switch a.active { background: #ded0c120; color: #f1eae1; }
+.mycelial-theme .world-switch a.active { background: #dc9d6926; color: #f2c89d; }
 .mycelial-theme .world-switch a span { font-family: inherit; }
 .mycelial-theme .workspace { grid-template-columns: 320px minmax(0, 1fr); }
-.mycelial-theme .filter-panel { border-color: var(--mycelial-edge); background: linear-gradient(150deg, #211a24, #100d12 55%); }
-.mycelial-theme .panel-heading { min-height: 190px; align-items: start; padding: 24px; background: linear-gradient(90deg, #110d14b8, #100a1270), linear-gradient(0deg, #17121b, transparent 65%), url('/images/fungi/forest-floor-extended.webp') 78% center / cover; border-bottom-color: var(--mycelial-edge); }
+.mycelial-theme .filter-panel { border-color: var(--mycelial-edge); background: linear-gradient(155deg, #302033, #1d1722 48%, #132821); }
+.mycelial-theme .panel-heading { min-height: 190px; align-items: start; padding: 24px; background: linear-gradient(90deg, #23151bad, #21141c40), linear-gradient(0deg, #302033, transparent 60%), url('/images/fungi/forest-floor-extended.webp') 78% center / cover; border-bottom-color: var(--mycelial-edge); }
 .mycelial-theme .panel-title-row { gap: 8px; color: #d9cbd5; }
 .mycelial-theme .panel-title-row svg { width: 13px; }
 .mycelial-panel-kicker { font-size: 9px; font-weight: 400; letter-spacing: 1.8px; text-transform: uppercase; }
 .mycelial-theme .mycelial-panel-title { margin: 12px 0 6px; font-size: 57px; font-weight: 300; letter-spacing: -3px; line-height: 1.08; }
-.mycelial-theme .mycelial-panel-title span, .mycelial-community-hero h3 span { color: #c8b0c4; }
+.mycelial-theme .mycelial-panel-title span, .mycelial-community-hero h3 span { color: var(--spore-coral); }
 .mycelial-theme .panel-heading p { color: #c8bbc4; font-size: 10px; line-height: 1.6; }
 .mycelial-theme .filter-scroll { gap: 25px; padding: 18px 24px; }
 .mycelial-theme .field-lenses { border-top: 0; }
 .mycelial-theme .lens-heading { padding-top: 0; }
 .mycelial-theme .lens-heading h3 { font-size: 20px; font-weight: 300; }
-.mycelial-theme .lens-icon { border-radius: 8px; background: #eee0ee08; border-color: var(--mycelial-edge); color: #d9c8d1; }
-.mycelial-theme .lens-icon.calendar { background: #eee0ee08; color: #c9bacf; }
+.mycelial-theme .lens-icon { border-radius: 8px; background: #af8bc224; border-color: #b797cb45; color: var(--trail-blue); }
+.mycelial-theme .lens-icon.calendar { background: #a9c7831c; border-color: #a9c78340; color: var(--field-pine); }
 .mycelial-theme .lens-switch input { border-color: #766575; background: #413345; }
-.mycelial-theme .lens-switch input:checked { background: #c5aec6; }
+.mycelial-theme .lens-switch input:checked { background: #9e78b6; }
 .mycelial-theme .lens-switch input::before { background: #eee6df; }
 .mycelial-theme :is(.species-view-options button, .unit-toggle button, .guide-group-filter button) { min-height: 40px; border-radius: 6px; font-weight: 500; }
-.mycelial-theme :is(.species-view-options button.active, .unit-toggle button.active, .guide-group-filter button.active) { background: #d9c6d226; color: #f1eae1; border-color: #c4aab75c; }
+.mycelial-theme :is(.species-view-options button.active, .unit-toggle button.active, .guide-group-filter button.active) { background: #ab804033; color: #f3cea1; border-color: #dfa87473; }
 .mycelial-theme :is(.species-view-options button.hazard.active, .guide-group-filter button.active.hazard) { background: #6c302e; color: #fff0e8; }
 .mycelial-theme :is(.advanced-filters, .filter-footer) { border-color: var(--mycelial-edge); }
-.mycelial-theme .filter-footer { background: #0e0b10d9; }
+.mycelial-theme .filter-footer { background: #11251fd9; }
 .mycelial-theme .map-stage { background: #090809; }
 .mycelial-theme :is(.place-search form, .place-results, .map-results, .map-filter-button, .map-submit-button, .map-legend, .map-empty-state, .guest-prompt, .sighting-detail, .account-menu) { border: 1px solid var(--mycelial-edge); border-radius: 8px; background: var(--mycelial-glass); backdrop-filter: blur(14px) saturate(110%); -webkit-backdrop-filter: blur(14px) saturate(110%); box-shadow: inset 0 1px 0 #fff5ff15, 0 10px 35px #00000030; }
 .mycelial-theme .place-search form button:last-child { background: #dac8d021; color: #efe1ed; border-radius: 5px; }
 .mycelial-theme .map-submit-button { color: var(--ink); }
 .mycelial-theme .map-submit-button:hover:not(:disabled) { color: #211a20; }
 .mycelial-theme .place-search form button:last-child:hover:not(:disabled) { background: #dac8d038; }
-.mycelial-theme .legend-dot.recent { background: #baa0b4; box-shadow: 0 0 0 3px #baa0b426; }
+.mycelial-theme .legend-dot.recent { background: var(--spore-coral); box-shadow: 0 0 0 3px #e5ac7926; }
 .mycelial-theme .sighting-detail h2 { font-weight: 300; font-size: 29px; }
 .mycelial-theme :is(.status-reviewed, .review-chip.approved, .edibility-badge.choice, .edibility-badge.edible, .follow-button.is-following) { border-color: #707056; background: #292b22; color: #d8dbb7; }
 .mycelial-theme :is(.edibility-badge, .observation-badge, .status-reviewed, .review-chip, .fungi-readiness span) { border-radius: 5px; }
 .mycelial-theme .drawer-layer { top: 88px; }
 .mycelial-theme .drawer-backdrop { background: #080509b0; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
-.mycelial-theme :is(.community-drawer, .submit-drawer, .account-workspace, .auth-dialog) { border-color: var(--mycelial-edge); background: #110d14f5; border-radius: 10px 0 0 10px; box-shadow: -24px 0 80px #00000050; }
+.mycelial-theme :is(.community-drawer, .submit-drawer, .account-workspace, .auth-dialog) { border-color: var(--mycelial-edge); background: linear-gradient(150deg, #231826fa, #111e1bfa); border-radius: 10px 0 0 10px; box-shadow: -24px 0 80px #00000050; }
 .mycelial-theme .community-drawer { width: min(1000px, 82vw); }
 .mycelial-theme :is(.drawer-heading, .community-tabs, .account-tabs, .auth-tabs) { background: #130e17c9; border-color: var(--mycelial-edge); }
 .mycelial-theme .drawer-heading h2 { font-size: 22px; font-weight: 300; }
@@ -97,11 +97,11 @@
 .mycelial-theme .mycelial-community-hero .mycelial-panel-kicker { color: #dbcbd7; font-size: 9px; }
 .mycelial-theme .mycelial-community-hero p:not(.mycelial-panel-kicker) { max-width: 420px; color: #d1c3ce; font-size: 12px; line-height: 1.8; }
 .mycelial-theme .community-actions { margin-top: 12px; }
-.mycelial-theme .community-metrics { padding: 0 40px; background: #1f16237d; border-color: var(--mycelial-edge); }
+.mycelial-theme .community-metrics { padding: 0 40px; background: linear-gradient(110deg, #3b282b80, #27203280, #1b332a80); border-color: var(--mycelial-edge); }
 .mycelial-theme .community-metrics div { min-height: 110px; border-color: var(--mycelial-edge); }
-.mycelial-theme .community-metrics dd { color: #e4d8df; font-size: 35px; font-weight: 300; }
-.mycelial-theme .community-metrics div:nth-child(2) dd { color: #d2c1d4; }
-.mycelial-theme .community-metrics div:nth-child(3) dd { color: #d6c4b4; }
+.mycelial-theme .community-metrics dd { color: var(--spore-coral); font-size: 35px; font-weight: 300; }
+.mycelial-theme .community-metrics div:nth-child(2) dd { color: var(--trail-blue); }
+.mycelial-theme .community-metrics div:nth-child(3) dd { color: var(--field-pine); }
 .mycelial-theme .community-section { padding: 32px 40px; }
 .mycelial-theme .community-section-heading h3 { font-size: 24px; font-weight: 300; }
 .mycelial-theme .activity-row-featured { overflow: hidden; border-radius: 8px; border-color: var(--mycelial-edge); background: #2118278c; }
@@ -112,7 +112,7 @@
 .mycelial-theme .auth-context h2 { font-size: 32px; font-weight: 300; }
 .mycelial-theme :is(.auth-mark, .avatar) { border-color: var(--mycelial-edge); color: #e5d8e0; background: #dcc8e112; }
 .mycelial-theme .auth-tabs button.active { color: var(--ink); background: #d3bdd21e; }
-.mycelial-theme :is(.auth-submit, .submit-actions .button-primary) { color: #211a20; background: #ddd0c4; }
+.mycelial-theme :is(.auth-submit, .submit-actions .button-primary) { color: #271b18; background: #e5b582; }
 .mycelial-theme .fungi-watch-form { background: #24192a65; border-color: var(--mycelial-edge); border-radius: 8px; }
 .mycelial-theme .learn-main { background: var(--canvas); }
 .mycelial-theme:has(.learn-hero) .guide-site-header { margin-bottom: -88px; background: linear-gradient(#09080bec, #09080b7a); }
@@ -122,14 +122,14 @@
 .mycelial-theme .learn-hero-content { display: flex; flex-direction: column; justify-content: end; align-items: start; width: 100%; flex: 1; margin: 0; border: 0; padding: 0 0 65px; background: transparent; }
 .mycelial-theme .learn-hero .eyebrow { font-size: 10px; font-weight: 400; letter-spacing: 2px; color: #d6cbd1; }
 .mycelial-theme .learn-hero h1 { margin: 12px 0 18px; max-width: none; font-size: clamp(106px, 12vw, 188px); font-weight: 300; line-height: .97; letter-spacing: -.065em; }
-.mycelial-theme .learn-hero h1 span { color: #cbb7c8; }
+.mycelial-theme .learn-hero h1 span { color: var(--spore-coral); }
 .mycelial-theme .learn-hero-content > p:not(.eyebrow) { max-width: 350px; margin: 0; color: #d0c5cf; font-size: 13px; line-height: 1.85; }
 .mycelial-theme .hero-actions { margin-top: 27px; gap: 15px; }
 .mycelial-theme .hero-actions .button { font-size: 12px; min-height: 46px; }
 .mycelial-hero-foot { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding-top: 20px; border-top: 1px solid #e9dae12a; font-size: 8px; letter-spacing: 1.9px; color: #c4b4c0; }
 .mycelial-hero-foot a { display: flex; align-items: center; gap: 16px; min-height: 30px; color: #eadfe7; text-decoration: none; font-size: 10px; letter-spacing: .5px; }
 .mycelial-hero-foot a:hover { text-decoration: underline; text-underline-offset: 5px; }
-.mycelial-theme .guide-principles { padding: 30px 64px; border-top: 0; border-bottom-color: var(--mycelial-edge); background: #0b090c; }
+.mycelial-theme .guide-principles { padding: 30px 64px; border-top: 0; border-bottom-color: var(--mycelial-edge); background: linear-gradient(110deg, #2c1d27, #172a23); }
 .mycelial-theme .guide-principles > div { border-color: var(--mycelial-edge); }
 .mycelial-theme .guide-principles strong { font-weight: 400; }
 .mycelial-theme .species-browser { width: 100%; max-width: 1760px; padding: 68px 64px; }
@@ -142,29 +142,36 @@
 .mycelial-theme .guide-species-card:nth-child(n) { position: relative; display: grid; grid-column: span 5; grid-template-columns: 1fr; grid-template-rows: minmax(230px, 1fr) auto; min-height: 525px; isolation: isolate; overflow: hidden; border-radius: 8px; background: #140f17; }
 .mycelial-theme .guide-species-card:nth-child(4n + 1), .mycelial-theme .guide-species-card:nth-child(4n) { grid-column: span 7; }
 .mycelial-theme .guide-species-card:nth-child(n) .species-card-image { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; z-index: -2; }
-.mycelial-theme .species-card-image img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.8); }
+.mycelial-theme .species-card-image img { width: 100%; height: 100%; object-fit: cover; }
 .mycelial-theme .guide-species-card::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(0deg, #0f0912, #110d14c9 35%, #100a1220 72%); pointer-events: none; }
 .mycelial-theme .guide-species-card:nth-child(n) .species-card-copy { grid-row: 2; align-self: end; display: block; border: 0; padding: 50px 28px 28px; background: transparent; }
 .mycelial-theme .species-card-copy h2, .mycelial-theme .species-card-copy h2 a { font-size: 32px; font-weight: 300; letter-spacing: -.8px; }
 .mycelial-theme .species-card-copy > p:not(.latin-name) { max-width: 52ch; color: #d3c7d0; font-size: 12px; line-height: 1.75; }
 .mycelial-theme .species-card-copy .latin-name { color: #c8b9c3; }
-.mycelial-theme .species-card-link { min-height: 32px; margin-top: 18px; color: #e6d5e1; font-weight: 400; }
-.mycelial-theme :is(.guide-safety-band, .guide-request-poll, .learn-footer) { border-color: var(--mycelial-edge); background: #100b14; }
+.mycelial-theme .species-card-link { min-height: 32px; margin-top: 18px; color: var(--spore-coral); font-weight: 400; }
+.mycelial-theme :is(.guide-safety-band, .guide-request-poll, .learn-footer) { border-color: var(--mycelial-edge); background: #17121c; }
 .mycelial-theme .guide-request-intro h2 { font-size: 35px; font-weight: 300; letter-spacing: -.8px; }
 .mycelial-theme .poll-option { border-color: var(--mycelial-edge); border-radius: 8px; }
-.mycelial-theme :is(.regions-main, .region-page, .species-page, .trust-page) { background: radial-gradient(ellipse at 90% 0, #35233850, transparent 55%); }
+.mycelial-theme :is(.regions-main, .region-page, .species-page, .trust-page) { background: radial-gradient(ellipse at 90% 0, #60426b35, transparent 55%); }
 .mycelial-theme :is(.regions-header h1, .region-page-intro h1, .species-hero h1, .trust-page > h1) { font-weight: 300; letter-spacing: -.045em; }
 .mycelial-theme :is(.regions-header h1, .trust-page > h1) { font-size: clamp(42px, 5.5vw, 80px); }
 .mycelial-theme :is(.region-index, .region-page-header) { gap: 24px; border: 0; background: transparent; }
 .mycelial-theme :is(.region-label, .region-page-header, .species-hero, .lookalike-card, .live-field-signal, .species-quick-facts) { border-radius: 8px; overflow: hidden; }
-.mycelial-theme :is(.region-label, .region-page-intro, .region-header-actions, .species-review-line, .species-quick-facts, .live-field-signal) { background: #22182780; border-color: var(--mycelial-edge); }
+.mycelial-theme :is(.region-label, .region-page-intro, .region-header-actions, .species-review-line, .species-quick-facts, .live-field-signal) { background: #33243980; border-color: var(--mycelial-edge); }
+.mycelial-theme .field-skills-grid > article { border-color: #bda07842; background: linear-gradient(145deg, #3d2b269c, #211c2294); }
+.mycelial-theme .field-skills-grid > article:nth-child(3n + 2) { border-color: #8eb69942; background: linear-gradient(145deg, #253d319c, #19232394); }
+.mycelial-theme .field-skills-grid > article:nth-child(3n) { border-color: #b495c942; background: linear-gradient(145deg, #3a29479c, #231c2894); }
+.mycelial-theme .field-skills-grid .eyebrow { color: var(--spore-coral); }
+.mycelial-theme .field-skills-grid > article:nth-child(3n + 2) .eyebrow { color: var(--field-pine); }
+.mycelial-theme .field-skills-grid > article:nth-child(3n) .eyebrow { color: var(--trail-blue); }
 .mycelial-theme .region-label-copy h2 { font-weight: 300; }
 .mycelial-theme .species-hero-overlay { background: linear-gradient(90deg, #110c16df, #110c163d); }
 .mycelial-theme .learn-footer { padding-bottom: 42px; }
-.analytics-consent.mycelial-theme { border-radius: 10px; border-color: var(--mycelial-edge); background: linear-gradient(130deg, #332638f2, #110d17f5); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
-.analytics-consent.mycelial-theme .analytics-consent-copy strong { font: 400 19px var(--museum-serif); }
-.analytics-consent.mycelial-theme .analytics-consent-icon { background: #d2bfd21c; color: #ded0df; }
-.analytics-settings.mycelial-theme { border-color: #d2bfd233; border-radius: 7px; background: #211727ed; color: #e9dce7; }
+.analytics-consent.mycelial-theme { --consent-glass: linear-gradient(135deg, rgb(232 190 146 / 12%), rgb(40 22 39 / 30%) 48%, rgb(13 24 22 / 56%)); --consent-solid: #241c28; }
+.analytics-consent.mycelial-theme .analytics-consent-copy strong svg { color: var(--spore-coral); }
+/* Let visitors handle one corner prompt at a time. */
+body:has(.analytics-consent) .mycelial-theme .guest-prompt { display: none; }
+.analytics-settings.mycelial-theme { border-color: #d7b08b40; border-radius: 7px; background: #29202c96; color: #ebc49d; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
 
 @media (max-width: 1200px) {
   .mycelial-theme :is(.app-header, .guide-site-header) { gap: 12px; padding: 0 20px; grid-template-columns: minmax(170px, 1fr) auto auto auto; }
@@ -178,19 +185,20 @@
   .mycelial-theme :is(.guide-principles, .species-browser) { padding-left: 36px; padding-right: 36px; }
 }
 @media (max-width: 1050px) {
-  .mycelial-theme :is(.app-header, .guide-site-header) { height: 76px; min-height: 76px; flex-basis: 76px; grid-template-columns: minmax(0, 1fr) auto auto; -webkit-backdrop-filter: none; backdrop-filter: none; background: #0c090df5; }
+  .mycelial-theme :is(.app-header, .guide-site-header) { height: 76px; min-height: 76px; flex-basis: 76px; grid-template-columns: minmax(0, 1fr) auto auto; -webkit-backdrop-filter: none; backdrop-filter: none; background: linear-gradient(110deg, #251923, #12241e); }
   .mycelial-theme .fungi-world-switch { grid-column: 2; }
   .mycelial-theme :is(.header-actions, .guide-map-link) { grid-column: 3; }
-  .mycelial-theme :is(.primary-nav, .guide-global-nav) { position: fixed; z-index: 60; inset: auto 16px calc(12px + env(safe-area-inset-bottom)); display: grid; grid-template-columns: repeat(4, 1fr); width: min(540px, calc(100% - 32px)); height: 64px; margin: 0 auto; align-self: auto; gap: 4px; padding: 5px; border: 1px solid #eedee333; border-radius: 10px; background: linear-gradient(130deg, #493346a8, #110d16db); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 1px 0 #fff3fb19, 0 8px 36px #00000055; }
+  .mycelial-theme :is(.primary-nav, .guide-global-nav) { position: fixed; z-index: 60; inset: auto 16px calc(12px + env(safe-area-inset-bottom)); display: grid; grid-template-columns: repeat(4, 1fr); width: min(540px, calc(100% - 32px)); height: 64px; margin: 0 auto; align-self: auto; gap: 4px; padding: 5px; border: 1px solid #e3b98c40; border-radius: 10px; background: linear-gradient(130deg, #583b55ad, #142b24d9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 1px 0 #fff3fb19, 0 8px 36px #00000055; }
   .mycelial-theme :is(.nav-item, .guide-global-nav a) { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px; min-height: 44px; padding: 6px 2px; border: 0; border-radius: 7px; font-size: 10px; line-height: 1.3; text-align: center; }
   .mycelial-theme :is(.nav-item, .guide-global-nav a) > svg { display: block; width: 18px; height: 18px; }
   .mycelial-theme :is(.nav-item, .guide-global-nav a)::after { display: none; }
-  .mycelial-theme :is(.nav-item.active, .guide-global-nav a.active) { background: #e8d3e023; box-shadow: inset 0 1px 0 #fff3fa2c; color: #f1e4ee; }
+  .mycelial-theme :is(.nav-item.active, .guide-global-nav a.active) { background: #dda86d2b; box-shadow: inset 0 1px 0 #f5d3b03d; color: #f3cca0; }
   .mycelial-theme .header-actions .mobile-filter-button { display: none; }
   .mycelial-theme .workspace { margin-bottom: calc(90px + env(safe-area-inset-bottom)); grid-template-columns: 300px minmax(0, 1fr); }
   .mycelial-theme .drawer-layer { top: 76px; }
   .mycelial-theme .learn-footer { padding-bottom: calc(110px + env(safe-area-inset-bottom)); }
   .analytics-settings.mycelial-theme { bottom: calc(92px + env(safe-area-inset-bottom)); }
+  .analytics-consent.mycelial-theme { --consent-bottom: calc(90px + env(safe-area-inset-bottom)); }
   .mycelial-theme:has(.learn-hero) .guide-site-header { margin-bottom: -76px; background: #0c090dee; }
   .mycelial-theme .guide-species-card:nth-child(n) { grid-column: span 6; }
   .mycelial-theme .species-card-copy h2, .mycelial-theme .species-card-copy h2 a { font-size: 29px; }

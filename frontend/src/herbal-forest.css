@@ -1,14 +1,16 @@
 /* Forest immersion — approved default (B). The prior study is ?design=classic.
    Primary reference: pinterest.com/pin/903605112758948160/ */
 .herbal-consent { --ink: #f0f4ed; --ink-muted: #b7c8c0; --border: #d8eadd33; --surface: #0b1b16; --museum-serif: "Avenir Next", "Segoe UI", sans-serif; --field-pine: #c6ded1; }
-.analytics-consent.herbal-consent { border-radius: 10px; background: linear-gradient(130deg, #163b2dee, #030b09f5); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
-.herbal-consent .analytics-consent-copy strong { font: 400 19px var(--museum-serif); }
-.herbal-consent .analytics-consent-icon { background: #c6ded119; color: #c6ded1; }
+.analytics-consent.herbal-consent { --consent-glass: linear-gradient(135deg, rgb(206 237 219 / 12%), rgb(8 32 23 / 30%) 48%, rgb(3 16 10 / 56%)); }
+.herbal-consent .analytics-consent-copy strong svg { color: #c6ded1; }
 .herbal-consent .button { border-radius: 8px; font-weight: 500; }
 .herbal-consent .button-primary { background: #c6ded1; color: #0a2118; }
 .herbal-consent .button-primary:hover { background: #e5f2e9; }
 .analytics-settings.herbal-consent { border-radius: 7px; background: #0b1b16ed; color: #c6ded1; }
-@media (max-width: 980px) { .analytics-settings.herbal-consent { bottom: calc(92px + env(safe-area-inset-bottom)); } }
+@media (max-width: 980px) {
+  .analytics-consent.herbal-consent { --consent-bottom: calc(96px + env(safe-area-inset-bottom)); }
+  .analytics-settings.herbal-consent { bottom: calc(92px + env(safe-area-inset-bottom)); }
+}
 .herbal-shell--forest {
   --herb-paper: #030b09;
   --herb-paper-bright: #0b1b16;

@@ -108,9 +108,14 @@ export default function MapView({
     map.addControl(scaleRef.current, 'bottom-right')
 
     map.on('load', () => {
+      // Tint the basemap itself, preserving legibility of labels and the meaning of specimen colors.
+      for (const layer of map.getStyle().layers) {
+        if (layer.type === 'background') map.setPaintProperty(layer.id, 'background-color', '#19151d')
+        if (layer.id === 'water' && layer.type === 'fill') map.setPaintProperty(layer.id, 'fill-color', '#102f35')
+      }
       map.setFog({
-        color: '#161316',
-        'high-color': '#30272e',
+        color: '#1c2830',
+        'high-color': '#49314b',
         'horizon-blend': 0.08,
         'space-color': '#090809',
         'star-intensity': 0.16,
@@ -128,10 +133,10 @@ export default function MapView({
         source: SOURCE_ID,
         filter: ['has', 'point_count'],
         paint: {
-          'circle-color': ['step', ['get', 'point_count'], '#72616b', 50, '#5c4655', 250, '#382934'],
+          'circle-color': ['step', ['get', 'point_count'], '#8a583b', 50, '#73445e', 250, '#493953'],
           'circle-radius': ['step', ['get', 'point_count'], 17, 50, 21, 250, 26],
           'circle-stroke-width': 2,
-          'circle-stroke-color': '#e8dfd4',
+          'circle-stroke-color': '#edd0a8',
           'circle-opacity': 0.92,
         },
       })

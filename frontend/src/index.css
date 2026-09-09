@@ -2512,47 +2512,51 @@ button:disabled {
 }
 
 .analytics-consent {
+  --consent-glass: linear-gradient(135deg, rgb(221 231 224 / 12%), rgb(16 21 20 / 38%) 48%, rgb(8 13 12 / 56%));
+  --consent-solid: #17221e;
   position: fixed;
   z-index: 120;
-  right: 18px;
-  bottom: 18px;
-  left: 18px;
+  right: 16px;
+  bottom: var(--consent-bottom, calc(16px + env(safe-area-inset-bottom)));
   display: grid;
-  grid-template-columns: 44px minmax(0, 1fr) auto;
-  width: min(780px, calc(100% - 36px));
-  margin-left: auto;
-  gap: 14px;
-  align-items: center;
-  border: 1px solid var(--border);
+  width: min(324px, calc(100% - 32px));
+  gap: 10px;
+  border: 1px solid rgb(237 236 221 / 24%);
   border-radius: 8px;
-  background: color-mix(in oklch, var(--surface) 96%, black);
-  box-shadow: var(--shadow-modal);
-  padding: 14px;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 12%), 0 8px 28px rgb(0 0 0 / 22%);
+  padding: 12px;
   color: var(--ink);
 }
 
-.analytics-consent-icon {
-  display: grid;
-  width: 44px;
-  height: 44px;
-  place-items: center;
-  border-radius: 8px;
-  background: var(--surface-muted);
-  color: var(--museum-sage);
+.analytics-consent:is(.mycelial-theme, .herbal-consent) {
+  background: var(--consent-glass);
+  backdrop-filter: blur(18px) saturate(130%);
+  -webkit-backdrop-filter: blur(18px) saturate(130%);
 }
 
 .analytics-consent-copy strong {
-  display: block;
-  margin-bottom: 3px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 5px;
   font-family: var(--museum-serif);
-  font-size: 15px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
 }
 
 .analytics-consent-copy p {
   margin: 0;
-  color: var(--ink-muted);
+  color: var(--ink);
   font-size: 12px;
   line-height: 1.45;
+  text-shadow: 0 1px 6px rgb(0 0 0 / 35%);
+}
+
+.analytics-consent-copy a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 .analytics-consent-actions {
@@ -2561,7 +2565,10 @@ button:disabled {
 }
 
 .analytics-consent-actions .button {
-  min-height: 40px;
+  flex: 1;
+  min-height: 36px;
+  padding: 0 10px;
+  font-size: 12px;
   white-space: nowrap;
 }
 
@@ -2592,26 +2599,12 @@ button:disabled {
 
 @media (max-width: 700px) {
   .analytics-consent {
-    right: 10px;
-    bottom: 10px;
-    left: 10px;
-    grid-template-columns: 38px minmax(0, 1fr);
-    width: calc(100% - 20px);
-    gap: 10px;
-    padding: 12px;
-  }
-
-  .analytics-consent-icon {
-    width: 38px;
-    height: 38px;
-  }
-
-  .analytics-consent-actions {
-    grid-column: 1 / -1;
+    right: 12px;
+    width: min(324px, calc(100% - 24px));
   }
 
   .analytics-consent-actions .button {
-    flex: 1;
+    min-height: 40px;
   }
 
   .analytics-settings span {
@@ -2623,6 +2616,14 @@ button:disabled {
     height: 40px;
     justify-content: center;
     padding: 0;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .analytics-consent:is(.mycelial-theme, .herbal-consent) {
+    background: var(--consent-solid);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 }
 
