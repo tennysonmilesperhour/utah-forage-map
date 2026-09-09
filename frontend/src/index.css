@@ -7869,55 +7869,6 @@ textarea::placeholder {
 .herbal-intro > p,
 .atlas-heading > p { margin: 0; color: var(--herb-muted); font-size: 16px; line-height: 1.65; }
 
-.herb-field-practice { border-top: 1px solid var(--herb-line); padding: 32px 48px; background: var(--herb-paper-bright); }
-.field-practice-heading { display: flex; align-items: center; justify-content: space-between; gap: 28px; }
-.field-practice-heading h2 { margin: 0; font: 600 38px/1.1 var(--herb-serif); }
-.field-practice-heading p:not(.herb-kicker) { max-width: 660px; margin: 12px 0 0; color: var(--herb-muted); font-size: 15px; line-height: 1.6; }
-.field-practice-heading > button { flex-shrink: 0; min-height: 44px; }
-.field-practice-permission { max-width: 780px; margin: 24px 0; color: var(--herb-muted); font-size: 13px; line-height: 1.6; }
-.field-practice-steps { display: flex; gap: 8px; border-bottom: 1px solid var(--herb-line); }
-.field-practice-steps button { display: flex; align-items: center; gap: 10px; min-height: 48px; border: 0; border-bottom: 3px solid transparent; background: transparent; padding: 8px 16px; color: var(--herb-muted); font: inherit; cursor: pointer; }
-.field-practice-steps button[aria-current="step"] { border-bottom-color: var(--herb-pink); color: var(--herb-ink); font-weight: 700; }
-.field-practice-steps button span { color: var(--herb-pink); font-size: 12px; }
-.field-practice-content { max-width: 850px; padding: 24px 0 12px; }
-.field-practice-content h3 { margin: 0 0 20px; font: 600 30px/1.2 var(--herb-serif); }
-.field-practice-content > p { color: var(--herb-muted); font-size: 14px; line-height: 1.65; }
-.field-practice-choices { display: flex; flex-wrap: wrap; gap: 10px; margin: 0; border: 0; padding: 0; min-width: 0; }
-.field-practice-choices label { position: relative; cursor: pointer; }
-.field-practice-choices input { position: absolute; width: 1px; height: 1px; opacity: 0; }
-.field-practice-choices span { display: flex; align-items: center; min-height: 44px; border: 1px solid var(--herb-line); border-radius: 4px; padding: 10px 14px; color: var(--herb-ink); font-size: 14px; }
-.field-practice-choices input:checked + span { border-color: var(--herb-leaf); background: var(--herb-leaf); color: white; }
-.field-practice-choices input:focus-visible + span { outline: 3px solid var(--herb-pink); outline-offset: 3px; }
-.herb-field-practice button:focus-visible,
-.herb-wisdom-sources summary:focus-visible,
-.field-practice-content h3:focus-visible { outline: 3px solid var(--herb-pink); outline-offset: 3px; }
-.field-practice-response { margin: 24px 0; border-left: 3px solid var(--herb-gold); padding-left: 20px; color: var(--herb-ink) !important; font-size: 17px !important; line-height: 1.75; }
-.field-practice-response p { margin: 0; }
-.field-practice-response p + p { margin-top: 14px; }
-.field-practice-actions { display: flex; flex-wrap: wrap; gap: 12px; }
-.field-practice-actions button { min-height: 44px; }
-.field-practice-actions .herb-text-button { display: inline-flex; }
-.herb-wisdom-sources { margin-top: 18px; color: var(--herb-muted); font-size: 12px; line-height: 1.7; }
-.herb-wisdom-sources summary { display: list-item; width: fit-content; min-height: 44px; padding: 12px 0; color: var(--herb-leaf); font-weight: 700; cursor: pointer; }
-.herb-wisdom-sources p { max-width: 820px; margin: 8px 0; }
-.herb-wisdom-sources a { color: var(--herb-leaf); text-decoration: underline; text-underline-offset: 3px; }
-.herb-plant-reflection { margin: 26px 0; border-top: 1px solid var(--herb-line); border-bottom: 1px solid var(--herb-line); padding: 24px 0; }
-.herb-plant-reflection h3 { margin: 10px 0 20px; font: 600 30px/1.1 var(--herb-serif); }
-.herb-plant-reflection dl { display: grid; gap: 18px; margin: 0; }
-.herb-plant-reflection dt { margin-bottom: 5px; color: var(--herb-leaf); font-size: 12px; font-weight: 800; }
-.herb-plant-reflection dd { margin: 0; font-size: 14px; line-height: 1.7; }
-.herb-reflection-note { margin: 20px 0 0; color: var(--herb-muted); font-size: 12px; line-height: 1.6; }
-
-@media (max-width: 760px) {
-  .herb-field-practice { padding: 28px 20px; }
-  .field-practice-heading { align-items: flex-start; flex-direction: column; gap: 20px; }
-  .field-practice-heading h2 { font-size: 34px; }
-  .field-practice-steps { gap: 0; }
-  .field-practice-steps button { flex: 1; justify-content: center; flex-wrap: wrap; gap: 4px 6px; padding: 8px 5px; font-size: 13px; }
-  .field-practice-choices { gap: 8px; }
-  .field-practice-choices span { padding: 10px; font-size: 13px; }
-}
-
 .moon-observatory {
   display: grid;
   grid-template-columns: minmax(360px, 0.9fr) minmax(360px, 1.1fr);

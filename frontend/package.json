@@ -10,7 +10,8 @@
     "build": "npm run content && vite build && vite build --ssr src/ssr.jsx --outDir .ssr --emptyOutDir && node scripts/prerender.mjs && node scripts/build-ads-txt.mjs",
     "prelint": "npm run content",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:herbs": "node --test tests/herb-guide.test.mjs"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.96.2",

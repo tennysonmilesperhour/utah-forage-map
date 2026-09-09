@@ -9,6 +9,7 @@ const dist = path.join(root, 'dist')
 const template = await readFile(path.join(dist, 'index.html'), 'utf8')
 const renderer = await import(pathToFileURL(path.join(root, '.ssr', 'ssr.js')).href)
 const routes = renderer.guideRoutes()
+const herbRoutes = renderer.herbGuideRoutes()
 const siteUrl = 'https://worldmushroomforaging.org'
 const appRoutes = ['/community', '/field-guide', '/herbs']
 
@@ -51,6 +52,13 @@ function applyMetadata($, metadata) {
   updateMeta($, 'meta[name="twitter:title"]', 'content', metadata.title)
   updateMeta($, 'meta[name="twitter:description"]', 'content', metadata.description)
   updateMeta($, 'link[rel="canonical"]', 'href', canonical)
+  if (metadata.image) {
+    for (const [attribute, key] of [['property', 'og:image'], ['name', 'twitter:image']]) {
+      const imageMeta = $(`meta[${attribute}="${key}"]`)
+      if (imageMeta.length) imageMeta.attr('content', metadata.image)
+      else $('head').append($('<meta>').attr(attribute, key).attr('content', metadata.image))
+    }
+  }
 }
 
 for (const route of appRoutes) {
@@ -77,6 +85,19 @@ for (const route of routes) {
   $('script[type="application/ld+json"]').remove()
   $('head').append(`<script id="guide-structured-data" type="application/ld+json">${JSON.stringify(renderer.guideStructuredData(route)).replace(/</g, '\\u003c')}</script>`)
 
+  const outputDirectory = path.join(dist, route.slice(1))
+  await mkdir(outputDirectory, { recursive: true })
+  await writeFile(path.join(outputDirectory, 'index.html'), $.html(), 'utf8')
+}
+
+for (const route of herbRoutes) {
+  const metadata = renderer.herbGuideMetadata(route)
+  const $ = load(template)
+  $('#root').html(renderer.renderHerbGuide(route))
+  applyMetadata($, metadata)
+  updateMeta($, 'meta[property="og:type"]', 'content', metadata.plant ? 'article' : 'website')
+  $('script[type="application/ld+json"]').remove()
+  $('head').append(`<script id="herb-guide-structured-data" type="application/ld+json">${JSON.stringify(renderer.herbGuideStructuredData(route)).replace(/</g, '\\u003c')}</script>`)
   const outputDirectory = path.join(dist, route.slice(1))
   await mkdir(outputDirectory, { recursive: true })
   await writeFile(path.join(outputDirectory, 'index.html'), $.html(), 'utf8')
@@ -131,6 +152,7 @@ ${entries.map(entry => `  <url>
 
 const childSitemaps = [
   { name: 'sitemap-pages.xml', entries: pageEntries },
+  { name: 'sitemap-herbs.xml', entries: herbRoutes.map(path => ({ path, lastmod: '2026-09-09' })) },
   { name: 'sitemap-species.xml', entries: speciesEntries, images: true },
   { name: 'sitemap-regions.xml', entries: regionEntries },
 ].map(sitemap => ({
@@ -151,5 +173,5 @@ ${childSitemaps.map(sitemap => `  <sitemap>
 </sitemapindex>
 `
 await writeFile(path.join(dist, 'sitemap.xml'), sitemapIndex, 'utf8')
-console.log(`Prerendered ${routes.length} guide routes and ${appRoutes.length} app routes.`)
-console.log(`Generated ${childSitemaps.length} sitemaps with ${pageEntries.length + speciesEntries.length + regionEntries.length} canonical URLs.`)
+console.log(`Prerendered ${routes.length + herbRoutes.length} guide routes and ${appRoutes.length} app routes.`)
+console.log(`Generated ${childSitemaps.length} sitemaps with ${pageEntries.length + speciesEntries.length + regionEntries.length + herbRoutes.length} canonical URLs.`)
