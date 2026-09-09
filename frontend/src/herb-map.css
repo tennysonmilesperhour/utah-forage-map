@@ -1,4 +1,5 @@
 .herb-map-shell { background: #06100b; color: #e7ecdf; }
+.herb-map-shell .herbal-header { background: #06130ff5; }
 .herb-map-main { display: flex; flex-direction: column; flex: 0 0 auto; min-height: calc(100dvh - 88px); }
 .herb-map-heading { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 24px 30px; border-bottom: 1px solid #b5ca9521; background: radial-gradient(ellipse at 15% 0, #34563738, transparent 65%); }
 .herb-map-heading .herb-kicker { margin: 0 0 7px; font-size: 9px; }

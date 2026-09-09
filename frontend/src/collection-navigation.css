@@ -3,6 +3,7 @@
 #root .collection-header {
   --collection-accent: #e9ba90;
   --collection-active: #dda86d26;
+  z-index: 70;
   display: grid;
   grid-template-columns: minmax(140px, 1fr) 144px minmax(400px, 480px) minmax(140px, 1fr);
   align-items: center;
@@ -78,7 +79,9 @@
   #root .collection-header .collection-nav a.active::after { display: none; }
   #root .herbal-shell--forest[data-view="today"] .herbal-header { margin-bottom: -76px; }
   #root .herbal-shell .herbal-footer { padding-bottom: calc(106px + env(safe-area-inset-bottom)); }
-  .analytics-consent--herbs { bottom: calc(94px + env(safe-area-inset-bottom)); }
+  #root .analytics-consent.herbal-consent { bottom: calc(94px + env(safe-area-inset-bottom)); }
+  #root .analytics-settings.herbal-consent { bottom: calc(92px + env(safe-area-inset-bottom)); }
+  #root .mycelial-theme .community-scroll { padding-bottom: calc(100px + env(safe-area-inset-bottom)); }
 }
 @media (max-width: 640px) {
   #root .collection-header { grid-template-columns: minmax(0, 1fr) 132px minmax(0, 1fr); gap: 8px; height: 72px; min-height: 72px; flex-basis: 72px; padding: 0 12px; }

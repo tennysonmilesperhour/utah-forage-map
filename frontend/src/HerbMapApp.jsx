@@ -60,8 +60,8 @@ export default function HerbMapApp() {
     enabled: !!search.bbox,
     queryFn: async ({ signal }) => {
       const response = await fetch(`/herb-observations?${mapSearchParams(search)}`, { signal })
-      const data = await response.json()
-      if (!response.ok) throw new Error(data.error || 'Observations are temporarily unavailable.')
+      const data = await response.json().catch(() => null)
+      if (!response.ok || !data) throw new Error(data?.error || 'Observations are temporarily unavailable.')
       if (!Array.isArray(data.observations)) throw new Error('The observation source returned an unexpected response.')
       return data
     },
