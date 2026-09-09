@@ -37,7 +37,7 @@ test('known countries open with one same-origin request and no device coordinate
   const camera = await loadVisitorCountryCamera({ fetcher: async (url, options) => {
     requests.push(url)
     assert.equal(options.cache, 'no-store')
-    assert.equal(options.credentials, 'omit')
+    assert.equal(options.credentials, 'same-origin')
     return jsonResponse({ country: 'GB' })
   } })
   assert.deepEqual(requests, ['/visitor-country'])

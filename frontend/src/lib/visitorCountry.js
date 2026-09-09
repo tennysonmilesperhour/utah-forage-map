@@ -32,7 +32,7 @@ export async function loadVisitorCountryCamera({ token, signal, fetcher = fetch,
     timeout = setTimeout(() => { controller.abort(); resolve(null) }, timeoutMs)
   })
   const lookup = async () => {
-    const response = await fetcher('/visitor-country', { signal: controller.signal, cache: 'no-store', credentials: 'omit' })
+    const response = await fetcher('/visitor-country', { signal: controller.signal, cache: 'no-store', credentials: 'same-origin' })
     if (!response.ok) return null
     const { country } = await response.json()
     if (typeof country !== 'string' || !/^[A-Z]{2}$/.test(country) || country === 'ZZ') return null
