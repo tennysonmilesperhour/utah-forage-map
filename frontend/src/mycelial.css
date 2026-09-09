@@ -76,6 +76,8 @@
 .mycelial-theme .map-stage { background: #090809; }
 .mycelial-theme :is(.place-search form, .place-results, .map-results, .map-filter-button, .map-submit-button, .map-legend, .map-empty-state, .guest-prompt, .sighting-detail, .account-menu) { border: 1px solid var(--mycelial-edge); border-radius: 8px; background: var(--mycelial-glass); backdrop-filter: blur(14px) saturate(110%); -webkit-backdrop-filter: blur(14px) saturate(110%); box-shadow: inset 0 1px 0 #fff5ff15, 0 10px 35px #00000030; }
 .mycelial-theme .place-search form button:last-child { background: #dac8d021; color: #efe1ed; border-radius: 5px; }
+.mycelial-theme .map-submit-button { color: var(--ink); }
+.mycelial-theme .map-submit-button:hover:not(:disabled) { color: #211a20; }
 .mycelial-theme .place-search form button:last-child:hover:not(:disabled) { background: #dac8d038; }
 .mycelial-theme .legend-dot.recent { background: #baa0b4; box-shadow: 0 0 0 3px #baa0b426; }
 .mycelial-theme .sighting-detail h2 { font-weight: 300; font-size: 29px; }
