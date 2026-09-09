@@ -80,11 +80,11 @@ export default function SupportersApp() {
       : <AppHeader user={user} authLoading={currentUser.isLoading} activeView="supporters" onCreateAccount={() => setAuthMode('register')} onSignIn={() => setAuthMode('login')} onSubmitFind={() => window.location.assign('/map?submit=1')} onNavigate={view => window.location.assign(pathForView(view))} onOpenAccount={() => window.location.assign('/account')} onLogout={() => logout.mutate()} />}
     <main className="supporters-main">
       <section className="supporters-intro" aria-labelledby="supporter-title">
-        <div className="supporters-story"><p className="supporter-eyebrow">A small contribution. A shared curiosity.</p><h1 id="supporter-title">Help this little<br />world <em>grow.</em></h1><p className="supporter-lede">For the forests we wander, the species we’re still learning, and the joy of finding something together.</p><p>Your support helps us keep building the global fungi and herb guides, maps, and field tools you come here for.</p><div className="supporter-friend-scene"><MushroomFriend /><span>we grow better together</span></div></div>
+        <div className="supporters-story"><p className="supporter-eyebrow">Optional support</p><h1 id="supporter-title">Free for<br /><em>everyone.</em></h1><p className="supporter-lede">A free resource, with no paid features. Support is appreciated, never necessary or expected.</p><div className="supporter-friend-scene"><MushroomFriend /><span>we grow better together</span></div></div>
         <div className="supporter-card">
           <p className="supporter-eyebrow"><Heart size={14} /> The supporter circle</p>
           <div className="supporter-price"><strong>$10</strong><span>USD / year</span></div>
-          <p className="supporter-price-note">One membership. Both collections.</p>
+          <p className="supporter-price-note">Optional support. All field tools remain free.</p>
           <ul className="supporter-perks">
             <li><Crown /><div><strong>A little gold, just for you</strong><span>A gilded outline around your profile in fungi and herbs.</span></div></li>
             <li><Users /><div><strong>A place in the circle</strong><span>Your profile name on our supporter list, if you’d like.</span></div></li>
@@ -93,7 +93,7 @@ export default function SupportersApp() {
           {user && <div className={`supporter-profile-preview${status?.active ? ' supporter-gilded' : ''}`}><span className="supporter-avatar supporter-gilded" aria-hidden="true">{user.username.slice(0, 1).toUpperCase()}</span><div><strong>{user.username}</strong><small>{status?.active ? 'Project supporter' : 'Your gilded profile preview'}</small></div>{status?.active && <Check size={18} />}</div>}
           {currentUser.isError && <p className="supporter-notice" role="alert">Your account could not be loaded. <button onClick={() => currentUser.refetch()}>Try again</button></p>}
           {user && membership.isError && <p className="supporter-notice" role="alert">Your membership could not be loaded. <button onClick={() => membership.refetch()}>Try again</button></p>}
-          {params.get('checkout') === 'canceled' && <p className="supporter-notice">Checkout was closed. You can return whenever you’re ready.</p>}
+          {params.get('checkout') === 'canceled' && <p className="supporter-notice">Checkout was closed. You’re welcome here, with or without a contribution.</p>}
           {confirmation.isFetching && <p className="supporter-notice" role="status">Checking your membership with Stripe…</p>}
           {confirmation.data && !confirmation.data.active && params.get('checkout') === 'success' && <p className="supporter-notice" role="status">Your payment is still being confirmed. <button onClick={() => confirmation.refetch()}>Check again</button></p>}
           {status?.active && <p className="supporter-notice supporter-thanks"><Check size={16} /> Thank you for helping this project grow.{status.paid_until && <span>{status.cancel_at_period_end || status.status === 'canceled' ? 'Your membership continues until' : status.status === 'past_due' ? 'Please update your payment method. Your paid membership ends' : 'Your next annual renewal is'} {dateLabel(status.paid_until)}.</span>}</p>}
@@ -101,7 +101,7 @@ export default function SupportersApp() {
           {error && <p className="supporter-notice" role="alert">{getApiError(error, 'We couldn’t open billing. Please try again.')}</p>}
           {publicList.data?.available === false && !status?.active ? <p className="supporter-notice">The supporter circle is getting ready. Checkout will open soon.</p>
             : status?.can_manage && (status.active || ['active', 'trialing', 'past_due', 'unpaid', 'incomplete', 'paused'].includes(status.status)) ? <button className="supporter-cta" disabled={busy} onClick={() => portal.mutate()}>{busy ? 'Opening Stripe…' : 'Manage membership'}<ArrowUpRight size={18} /></button>
-              : <button className="supporter-cta" disabled={busy || currentUser.isLoading || currentUser.isError || (Boolean(user) && (membership.isLoading || membership.isError)) || !publicList.data?.available} onClick={() => user ? checkout.mutate() : setAuthMode('register')}>{busy ? 'Opening Stripe…' : user ? 'Become a supporter · $10/year' : 'Join the supporter circle'}<ArrowUpRight size={18} /></button>}
+              : <button className="supporter-cta" disabled={busy || currentUser.isLoading || currentUser.isError || (Boolean(user) && (membership.isLoading || membership.isError)) || !publicList.data?.available} onClick={() => user ? checkout.mutate() : setAuthMode('register')}>{busy ? 'Opening Stripe…' : 'Optional support · $10/year'}<ArrowUpRight size={18} /></button>}
           {status?.can_manage && !status.active && status.status === 'canceled' && <button className="supporter-secondary" onClick={() => portal.mutate()} disabled={busy}>View past payments</button>}
           {!user && !currentUser.isLoading && <p className="supporter-signin">Already have a profile? <button onClick={() => setAuthMode('login')}>Sign in</button></p>}
           <p className="supporter-terms">$10 USD, billed yearly and renewed automatically until canceled. Cancel anytime in Manage membership; your perks stay through your paid year. Secure checkout and receipts by Stripe.</p>

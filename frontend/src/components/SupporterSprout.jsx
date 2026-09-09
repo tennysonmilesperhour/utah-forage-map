@@ -53,12 +53,12 @@ export default function SupporterSprout({ collection = 'fungi', supporter = fals
   }
 
   return <div className="supporter-sprout" data-phase={phase} data-motion={motionDisabled ? 'still' : 'animated'} onKeyDown={event => { if (event.key === 'Escape' && showing) { event.preventDefault(); dismiss() } }}>
-    <button ref={trigger} className="sprout-trigger" type="button" aria-label={supporter ? 'Your supporter membership' : 'Support the project for 10 US dollars per year'} aria-expanded={showing} aria-controls={popupId}
+    <button ref={trigger} className="sprout-trigger" type="button" aria-label={supporter ? 'Your supporter membership' : 'Optional project support for 10 US dollars per year'} aria-expanded={showing} aria-controls={popupId}
       onMouseEnter={() => { if (!motionDisabled) start() }} onFocus={() => { if (!skipFocus.current && !motionDisabled) start() }} onClick={() => showing ? dismiss() : start()}>
       <MushroomFriend phase={motionDisabled ? 'still' : phase} onReady={setArtworkReady} />
     </button>
     {showing && <div className="sprout-bubble" id={popupId} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} onFocusCapture={() => setFocused(true)} onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget)) setFocused(false) }}>
-      <a className="sprout-invitation" href={`/supporters${collection === 'herbs' ? '?collection=herbs' : ''}`}><span>{supporter ? 'You help this forest grow.' : 'Help this little world grow.'}</span><strong>{supporter ? 'Your supporter membership ↗' : 'Support the project · $10/year ↗'}</strong></a>
+      <a className="sprout-invitation" href={`/supporters${collection === 'herbs' ? '?collection=herbs' : ''}`}><span>{supporter ? 'Thank you for supporting this free resource.' : 'A free resource, with no paid features. Support is appreciated, never necessary or expected.'}</span><strong>{supporter ? 'Your supporter membership ↗' : 'Optional support · $10/year ↗'}</strong></a>
       <button className="sprout-close" type="button" aria-label="Close supporter invitation" onClick={dismiss}><X size={13} aria-hidden="true" /></button>
     </div>}
   </div>
