@@ -39,6 +39,14 @@
   ],
   "rewrites": [
     {
+      "source": "/herb-observations",
+      "destination": "/api/herb-observations"
+    },
+    {
+      "source": "/herbs/map",
+      "destination": "/herbs/map/index.html"
+    },
+    {
       "source": "/visitor-country",
       "destination": "/api/visitor-country"
     },
@@ -187,5 +195,10 @@
         }
       ]
     }
-  ]
+  ],
+  "functions": {
+    "api/herb-observations.js": {
+      "maxDuration": 30
+    }
+  }
 }

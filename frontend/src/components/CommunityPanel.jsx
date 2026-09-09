@@ -77,7 +77,7 @@ export default function CommunityPanel({
   return (
     <div className="drawer-layer">
       <button className="drawer-backdrop" type="button" onClick={onClose} aria-label="Close community field desk" />
-      <aside className="community-drawer" role="dialog" aria-modal="true" aria-labelledby="community-title">
+      <aside className="community-drawer" aria-labelledby="community-title">
         <div className="drawer-heading community-heading">
           <div>
             <p>Community field desk</p>

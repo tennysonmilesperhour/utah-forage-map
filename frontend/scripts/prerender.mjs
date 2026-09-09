@@ -12,7 +12,7 @@ const renderer = await import(pathToFileURL(path.join(root, '.ssr', 'ssr.js')).h
 const routes = renderer.guideRoutes()
 const herbRoutes = renderer.herbGuideRoutes()
 const siteUrl = 'https://worldmushroomforaging.org'
-const appRoutes = ['/', '/community', '/field-guide', '/herbs']
+const appRoutes = ['/', '/community', '/field-guide', '/herbs', '/herbs/map']
 // Public, aggregate responses only. An unavailable upstream must never break the static guide.
 const publicQueries = [
   { key: ['guide-species-summaries'], endpoint: '/api/guide/species' },
@@ -71,7 +71,7 @@ function updateMeta($, selector, attribute, value) {
 }
 
 function applyMetadata($, metadata) {
-  const entry = metadata.path.startsWith('/herbs/') ? 'src/HerbAtlasApp.jsx' : metadata.path === '/herbs' ? 'src/HerbalApp.jsx' : appRoutes.includes(metadata.path) ? 'src/App.jsx' : 'src/GuideApp.jsx'
+  const entry = metadata.path === '/herbs/map' ? 'src/HerbMapApp.jsx' : metadata.path.startsWith('/herbs/') ? 'src/HerbAtlasApp.jsx' : metadata.path === '/herbs' ? 'src/HerbalApp.jsx' : appRoutes.includes(metadata.path) ? 'src/App.jsx' : 'src/GuideApp.jsx'
   const visited = new Set()
   function preload(key) {
     if (visited.has(key) || !manifest[key]) return
@@ -229,7 +229,7 @@ console.log(`Generated ${childSitemaps.length} sitemaps with ${childSitemaps.red
 const referencePages = []
 await mkdir(path.join(dist, 'reference'), { recursive: true })
 for (const route of [...appRoutes, ...routes, ...herbRoutes]) {
-  const metadata = route.startsWith('/herbs/') ? renderer.herbGuideMetadata(route) : appRoutes.includes(route) ? renderer.pageMetadataForPath(route) : renderer.guideMetadataForPath(route)
+  const metadata = appRoutes.includes(route) ? renderer.pageMetadataForPath(route) : route.startsWith('/herbs/') ? renderer.herbGuideMetadata(route) : renderer.guideMetadataForPath(route)
   if (metadata.noindex || metadata.missing) continue
   const $ = load(await readFile(path.join(dist, route.slice(1), 'index.html'), 'utf8'))
   const main = $('main').first().clone()
@@ -255,6 +255,7 @@ Observation records are not identification, proof of edibility, or access permis
 ## Start here
 - [Mushroom map](${siteUrl}/): Filter dated public observations by species and place.
 - [Mushroom identification atlas](${siteUrl}/learn): Field marks, lookalikes, photographs, sources, and recent observations.
+- [Global herb observation map](${siteUrl}/herbs/map): Real wild plant records by place, plant, date and month.
 - [Wild plant atlas](${siteUrl}/herbs/atlas): Plant identification, toxic lookalikes, regional context, and source notes.
 - [Practical foraging guides](${siteUrl}/learn/foraging): Identification process, seasons, land access, and recording finds.
 - [Regional mushroom records](${siteUrl}/regions): Observation-based reports with coverage limitations.
