@@ -49,7 +49,7 @@ export default function AnalyticsConsent({ collection = 'fungi' }) {
     >
       <div className="analytics-consent-copy">
         <strong id="analytics-consent-title"><BarChart3 size={14} aria-hidden="true" /> Help improve the map</strong>
-        <p id="analytics-consent-copy">Optional Google Analytics helps improve our maps and guides. Advertising features stay off. <a href="/privacy">Details</a></p>
+        <p id="analytics-consent-copy">Optional Google Analytics helps improve our maps and guides. Ad storage and personalization stay off. <a href="/privacy">Details</a></p>
       </div>
       <div className="analytics-consent-actions">
         <button className="button button-secondary" type="button" onClick={() => choose('denied')}>Not now</button>
