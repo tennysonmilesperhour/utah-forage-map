@@ -1,9 +1,11 @@
-import { SITE_URL, DEFAULT_IMAGE, HERB_IMAGE, siteEntities, applyMetadata } from './siteIdentity'
+import { SITE_URL, DEFAULT_IMAGE, HERB_IMAGE, FUNGI_LIBRARY_METADATA, siteEntities, applyMetadata } from './siteIdentity'
 export { SITE_URL } from './siteIdentity'
 
 const PAGE_METADATA = {
+  library: FUNGI_LIBRARY_METADATA,
+  supporters: { path: '/supporters', title: 'Optional Support | World Mushroom Foraging', description: 'All fungi and herb guides, maps and field tools stay free. Optional annual support includes small thank-yous, including forty pocket poems.' },
   map: {
-    path: '/',
+    path: '/map',
     title: 'Worldwide Mushroom Forage Map | Recent Reviewed Observations',
     description: 'Explore privacy-safe, reviewed mushroom observations worldwide. Filter recent finds by species, season, habitat, elevation, and place without creating an account.',
   },
@@ -30,6 +32,8 @@ const PAGE_METADATA = {
 }
 
 export function viewFromPathname(pathname) {
+  if (pathname === '/' || /^\/learn\/?$/.test(pathname)) return 'library'
+  if (/^\/supporters\/?$/.test(pathname)) return 'supporters'
   if (/^\/herbs\/map\/?$/.test(pathname)) return 'herbMap'
   if (pathname === '/herbs' || pathname.startsWith('/herbs/')) return 'herbs'
   if (pathname === '/field-guide' || pathname.startsWith('/field-guide/')) return 'guide'
@@ -51,13 +55,13 @@ export function pageStructuredDataForPath(pathname) {
   const herbs = metadata.path.startsWith('/herbs')
   const canonical = `${SITE_URL}${metadata.path}`
   const page = {
-    '@type': metadata.path === '/community' ? 'CollectionPage' : 'WebPage',
+    '@type': ['/', '/community'].includes(metadata.path) ? 'CollectionPage' : 'WebPage',
     '@id': `${canonical}#webpage`, name: metadata.title, description: metadata.description,
     url: canonical, inLanguage: 'en', isPartOf: { '@id': `${SITE_URL}/#website` },
     publisher: { '@id': `${SITE_URL}/#organization` }, isAccessibleForFree: true,
   }
   const graph = [...siteEntities(), page]
-  if (herbs || metadata.path === '/') graph.push({
+  if (herbs || metadata.path === '/map') graph.push({
     '@type': 'WebApplication', '@id': `${canonical}#application`,
     name: herbs ? 'The Verdant Hours' : 'Mushroom Forage Map', url: canonical,
     description: metadata.description, applicationCategory: 'LifestyleApplication',
@@ -65,7 +69,7 @@ export function pageStructuredDataForPath(pathname) {
     publisher: { '@id': `${SITE_URL}/#organization` },
     featureList: herbs ? ['Global wild plant observation map', 'Wild herb field atlas', 'Regional plant references', 'Seasonal almanac', 'Private watch zones and pantry'] : ['Worldwide mushroom observation map', 'Country opening view', 'Species and date filters', 'Privacy-safe public records'],
   })
-  if (metadata.path === '/') graph.push({
+  if (metadata.path === '/map') graph.push({
     '@type': 'Dataset', '@id': `${SITE_URL}/#dataset`, name: 'Recent public mushroom observations',
     description: 'Reviewed public mushroom records with dates, source attribution, species and privacy-safe locality. Coverage varies by place and observation effort.',
     url: canonical, creator: { '@id': `${SITE_URL}/#organization` },
@@ -78,6 +82,6 @@ export function pageStructuredDataForPath(pathname) {
 export function applyPageMetadata(view) {
   const metadata = pageMetadataForPath(PAGE_METADATA[view]?.path || '/')
   const params = new URLSearchParams(window.location.search)
-  const privatePage = window.location.pathname === '/account' || ['reset', 'verify', 'follow'].some(key => params.has(key))
+  const privatePage = window.location.pathname === '/account' || ['reset', 'verify', 'follow', 'checkout', 'session_id', 'billing'].some(key => params.has(key))
   applyMetadata({ ...metadata, noindex: privatePage }, pageStructuredDataForPath(metadata.path))
 }

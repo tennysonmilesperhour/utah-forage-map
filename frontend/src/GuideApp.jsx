@@ -12,6 +12,7 @@ import { regionBySlug, regions } from './data/regions'
 import { useCurrentUser } from './hooks/useAuth'
 import { useRegion, useRegions } from './hooks/useCompanion'
 import { useGuideRequests, useGuideSummaries } from './hooks/useGuide'
+import { FUNGI_HOME } from './lib/navigation'
 import { applyGuideMetadata } from './lib/guideSeo'
 import { trackPageView } from './lib/googleTag'
 import { foragingBySlug } from './content/foraging.generated'
@@ -61,7 +62,7 @@ function edibilityLabel(value) {
 function GuideFooter() {
   return (
     <footer className="learn-footer">
-      <div><strong>The Living Fungi Archive</strong><span>A Mushroom Forage Map collection. Observation is not identification.</span></div>
+      <div><strong>The Living Fungi Library</strong><span>A Mushroom Forage Map collection. Observation is not identification.</span></div>
       <nav aria-label="Guide information">
         <a href="/learn/foraging">Field skills</a>
         <a href="/herbs/atlas">Wild plant atlas</a>
@@ -75,7 +76,7 @@ function GuideFooter() {
   )
 }
 
-function GuideLayout({ children, section = 'archive' }) {
+function GuideLayout({ children, section = 'library' }) {
   return (
     <div className="learn-shell mycelial-theme">
       <GuideHeader section={section} />
@@ -205,7 +206,7 @@ function GuideHome({ summaries, updatedAt }) {
           <img src="/images/fungi/forest-floor-extended.webp" alt="" fetchPriority="high" />
           <div className="learn-hero-overlay" />
           <div className="learn-hero-content">
-            <p className="eyebrow">The living fungi archive · {speciesGuides.length} species</p>
+            <p className="eyebrow">The living fungi library · {speciesGuides.length} species</p>
             <h1>fungi<span>.</span></h1>
             <p>Field marks, dangerous lookalike checks, cited safety notes, and recent reviewed observations for the map's current species.</p>
             <div className="hero-actions">
@@ -213,7 +214,7 @@ function GuideHome({ summaries, updatedAt }) {
               <a className="button button-inverse" href="/learn/safety"><ShieldAlert size={17} aria-hidden="true" /> Safety rules</a>
             </div>
           </div>
-          <div className="mycelial-hero-foot"><span>Photo: <a className="mycelial-photo-credit" href="https://unsplash.com/photos/mushrooms-grow-on-a-dark-weathered-log-dcnWLYD4IFA" target="_blank" rel="noreferrer">Matt Richmond</a> · AI-extended background</span><a href="#browse-species">Explore the archive <ArrowRight size={16} aria-hidden="true" /></a></div>
+          <div className="mycelial-hero-foot"><span>Photo: <a className="mycelial-photo-credit" href="https://unsplash.com/photos/mushrooms-grow-on-a-dark-weathered-log-dcnWLYD4IFA" target="_blank" rel="noreferrer">Matt Richmond</a> · AI-extended background</span><a href="#browse-species">Explore the library <ArrowRight size={16} aria-hidden="true" /></a></div>
         </section>
 
         <section className="guide-principles" aria-label="Guide standards">
@@ -296,7 +297,7 @@ function LiveFieldSignal({ species, summary, user }) {
           </dl>
         </>
       ) : <p className="live-signal-loading">Loading current field evidence...</p>}
-      <a className="button button-primary" href={`/?taxon=${species.taxon_id}`}><MapPin size={16} aria-hidden="true" /> Show on map</a>
+      <a className="button button-primary" href={`/map?taxon=${species.taxon_id}`}><MapPin size={16} aria-hidden="true" /> Show on map</a>
       <FollowButton user={user} kind="species" taxonId={species.taxon_id} label={species.common_name} />
       <p className="live-signal-note">Location pins are approximate where privacy protection applies.</p>
     </aside>
@@ -308,7 +309,7 @@ function SpeciesPage({ species, summary, user, updatedAt }) {
     <GuideLayout>
       <main className="species-guide-main">
         <nav className="guide-breadcrumbs" aria-label="Breadcrumb">
-          <a href="/learn">Mushroom guide</a><span>/</span><span aria-current="page">{species.common_name}</span>
+          <a href={FUNGI_HOME}>Fungi library</a><span>/</span><span aria-current="page">{species.common_name}</span>
         </nav>
 
         <header className="species-hero">
@@ -359,7 +360,7 @@ function SpeciesPage({ species, summary, user, updatedAt }) {
           <a href="/learn/safety">Safety and poison response <ArrowRight size={16} aria-hidden="true" /></a>
         </section>
 
-        <a className="back-to-guide" href="/learn"><ArrowLeft size={16} aria-hidden="true" /> Back to all mushroom guides</a>
+        <a className="back-to-guide" href={FUNGI_HOME}><ArrowLeft size={16} aria-hidden="true" /> Back to the fungi library</a>
       </main>
     </GuideLayout>
   )
@@ -375,7 +376,7 @@ function RegionIndexPage() {
         <header className="regions-header">
           <p className="eyebrow"><Globe2 size={16} aria-hidden="true" /> Regional collections</p>
           <h1>Field evidence, organized by habitat region</h1>
-          <p>Compare recent public activity with the archive's long seasonal pattern. Counts reflect observations, not abundance or guaranteed fruiting.</p>
+          <p>Compare recent public activity with the library's long seasonal pattern. Counts reflect observations, not abundance or guaranteed fruiting.</p>
         </header>
         <section className="region-index" aria-label="Regional mushroom collections">
           {regions.map((region, index) => {
@@ -423,7 +424,7 @@ function RegionPage({ region, user }) {
             <figcaption>{specimen.common_name} / {specimen.latin_name}</figcaption>
           </figure>
           <div className="region-page-intro"><p className="eyebrow"><Globe2 size={16} aria-hidden="true" /> Regional field collection</p><h1>{region.name}</h1><p>{region.description}</p></div>
-          <div className="region-header-actions"><a className="button button-primary" href={`/?region=${region.slug}`}><MapPin size={16} /> Open this region on the map</a><FollowButton user={user} kind="region" regionSlug={region.slug} label={region.name} /></div>
+          <div className="region-header-actions"><a className="button button-primary" href={`/map?region=${region.slug}`}><MapPin size={16} /> Open this region on the map</a><FollowButton user={user} kind="region" regionSlug={region.slug} label={region.name} /></div>
         </header>
 
         <dl className="region-metrics">
@@ -441,7 +442,7 @@ function RegionPage({ region, user }) {
           {data && !data.outlook.length && <p className="empty-state">No recent public records are available for this collection.</p>}
           <div className="outlook-table">
             {data?.outlook.map(item => (
-              <a href={speciesPathForTaxon(item.species.inaturalist_taxon_id) ?? `/?taxon=${item.species.inaturalist_taxon_id}`} className="outlook-row" key={item.species.id}>
+              <a href={speciesPathForTaxon(item.species.inaturalist_taxon_id) ?? `/map?taxon=${item.species.inaturalist_taxon_id}`} className="outlook-row" key={item.species.id}>
                 <span className={`outlook-status ${item.status}`}><OutlookIcon status={item.status} /> {item.status}</span>
                 <span><strong>{item.species.common_name}</strong><em>{item.species.latin_name}</em></span>
                 <span><strong>{item.observations_14d}</strong><small>past 14 days</small></span>
@@ -455,7 +456,7 @@ function RegionPage({ region, user }) {
 
         <PublicDataDate updatedAt={dataUpdatedAt} />
         <section className="region-recent" aria-labelledby="recent-region-title">
-          <div className="region-section-heading"><div><p className="eyebrow">Recent accessions</p><h2 id="recent-region-title">Latest public records</h2></div><a href={`/?region=${region.slug}`}>View all on map <ArrowRight size={15} /></a></div>
+          <div className="region-section-heading"><div><p className="eyebrow">Recent accessions</p><h2 id="recent-region-title">Latest public records</h2></div><a href={`/map?region=${region.slug}`}>View all on map <ArrowRight size={15} /></a></div>
           <div className="region-recent-grid">
             {data?.recent_observations.slice(0, 6).map(item => <article key={item.id}>{item.photo_url && <img src={observationImage(item.photo_url)} alt="" loading="lazy" />}<div><span>{formatDate(item.found_on)}</span><h3>{item.species.common_name}</h3><p>{item.place_name || region.name}</p></div></article>)}
           </div>
@@ -508,7 +509,7 @@ function AboutPage() {
           <article><h2>Analytics and cookies</h2><p>Google Analytics is optional and stays off until you allow it. When enabled, it helps us understand aggregate use of maps and guides; advertising storage and personalization remain off. Read the <a href="/privacy">privacy notice</a> or reopen Privacy choices at any time to change your selection.</p></article>
           <article id="data-license"><h2>Data provenance and reuse</h2><p>Effective August 27, 2026, you may quote, analyze, and redistribute the privacy-safe observation metadata compiled by Mushroom Forage Map for personal, educational, and research use when you credit Mushroom Forage Map and retain available source links. This permission excludes source photographs and text, commercial resale, attempts to reconstruct obscured locations, and personally identifying data. Imported observations and other third-party material remain subject to their original creators' licenses and attribution requirements.</p></article>
         </section>
-        <a className="button button-primary" href="/learn">Open the mushroom guide <ArrowRight size={16} aria-hidden="true" /></a>
+        <a className="button button-primary" href={FUNGI_HOME}>Open the fungi library <ArrowRight size={16} aria-hidden="true" /></a>
       </main>
     </GuideLayout>
   )
@@ -526,10 +527,11 @@ function PrivacyPage() {
           <article><h2>What stays out</h2><p>Advertising storage, advertising user data, and ad personalization remain disabled. Analytics page locations exclude query strings and fragments so account tokens and filter details are not sent as page URLs. Exact private mushroom locations are not intentionally sent to Analytics.</p></article>
           <article><h2>Your choice</h2><p>Choose Not now to keep the Google tag unloaded. After making a choice, use the Privacy control at the bottom of any page to change it. Refusing analytics does not limit the map, guide, community pages, or account features.</p></article>
           <article><h2>Google processing</h2><p>When Analytics is enabled, Google processes measurement data under its own terms and safeguards. See <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noreferrer">how Google uses information from sites that use its services <ExternalLink size={13} aria-hidden="true" /></a>.</p></article>
+          <article><h2>Supporter memberships</h2><p>Stripe processes annual supporter payments and stores payment details. We keep the Stripe customer and subscription identifiers, membership status, and paid-through date to manage renewals and profile benefits. We do not store card numbers. Your profile name appears on the supporter list only if you opt in; you can remove it on the <a href="/supporters">membership page</a>. Deleting your account stops future supporter renewals. Payment records held by Stripe may remain for accounting and payment obligations. For billing or privacy help, contact <a href="mailto:morphiclabsdata@gmail.com">morphiclabsdata@gmail.com</a>.</p></article>
           <article><h2>Account and community data</h2><p>Account email is used for account access. Public observations follow the location-privacy choice selected by the contributor; approximate coordinates are shifted before publication, and private coordinates remain in the contributor's notebook.</p></article>
           <article><h2>The map’s starting country</h2><p>We use the approximate country supplied by our hosting provider to open the map near you. This does not request precise device location or save a location to your account. Mapbox supplies the map and, when needed, country bounds. A VPN can change the detected country; you can search for any place or choose the map’s location button to use device location.</p></article>
         </section>
-        <a className="button button-primary" href="/">Return to the field map <ArrowRight size={16} aria-hidden="true" /></a>
+        <a className="button button-primary" href="/map">Return to the field map <ArrowRight size={16} aria-hidden="true" /></a>
       </main>
     </GuideLayout>
   )
@@ -555,10 +557,10 @@ function DisclaimerPage() {
 }
 
 function NotFoundPage() {
-  return <GuideLayout><main className="guide-not-found"><h1>Guide page not found</h1><p>The species may not be in the current catalogue.</p><a className="button button-primary" href="/learn">Browse the guide</a></main></GuideLayout>
+  return <GuideLayout><main className="guide-not-found"><h1>Guide page not found</h1><p>The species may not be in the current catalogue.</p><a className="button button-primary" href={FUNGI_HOME}>Browse the library</a></main></GuideLayout>
 }
 
-export default function GuideApp({ path = '/learn' }) {
+export default function GuideApp({ path = FUNGI_HOME }) {
   const normalizedPath = path.length > 1 ? path.replace(/\/$/, '') : path
   const { data: summaries = [], dataUpdatedAt: summariesUpdatedAt } = useGuideSummaries()
   const { data: user = null } = useCurrentUser()
@@ -571,7 +573,7 @@ export default function GuideApp({ path = '/learn' }) {
   if (normalizedPath === '/learn/foraging') return <GuideLayout section="skills"><ForagingIndex /></GuideLayout>
   const topicMatch = normalizedPath.match(/^\/learn\/foraging\/([^/]+)$/)
   if (topicMatch && foragingBySlug[topicMatch[1]]) return <GuideLayout section="skills"><ForagingArticle guide={foragingBySlug[topicMatch[1]]} /></GuideLayout>
-  if (normalizedPath === '/learn') return <GuideHome summaries={summaries} updatedAt={summariesUpdatedAt} />
+  if (normalizedPath === FUNGI_HOME || normalizedPath === '/learn') return <GuideHome summaries={summaries} updatedAt={summariesUpdatedAt} />
   if (normalizedPath === '/regions') return <RegionIndexPage />
   if (normalizedPath === '/learn/safety') return <SafetyPage />
   if (normalizedPath === '/about') return <AboutPage />

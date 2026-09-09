@@ -10,7 +10,7 @@ updated: "2026-09-09"
 ---
 
 ## How can I find mushroom information near me?
-Use the [worldwide map](/) to find recent public observations around a place, then check the relevant [regional collection](/regions) and land manager. The map opens near the country detected from your connection. Search for a city, region or country to choose a different view. Precise device location is optional.
+Use the [worldwide map](/map) to find recent public observations around a place, then check the relevant [regional collection](/regions) and land manager. The map opens near the country detected from your connection. Search for a city, region or country to choose a different view. Precise device location is optional.
 
 ## A useful search sequence
 1. Search for a place you can realistically visit.

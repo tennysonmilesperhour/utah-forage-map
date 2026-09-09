@@ -10,7 +10,7 @@ export default function FollowButton({ user, kind, taxonId, regionSlug, label, o
 
   if (!user) {
     return (
-      <a className="button button-secondary follow-button" href={`/?follow=${handoff}`}>
+      <a className="button button-secondary follow-button" href={`/map?follow=${handoff}`}>
         <Bell size={16} aria-hidden="true" /> Follow {label}
       </a>
     )

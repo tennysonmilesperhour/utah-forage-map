@@ -1,10 +1,11 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
+import { localMapApi } from './server/local-map-api.js'
 
 export default defineConfig({
   build: { manifest: true },
-  plugins: [react(), tailwindcss()],
+  plugins: [localMapApi(), react(), tailwindcss()],
   server: {
     proxy: {
       '/api': {

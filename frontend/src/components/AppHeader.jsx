@@ -1,3 +1,4 @@
+import SupporterSprout from './SupporterSprout'
 import { useState } from 'react'
 import { ChevronDown, LogIn, LogOut, NotebookPen, UserPlus, Users } from 'lucide-react'
 import MyceliumMark from './MyceliumMark'
@@ -22,7 +23,7 @@ export default function AppHeader({
       <a className="brand-lockup" href={FUNGI_HOME} aria-label="Mushroom Forage Map home">
         <div className="brand-mark"><MyceliumMark /></div>
         <div className="brand-copy">
-          <h1><span className="brand-name-full">The Living Fungi Archive</span><span className="brand-name-short">Fungi Archive</span></h1>
+          <h1><span className="brand-name-full">The Living Fungi Library</span><span className="brand-name-short">Fungi Library</span></h1>
           <p>Mushroom Forage Map</p>
         </div>
       </a>
@@ -31,6 +32,7 @@ export default function AppHeader({
       <CollectionNavigation collection="fungi" active={activeView} onNavigate={onNavigate} className="primary-nav" />
 
       <div className="header-actions">
+        <SupporterSprout supporter={user?.is_supporter} />
         <button className="icon-button mobile-filter-button" type="button" onClick={() => onNavigate('community')} aria-label="Open community field desk" title="Community">
           <Users size={20} aria-hidden="true" />
         </button>
@@ -65,7 +67,7 @@ export default function AppHeader({
                 aria-label={`Account menu for ${user.username}`}
                 title="Account menu"
               >
-                <span className="avatar" aria-hidden="true">{user.username.slice(0, 1).toUpperCase()}</span>
+                <span className={`avatar${user.is_supporter ? ' supporter-gilded' : ''}`} aria-hidden="true">{user.username.slice(0, 1).toUpperCase()}</span>
                 <span className="account-name">{user.username}</span>
                 <ChevronDown size={16} aria-hidden="true" />
               </button>
@@ -75,6 +77,7 @@ export default function AppHeader({
                     <strong>{user.username}</strong>
                     <span>{user.email}</span>
                   </div>
+                  <a href="/supporters" role="menuitem">{user.is_supporter ? 'Supporter membership · Manage billing' : 'Become a supporter · $10/year'}</a>
                   <div className="account-stat">
                     <NotebookPen size={17} aria-hidden="true" />
                     <span><strong>{user.total_finds}</strong> logbook finds</span>

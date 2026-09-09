@@ -117,14 +117,14 @@ export default function MapView({
       onMapErrorRef.current?.(null)
       // Tint the basemap itself, preserving legibility of labels and the meaning of specimen colors.
       for (const layer of map.getStyle().layers) {
-        if (layer.type === 'background') map.setPaintProperty(layer.id, 'background-color', collection === 'herbs' ? '#0e1e15' : '#19151d')
-        if (layer.id === 'water' && layer.type === 'fill') map.setPaintProperty(layer.id, 'fill-color', collection === 'herbs' ? '#102c29' : '#102f35')
+        if (layer.type === 'background') map.setPaintProperty(layer.id, 'background-color', collection === 'herbs' ? '#0e1e15' : '#080808')
+        if (layer.id === 'water' && layer.type === 'fill') map.setPaintProperty(layer.id, 'fill-color', collection === 'herbs' ? '#102c29' : '#1c1b18')
       }
       map.setFog({
-        color: '#1c2830',
-        'high-color': collection === 'herbs' ? '#426347' : '#49314b',
+        color: collection === 'herbs' ? '#1c2830' : '#26241e',
+        'high-color': collection === 'herbs' ? '#426347' : '#453b2d',
         'horizon-blend': 0.08,
-        'space-color': '#090809',
+        'space-color': collection === 'herbs' ? '#090809' : '#000000',
         'star-intensity': 0.16,
       })
       map.addSource(SOURCE_ID, {
@@ -140,7 +140,7 @@ export default function MapView({
         source: SOURCE_ID,
         filter: ['has', 'point_count'],
         paint: {
-          'circle-color': collection === 'herbs' ? ['step', ['get', 'point_count'], '#3d694f', 50, '#597543', 250, '#324f43'] : ['step', ['get', 'point_count'], '#8a583b', 50, '#73445e', 250, '#493953'],
+          'circle-color': collection === 'herbs' ? ['step', ['get', 'point_count'], '#3d694f', 50, '#597543', 250, '#324f43'] : ['step', ['get', 'point_count'], '#887255', 50, '#695743', 250, '#484239'],
           'circle-radius': ['step', ['get', 'point_count'], 17, 50, 21, 250, 26],
           'circle-stroke-width': 2,
           'circle-stroke-color': '#edd0a8',

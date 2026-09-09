@@ -17,7 +17,7 @@
 .atlas-skip:focus { top: 12px; }
 .atlas-hero { min-height: 580px; position: relative; isolation: isolate; display: grid; grid-template-columns: 1fr 330px; align-items: end; gap: 40px; padding: 68px clamp(24px,4vw,64px) 75px; }
 .atlas-hero > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 54%; z-index: -2; }
-.atlas-hero:after { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg,#020f096b,transparent 70%),linear-gradient(0deg,#030b09f5,#030b0926 75%); }
+.atlas-hero:after { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg,#0000006b,transparent 70%),linear-gradient(0deg,#000000f5,#00000026 75%); }
 .atlas-hero-copy .herb-kicker { font-size: 10px; letter-spacing: 2.2px; text-shadow: 0 1px 5px #000; }
 .atlas-hero h1 { font-size: clamp(100px,12vw,180px); line-height: 1; font-weight: 300; letter-spacing: -.065em; margin: 18px 0; }
 .atlas-shell h1 span { color: #c6ded1; }
@@ -63,7 +63,7 @@
 .atlas-card-image { display: block; }
 .atlas-plant-photo { position: relative; overflow: hidden; background: #0c1a11; }
 .atlas-plant-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.atlas-plant-photo figcaption { position: absolute; bottom: 0; left: 0; right: 0; padding: 25px 12px 8px; background: linear-gradient(transparent,#001306c9); color: #e5ece6; font-size: 9px; line-height: 1.5; }
+.atlas-plant-photo figcaption { position: absolute; bottom: 0; left: 0; right: 0; padding: 25px 12px 8px; background: linear-gradient(transparent,#000000c9); color: #e5ece6; font-size: 9px; line-height: 1.5; }
 .atlas-plant-photo figcaption a { text-decoration: none; }
 .atlas-card-image .atlas-plant-photo, .atlas-card-image .atlas-photo-placeholder { height: 205px; }
 .atlas-photo-placeholder { min-height: 205px; background: radial-gradient(ellipse at 65% 45%,#2043324d,transparent 70%),#071a11; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: #b6cfc0; }

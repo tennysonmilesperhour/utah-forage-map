@@ -23,9 +23,11 @@ test('every atlas plant maps to one verified taxon and retains its caution categ
 })
 
 test('both menus start at the collection landing page with the map second', () => {
-  assert.equal(fungiNavigation[0].href, '/learn')
+  assert.equal(fungiNavigation[0].href, '/')
   assert.equal(herbHref(herbNavigation[0].key), '/herbs')
+  assert.equal(fungiNavigation[0].label, 'Library')
   assert.equal(fungiNavigation[1].key, 'map')
+  assert.equal(fungiNavigation[1].href, '/map')
   assert.equal(herbNavigation[1].key, 'map')
   assert.equal(herbHref('map'), '/herbs/map')
   assert.equal(herbHref('plants'), '/herbs/atlas')

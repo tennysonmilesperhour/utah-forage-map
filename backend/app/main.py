@@ -15,6 +15,7 @@ from sqlalchemy import func, or_
 from sqlalchemy.orm import Session, joinedload
 
 from app.database import Base, engine, get_db
+from app.billing import billing_router, cancel_for_deleted_account
 from app.email_service import send_account_email, send_digest_email, send_herb_watch_email
 from app.models import (
     AccountToken, AlertSubscription, CommunityEvent, CommunityFind, CrawledSource, ForageClub,
@@ -83,7 +84,7 @@ app.add_middleware(
 
 @app.on_event("startup")
 def create_dev_tables():
-    if ENVIRONMENT != "production":
+    if ENVIRONMENT != "production" and not os.getenv("VERCEL"):
         Base.metadata.create_all(bind=engine)
 
 
@@ -479,7 +480,7 @@ def register(
         "Verify your field account",
         "Confirm this email so you can always recover your logbook.",
         "Verify email",
-        f"/?verify={verification_token}",
+        f"/map?verify={verification_token}",
     )
     return user
 
@@ -556,7 +557,7 @@ def resend_verification(
         "Verify your field account",
         "Confirm this email so you can always recover your logbook.",
         "Verify email",
-        f"/?verify={token}",
+        f"/map?verify={token}",
     )
     return {"message": "Verification email requested"}
 
@@ -581,7 +582,7 @@ def forgot_password(
             "Reset your password",
             "Use this link to choose a new password for your field account.",
             "Reset password",
-            f"/?reset={token}",
+            f"/map?reset={token}",
         )
     else:
         db.commit()
@@ -648,6 +649,7 @@ def delete_account(
 ):
     if not passwords.verify(payload.password, auth.user.hashed_password):
         raise HTTPException(status_code=400, detail="Password is incorrect")
+    cancel_for_deleted_account(db, auth.user)
     stamp = now().strftime("%Y%m%d%H%M%S")
     auth.user.username = f"Deleted forager {str(auth.user.id)[:8]}"
     auth.user.email = f"deleted-{auth.user.id}-{stamp}@invalid.local"
@@ -1614,11 +1616,11 @@ def send_weekly_alerts(
                 if not zone_snapshot["readiness"]["ready"]:
                     continue
                 label = subscription.name
-                path = f"/?taxon={subscription.species.inaturalist_taxon_id}"
+                path = f"/map?taxon={subscription.species.inaturalist_taxon_id}"
             elif subscription.kind == "species":
                 query = query.filter(Sighting.species_id == subscription.species_id)
                 label = subscription.species.common_name
-                path = f"/?taxon={subscription.species.inaturalist_taxon_id}"
+                path = f"/map?taxon={subscription.species.inaturalist_taxon_id}"
             else:
                 region = get_region(subscription.region_slug)
                 if region is None:
@@ -1710,3 +1712,7 @@ def send_herb_watch_alerts(
                 item["zone"].last_notified_at = now()
     db.commit()
     return {"status": "ok", "users_emailed": users_emailed, "zones_ready": zones_ready}
+
+
+# Attach after authentication helpers are defined; billing never accepts a caller-supplied user ID.
+app.include_router(billing_router(get_current_user, enforce_rate_limit))

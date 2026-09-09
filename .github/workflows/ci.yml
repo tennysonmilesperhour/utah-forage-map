@@ -23,6 +23,8 @@ jobs:
       - run: npm run build
       - run: npm run test:herbs
       - run: npm run test:map
+      - run: npm run test:motion
+      - run: npm run test:navigation
       - run: npm run test:seo
 
   backend:
@@ -42,6 +44,7 @@ jobs:
       - run: pip install -r requirements.txt
       - run: alembic upgrade head
       - run: python -m scripts.seed
+      - run: python -m unittest discover -s tests -v
       - run: python -m scripts.auth_smoke
       - run: python -m scripts.import_smoke
       - run: python -m compileall app crawler scripts

@@ -49,10 +49,10 @@
 .herbal-shell .herb-icon-button { padding: 0; flex-shrink: 0; }
 .herbal-shell :is(button, a, input, select, textarea, summary):focus-visible { outline: 2px solid #e0f3b2; outline-offset: 4px; }
 .herbal-main { width: min(1600px, 100%); }
-.herbal-main:not(.herbal-today) { background: linear-gradient(#031008bd, #050d09 680px), url('/images/herbs/forest-sanctuary.webp') center top / 100% auto no-repeat; }
+.herbal-main:not(.herbal-today) { background: linear-gradient(#000000bd, #000000 680px), url('/images/herbs/forest-sanctuary.webp') center top / 100% auto no-repeat; }
 .herb-kicker { color: #c9deb0; font-size: 10px; font-weight: 500; letter-spacing: 1.8px; }
 .herbal-forest { position: relative; isolation: isolate; display: grid; gap: 0; padding: 34px 48px 32px; overflow: hidden; min-height: 710px; }
-.herbal-forest::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, #010a05d4, #03100738 63%, #04110930), linear-gradient(0deg, #050d09, transparent 55%); }
+.herbal-forest::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, #000000d4, #00000038 63%, #00000030), linear-gradient(0deg, #000000, transparent 55%); }
 .herbal-forest-image { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; object-position: center 48%; }
 .herbal-forest-topline { display: flex; justify-content: space-between; align-items: center; gap: 14px; font-size: 11px; color: #e0ead9; }
 .herbal-forest-topline > span:first-child { display: flex; align-items: center; gap: 10px; }
@@ -112,7 +112,7 @@
 .seasonal-list button { display: block; position: relative; overflow: hidden; height: 310px; min-height: 0; padding: 0; border: 1px solid #d5e7bb30; border-radius: 11px; scroll-snap-align: start; background: var(--herb-paper-bright); }
 .seasonal-list img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 350ms ease; }
 .seasonal-list button:hover img { transform: scale(1.04); }
-.seasonal-list button > span { position: absolute; bottom: 0; left: 0; right: 0; padding: 22px 20px; border-top: 1px solid var(--herb-glass-edge); background: linear-gradient(135deg, rgb(7 20 11 / 60%), rgb(3 12 6 / 72%)); box-shadow: inset 0 1px 0 #ffffff14; backdrop-filter: blur(10px) saturate(135%); -webkit-backdrop-filter: blur(10px) saturate(135%); }
+.seasonal-list button > span { position: absolute; bottom: 0; left: 0; right: 0; padding: 22px 20px; border-top: 1px solid var(--herb-glass-edge); background: linear-gradient(135deg, rgb(0 0 0 / 60%), rgb(0 0 0 / 72%)); box-shadow: inset 0 1px 0 #ffffff14; backdrop-filter: blur(10px) saturate(135%); -webkit-backdrop-filter: blur(10px) saturate(135%); }
 .seasonal-list strong { font-size: 18px; font-weight: 500; }
 .seasonal-list em { margin-top: 3px; font: italic 11px var(--herb-serif); color: #cbd8c6; }
 .seasonal-list small { color: #d5e7bb; font-size: 8px; letter-spacing: 1px; margin-top: 12px; padding-right: 20px; }
@@ -135,7 +135,7 @@
 .herb-folio { gap: 22px; padding: 0 48px 56px; border: 0; }
 .herb-folio > button, .herb-folio > button.folio-feature { grid-column: span 4; min-height: 370px; height: 370px; border: 1px solid #d5e7bb30; border-radius: 13px; background: var(--herb-paper-bright); }
 .herb-folio img, .herb-folio > button.folio-feature img { height: 100%; filter: none; }
-.folio-copy { position: absolute; bottom: 0; left: 0; right: 0; padding: 24px; border-top: 1px solid var(--herb-glass-edge); background: linear-gradient(135deg, rgb(7 20 11 / 60%), rgb(3 12 6 / 72%)); box-shadow: inset 0 1px 0 #ffffff14; backdrop-filter: blur(10px) saturate(135%); -webkit-backdrop-filter: blur(10px) saturate(135%); }
+.folio-copy { position: absolute; bottom: 0; left: 0; right: 0; padding: 24px; border-top: 1px solid var(--herb-glass-edge); background: linear-gradient(135deg, rgb(0 0 0 / 60%), rgb(0 0 0 / 72%)); box-shadow: inset 0 1px 0 #ffffff14; backdrop-filter: blur(10px) saturate(135%); -webkit-backdrop-filter: blur(10px) saturate(135%); }
 .folio-copy small { color: #d3e7aa; font-size: 9px; font-weight: 500; letter-spacing: 1.4px; }
 .folio-copy strong { font-size: 26px; line-height: 1.25; font-weight: 400; margin: 8px 0 5px; }
 .folio-copy em { color: #cbd8c6; font-size: 12px; }
@@ -179,7 +179,7 @@
 .herbal-shell .auth-tabs button, .herbal-shell .auth-submit { border-radius: 12px; }
 .herbal-shell .auth-context { border-color: #d5e7bb30; }
 .herbal-shell .auth-tabs button.active, .herbal-shell .auth-submit { background: #d3e7aa; color: #183021; }
-.herbal-shell .herbal-auth-context { background: linear-gradient(#051008a3, #030c06eb), url('/images/herbs/forest-sanctuary.webp') center / cover; }
+.herbal-shell .herbal-auth-context { background: linear-gradient(#000000a3, #000000eb), url('/images/herbs/forest-sanctuary.webp') center / cover; }
 .herbal-shell .herbal-auth-context p, .herbal-shell .herbal-auth-context li { color: #d5e0ce; }
 
 @media (max-width: 1200px) {
@@ -249,7 +249,7 @@
   .herbal-account-actions .herb-icon-button { width: 32px; min-height: 36px; }
   .herbal-forest { padding: 24px 20px; }
   .herbal-forest-image { object-position: 64% center; }
-  .herbal-forest::after { background: linear-gradient(90deg, #010a05bf, #03100742), linear-gradient(0deg, #050d09, transparent 70%); }
+  .herbal-forest::after { background: linear-gradient(90deg, #000000bf, #00000042), linear-gradient(0deg, #000000, transparent 70%); }
   .herbal-forest-topline { font-size: 9px; }
   .herbal-forest-content { grid-template-columns: 1fr; padding: 34px 0 20px; gap: 32px; }
   .herbal-intro { padding: 0; }

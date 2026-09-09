@@ -28,7 +28,7 @@ Save the official page and check its date. If the answer is unclear, ask the res
 Even within a single country, different managers can publish different requirements. The [Siuslaw National Forest mushroom page](https://www.fs.usda.gov/r06/siuslaw/permits/mushroom-permits) is an example of a specific collecting policy with permit information. It should not be generalized to another forest, a national park or private property. Recheck the source before a visit because rules and closures can change.
 
 ## How should I use map records?
-A point on the [mushroom map](/) records a reported organism. It is not a permit, proof of public access, a parking location or a promise that the organism remains present. Approximate locations also intentionally avoid revealing an exact site. Plan a lawful route using official visitor information and treat the observation as ecological context.
+A point on the [mushroom map](/map) records a reported organism. It is not a permit, proof of public access, a parking location or a promise that the organism remains present. Approximate locations also intentionally avoid revealing an exact site. Plan a lawful route using official visitor information and treat the observation as ecological context.
 
 ## What about plants labeled invasive or common?
 Those labels do not by themselves settle permission, safe handling or disposal. Use local land-manager instructions for any removal activity. For herb study, read the [field skills manual](/herbs/fieldcraft) and local botanical references. If collecting is not allowed or not necessary, an observation walk can still produce useful photographs, notes and questions for later study.

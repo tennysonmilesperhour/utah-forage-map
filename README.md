@@ -74,9 +74,13 @@ npm ci
 npm run dev
 ```
 
-Set `VITE_MAPBOX_TOKEN` in `frontend/.env`. Vite proxies `/api` to `http://127.0.0.1:8000`, so authentication stays same-origin.
+Set a valid public `VITE_MAPBOX_TOKEN` in `frontend/.env` (or the ignored `frontend/.env.local`); both field maps and place search require it. Vite proxies `/api` to `http://127.0.0.1:8000`, so authentication stays same-origin. Fungi observations come from that backend's database, which must contain imported records to show markers.
+
+Vite serves `/herb-observations` and `/visitor-country` through the same handlers used in production, in both development and `npm run preview`. Herb records load directly from the public iNaturalist service through the local handler. Country detection uses Vercel's country header when available; localhost opens the world view unless a country header is provided by a development proxy. Restart Vite after changing map configuration.
 
 Open [http://127.0.0.1:5173](http://127.0.0.1:5173).
+
+The home page (`/`) is the **Fungi Library**. The observation map lives at `/map`; fungi logos and collection switches return to the library. `/learn` redirects home, while `/learn/species/*` and `/learn/foraging/*` retain their URLs. Old root links with map filters or account-action tokens redirect to `/map` with their query parameters preserved. The herb landing page remains `/herbs`.
 
 ## Verification
 

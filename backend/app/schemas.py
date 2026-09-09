@@ -73,6 +73,7 @@ class UserRead(BaseModel):
     is_active: bool
     email_verified: bool
     joined_at: datetime
+    is_supporter: bool = False
 
     model_config = {"from_attributes": True}
 

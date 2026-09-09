@@ -1,8 +1,17 @@
 // Stable destinations and order shared by app, reference and map headers.
-export const FUNGI_HOME = '/learn'
+export const FUNGI_HOME = '/'
+export const FUNGI_MAP = '/map'
+// Preserve bookmarked map filters and account actions after the library moves home.
+export const LEGACY_MAP_PARAMS = ['taxon', 'region', 'observation', 'follow', 'verify', 'reset', 'submit']
+export function legacyFungiRedirect(pathname, search = '', hash = '') {
+  if (/^\/learn\/?$/.test(pathname)) return `${FUNGI_HOME}${search}${hash}`
+  if (pathname !== FUNGI_HOME) return null
+  const params = new URLSearchParams(search)
+  return LEGACY_MAP_PARAMS.some(key => params.has(key)) ? `${FUNGI_MAP}${search}${hash}` : null
+}
 export const fungiNavigation = [
-  { key: 'archive', label: 'Archive', href: FUNGI_HOME, icon: 'book' },
-  { key: 'map', label: 'Field map', href: '/', icon: 'map' },
+  { key: 'library', label: 'Library', href: FUNGI_HOME, icon: 'book' },
+  { key: 'map', label: 'Field map', href: FUNGI_MAP, icon: 'map' },
   { key: 'regions', label: 'Regions', href: '/regions', icon: 'globe' },
   { key: 'skills', label: 'Field skills', href: '/learn/foraging', icon: 'compass' },
   { key: 'community', label: 'Community', href: '/community', icon: 'users' },
