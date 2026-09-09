@@ -6,8 +6,6 @@ import {
   Trash2, UserPlus, X, ArrowDown, ArrowUpRight,
 } from 'lucide-react'
 import AuthDialog from './components/AuthDialog'
-import HerbFieldPractice from './components/HerbFieldPractice'
-import HerbPlantReflection from './components/HerbPlantReflection'
 import HerbMoonVisual from './components/HerbMoonVisual'
 import { getApiError, useCurrentUser, useLogout } from './hooks/useAuth'
 import {
@@ -148,13 +146,12 @@ function TodayView({ almanac, location, locating, moon, onLocate, onOpenPlant, o
             <p className="herb-kicker">A little closer to the living world</p>
             <h1>Meet the plants.<br /><span>Listen to what stirs.</span></h1>
             <p>Come with curiosity. Get to know the plants, notice the lives around them, and gather with care.</p>
-            <div className="herbal-hero-actions"><button className="herb-solid-button" type="button" onClick={() => onNavigate('plants')}>Find your next plant <ArrowUpRight size={18} /></button><a href="#field-practice-title">Take a moment <ArrowDown size={16} /></a></div>
+            <div className="herbal-hero-actions"><button className="herb-solid-button" type="button" onClick={() => onNavigate('plants')}>Find your next plant <ArrowUpRight size={18} /></button><a href="/herbs/fieldcraft">Explore field skills <ArrowUpRight size={16} /></a></div>
           </div>
           <MoonDial moon={moon} />
         </div>
         <WeatherReading weather={almanac?.weather} hasLocation={Boolean(location)} locating={locating} onLocate={onLocate} />
       </section>
-      <HerbFieldPractice />
       <SeasonalLedger hemisphere={almanac?.hemisphere ?? 'north'} onOpen={onOpenPlant} onNavigate={onNavigate} />
       <section className="herb-callouts">
         <button type="button" onClick={() => onNavigate('watches')}><BellRing size={23} /><span><strong>Set a watch zone</strong><small>Combine season, weather, and optional sky timing around a place and intention.</small></span><ChevronRight size={18} /></button>
@@ -164,28 +161,27 @@ function TodayView({ almanac, location, locating, moon, onLocate, onOpenPlant, o
   )
 }
 
-// Approved forest B direction with licensed landscape photography.
+// Approved forest B direction with the original atmospheric backdrop.
 function ForestTodayView({ almanac, location, locating, moon, onLocate, onOpenPlant, onNavigate }) {
   const today = new Intl.DateTimeFormat(undefined, { weekday: 'long', month: 'long', day: 'numeric' }).format(new Date())
   return (
     <main className="herbal-main herbal-today forest-today">
       <section className="forest-immersive-hero" aria-label="Today's herbal almanac">
-        <img className="forest-immersive-image" src="/images/herbs/hoh-rainforest-griffin-quinn.webp" alt="" fetchPriority="high" />
+        <img className="forest-immersive-image" src="/images/herbs/forest-immersion.webp" alt="" fetchPriority="high" />
         <div className="forest-dateline"><span><span className="herb-live-dot" /> A little closer to the living world</span><span>{today}</span></div>
         <div className="forest-hero-layout">
           <div className="forest-hero-copy">
             <p className="herb-kicker">Meet the plants. Listen to what stirs.</p>
             <h1>gather<span>.</span></h1>
             <p>Come with curiosity. Get to know the plants, notice the lives around them, and gather with care.</p>
-            <div className="herbal-hero-actions"><button className="herb-solid-button" type="button" onClick={() => onNavigate('plants')}>Find your next plant <ArrowUpRight size={18} /></button><a href="#field-practice-title">Take a moment <ArrowDown size={16} /></a></div>
+            <div className="herbal-hero-actions"><button className="herb-solid-button" type="button" onClick={() => onNavigate('plants')}>Find your next plant <ArrowUpRight size={18} /></button><a href="/herbs/fieldcraft">Explore field skills <ArrowUpRight size={16} /></a></div>
           </div>
           <MoonDial moon={moon} />
         </div>
-        <div className="forest-hero-foot"><span>THE VERDANT HOURS / A FIELD COMPANION</span><a className="forest-source-credit" href="https://unsplash.com/photos/a-forest-with-trees-E8euERG09gM" target="_blank" rel="noreferrer">Hoh Rainforest · Griffin Quinn</a><a href="#seasonal-ledger">Follow the season <ArrowDown size={14} /></a></div>
+        <div className="forest-hero-foot"><span>THE VERDANT HOURS / A FIELD COMPANION</span><a href="#seasonal-ledger">Follow the season <ArrowDown size={14} /></a></div>
       </section>
       <div className="forest-conditions"><WeatherReading weather={almanac?.weather} hasLocation={Boolean(location)} locating={locating} onLocate={onLocate} /></div>
       <SeasonalLedger hemisphere={almanac?.hemisphere ?? 'north'} onOpen={onOpenPlant} onNavigate={onNavigate} />
-      <HerbFieldPractice />
       <section className="herb-callouts">
         <button type="button" onClick={() => onNavigate('watches')}><BellRing size={23} /><span><strong>Set a watch zone</strong><small>Combine season, weather, and optional sky timing around a place and intention.</small></span><ChevronRight size={18} /></button>
         <button type="button" onClick={() => onNavigate('pantry')}><ShoppingBasket size={23} /><span><strong>Open your pantry</strong><small>Record gathered material, quantities, preparations, and what you hope to find next.</small></span><ChevronRight size={18} /></button>
@@ -204,7 +200,6 @@ function PlantDetail({ herb, hemisphere, onClose, onWatch, onWish }) {
         <dl className="specimen-notes"><div><dt>Field marks</dt><dd>{herb.fieldMarks}</dd></div><div><dt>Habitat</dt><dd>{herb.habitat}</dd></div><div><dt>Harvest</dt><dd>{herb.harvest}</dd></div><div><dt>Stewardship</dt><dd>{herb.stewardship}</dd></div></dl>
         <div className="herb-caution"><ShieldAlert size={18} /><span><strong>Before use</strong>{herb.caution}</span></div>
         <div className="herb-tradition"><MoonStar size={18} /><span><strong>Traditional sky note</strong>{herb.tradition} Preferred traditional window: {herb.moon.join(' or ')}.</span></div>
-        <HerbPlantReflection herb={herb} />
         <div className="specimen-actions"><button className="herb-solid-button" type="button" onClick={() => onWatch(herb)}><BellRing size={16} /> Watch this plant</button><button className="herb-outline-button" type="button" onClick={() => onWish(herb)}><Heart size={16} /> Add to wish list</button></div>
       </div>
     </aside>
@@ -280,7 +275,7 @@ function WatchesView({ user, location, locating, presetHerb, onLocate, onAuth, o
 function InventoryForm({ presetHerb, onSubmit, busy }) {
   const [form, setForm] = useState({ herb_slug: presetHerb?.slug ?? herbProfiles[0].slug, quantity: 1, unit: 'bunch', gathered_on: new Date().toISOString().slice(0, 10), location_name: '', preparation: 'Fresh', notes: '' })
   async function submit(event) { event.preventDefault(); await onSubmit({ ...form, quantity: Number(form.quantity), location_name: form.location_name || null, preparation: form.preparation || null, notes: form.notes || null }); setForm(current => ({ ...current, quantity: 1, notes: '' })) }
-  return <form className="pantry-form" onSubmit={submit}><div><p className="herb-kicker">Gathered inventory</p><h2>Add to the shelf</h2></div><label>Plant<select value={form.herb_slug} onChange={event => setForm({ ...form, herb_slug: event.target.value })}>{herbProfiles.map(herb => <option value={herb.slug} key={herb.slug}>{herb.name}</option>)}</select></label><div className="herb-paired-fields"><label>Amount<input type="number" min="0.1" step="0.1" required value={form.quantity} onChange={event => setForm({ ...form, quantity: event.target.value })} /></label><label>Unit<select value={form.unit} onChange={event => setForm({ ...form, unit: event.target.value })}>{['g', 'oz', 'bunch', 'jar', 'portion'].map(value => <option key={value}>{value}</option>)}</select></label></div><label>Gathered on<input type="date" required value={form.gathered_on} onChange={event => setForm({ ...form, gathered_on: event.target.value })} /></label><div className="herb-paired-fields"><label>Place<input maxLength="160" placeholder="Private label" value={form.location_name} onChange={event => setForm({ ...form, location_name: event.target.value })} /></label><label>Preparation<input maxLength="80" placeholder="Fresh, dried..." value={form.preparation} onChange={event => setForm({ ...form, preparation: event.target.value })} /></label></div><label>Field notes and reflections<textarea rows="3" maxLength="1000" placeholder="What did you notice? How did you arrive, and what would you like to remember? Include plant condition and preparation notes." value={form.notes} onChange={event => setForm({ ...form, notes: event.target.value })} /></label><button className="herb-solid-button" disabled={busy}><ListPlus size={17} /> {busy ? 'Adding...' : 'Add gathering'}</button></form>
+  return <form className="pantry-form" onSubmit={submit}><div><p className="herb-kicker">Gathered inventory</p><h2>Add to the shelf</h2></div><label>Plant<select value={form.herb_slug} onChange={event => setForm({ ...form, herb_slug: event.target.value })}>{herbProfiles.map(herb => <option value={herb.slug} key={herb.slug}>{herb.name}</option>)}</select></label><div className="herb-paired-fields"><label>Amount<input type="number" min="0.1" step="0.1" required value={form.quantity} onChange={event => setForm({ ...form, quantity: event.target.value })} /></label><label>Unit<select value={form.unit} onChange={event => setForm({ ...form, unit: event.target.value })}>{['g', 'oz', 'bunch', 'jar', 'portion'].map(value => <option key={value}>{value}</option>)}</select></label></div><label>Gathered on<input type="date" required value={form.gathered_on} onChange={event => setForm({ ...form, gathered_on: event.target.value })} /></label><div className="herb-paired-fields"><label>Place<input maxLength="160" placeholder="Private label" value={form.location_name} onChange={event => setForm({ ...form, location_name: event.target.value })} /></label><label>Preparation<input maxLength="80" placeholder="Fresh, dried..." value={form.preparation} onChange={event => setForm({ ...form, preparation: event.target.value })} /></label></div><label>Field notes<textarea rows="3" maxLength="1000" placeholder="Record plant condition, growing conditions and preparation notes." value={form.notes} onChange={event => setForm({ ...form, notes: event.target.value })} /></label><button className="herb-solid-button" disabled={busy}><ListPlus size={17} /> {busy ? 'Adding...' : 'Add gathering'}</button></form>
 }
 
 function WishlistForm({ presetHerb, onSubmit, busy }) {

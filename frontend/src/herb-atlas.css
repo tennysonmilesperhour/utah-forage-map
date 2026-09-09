@@ -38,7 +38,6 @@
 .atlas-hero-panel span { color: #b7cbbc; font-size: 10px; }
 .atlas-hero-panel b { display: block; font-size: 31px; color: #f0f6f1; font-weight: 300; }
 .atlas-hero-panel a { display: flex; align-items: center; justify-content: space-between; font-size: 11px; text-decoration: none; border-top: 1px solid #d6eada2a; padding-top: 17px; }
-.atlas-photo-credit { position: absolute; right: clamp(24px,4vw,64px); bottom: 18px; font-size: 9px; color: #bdcfc3 !important; text-underline-offset: 4px; }
 .atlas-start-links { margin: 0 clamp(24px,4vw,64px); display: grid; grid-template-columns: repeat(3,1fr); gap: 28px; border-bottom: 1px solid #bfdccc22; }
 .atlas-start-links > a { padding: 30px 0; display: flex; align-items: center; gap: 18px; text-decoration: none; }
 .atlas-start-links strong { display: block; font-weight: 400; font-size: 14px; }
@@ -275,7 +274,6 @@
   .atlas-hero-panel b { font-size: 25px; }
   .atlas-hero-panel span { font-size: 8px; }
   .atlas-hero-panel > a { grid-column: 1/-1; font-size: 10px; }
-  .atlas-photo-credit { font-size: 8px; right: 24px; }
   .atlas-start-links small { display: block; margin: 5px 0 0; }
   .atlas-directory { padding-top: 40px; }
   .atlas-section-title { align-items: start; flex-direction: column; }
@@ -328,7 +326,7 @@
 @media print {
   html, body, #root, .atlas-shell { height: auto !important; overflow: visible !important; background: white !important; color: #18281c !important; }
   .atlas-shell * { color: #18281c !important; box-shadow: none !important; text-shadow: none !important; backdrop-filter: none !important; }
-  .atlas-header, .atlas-subnav, .atlas-footer, .atlas-detail-actions, .atlas-detail-sidebar, .atlas-jump-links, .atlas-detail > .herb-plant-reflection, .analytics-settings, .analytics-consent, .atlas-skip { display: none !important; }
+  .atlas-header, .atlas-subnav, .atlas-footer, .atlas-detail-actions, .atlas-detail-sidebar, .atlas-jump-links, .analytics-settings, .analytics-consent, .atlas-skip { display: none !important; }
   .atlas-detail { padding: 0; max-width: none; }
   .atlas-detail-hero { display: block; }
   .atlas-detail-hero > figure, .atlas-detail-hero > .atlas-photo-placeholder { display: none; }

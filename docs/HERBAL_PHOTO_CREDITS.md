@@ -2,9 +2,9 @@
 
 Last source check: 9 September 2026. Photographs retain their individual licenses; the repository license does not replace them. No generated identification images are used. The interface may crop images. Web assets are resized and converted to WebP. CC BY-SA adaptations remain available under their source license; follow the linked license when reusing a file.
 
-## Forest landscape
+## Forest backdrop
 
-[Hoh Rainforest, Griffin Quinn](https://unsplash.com/photos/a-forest-with-trees-E8euERG09gM), published 5 August 2022; page lists Nikon D3200 camera metadata. [Unsplash License](https://unsplash.com/license). Local file: `frontend/public/images/herbs/hoh-rainforest-griffin-quinn.webp`. Resized to 1920px wide and converted to WebP. Darkening is a CSS overlay; no generated extension.
+The existing `frontend/public/images/herbs/forest-immersion.webp` artwork is retained at the user's request. It is generated atmospheric decoration, not botanical identification imagery. See `HERBAL_FOREST_ALTERNATIVE.md` for its original generation provenance. The Hoh Rainforest photograph was considered during research but is not used in this release.
 
 ## Botanical photographs
 

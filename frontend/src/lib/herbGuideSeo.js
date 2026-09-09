@@ -12,7 +12,7 @@ export function herbGuideMetadata(pathname) {
   else if (route.type === 'compare') { title = 'Compare Herb Field Marks & Lookalikes | The Verdant Hours'; description = 'Compare two botanical reference profiles side by side, with safety, habitat, season and preparation notes.' }
   else if (route.type === 'fieldcraft') { title = 'Herb Gathering Field Skills & Safety | The Verdant Hours'; description = 'A field manual for plant identification, regional seasons, responsible gathering, food preparation, storage and poison response.' }
   else if (route.type === 'missing') { title = 'Plant Page Not Found | The Verdant Hours'; description = 'Find a plant by common or scientific name in the herbal atlas.' }
-  return { path, title, description, image: `${SITE_URL}${route.plant?.photos[0]?.url || '/images/herbs/hoh-rainforest-griffin-quinn.webp'}`, missing: route.type === 'missing', plant: route.plant }
+  return { path, title, description, image: `${SITE_URL}${route.plant?.photos[0]?.url || '/images/herbs/forest-immersion.webp'}`, missing: route.type === 'missing', plant: route.plant }
 }
 export function herbGuideStructuredData(path) {
   const meta = herbGuideMetadata(path)
