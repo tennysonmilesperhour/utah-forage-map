@@ -28,6 +28,10 @@
   ],
   "rewrites": [
     {
+      "source": "/visitor-country",
+      "destination": "/api/visitor-country"
+    },
+    {
       "source": "/api/:path*",
       "destination": "https://utah-forage-api.vercel.app/api/:path*"
     },
