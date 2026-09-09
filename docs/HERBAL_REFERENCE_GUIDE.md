@@ -14,7 +14,7 @@ The guide starts a global botanical reference alongside the existing fungi guide
 
 All 54 new routes are prerendered. Plant content, cautions and citations remain present without JavaScript. Filters and saved plants require JavaScript; saved plants stay in the current browser. Print styles retain the profile, cautions and sources. This is not offline installation or cross-device syncing.
 
-The Forest B Today screen and atlas retain the original forest-immersion artwork at the user’s request. The optional field-pause section and plant-reflection cards have been removed. The classic A view remains available. B’s former 12-entry atlas navigation opens the new reference; only the 12 existing almanac plants offer watch-zone and pantry links. The larger reference does not fabricate backend monitoring support.
+The Forest B Today screen and atlas retain the original forest-immersion artwork at the user’s request. The optional field-pause section and plant-reflection cards have been removed. The atlas and almanac now share `HerbalHeader.jsx`, including navigation, collection switch and account controls, so the menu stays in the same position between pages. The classic A view remains available. B’s former 12-entry atlas navigation opens the new reference; only the 12 existing almanac plants offer watch-zone and pantry links. The larger reference does not fabricate backend monitoring support.
 
 ## Evidence used
 

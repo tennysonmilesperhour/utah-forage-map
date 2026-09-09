@@ -192,7 +192,7 @@ function GuideHome({ summaries }) {
     <GuideLayout>
       <main className="learn-main">
         <section className="learn-hero">
-          <img src="/images/fungi/mycelial-forest.webp" alt="" fetchPriority="high" />
+          <img src="/images/fungi/forest-floor-extended.webp" alt="" fetchPriority="high" />
           <div className="learn-hero-overlay" />
           <div className="learn-hero-content">
             <p className="eyebrow">The living fungi archive · {speciesGuides.length} species</p>
@@ -203,7 +203,7 @@ function GuideHome({ summaries }) {
               <a className="button button-inverse" href="/learn/safety"><ShieldAlert size={17} aria-hidden="true" /> Safety rules</a>
             </div>
           </div>
-          <div className="mycelial-hero-foot"><span>A FIELD COLLECTION / ROOTED IN OBSERVATION</span><a href="#browse-species">Explore the archive <ArrowRight size={16} aria-hidden="true" /></a></div>
+          <div className="mycelial-hero-foot"><span>Photo: <a className="mycelial-photo-credit" href="https://unsplash.com/photos/mushrooms-grow-on-a-dark-weathered-log-dcnWLYD4IFA" target="_blank" rel="noreferrer">Matt Richmond</a> · AI-extended background</span><a href="#browse-species">Explore the archive <ArrowRight size={16} aria-hidden="true" /></a></div>
         </section>
 
         <section className="guide-principles" aria-label="Guide standards">
