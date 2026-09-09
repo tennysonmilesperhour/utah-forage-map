@@ -13,12 +13,14 @@ The user designated [this App Design board](https://www.pinterest.com/thekiwipop
 
 ## System
 
-- Canvas: forest `#101f19`; elevated surface `#20362b`; deep surface `#172a21`.
+The user refined this direction on September 8, 2026: darker background and header greens, clearer transparent iOS-like glass, and approximately half the corner rounding on boxes and buttons.
+
+- Canvas: near-black forest `#050d09`; elevated surface `#101e16`; deep surface `#09130e`; header `rgb(2 9 5 / 94%)`. Keep the light sage and ivory end of the palette for stronger contrast.
 - Text: ivory `#f2f5e9`; secondary sage `#bbcbbd`; primary action `#d3e7aa` with dark text `#172c1d`.
 - Avenir Next, Avenir, Segoe UI, then sans-serif. Light-to-regular display headings; compact, readable controls.
-- Glass panels use translucent green gradients, 22px blur where useful, a fine light edge, and 22–28px corners. Text-heavy plant notes use a near-opaque surface.
+- Glass panels use a clear, lightly tinted gradient (12–48% opacity), 12px backdrop blur with 135% saturation, and fine specular edge highlights. Regular boxes use 11–14px corners and buttons use 14px corners, approximately half the initial rounding. The desktop sky-clock arch is 75px; circular moon and botanical marks stay circular. Text-heavy plant notes use a dark, near-opaque surface.
 - Today combines forest artwork, introductory copy, live calculated sky information, and opt-in weather. The reflection practice and seasonal plant gallery follow below.
-- The atlas uses real, attributed plant photography with dark caption scrims. Generated atmosphere must never replace identification photography.
+- The atlas uses real, attributed plant photography with transparent, dark glass captions. Generated atmosphere must never replace identification photography.
 - At 980px and below the four primary destinations form a floating bottom navigation bar. Content and footer provide clearance for the bar and device safe areas.
 - Active states use shape and text in addition to color. Controls retain visible keyboard focus. Honor reduced-motion preferences. Do not animate the full-screen forest or introduce auto-playing media.
 - Keep astronomical data, broad seasonal guidance, and cultural traditions clearly distinguished. Preserve field safety, privacy, source attribution, and the three-step reflection flow.

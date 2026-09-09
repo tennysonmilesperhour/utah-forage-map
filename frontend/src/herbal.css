@@ -1,29 +1,31 @@
 /* The Verdant Hours — forest, light, and botanical glass.
    Loaded with the herbal collection; fungal surfaces retain their own tokens. */
 .herbal-shell {
-  --herb-paper: #101f19;
-  --herb-paper-bright: #20362b;
-  --herb-paper-deep: #172a21;
+  --herb-paper: #050d09;
+  --herb-paper-bright: #101e16;
+  --herb-paper-deep: #09130e;
   --herb-ink: #f2f5e9;
   --herb-muted: #bbcbbd;
-  --herb-line: #506754;
+  --herb-line: #4b6050;
   --herb-leaf: #d3e7aa;
   --herb-leaf-dark: #b8d18c;
   --herb-pink: #d3e7aa;
   --herb-gold: #dfcb91;
   --herb-blue: #b8d7cb;
-  --herb-night: #101f19;
+  --herb-night: #040b07;
   --herb-serif: "Avenir Next", Avenir, "Segoe UI", sans-serif;
-  --herb-glass: linear-gradient(130deg, rgb(99 126 96 / 30%), rgb(19 39 29 / 84%));
+  --herb-glass: linear-gradient(135deg, rgb(239 250 230 / 12%), rgb(14 30 20 / 20%) 42%, rgb(3 15 8 / 48%));
+  --herb-glass-edge: rgb(231 247 221 / 24%);
+  --herb-glass-shadow: inset 0 1px 0 rgb(255 255 255 / 26%), inset 1px 0 0 rgb(241 255 229 / 10%), inset 0 -1px 0 rgb(255 255 255 / 5%), 0 12px 36px rgb(0 5 2 / 28%);
   color-scheme: dark;
-  background: radial-gradient(ellipse at 100% 45%, #29402c55, transparent 65%), var(--herb-paper);
+  background: radial-gradient(ellipse at 100% 45%, #17302128, transparent 65%), var(--herb-paper);
   scroll-padding-top: 110px;
 }
 .herbal-header {
   min-height: 88px;
   padding: 0 clamp(20px, 3vw, 56px);
   border-color: #a5be9d24;
-  background: rgb(15 31 24 / 94%);
+  background: rgb(2 9 5 / 94%);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
 }
@@ -31,26 +33,26 @@
 .herbal-brand strong { font-size: 19px; font-weight: 500; letter-spacing: -.6px; }
 .herbal-brand small { color: var(--herb-muted); margin-top: 7px; font-size: 8px; letter-spacing: 1.7px; }
 .herbal-sigil { width: 40px; height: 46px; border-radius: 50% 50% 45% 45%; border-color: #bace9a80; }
-.herbal-header .world-switch { height: 38px; border-color: #95b08848; border-radius: 22px; background: #b0c8990a; padding: 3px; }
-.herbal-header .world-switch a { border-radius: 18px; padding: 0 11px; }
+.herbal-header .world-switch { height: 38px; border-color: #95b08848; border-radius: 11px; background: #b0c8990a; padding: 3px; }
+.herbal-header .world-switch a { border-radius: 9px; padding: 0 11px; }
 .herbal-header .world-switch a.active { background: #d3e7aa; color: #1a301f; }
 .herbal-header nav { height: 88px; }
 .herbal-header nav button { font-size: 12px; font-weight: 500; gap: 8px; padding: 0 13px; }
 .herbal-header nav button.active { color: var(--herb-ink); }
 .herbal-header nav button.active::after { height: 2px; bottom: 20px; left: 15px; right: 15px; background: var(--herb-leaf); }
 .herbal-header nav button:hover { color: white; }
-.herbal-shell :is(.herb-solid-button, .herb-outline-button, .herb-text-button, .herb-user-button, .herb-icon-button) { min-height: 44px; border-radius: 28px; padding: 0 19px; font-size: 12px; font-weight: 600; }
-.herbal-shell .herb-solid-button { border-color: #d3e7aa; background: #d3e7aa; color: #172c1d !important; }
-.herbal-shell .herb-solid-button:hover { background: #e2efc7; }
-.herbal-shell .herb-outline-button { color: var(--herb-ink) !important; border-color: #b8cda36b; background: #b0c8990a; }
-.herbal-shell .herb-outline-button:hover { background: #b0c89920; }
+.herbal-shell :is(.herb-solid-button, .herb-outline-button, .herb-text-button, .herb-user-button, .herb-icon-button) { min-height: 44px; border-radius: 14px; padding: 0 19px; font-size: 12px; font-weight: 600; }
+.herbal-shell .herb-solid-button { border-color: #e3f3c491; background: linear-gradient(145deg, rgb(224 242 192 / 94%), rgb(178 206 148 / 85%)); box-shadow: inset 0 1px 0 #ffffff73, 0 4px 16px #00000026; color: #0a170d !important; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.herbal-shell .herb-solid-button:hover { background: linear-gradient(145deg, #e9f6d4, #c8e1a8e8); }
+.herbal-shell .herb-outline-button { color: var(--herb-ink) !important; border-color: #ecf6e344; background: linear-gradient(145deg, #ffffff17, #ffffff05); box-shadow: inset 0 1px 0 #ffffff29, 0 4px 14px #0000001a; backdrop-filter: blur(10px) saturate(135%); -webkit-backdrop-filter: blur(10px) saturate(135%); }
+.herbal-shell .herb-outline-button:hover { background: linear-gradient(145deg, #ffffff24, #ffffff0a); }
 .herbal-shell .herb-icon-button { padding: 0; flex-shrink: 0; }
 .herbal-shell :is(button, a, input, select, textarea, summary):focus-visible { outline: 2px solid #e0f3b2; outline-offset: 4px; }
 .herbal-main { width: min(1600px, 100%); }
-.herbal-main:not(.herbal-today) { background: linear-gradient(#102219ad, #101f19 680px), url('/images/herbs/forest-sanctuary.webp') center top / 100% auto no-repeat; }
+.herbal-main:not(.herbal-today) { background: linear-gradient(#031008bd, #050d09 680px), url('/images/herbs/forest-sanctuary.webp') center top / 100% auto no-repeat; }
 .herb-kicker { color: #c9deb0; font-size: 10px; font-weight: 500; letter-spacing: 1.8px; }
 .herbal-forest { position: relative; isolation: isolate; display: grid; gap: 0; padding: 34px 48px 32px; overflow: hidden; min-height: 710px; }
-.herbal-forest::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, #0a1d14c9, #0c201654 63%, #132b2047), linear-gradient(0deg, #10231bf2, transparent 50%); }
+.herbal-forest::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, #010a05d4, #03100738 63%, #04110930), linear-gradient(0deg, #050d09, transparent 55%); }
 .herbal-forest-image { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; object-position: center 48%; }
 .herbal-forest-topline { display: flex; justify-content: space-between; align-items: center; gap: 14px; font-size: 11px; color: #e0ead9; }
 .herbal-forest-topline > span:first-child { display: flex; align-items: center; gap: 10px; }
@@ -66,13 +68,13 @@
 .herbal-hero-actions a { display: inline-flex; align-items: center; gap: 13px; min-height: 44px; color: #f2f5e9; font-size: 12px; text-decoration: none; }
 .herbal-hero-actions a:hover { text-decoration: underline; text-underline-offset: 5px; }
 .herbal-shell :is(.moon-observatory, .weather-reading, .herb-field-practice, .herb-guest-gate) {
-  border: 1px solid #d5e7bb38;
+  border: 1px solid var(--herb-glass-edge);
   background: var(--herb-glass);
-  box-shadow: inset 0 1px 0 #e6f2d00a, 0 18px 48px #06100b1f;
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
+  box-shadow: var(--herb-glass-shadow);
+  backdrop-filter: blur(12px) saturate(135%);
+  -webkit-backdrop-filter: blur(12px) saturate(135%);
 }
-.moon-observatory { grid-template-columns: 1fr; align-self: center; min-height: 0; border-radius: 150px 150px 26px 26px; color: var(--herb-ink); }
+.moon-observatory { grid-template-columns: 1fr; align-self: center; min-height: 0; border-radius: 75px 75px 13px 13px; color: var(--herb-ink); }
 .moon-orbit { min-height: 162px; height: 162px; border: 0; margin-top: 20px; }
 .moon-orbit::before { width: 140px; height: 140px; top: 11px; left: calc(50% - 70px); border-color: #d0dca942; }
 .moon-orbit::after { width: 108px; height: 108px; top: 27px; left: calc(50% - 54px); border-color: #c1d59c21; }
@@ -93,7 +95,7 @@
 .moon-copy dd { font-size: 17px; font-weight: 400; }
 .tradition-note { font-size: 10px; line-height: 1.6; color: #c4d0ba; text-align: left; }
 .tradition-note svg { width: 13px; color: #d3ddb0; }
-.weather-reading { border-radius: 22px; grid-template-columns: .75fr 1.1fr 1fr; }
+.weather-reading { border-radius: 11px; grid-template-columns: .75fr 1.1fr 1fr; }
 .weather-reading.is-empty { grid-template-columns: auto minmax(0, 1fr) auto; padding: 21px 27px; gap: 20px; }
 .weather-reading.is-empty h2 { font-size: 18px; font-weight: 500; margin-bottom: 7px; }
 .weather-reading.is-empty p:not(.herb-kicker) { max-width: 670px; font-size: 11px; color: #c8d5c2; }
@@ -103,13 +105,13 @@
 .weather-metrics strong { font-size: 18px; }
 .gathering-verdict strong { font-size: 12px; }
 .gathering-verdict small { font-size: 11px; }
-.herbal-shell .herb-field-practice { position: relative; margin: 32px 48px 0; padding: 29px 32px 16px; border-radius: 24px; background: linear-gradient(115deg, #35493285, #1a312584); }
+.herbal-shell .herb-field-practice { position: relative; margin: 32px 48px 0; padding: 29px 32px 16px; border-radius: 12px; background: var(--herb-glass); }
 .field-practice-heading h2 { font-size: 27px; font-weight: 400; letter-spacing: -.6px; }
 .field-practice-heading p:not(.herb-kicker) { font-size: 12px; margin-top: 10px; }
 .field-practice-heading .herb-kicker { font-size: 9px; }
 .herb-wisdom-sources { margin-top: 8px; font-size: 11px; }
 .herb-wisdom-sources summary { font-weight: 400; }
-.field-practice-choices span { border-radius: 24px; }
+.field-practice-choices span { border-radius: 12px; }
 .field-practice-choices input:checked + span { color: #172c1d; }
 .field-practice-content h3 { font-size: 25px; font-weight: 400; }
 .field-practice-steps button { font-size: 12px; }
@@ -118,78 +120,78 @@
 .herb-section-heading { grid-template-columns: 1fr auto; gap: 24px; margin-bottom: 26px; }
 .herb-section-heading h2 { font-size: 32px; line-height: 1.25; font-weight: 400; letter-spacing: -.9px; }
 .seasonal-list { display: grid; grid-auto-flow: column; grid-auto-columns: calc((100% - 54px) / 4); gap: 18px; overflow-x: auto; border: 0; padding: 2px 2px 17px; scroll-snap-type: x mandatory; scrollbar-color: #829a68 #1d3326; scrollbar-width: thin; }
-.seasonal-list button { display: block; position: relative; overflow: hidden; height: 310px; min-height: 0; padding: 0; border: 1px solid #d5e7bb30; border-radius: 22px; scroll-snap-align: start; background: #20362b; }
+.seasonal-list button { display: block; position: relative; overflow: hidden; height: 310px; min-height: 0; padding: 0; border: 1px solid #d5e7bb30; border-radius: 11px; scroll-snap-align: start; background: var(--herb-paper-bright); }
 .seasonal-list img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 350ms ease; }
 .seasonal-list button:hover img { transform: scale(1.04); }
-.seasonal-list button > span { position: absolute; bottom: 0; left: 0; right: 0; padding: 44px 20px 22px; background: linear-gradient(transparent, #0c1c14ed 38%); }
+.seasonal-list button > span { position: absolute; bottom: 0; left: 0; right: 0; padding: 22px 20px; border-top: 1px solid var(--herb-glass-edge); background: linear-gradient(135deg, rgb(7 20 11 / 60%), rgb(3 12 6 / 72%)); box-shadow: inset 0 1px 0 #ffffff14; backdrop-filter: blur(10px) saturate(135%); -webkit-backdrop-filter: blur(10px) saturate(135%); }
 .seasonal-list strong { font-size: 18px; font-weight: 500; }
 .seasonal-list em { margin-top: 3px; font: italic 11px var(--herb-serif); color: #cbd8c6; }
 .seasonal-list small { color: #d5e7bb; font-size: 8px; letter-spacing: 1px; margin-top: 12px; padding-right: 20px; }
 .seasonal-list button > svg { position: absolute; bottom: 20px; right: 16px; color: #e2edcb; }
 .ledger-footnote { font-size: 11px; line-height: 1.7; margin-top: 13px; }
 .herb-callouts { margin: 0 48px 52px; background: none; gap: 18px; border: 0; }
-.herb-callouts button { min-height: 128px; padding: 26px; border: 1px solid #d5e7bb30; border-radius: 22px; background: linear-gradient(130deg, #334a3180, #1b30249e); }
+.herb-callouts button { min-height: 128px; padding: 26px; border: 1px solid #d5e7bb30; border-radius: 11px; background: var(--herb-glass); box-shadow: var(--herb-glass-shadow); backdrop-filter: blur(12px) saturate(135%); -webkit-backdrop-filter: blur(12px) saturate(135%); }
 .herb-callouts button + button { border: 1px solid #d5e7bb30; }
-.herb-callouts button:hover { background: #344b31; }
+.herb-callouts button:hover { background: linear-gradient(135deg, rgb(239 250 230 / 17%), rgb(3 15 8 / 42%)); }
 .herb-callouts strong { font-size: 20px; font-weight: 400; }
 .herb-callouts small { font-size: 11px; line-height: 1.6; }
 .atlas-heading { padding: 66px 48px 40px; gap: 40px; }
 .atlas-heading h1 { font-size: clamp(38px, 4.6vw, 64px); font-weight: 400; letter-spacing: -2.5px; line-height: 1.12; }
 .atlas-heading > p { font-size: 13px; line-height: 1.8; }
-.herbal-shell :is(input, select, textarea) { min-height: 46px; border-radius: 12px; background: #13281eee; border-color: #72846a; }
+.herbal-shell :is(input, select, textarea) { min-height: 46px; border-radius: 6px; background: rgb(3 13 7 / 58%); border-color: #72846a; }
 .herbal-shell input::placeholder, .herbal-shell textarea::placeholder { color: #a3b79e; opacity: 1; }
 .herb-atlas-tools { grid-template-columns: 1fr 240px; padding-bottom: 30px; }
-.herb-atlas-tools input { border-radius: 25px; }
+.herb-atlas-tools input { border-radius: 12.5px; }
 .herb-atlas-tools label svg { top: 15px; }
 .herb-folio { gap: 22px; padding: 0 48px 56px; border: 0; }
-.herb-folio > button, .herb-folio > button.folio-feature { grid-column: span 4; min-height: 370px; height: 370px; border: 1px solid #d5e7bb30; border-radius: 26px; background: #20362b; }
+.herb-folio > button, .herb-folio > button.folio-feature { grid-column: span 4; min-height: 370px; height: 370px; border: 1px solid #d5e7bb30; border-radius: 13px; background: var(--herb-paper-bright); }
 .herb-folio img, .herb-folio > button.folio-feature img { height: 100%; filter: none; }
-.folio-copy { position: absolute; bottom: 0; left: 0; right: 0; padding: 48px 24px 24px; background: linear-gradient(transparent, #0c1c14ed 35%); }
+.folio-copy { position: absolute; bottom: 0; left: 0; right: 0; padding: 24px; border-top: 1px solid var(--herb-glass-edge); background: linear-gradient(135deg, rgb(7 20 11 / 60%), rgb(3 12 6 / 72%)); box-shadow: inset 0 1px 0 #ffffff14; backdrop-filter: blur(10px) saturate(135%); -webkit-backdrop-filter: blur(10px) saturate(135%); }
 .folio-copy small { color: #d3e7aa; font-size: 9px; font-weight: 500; letter-spacing: 1.4px; }
 .folio-copy strong { font-size: 26px; line-height: 1.25; font-weight: 400; margin: 8px 0 5px; }
 .folio-copy em { color: #cbd8c6; font-size: 12px; }
 .folio-copy > span { font-size: 9px; margin-top: 14px; letter-spacing: .8px; }
 .herb-atlas-empty { margin: 0 48px 80px; color: var(--herb-muted); }
-.herb-specimen { top: 88px; z-index: 80; width: min(1100px, calc(100vw - 40px)); border: 1px solid #a9c29645; border-radius: 30px 0 0 0; background: #192e23fa; box-shadow: -30px 0 100px #020c0780; }
+.herb-specimen { top: 88px; z-index: 80; width: min(1100px, calc(100vw - 40px)); border: 1px solid #a9c29645; border-radius: 15px 0 0 0; background: #0a160ff5; box-shadow: -30px 0 100px #020c0780; }
 .herb-specimen figure { height: calc(100dvh - 88px); }
 .herb-specimen-copy { padding: 54px 38px 72px; }
 .herb-specimen-copy h2 { font-size: 46px; font-weight: 400; letter-spacing: -1.8px; line-height: 1.1; }
 .herb-latin { font-size: 17px; }
-.herb-specimen-close { top: 103px; background: #20362bf5; border-color: #c9ddb38c; }
-.harvest-months { border-radius: 12px; overflow: hidden; }
+.herb-specimen-close { top: 103px; background: rgb(6 19 11 / 70%); border-radius: 11px; backdrop-filter: blur(12px) saturate(135%); -webkit-backdrop-filter: blur(12px) saturate(135%); border-color: #c9ddb38c; }
+.harvest-months { border-radius: 6px; overflow: hidden; }
 .harvest-months span.active { color: #183021; }
 .specimen-notes dt { font-size: 9px; font-weight: 600; letter-spacing: .7px; }
 .specimen-notes dd { font-size: 13px; line-height: 1.8; }
-.herb-caution { border-radius: 16px; background: #38351d; border-color: #9a854b; color: #efe0b5; }
-.herb-tradition { border-radius: 16px; background: #24382c; border-color: #68815e; color: #d1dfc2; }
+.herb-caution { border-radius: 8px; background: #38351d; border-color: #9a854b; color: #efe0b5; }
+.herb-tradition { border-radius: 8px; background: #14251a; border-color: #68815e; color: #d1dfc2; }
 .herb-plant-reflection h3 { font-size: 27px; font-weight: 400; }
-.herbal-shell .herb-guest-gate { min-height: 280px; padding: 38px; border-radius: 28px; margin-bottom: 70px; }
+.herbal-shell .herb-guest-gate { min-height: 280px; padding: 38px; border-radius: 14px; margin-bottom: 70px; }
 .herb-guest-gate h2 { font-size: 28px; font-weight: 400; line-height: 1.25; margin-bottom: 12px; }
 .herb-guest-gate p:not(.herb-kicker) { font-size: 13px; line-height: 1.8; }
-.watch-workspace, .pantry-forms, .pantry-ledgers { margin: 0 48px 48px; border: 1px solid #d5e7bb30; border-radius: 26px; overflow: hidden; }
+.watch-workspace, .pantry-forms, .pantry-ledgers { margin: 0 48px 48px; border: 1px solid #d5e7bb30; border-radius: 13px; overflow: hidden; }
 .watch-workspace { grid-template-columns: minmax(330px, .9fr) minmax(0, 1.1fr); }
-.watch-form, .pantry-form, .wishlist-form { padding: 32px; background: #20362ba8; }
+.watch-form, .pantry-form, .wishlist-form { padding: 32px; background: rgb(10 24 15 / 52%); }
 .watch-form h2, .pantry-form h2, .wishlist-form h2 { font-size: 27px; font-weight: 400; }
-.signal-choices label > span { border-radius: 14px; }
-.signal-choices input:checked + span { background: #324b2d; color: #e2efc7; border-color: #a9c484; }
-.watch-card { border-radius: 20px; background: #20362b; }
-.watch-card.is-ready { border-color: #8baf72; background: #293e2a; }
+.signal-choices label > span { border-radius: 7px; }
+.signal-choices input:checked + span { background: #243b20; color: #e2efc7; border-color: #a9c484; }
+.watch-card { border-radius: 10px; background: var(--herb-paper-bright); }
+.watch-card.is-ready { border-color: #8baf72; background: #142819; }
 .watch-card-foot > span { font-size: 15px; }
 .watch-list, .pantry-ledgers > section { padding: 30px; }
 .inventory-plant { background: #d3e7aa; color: #1b321f; }
-.inventory-stepper { border-radius: 12px; overflow: hidden; }
-.herbal-footer { padding: 40px 48px; background: #0c1a13; border-color: #d5e7bb30; gap: 42px; }
+.inventory-stepper { border-radius: 6px; overflow: hidden; }
+.herbal-footer { padding: 40px 48px; background: #020804; border-color: #d5e7bb30; gap: 42px; }
 .herbal-footer strong { font-size: 17px; font-weight: 400; color: #dfe9d2; }
 .herbal-footer small, .herbal-footer p { color: #b2c1ab; font-size: 10px; line-height: 1.9; }
 .herbal-footer a { color: #d3e7aa; }
-.herb-toast { border-radius: 18px; background: #263e2ef5; color: #f2f5e9; }
-.herbal-shell .auth-dialog { color-scheme: dark; border: 1px solid #a9c29645; border-radius: 26px; background: #1b3024; }
-.herbal-shell .auth-tabs { border-radius: 30px; }
+.herb-toast { border-radius: 9px; background: rgb(9 25 15 / 83%); color: #f2f5e9; }
+.herbal-shell .auth-dialog { color-scheme: dark; border: 1px solid #a9c29645; border-radius: 13px; background: #0a160f; }
+.herbal-shell .auth-tabs { border-radius: 15px; }
 .herbal-shell .auth-context h2, .herbal-shell .auth-heading h3 { font-family: var(--herb-serif); font-weight: 400; letter-spacing: -.6px; }
-.herbal-shell .auth-tabs button, .herbal-shell .auth-submit { border-radius: 24px; }
+.herbal-shell .auth-tabs button, .herbal-shell .auth-submit { border-radius: 12px; }
 .herbal-shell .auth-context { border-color: #d5e7bb30; }
 .herbal-shell .auth-tabs button.active, .herbal-shell .auth-submit { background: #d3e7aa; color: #183021; }
-.herbal-shell .herbal-auth-context { background: linear-gradient(#142c1ba3, #102219eb), url('/images/herbs/forest-sanctuary.webp') center / cover; }
+.herbal-shell .herbal-auth-context { background: linear-gradient(#051008a3, #030c06eb), url('/images/herbs/forest-sanctuary.webp') center / cover; }
 .herbal-shell .herbal-auth-context p, .herbal-shell .herbal-auth-context li { color: #d5e0ce; }
 
 @media (max-width: 1200px) {
@@ -212,8 +214,8 @@
 @media (max-width: 980px) {
   .herbal-header { grid-template-columns: 1fr auto auto; min-height: 76px; padding: 0 24px; backdrop-filter: none; -webkit-backdrop-filter: none; }
   .herbal-header .world-switch { grid-column: 2; margin-right: 16px; }
-  .herbal-header nav, .herbal-header nav.open { position: fixed; top: auto; bottom: max(16px, env(safe-area-inset-bottom)); left: 50%; right: auto; transform: translateX(-50%); display: grid; grid-template-columns: repeat(4, 1fr) !important; gap: 3px; width: min(480px, calc(100vw - 32px)); height: 70px; margin: 0; padding: 6px; border: 1px solid #c5d6ad4d; border-radius: 28px; background: #1c3126f5; box-shadow: 0 8px 30px #05110ba8; backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); }
-  .herbal-header nav button { min-height: 56px; display: flex; flex-direction: column; justify-content: center; gap: 5px; padding: 3px; border-radius: 22px; font-size: 10px; }
+  .herbal-header nav, .herbal-header nav.open { position: fixed; top: auto; bottom: max(16px, env(safe-area-inset-bottom)); left: 50%; right: auto; transform: translateX(-50%); display: grid; grid-template-columns: repeat(4, 1fr) !important; gap: 3px; width: min(480px, calc(100vw - 32px)); height: 70px; margin: 0; padding: 6px; border: 1px solid #c5d6ad4d; border-radius: 14px; background: linear-gradient(135deg, rgb(8 20 12 / 60%), rgb(2 12 6 / 78%)); box-shadow: var(--herb-glass-shadow); backdrop-filter: blur(18px) saturate(150%); -webkit-backdrop-filter: blur(18px) saturate(150%); }
+  .herbal-header nav button { min-height: 56px; display: flex; flex-direction: column; justify-content: center; gap: 5px; padding: 3px; border-radius: 11px; font-size: 10px; color: #e5edde; }
   .herbal-header nav button svg { display: block; width: 18px; height: 18px; }
   .herbal-header nav button.active { background: #d3e7aa; color: #172c1d; }
   .herbal-header nav button.active::after { display: none; }
@@ -260,7 +262,7 @@
   .herbal-account-actions .herb-icon-button { width: 32px; min-height: 36px; }
   .herbal-forest { padding: 24px 20px; }
   .herbal-forest-image { object-position: 64% center; }
-  .herbal-forest::after { background: linear-gradient(90deg, #0a1d14b0, #0c20165c), linear-gradient(0deg, #10231bed, transparent 65%); }
+  .herbal-forest::after { background: linear-gradient(90deg, #010a05bf, #03100742), linear-gradient(0deg, #050d09, transparent 70%); }
   .herbal-forest-topline { font-size: 9px; }
   .herbal-forest-content { grid-template-columns: 1fr; padding: 34px 0 20px; gap: 32px; }
   .herbal-intro { padding: 0; }
@@ -270,7 +272,7 @@
   .herbal-hero-actions { margin-top: 26px; gap: 17px; }
   .herbal-hero-actions .herb-solid-button { min-height: 46px; font-size: 11px; gap: 12px; padding: 0 17px; }
   .herbal-hero-actions a { gap: 7px; font-size: 10px; }
-  .moon-observatory { grid-template-columns: 94px minmax(0, 1fr); min-height: 0; border-radius: 24px; padding: 20px 17px 17px 9px; gap: 0; }
+  .moon-observatory { grid-template-columns: 94px minmax(0, 1fr); min-height: 0; border-radius: 12px; padding: 20px 17px 17px 9px; gap: 0; }
   .moon-orbit { height: 114px; min-height: 114px; margin-top: 4px; }
   .moon-orbit::before { width: 88px; height: 88px; top: 12px; left: calc(50% - 44px); }
   .moon-orbit::after { width: 72px; height: 72px; top: 20px; left: calc(50% - 36px); }
@@ -316,16 +318,16 @@
   .atlas-heading > p { font-size: 12px; }
   .herb-atlas-tools { grid-template-columns: 1fr; padding: 0 20px 24px; }
   .herb-folio { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 0 20px 34px; gap: 14px; }
-  .herb-folio > button, .herb-folio > button.folio-feature { grid-column: span 1; height: 270px; min-height: 0; border-radius: 20px; }
+  .herb-folio > button, .herb-folio > button.folio-feature { grid-column: span 1; height: 270px; min-height: 0; border-radius: 10px; }
   .herb-folio > button.folio-feature { grid-column: span 2; height: 340px; }
-  .folio-copy { padding: 50px 15px 19px; }
+  .folio-copy { padding: 19px 15px; }
   .folio-copy strong { font-size: 20px; }
   .folio-copy small { font-size: 9px; letter-spacing: 1px; }
   .folio-copy em { font-size: 9px; }
   .folio-copy > span { font-size: 9px; letter-spacing: .6px; }
   .herb-folio > button.folio-feature .folio-copy strong { font-size: 28px; }
   .herb-atlas-empty { margin: 0 20px 50px; }
-  .herb-specimen { top: 72px; width: 100%; grid-template-columns: 1fr; border-radius: 26px 26px 0 0; }
+  .herb-specimen { top: 72px; width: 100%; grid-template-columns: 1fr; border-radius: 13px 13px 0 0; }
   .herb-specimen figure { position: relative; height: 340px; }
   .herb-specimen-close { top: 85px; right: 14px; }
   .herb-specimen-copy { padding: 32px 24px 70px; }
@@ -343,7 +345,7 @@
   .signal-choices label > span { padding: 11px 8px; }
   .herbal-footer { grid-template-columns: 1fr; gap: 25px; padding: 30px 24px 120px; }
   .herbal-footer p { max-width: 440px; }
-  .herbal-shell .auth-dialog { border-radius: 22px; }
+  .herbal-shell .auth-dialog { border-radius: 11px; }
 }
 @media (max-width: 370px) {
   .herbal-header { padding: 0 12px; gap: 6px; }
