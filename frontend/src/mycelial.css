@@ -105,7 +105,7 @@
 .mycelial-theme .activity-row-featured { overflow: hidden; border-radius: 8px; border-color: var(--mycelial-edge); background: #2118278c; }
 .mycelial-theme .activity-row-featured h4 { font-size: 29px; font-weight: 300; }
 .mycelial-theme :is(.activity-row, .community-provenance, .community-section, .community-list article) { border-color: var(--mycelial-edge); }
-.mycelial-theme .auth-dialog { border-radius: 10px; }
+.mycelial-theme .auth-dialog { margin: auto; border-radius: 10px; }
 .mycelial-theme .auth-context { background: linear-gradient(0deg, #100b18ee, #100b1866), url('/images/fungi/mycelial-forest.webp') 70% center / cover; border-color: var(--mycelial-edge); }
 .mycelial-theme .auth-context h2 { font-size: 32px; font-weight: 300; }
 .mycelial-theme :is(.auth-mark, .avatar) { border-color: var(--mycelial-edge); color: #e5d8e0; background: #dcc8e112; }
@@ -159,6 +159,10 @@
 .mycelial-theme .region-label-copy h2 { font-weight: 300; }
 .mycelial-theme .species-hero-overlay { background: linear-gradient(90deg, #110c16df, #110c163d); }
 .mycelial-theme .learn-footer { padding-bottom: 42px; }
+.analytics-consent.mycelial-theme { border-radius: 10px; border-color: var(--mycelial-edge); background: linear-gradient(130deg, #332638f2, #110d17f5); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+.analytics-consent.mycelial-theme .analytics-consent-copy strong { font: 400 19px var(--museum-serif); }
+.analytics-consent.mycelial-theme .analytics-consent-icon { background: #d2bfd21c; color: #ded0df; }
+.analytics-settings.mycelial-theme { border-color: #d2bfd233; border-radius: 7px; background: #211727ed; color: #e9dce7; }
 
 @media (max-width: 1200px) {
   .mycelial-theme :is(.app-header, .guide-site-header) { gap: 12px; padding: 0 20px; grid-template-columns: minmax(170px, 1fr) auto auto auto; }
@@ -184,6 +188,7 @@
   .mycelial-theme .workspace { margin-bottom: calc(90px + env(safe-area-inset-bottom)); grid-template-columns: 300px minmax(0, 1fr); }
   .mycelial-theme .drawer-layer { top: 76px; }
   .mycelial-theme .learn-footer { padding-bottom: calc(110px + env(safe-area-inset-bottom)); }
+  .analytics-settings.mycelial-theme { bottom: calc(92px + env(safe-area-inset-bottom)); }
   .mycelial-theme:has(.learn-hero) .guide-site-header { margin-bottom: -76px; background: #0c090dee; }
   .mycelial-theme .guide-species-card:nth-child(n) { grid-column: span 6; }
   .mycelial-theme .species-card-copy h2, .mycelial-theme .species-card-copy h2 a { font-size: 29px; }

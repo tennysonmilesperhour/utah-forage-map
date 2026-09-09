@@ -30,7 +30,7 @@ const content = (
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       {isHerbalPath ? <LazyHerbalApp /> : isGuidePath ? <GuideApp path={pathname} /> : <App />}
-      <AnalyticsConsent />
+      <AnalyticsConsent collection={isHerbalPath ? 'herbs' : 'fungi'} />
     </QueryClientProvider>
   </StrictMode>
 )
