@@ -19,6 +19,7 @@ The user refined this direction on September 8, 2026: darker background and head
 - Text: ivory `#f2f5e9`; secondary sage `#bbcbbd`; primary action `#d3e7aa` with dark text `#172c1d`.
 - Avenir Next, Avenir, Segoe UI, then sans-serif. Light-to-regular display headings; compact, readable controls.
 - Glass panels use a clear, lightly tinted gradient (12–48% opacity), 12px backdrop blur with 135% saturation, and fine specular edge highlights. Regular boxes use 11–14px corners and buttons use 14px corners, approximately half the initial rounding. The desktop sky-clock arch is 75px; circular moon and botanical marks stay circular. Text-heavy plant notes use a dark, near-opaque surface.
+- The moon uses a softly textured silver disc, muted earthshine, a faint halo, and one fine orbital accent. Its illuminated area follows the calculated illumination and waxing/waning direction. This is a north-up phase illustration, not the observer-specific apparent tilt. Keep the graphic still and decorative; the adjacent phase and illumination text provide its accessible meaning.
 - Today combines forest artwork, introductory copy, live calculated sky information, and opt-in weather. The reflection practice and seasonal plant gallery follow below.
 - The atlas uses real, attributed plant photography with transparent, dark glass captions. Generated atmosphere must never replace identification photography.
 - At 980px and below the four primary destinations form a floating bottom navigation bar. Content and footer provide clearance for the bar and device safe areas.

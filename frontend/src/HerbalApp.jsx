@@ -8,6 +8,7 @@ import {
 import AuthDialog from './components/AuthDialog'
 import HerbFieldPractice from './components/HerbFieldPractice'
 import HerbPlantReflection from './components/HerbPlantReflection'
+import HerbMoonVisual from './components/HerbMoonVisual'
 import { getApiError, useCurrentUser, useLogout } from './hooks/useAuth'
 import {
   useCreateHerbInventory, useCreateHerbWatchZone, useCreateHerbWishlist,
@@ -87,10 +88,7 @@ function MoonDial({ moon }) {
   const next = moon.nextQuarter ? new Intl.DateTimeFormat(undefined, { month: 'short', day: 'numeric' }).format(moon.nextQuarter) : 'soon'
   return (
     <section className="moon-observatory" aria-labelledby="moon-title">
-      <div className="moon-orbit" style={{ '--moon-turn': `${moon.angle}deg` }} aria-hidden="true">
-        <span className="orbit-star one" /><span className="orbit-star two" /><span className="orbit-star three" />
-        <span className="moon-disc"><i /></span>
-      </div>
+      <HerbMoonVisual moon={moon} />
       <div className="moon-copy">
         <p className="herb-kicker"><MoonStar size={15} /> Sky clock</p>
         <h2 id="moon-title">{moon.phase}</h2>
