@@ -47,10 +47,9 @@ export default function AnalyticsConsent({ collection = 'fungi' }) {
       aria-labelledby="analytics-consent-title"
       aria-describedby="analytics-consent-copy"
     >
-      <div className="analytics-consent-icon"><BarChart3 size={21} aria-hidden="true" /></div>
       <div className="analytics-consent-copy">
-        <strong id="analytics-consent-title">Help improve the field map</strong>
-        <p id="analytics-consent-copy">Allow anonymous Google Analytics measurements so we can understand which maps and guides are useful. Advertising storage and personalization stay off.</p>
+        <strong id="analytics-consent-title"><BarChart3 size={14} aria-hidden="true" /> Help improve the map</strong>
+        <p id="analytics-consent-copy">Optional Google Analytics helps improve our maps and guides. Advertising features stay off. <a href="/privacy">Details</a></p>
       </div>
       <div className="analytics-consent-actions">
         <button className="button button-secondary" type="button" onClick={() => choose('denied')}>Not now</button>
