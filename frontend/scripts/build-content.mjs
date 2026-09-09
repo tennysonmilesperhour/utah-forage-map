@@ -3,6 +3,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import matter from 'gray-matter'
 import { marked } from 'marked'
+import { load } from 'cheerio'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const contentDirectory = path.join(root, 'content', 'species')
@@ -39,13 +40,26 @@ for (const file of files) {
   slugs.add(data.slug)
   taxonIds.add(Number(data.taxon_id))
 
+  const $ = load(await marked.parse(content), null, false)
+  const headings = []
+  $('h2, h3').each((index, element) => {
+    const text = $(element).text()
+    const id = `section-${text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`
+    $(element).attr('id', id)
+    if (element.tagName === 'h2') headings.push({ id, text })
+  })
+  const sources = []
+  $('#section-sources').nextUntil('h2').find('a[href]').each((index, element) => {
+    const url = $(element).attr('href')
+    if (url.startsWith('https://') || url.startsWith('http://')) sources.push({ title: $(element).text(), url })
+  })
   guides.push({
     ...data,
     taxon_id: Number(data.taxon_id),
     last_reviewed: data.last_reviewed instanceof Date
       ? data.last_reviewed.toISOString().slice(0, 10)
       : String(data.last_reviewed),
-    content_html: await marked.parse(content),
+    content_html: $.html(), headings, sources, source_file: `content/species/${file}`,
   })
 }
 
@@ -67,3 +81,5 @@ await writeFile(outputPath, `// Generated from content/species/*.md by scripts/b
   `}\n`, 'utf8')
 
 console.log(`Built ${guides.length} species guides.`)
+
+await import('./build-foraging.mjs')

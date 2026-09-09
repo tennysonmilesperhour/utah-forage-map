@@ -269,3 +269,40 @@
 }
 
 .mycelial-hero-foot a.mycelial-photo-credit { display: inline; min-height: 0; font: inherit; letter-spacing: inherit; text-decoration: underline; text-underline-offset: 3px; }
+
+/* Field skills share the archive's dark, restrained editorial treatment. */
+.field-skills-main { width: min(1160px, calc(100% - 64px)); margin: 0 auto; padding: 44px 0 70px; }
+.field-skills-heading { max-width: 850px; margin: 18px 0 34px; }
+.field-skills-heading h1 { font-family: var(--font-serif, Georgia, serif); font-size: clamp(34px, 5vw, 64px); font-weight: 400; line-height: 1.08; letter-spacing: -.03em; margin: 16px 0 22px; }
+.field-skills-heading > p:last-child { max-width: 740px; color: #c1bbaa; font-size: 18px; line-height: 1.7; }
+.field-skills-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.field-skills-grid article { padding: 26px; background: rgba(46, 43, 36, .42); border: 1px solid rgba(216, 203, 176, .16); border-radius: 10px; }
+.field-skills-grid h2 { font-family: var(--font-serif, Georgia, serif); font-size: 25px; line-height: 1.2; margin: 14px 0; }
+.field-skills-grid h2 a { color: inherit; text-decoration: none; }
+.field-skills-grid p { color: #bdb7a8; line-height: 1.7; }
+.field-skills-feature { margin: 46px 0; }
+.field-article-layout { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 42px; align-items: start; margin-top: 32px; }
+.field-contents { border: 1px solid rgba(216, 203, 176, .16); border-radius: 9px; padding: 20px 22px; margin-bottom: 28px; }
+.field-contents ul { padding-left: 18px; margin-bottom: 0; }
+.field-contents li { margin-top: 12px; line-height: 1.5; }
+.field-contents a, .field-reference-note a, .field-next-steps a { color: #d2c59e; text-underline-offset: 4px; }
+.field-article-layout .field-contents { position: sticky; top: 100px; font-size: 14px; }
+.field-article-layout .guide-markdown { line-height: 1.8; }
+.field-article-layout .guide-markdown h2 { scroll-margin-top: 105px; }
+.field-article-layout .guide-markdown table { display: block; overflow-x: auto; border-collapse: collapse; margin: 24px 0; font-size: 15px; }
+.field-article-layout .guide-markdown td, .field-article-layout .guide-markdown th { border: 1px solid rgba(216, 203, 176, .2); padding: 14px; min-width: 140px; vertical-align: top; text-align: left; }
+.field-reference-note { background: rgba(46, 43, 36, .3); border-left: 2px solid #8f866e; padding: 22px 26px; margin-top: 34px; line-height: 1.7; color: #c1bbaa; }
+.field-reference-note li { margin: 8px 0; overflow-wrap: anywhere; }
+.field-next-steps { border-top: 1px solid rgba(216, 203, 176, .2); margin-top: 50px; padding-top: 26px; }
+.field-next-steps nav { display: flex; flex-wrap: wrap; gap: 16px 28px; }
+.public-data-date { font-size: 12px; color: #bdb7a8; line-height: 1.6; }
+@media (max-width: 800px) {
+  .field-skills-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .field-article-layout { grid-template-columns: 1fr; gap: 10px; }
+  .field-article-layout .field-contents { position: static; }
+}
+@media (max-width: 540px) {
+  .field-skills-main { width: calc(100% - 36px); padding-top: 22px; }
+  .field-skills-grid { grid-template-columns: 1fr; }
+  .field-skills-grid article { padding: 22px; }
+}

@@ -14,6 +14,8 @@ import { useRegion, useRegions } from './hooks/useCompanion'
 import { useGuideRequests, useGuideSummaries } from './hooks/useGuide'
 import { applyGuideMetadata } from './lib/guideSeo'
 import { trackPageView } from './lib/googleTag'
+import { foragingBySlug } from './content/foraging.generated'
+import { ForagingIndex, ForagingArticle, ForagingCards, GuideContents } from './components/ForagingGuides'
 import './mycelial.css'
 
 const EDIBLE_GROUP = new Set(['choice', 'edible'])
@@ -30,6 +32,12 @@ const REGION_SPECIMEN_SLUGS = {
   'southern-australia': 'saffron-milk-cap',
   'new-zealand': 'turkey-tail',
   'southern-south-america': 'black-trumpet',
+}
+
+function PublicDataDate({ updatedAt }) {
+  if (!updatedAt) return null
+  const date = new Date(updatedAt).toISOString().slice(0, 10)
+  return <p className="public-data-date">Public record snapshot retrieved <time dateTime={date}>{date}</time>. Record counts describe observed submissions, not abundance or identification certainty.</p>
 }
 
 function formatDate(value) {
@@ -55,6 +63,8 @@ function GuideFooter() {
     <footer className="learn-footer">
       <div><strong>The Living Fungi Archive</strong><span>A Mushroom Forage Map collection. Observation is not identification.</span></div>
       <nav aria-label="Guide information">
+        <a href="/learn/foraging">Field skills</a>
+        <a href="/herbs/atlas">Wild plant atlas</a>
         <a href="/learn/safety">Safety</a>
         <a href="/about">Editorial standards</a>
         <a href="/privacy">Privacy</a>
@@ -173,7 +183,7 @@ function GuideRequestPoll() {
   )
 }
 
-function GuideHome({ summaries }) {
+function GuideHome({ summaries, updatedAt }) {
   const [query, setQuery] = useState('')
   const [group, setGroup] = useState('all')
   const summaryByTaxon = useMemo(
@@ -240,6 +250,8 @@ function GuideHome({ summaries }) {
           <div><h2>Identification is a process, not a picture match</h2><p>Confirm cap, underside, stem, base, interior, spore print, substrate, and habitat. Use multiple reputable sources and a qualified local expert before considering consumption.</p></div>
           <a className="button button-secondary" href="/learn/safety">Read safety rules <ArrowRight size={16} aria-hidden="true" /></a>
         </section>
+        <PublicDataDate updatedAt={updatedAt} />
+        <section className="field-skills-feature"><div className="region-section-heading"><h2>Build your field skills</h2><a href="/learn/foraging">All practical guides <ArrowRight size={15} /></a></div><ForagingCards compact /></section>
         <GuideRequestPoll />
       </main>
     </GuideLayout>
@@ -291,7 +303,7 @@ function LiveFieldSignal({ species, summary, user }) {
   )
 }
 
-function SpeciesPage({ species, summary, user }) {
+function SpeciesPage({ species, summary, user, updatedAt }) {
   return (
     <GuideLayout>
       <main className="species-guide-main">
@@ -314,7 +326,8 @@ function SpeciesPage({ species, summary, user }) {
         <div className="species-review-line">
           <span>Compiled by <strong>{species.author}</strong></span>
           <span>{species.reviewer}</span>
-          <span>Last reviewed <time dateTime={species.last_reviewed}>{formatDate(species.last_reviewed)}</time></span>
+          {species.last_updated && <span>Updated <time dateTime={species.last_updated}>{formatDate(species.last_updated)}</time></span>}
+          <span>Content checked <time dateTime={species.last_reviewed}>{formatDate(species.last_reviewed)}</time></span>
         </div>
 
         <section className={`species-warning ${HAZARD_GROUP.has(species.edibility) ? 'danger' : ''}`}>
@@ -328,10 +341,12 @@ function SpeciesPage({ species, summary, user }) {
           <div><dt><ShieldCheck size={16} aria-hidden="true" /> Spore evidence</dt><dd>{species.spore_print}</dd></div>
         </dl>
 
+        <PublicDataDate updatedAt={updatedAt} />
         <SeasonalChart taxonId={species.taxon_id} hemisphere="north" />
 
         <div className="species-guide-layout">
           <article className="species-guide-content">
+            <GuideContents headings={species.headings} />
             <LookalikeCards lookalikes={species.lookalikes} />
             <div className="guide-markdown" dangerouslySetInnerHTML={{ __html: species.content_html }} />
           </article>
@@ -340,7 +355,7 @@ function SpeciesPage({ species, summary, user }) {
 
         <section className="species-safety-footer">
           <ShieldAlert size={24} aria-hidden="true" />
-          <div><h2>Never eat a mushroom from this page alone</h2><p>Reach 100% certainty using the whole specimen, multiple reputable sources, and a qualified local expert. Cook all wild mushrooms, try a small amount of one new species, and keep an uncooked specimen.</p></div>
+          <div><h2>Never eat a mushroom from this page alone</h2><p>Confirm identity using the whole specimen, multiple reputable sources, and a qualified local expert. Identified edible species still require appropriate preparation. Cooking does not make a poisonous mushroom safe.</p></div>
           <a href="/learn/safety">Safety and poison response <ArrowRight size={16} aria-hidden="true" /></a>
         </section>
 
@@ -395,7 +410,7 @@ function OutlookIcon({ status }) {
 }
 
 function RegionPage({ region, user }) {
-  const { data, isLoading } = useRegion(region.slug)
+  const { data, isLoading, dataUpdatedAt } = useRegion(region.slug)
   const specimen = speciesBySlug[REGION_SPECIMEN_SLUGS[region.slug]]
 
   return (
@@ -438,6 +453,7 @@ function RegionPage({ region, user }) {
           <p className="outlook-method">Starting, likely, and ending compare the past 14 and 30 days with the preceding 30-day period. Sparse records are marked low confidence.</p>
         </section>
 
+        <PublicDataDate updatedAt={dataUpdatedAt} />
         <section className="region-recent" aria-labelledby="recent-region-title">
           <div className="region-section-heading"><div><p className="eyebrow">Recent accessions</p><h2 id="recent-region-title">Latest public records</h2></div><a href={`/?region=${region.slug}`}>View all on map <ArrowRight size={15} /></a></div>
           <div className="region-recent-grid">
@@ -484,7 +500,9 @@ function AboutPage() {
         <p className="trust-lede">Mushroom Forage Map is a public observation map and educational reference. It is not an identification service, an access permit, or an edibility guarantee.</p>
         <section className="trust-sections">
           <article><h2>What reviewed means</h2><p>Public observations have passed source or community review and use privacy-safe coordinates. Review supports data quality; it does not certify the mushroom in a visitor's hand.</p></article>
-          <article><h2>How guide content is handled</h2><p>Species content lives as Markdown in the public repository, so changes are versioned and reviewable. Pages name their compiler, review status, date, and sources. Until a qualified expert signs off, they say that review is pending.</p></article>
+          <article id="editorial"><h2>How guide content is handled</h2><p>Species content lives as Markdown in the public repository, so changes are versioned and reviewable. Pages name their compiler, review status, date, and sources. Until a qualified expert signs off, they say that review is pending.</p></article>
+          <article id="corrections"><h2>Corrections and contact</h2><p>Send the page URL, the statement in question, and a reliable supporting source to <a href="mailto:morphiclabsdata@gmail.com">morphiclabsdata@gmail.com</a>. Corrections are recorded in the <a href="https://github.com/tennysonmilesperhour/utah-forage-map/commits/main/">public revision history</a>. A content update is not an independent expert review; review status changes only after a qualified reviewer signs off.</p></article>
+          <article><h2>Coverage and limitations</h2><p>The collection includes 30 mushroom guides, 44 wild plant profiles, ten mushroom habitat regions, and a growing field-skills library. Observation coverage depends on public records and varies considerably by country. This is a developing reference, not a complete catalogue of all edible or poisonous species worldwide.</p></article>
           <article><h2>What we cite</h2><p>Safety and medical claims prioritize poison centers, government agencies, university resources, toxicology literature, and established mycological organizations. Observation photography is licensed and attributed.</p></article>
           <article><h2>How locations are protected</h2><p>Approximate public coordinates are shifted before publication. Exact contributor coordinates remain private unless the contributor explicitly chooses otherwise.</p></article>
           <article><h2>Analytics and cookies</h2><p>Google Analytics is optional and stays off until you allow it. When enabled, it helps us understand aggregate use of maps and guides; advertising storage and personalization remain off. Read the <a href="/privacy">privacy notice</a> or reopen Privacy choices at any time to change your selection.</p></article>
@@ -542,7 +560,7 @@ function NotFoundPage() {
 
 export default function GuideApp({ path = '/learn' }) {
   const normalizedPath = path.length > 1 ? path.replace(/\/$/, '') : path
-  const { data: summaries = [] } = useGuideSummaries()
+  const { data: summaries = [], dataUpdatedAt: summariesUpdatedAt } = useGuideSummaries()
   const { data: user = null } = useCurrentUser()
 
   useEffect(() => {
@@ -550,7 +568,10 @@ export default function GuideApp({ path = '/learn' }) {
     trackPageView(window.location.pathname)
   }, [normalizedPath])
 
-  if (normalizedPath === '/learn') return <GuideHome summaries={summaries} />
+  if (normalizedPath === '/learn/foraging') return <GuideLayout><ForagingIndex /></GuideLayout>
+  const topicMatch = normalizedPath.match(/^\/learn\/foraging\/([^/]+)$/)
+  if (topicMatch && foragingBySlug[topicMatch[1]]) return <GuideLayout><ForagingArticle guide={foragingBySlug[topicMatch[1]]} /></GuideLayout>
+  if (normalizedPath === '/learn') return <GuideHome summaries={summaries} updatedAt={summariesUpdatedAt} />
   if (normalizedPath === '/regions') return <RegionIndexPage />
   if (normalizedPath === '/learn/safety') return <SafetyPage />
   if (normalizedPath === '/about') return <AboutPage />
@@ -566,7 +587,7 @@ export default function GuideApp({ path = '/learn' }) {
   const speciesMatch = normalizedPath.match(/^\/learn\/species\/([^/]+)$/)
   if (speciesMatch) {
     const species = speciesBySlug[speciesMatch[1]]
-    if (species) return <SpeciesPage species={species} summary={summaries.find(item => item.inaturalist_taxon_id === species.taxon_id)} user={user} />
+    if (species) return <SpeciesPage species={species} updatedAt={summariesUpdatedAt} summary={summaries.find(item => item.inaturalist_taxon_id === species.taxon_id)} user={user} />
   }
   return <NotFoundPage />
 }

@@ -67,7 +67,8 @@ test('prerendered plant pages expose evidence and warnings without JavaScript', 
     if (plant.status === 'toxic') assert.ok(html.includes('Toxic. Keep out of food and tea.'), plant.name)
   }
   const sitemap = await readFile(new URL('../dist/sitemap-herbs.xml', import.meta.url), 'utf8')
-  assert.equal((sitemap.match(/<loc>/g) || []).length, 54)
+  assert.equal((sitemap.match(/<loc>/g) || []).length, 53)
+  assert.ok(!sitemap.includes('/herbs/atlas/compare'), 'Empty comparison is intentionally not indexed')
 })
 
 test('comparison preserves empty columns and rejects duplicates or unknown plants', () => {

@@ -7,6 +7,7 @@ const STORAGE_KEY = 'forage:units:v1'
 const FEET_PER_METRE = 3.28084
 
 export function detectUnitSystem() {
+  if (typeof navigator === 'undefined') return 'metric'
   const locales = navigator.languages?.length ? navigator.languages : [navigator.language]
   for (const locale of locales) {
     if (!locale) continue
@@ -22,6 +23,7 @@ export function detectUnitSystem() {
 }
 
 export function readStoredUnitSystem() {
+  if (typeof window === 'undefined') return 'metric'
   const stored = window.localStorage.getItem(STORAGE_KEY)
   return stored === 'metric' || stored === 'imperial' ? stored : detectUnitSystem()
 }

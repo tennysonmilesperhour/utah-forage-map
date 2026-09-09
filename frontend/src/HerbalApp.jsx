@@ -17,6 +17,7 @@ import {
 import { herbIntents, herbProfiles, herbsBySlug, harvestMonthsFor } from './data/herbs'
 import { lunarContext } from './lib/lunar'
 import { trackPageView } from './lib/googleTag'
+import { applyPageMetadata } from './lib/seo'
 import './herbal.css'
 import './herbal-forest.css'
 
@@ -28,7 +29,7 @@ function dateLabel(value) {
 }
 
 function currentView() {
-  const view = new URLSearchParams(window.location.search).get('view')
+  const view = new URLSearchParams(typeof window === 'undefined' ? '' : window.location.search).get('view')
   return VIEWS.includes(view) ? view : 'today'
 }
 
@@ -252,17 +253,17 @@ function PantryView({ user, presetHerb, onAuth, onToast }) {
 }
 
 function HerbalFooter() {
-  return <footer className="herbal-footer"><div><Leaf size={18} /><span><strong>The Verdant Hours</strong><small>Notice what is here. Gather with care.</small></span></div><p>Never consume a wild plant unless identity is certain. Check permissions, contamination, allergies, pregnancy cautions, and medication interactions with qualified local sources and a health professional.</p><div><a href="/herbs/atlas">Global herb atlas</a><a href="/herbs/fieldcraft">Field skills & sources</a><a href="https://www.poison.org/articles/plant" target="_blank" rel="noreferrer">Poison Control plant safety</a><a href="https://www.fda.gov/consumers/consumer-updates/fda-101-dietary-supplements" target="_blank" rel="noreferrer">FDA herbal safety</a></div></footer>
+  return <footer className="herbal-footer"><div><Leaf size={18} /><span><strong>The Verdant Hours</strong><small>Notice what is here. Gather with care.</small></span></div><p>Never consume a wild plant unless identity is certain. Check permissions, contamination, allergies, pregnancy cautions, and medication interactions with qualified local sources and a health professional.</p><div><a href="/herbs/atlas">Global herb atlas</a><a href="/herbs/fieldcraft">Field skills & sources</a><a href="/learn/foraging/wild-herb-gathering">Start herb gathering</a><a href="https://www.poison.org/articles/plant" target="_blank" rel="noreferrer">Poison Control plant safety</a><a href="https://www.fda.gov/consumers/consumer-updates/fda-101-dietary-supplements" target="_blank" rel="noreferrer">FDA herbal safety</a></div></footer>
 }
 
 export default function HerbalApp() {
   const shellRef = useRef(null)
   const [view, setView] = useState(currentView)
-  const [forest, setForest] = useState(() => new URLSearchParams(window.location.search).get('design') !== 'classic')
+  const [forest, setForest] = useState(() => typeof window === 'undefined' || new URLSearchParams(window.location.search).get('design') !== 'classic')
   const [location, setLocation] = useState(null)
   const [locating, setLocating] = useState(false)
   const [selected, setSelected] = useState(null)
-  const [presetHerb, setPresetHerb] = useState(() => herbsBySlug[new URLSearchParams(window.location.search).get('plant')] ?? null)
+  const [presetHerb, setPresetHerb] = useState(() => typeof window === 'undefined' ? null : herbsBySlug[new URLSearchParams(window.location.search).get('plant')] ?? null)
   const [authMode, setAuthMode] = useState(null)
   const [toast, setToast] = useState('')
   const moon = useMemo(() => lunarContext(), [])
@@ -270,7 +271,7 @@ export default function HerbalApp() {
   const logout = useLogout()
   const almanac = useHerbAlmanac(location)
 
-  useEffect(() => { document.title = 'The Verdant Hours | Herbal Gathering Almanac'; document.body.classList.add('herbal-body'); trackPageView(`/herbs?view=${view}`); return () => document.body.classList.remove('herbal-body') }, [view])
+  useEffect(() => { applyPageMetadata('herbs'); document.body.classList.add('herbal-body'); trackPageView(`/herbs?view=${view}`); return () => document.body.classList.remove('herbal-body') }, [view])
   useEffect(() => { if (!toast) return undefined; const timer = window.setTimeout(() => setToast(''), 3600); return () => window.clearTimeout(timer) }, [toast])
   useEffect(() => { const restoreView = () => { setView(currentView()); setForest(new URLSearchParams(window.location.search).get('design') !== 'classic'); setSelected(null) }; window.addEventListener('popstate', restoreView); return () => window.removeEventListener('popstate', restoreView) }, [])
   useEffect(() => { shellRef.current?.scrollTo({ top: 0, behavior: 'instant' }) }, [view])

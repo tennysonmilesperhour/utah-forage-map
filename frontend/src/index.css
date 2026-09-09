@@ -8285,3 +8285,6 @@ textarea::placeholder {
     transition: none;
   }
 }
+
+.map-guide-link { margin: 0 0 20px; font-size: 12px; line-height: 1.5; }
+.map-guide-link a { color: #c9bd9b; text-underline-offset: 3px; }
