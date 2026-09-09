@@ -20,6 +20,7 @@ import { herbIntents, herbProfiles, harvestMonthsFor } from './data/herbs'
 import { lunarContext } from './lib/lunar'
 import { trackPageView } from './lib/googleTag'
 import './herbal.css'
+import './herbal-forest.css'
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 const VIEWS = ['today', 'plants', 'watches', 'pantry']
@@ -44,16 +45,16 @@ function weatherLabel(code) {
   return 'Storm conditions'
 }
 
-function HerbModeSwitch() {
+function HerbModeSwitch({ forest }) {
   return (
     <div className="world-switch" aria-label="Foraging collection">
       <a href="/"><span aria-hidden="true">F</span> Fungi</a>
-      <a className="active" href="/herbs" aria-current="page"><Leaf size={14} aria-hidden="true" /> Herbs</a>
+      <a className="active" href={forest ? '/herbs?design=forest' : '/herbs'} aria-current="page"><Leaf size={14} aria-hidden="true" /> Herbs</a>
     </div>
   )
 }
 
-function HerbalHeader({ view, user, authLoading, onNavigate, onAuth, onLogout }) {
+function HerbalHeader({ view, forest, user, authLoading, onNavigate, onAuth, onLogout }) {
   const [menuOpen, setMenuOpen] = useState(false)
   const links = [
     ['today', <Compass size={17} aria-hidden="true" />, 'Today'],
@@ -71,7 +72,7 @@ function HerbalHeader({ view, user, authLoading, onNavigate, onAuth, onLogout })
         <span className="herbal-sigil" aria-hidden="true"><Leaf size={22} /></span>
         <span><strong>The Verdant Hours</strong><small>Herbal gathering almanac</small></span>
       </a>
-      <HerbModeSwitch />
+      <HerbModeSwitch forest={forest} />
       <nav className={menuOpen ? 'open' : ''} aria-label="Herbal navigation">
         {links.map(([value, icon, label]) => <button className={view === value ? 'active' : ''} aria-current={view === value ? 'page' : undefined} type="button" key={value} onClick={() => choose(value)}>{icon}{label}</button>)}
       </nav>
@@ -154,6 +155,36 @@ function TodayView({ almanac, location, locating, moon, onLocate, onOpenPlant, o
       </section>
       <HerbFieldPractice />
       <SeasonalLedger hemisphere={almanac?.hemisphere ?? 'north'} onOpen={onOpenPlant} onNavigate={onNavigate} />
+      <section className="herb-callouts">
+        <button type="button" onClick={() => onNavigate('watches')}><BellRing size={23} /><span><strong>Set a watch zone</strong><small>Combine season, weather, and optional sky timing around a place and intention.</small></span><ChevronRight size={18} /></button>
+        <button type="button" onClick={() => onNavigate('pantry')}><ShoppingBasket size={23} /><span><strong>Open your pantry</strong><small>Record gathered material, quantities, preparations, and what you hope to find next.</small></span><ChevronRight size={18} /></button>
+      </section>
+    </main>
+  )
+}
+
+// An opt-in visual study. It shares the live almanac and every gathering flow.
+function ForestTodayView({ almanac, location, locating, moon, onLocate, onOpenPlant, onNavigate }) {
+  const today = new Intl.DateTimeFormat(undefined, { weekday: 'long', month: 'long', day: 'numeric' }).format(new Date())
+  return (
+    <main className="herbal-main herbal-today forest-today">
+      <section className="forest-immersive-hero" aria-label="Today's herbal almanac">
+        <img className="forest-immersive-image" src="/images/herbs/forest-immersion.webp" alt="" fetchPriority="high" />
+        <div className="forest-dateline"><span><span className="herb-live-dot" /> A little closer to the living world</span><span>{today}</span></div>
+        <div className="forest-hero-layout">
+          <div className="forest-hero-copy">
+            <p className="herb-kicker">Meet the plants. Listen to what stirs.</p>
+            <h1>gather<span>.</span></h1>
+            <p>Come with curiosity. Get to know the plants, notice the lives around them, and gather with care.</p>
+            <div className="herbal-hero-actions"><button className="herb-solid-button" type="button" onClick={() => onNavigate('plants')}>Find your next plant <ArrowUpRight size={18} /></button><a href="#field-practice-title">Take a moment <ArrowDown size={16} /></a></div>
+          </div>
+          <MoonDial moon={moon} />
+        </div>
+        <div className="forest-hero-foot"><span>THE VERDANT HOURS / A FIELD COMPANION</span><a href="#seasonal-ledger">Follow the season <ArrowDown size={14} /></a></div>
+      </section>
+      <div className="forest-conditions"><WeatherReading weather={almanac?.weather} hasLocation={Boolean(location)} locating={locating} onLocate={onLocate} /></div>
+      <SeasonalLedger hemisphere={almanac?.hemisphere ?? 'north'} onOpen={onOpenPlant} onNavigate={onNavigate} />
+      <HerbFieldPractice />
       <section className="herb-callouts">
         <button type="button" onClick={() => onNavigate('watches')}><BellRing size={23} /><span><strong>Set a watch zone</strong><small>Combine season, weather, and optional sky timing around a place and intention.</small></span><ChevronRight size={18} /></button>
         <button type="button" onClick={() => onNavigate('pantry')}><ShoppingBasket size={23} /><span><strong>Open your pantry</strong><small>Record gathered material, quantities, preparations, and what you hope to find next.</small></span><ChevronRight size={18} /></button>
@@ -271,6 +302,7 @@ function HerbalFooter() {
 export default function HerbalApp() {
   const shellRef = useRef(null)
   const [view, setView] = useState(currentView)
+  const [forest, setForest] = useState(() => new URLSearchParams(window.location.search).get('design') === 'forest')
   const [location, setLocation] = useState(null)
   const [locating, setLocating] = useState(false)
   const [selected, setSelected] = useState(null)
@@ -284,17 +316,18 @@ export default function HerbalApp() {
 
   useEffect(() => { document.title = 'The Verdant Hours | Herbal Gathering Almanac'; document.body.classList.add('herbal-body'); trackPageView(`/herbs?view=${view}`); return () => document.body.classList.remove('herbal-body') }, [view])
   useEffect(() => { if (!toast) return undefined; const timer = window.setTimeout(() => setToast(''), 3600); return () => window.clearTimeout(timer) }, [toast])
-  useEffect(() => { const restoreView = () => { setView(currentView()); setSelected(null) }; window.addEventListener('popstate', restoreView); return () => window.removeEventListener('popstate', restoreView) }, [])
+  useEffect(() => { const restoreView = () => { setView(currentView()); setForest(new URLSearchParams(window.location.search).get('design') === 'forest'); setSelected(null) }; window.addEventListener('popstate', restoreView); return () => window.removeEventListener('popstate', restoreView) }, [])
   useEffect(() => { shellRef.current?.scrollTo({ top: 0, behavior: 'instant' }) }, [view])
 
-  function navigate(next) { const url = next === 'today' ? '/herbs' : `/herbs?view=${next}`; window.history.pushState({}, '', url); setView(next); setSelected(null) }
+  function navigate(next) { const params = new URLSearchParams(); if (forest) params.set('design', 'forest'); if (next !== 'today') params.set('view', next); const url = `/herbs${params.size ? `?${params}` : ''}`; window.history.pushState({}, '', url); setView(next); setSelected(null) }
   function locate() { if (!navigator.geolocation) { setToast('Location is unavailable in this browser.'); return } setLocating(true); navigator.geolocation.getCurrentPosition(position => { setLocation({ latitude: position.coords.latitude, longitude: position.coords.longitude }); setLocating(false) }, () => { setToast('Location permission was not granted. You can enter coordinates in a watch zone.'); setLocating(false) }, { enableHighAccuracy: false, timeout: 10000 }) }
   function watchPlant(herb) { setPresetHerb(herb); setSelected(null); navigate('watches') }
   function wishForPlant(herb) { setPresetHerb(herb); setSelected(null); navigate('pantry') }
   async function signOut() { await logout.mutateAsync(); setToast('Signed out. The herbal atlas remains open.') }
 
-  return <div className="herbal-shell" ref={shellRef}><HerbalHeader view={view} user={user} authLoading={authLoading} onNavigate={navigate} onAuth={setAuthMode} onLogout={signOut} />
-    {view === 'today' && <TodayView almanac={almanac.data} location={location} locating={locating} moon={moon} onLocate={locate} onOpenPlant={herb => { setSelected(herb); navigate('plants'); setSelected(herb) }} onNavigate={navigate} />}
+  const Today = forest ? ForestTodayView : TodayView
+  return <div className={`herbal-shell${forest ? ' herbal-shell--forest' : ''}`} data-view={view} ref={shellRef}><HerbalHeader view={view} forest={forest} user={user} authLoading={authLoading} onNavigate={navigate} onAuth={setAuthMode} onLogout={signOut} />
+    {view === 'today' && <Today almanac={almanac.data} location={location} locating={locating} moon={moon} onLocate={locate} onOpenPlant={herb => { setSelected(herb); navigate('plants'); setSelected(herb) }} onNavigate={navigate} />}
     {view === 'plants' && <PlantsView hemisphere={almanac.data?.hemisphere ?? 'north'} selected={selected} onSelect={setSelected} onClose={() => setSelected(null)} onWatch={watchPlant} onWish={wishForPlant} />}
     {view === 'watches' && <WatchesView user={user} location={location} locating={locating} presetHerb={presetHerb} onLocate={locate} onAuth={setAuthMode} onToast={setToast} />}
     {view === 'pantry' && <PantryView user={user} presetHerb={presetHerb} onAuth={setAuthMode} onToast={setToast} />}
