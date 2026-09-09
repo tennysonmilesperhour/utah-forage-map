@@ -169,6 +169,8 @@
 .mycelial-theme .learn-footer { padding-bottom: 42px; }
 .analytics-consent.mycelial-theme { --consent-glass: linear-gradient(135deg, rgb(232 190 146 / 12%), rgb(40 22 39 / 30%) 48%, rgb(13 24 22 / 56%)); --consent-solid: #241c28; }
 .analytics-consent.mycelial-theme .analytics-consent-copy strong svg { color: var(--spore-coral); }
+/* Let visitors handle one corner prompt at a time. */
+body:has(.analytics-consent) .mycelial-theme .guest-prompt { display: none; }
 .analytics-settings.mycelial-theme { border-color: #d7b08b40; border-radius: 7px; background: #29202c96; color: #ebc49d; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
 
 @media (max-width: 1200px) {

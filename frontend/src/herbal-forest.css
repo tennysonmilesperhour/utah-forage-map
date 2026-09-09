@@ -8,7 +8,7 @@
 .herbal-consent .button-primary:hover { background: #e5f2e9; }
 .analytics-settings.herbal-consent { border-radius: 7px; background: #0b1b16ed; color: #c6ded1; }
 @media (max-width: 980px) {
-  .analytics-consent.herbal-consent { --consent-bottom: calc(90px + env(safe-area-inset-bottom)); }
+  .analytics-consent.herbal-consent { --consent-bottom: calc(96px + env(safe-area-inset-bottom)); }
   .analytics-settings.herbal-consent { bottom: calc(92px + env(safe-area-inset-bottom)); }
 }
 .herbal-shell--forest {
