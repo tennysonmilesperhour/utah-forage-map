@@ -152,7 +152,7 @@
 .mycelial-theme :is(.guide-safety-band, .guide-request-poll, .learn-footer) { border-color: var(--mycelial-edge); background: #17121c; }
 .mycelial-theme .guide-request-intro h2 { font-size: 35px; font-weight: 300; letter-spacing: -.8px; }
 .mycelial-theme .poll-option { border-color: var(--mycelial-edge); border-radius: 8px; }
-.mycelial-theme :is(.regions-main, .region-page, .species-page, .trust-page, .field-skills-main) { background: radial-gradient(ellipse at 100% 0, #60426b35, transparent 55%), radial-gradient(ellipse at 0 55%, #36584324, transparent 55%); }
+.mycelial-theme :is(.regions-main, .region-page, .species-page, .trust-page) { background: radial-gradient(ellipse at 90% 0, #60426b35, transparent 55%); }
 .mycelial-theme :is(.regions-header h1, .region-page-intro h1, .species-hero h1, .trust-page > h1) { font-weight: 300; letter-spacing: -.045em; }
 .mycelial-theme :is(.regions-header h1, .trust-page > h1) { font-size: clamp(42px, 5.5vw, 80px); }
 .mycelial-theme :is(.region-index, .region-page-header) { gap: 24px; border: 0; background: transparent; }
