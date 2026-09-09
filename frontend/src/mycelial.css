@@ -35,7 +35,7 @@
 .mycelial-theme .button-primary:hover:not(:disabled) { background: #f1d0a5; color: #271b18; }
 .mycelial-theme :is(.button-secondary, .button-inverse, .button-ghost, .icon-button) { border-color: var(--mycelial-edge); background: #f4e8ee07; color: var(--ink); }
 .mycelial-theme :is(.button-secondary, .button-inverse, .button-ghost, .icon-button):hover:not(:disabled) { border-color: #decbd05c; background: #f4e8ee14; }
-.mycelial-theme :is(.app-header, .guide-site-header) { height: 88px; min-height: 88px; flex-basis: 88px; padding: 0 30px; gap: 18px; grid-template-columns: minmax(220px, 1fr) auto auto minmax(190px, 1fr); border-color: #cb986631; background: linear-gradient(105deg, #241720f2, #131516f5 65%, #10231ef2); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+.mycelial-theme :is(.app-header, .guide-site-header) { height: 88px; min-height: 88px; flex-basis: 88px; padding: 0 30px; gap: 18px; grid-template-columns: minmax(220px, 1fr) auto auto minmax(190px, 1fr); border-color: #cb986631; background: linear-gradient(105deg, #241720f2, #131516f5 65%, #10231ef2); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); }
 .mycelial-theme :is(.app-header, .guide-site-header) .brand-mark { width: 29px; height: 38px; flex-basis: 29px; border: 0; border-radius: 0; color: var(--spore-coral); }
 .mycelial-theme .brand-lockup { gap: 10px; }
 .mycelial-theme .brand-copy h1, .mycelial-theme .guide-site-header .brand-copy strong { font-size: 16px; font-weight: 400; letter-spacing: -.3px; }
@@ -74,7 +74,7 @@
 .mycelial-theme :is(.advanced-filters, .filter-footer) { border-color: var(--mycelial-edge); }
 .mycelial-theme .filter-footer { background: #11251fd9; }
 .mycelial-theme .map-stage { background: #090809; }
-.mycelial-theme :is(.place-search form, .place-results, .map-results, .map-filter-button, .map-submit-button, .map-legend, .map-empty-state, .guest-prompt, .sighting-detail, .account-menu) { border: 1px solid var(--mycelial-edge); border-radius: 8px; background: var(--mycelial-glass); backdrop-filter: blur(14px) saturate(110%); -webkit-backdrop-filter: blur(14px) saturate(110%); box-shadow: inset 0 1px 0 #fff5ff15, 0 10px 35px #00000030; }
+.mycelial-theme :is(.place-search form, .place-results, .map-results, .map-filter-button, .map-submit-button, .map-legend, .map-empty-state, .guest-prompt, .sighting-detail, .account-menu) { border: 1px solid var(--mycelial-edge); border-radius: 8px; background: var(--mycelial-glass); -webkit-backdrop-filter: blur(14px) saturate(110%); backdrop-filter: blur(14px) saturate(110%); box-shadow: inset 0 1px 0 #fff5ff15, 0 10px 35px #00000030; }
 .mycelial-theme .place-search form button:last-child { background: #dac8d021; color: #efe1ed; border-radius: 5px; }
 .mycelial-theme .map-submit-button { color: var(--ink); }
 .mycelial-theme .map-submit-button:hover:not(:disabled) { color: #211a20; }
@@ -84,7 +84,7 @@
 .mycelial-theme :is(.status-reviewed, .review-chip.approved, .edibility-badge.choice, .edibility-badge.edible, .follow-button.is-following) { border-color: #707056; background: #292b22; color: #d8dbb7; }
 .mycelial-theme :is(.edibility-badge, .observation-badge, .status-reviewed, .review-chip, .fungi-readiness span) { border-radius: 5px; }
 .mycelial-theme .drawer-layer { top: 88px; }
-.mycelial-theme .drawer-backdrop { background: #080509b0; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+.mycelial-theme .drawer-backdrop { background: #080509b0; -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
 .mycelial-theme :is(.community-drawer, .submit-drawer, .account-workspace, .auth-dialog) { border-color: var(--mycelial-edge); background: linear-gradient(150deg, #231826fa, #111e1bfa); border-radius: 10px 0 0 10px; box-shadow: -24px 0 80px #00000050; }
 .mycelial-theme .community-drawer { width: min(1000px, 82vw); }
 .mycelial-theme :is(.drawer-heading, .community-tabs, .account-tabs, .auth-tabs) { background: #130e17c9; border-color: var(--mycelial-edge); }
@@ -171,7 +171,7 @@
 .analytics-consent.mycelial-theme .analytics-consent-copy strong svg { color: var(--spore-coral); }
 /* Let visitors handle one corner prompt at a time. */
 body:has(.analytics-consent) .mycelial-theme .guest-prompt { display: none; }
-.analytics-settings.mycelial-theme { border-color: #d7b08b40; border-radius: 7px; background: #29202c96; color: #ebc49d; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.analytics-settings.mycelial-theme { border-color: #d7b08b40; border-radius: 7px; background: #29202c96; color: #ebc49d; -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
 
 @media (max-width: 1200px) {
   .mycelial-theme :is(.app-header, .guide-site-header) { gap: 12px; padding: 0 20px; grid-template-columns: minmax(170px, 1fr) auto auto auto; }
@@ -188,7 +188,7 @@ body:has(.analytics-consent) .mycelial-theme .guest-prompt { display: none; }
   .mycelial-theme :is(.app-header, .guide-site-header) { height: 76px; min-height: 76px; flex-basis: 76px; grid-template-columns: minmax(0, 1fr) auto auto; -webkit-backdrop-filter: none; backdrop-filter: none; background: linear-gradient(110deg, #251923, #12241e); }
   .mycelial-theme .fungi-world-switch { grid-column: 2; }
   .mycelial-theme :is(.header-actions, .guide-map-link) { grid-column: 3; }
-  .mycelial-theme :is(.primary-nav, .guide-global-nav) { position: fixed; z-index: 60; inset: auto 16px calc(12px + env(safe-area-inset-bottom)); display: grid; grid-template-columns: repeat(4, 1fr); width: min(540px, calc(100% - 32px)); height: 64px; margin: 0 auto; align-self: auto; gap: 4px; padding: 5px; border: 1px solid #e3b98c40; border-radius: 10px; background: linear-gradient(130deg, #583b55ad, #142b24d9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 1px 0 #fff3fb19, 0 8px 36px #00000055; }
+  .mycelial-theme :is(.primary-nav, .guide-global-nav) { position: fixed; z-index: 60; inset: auto 16px calc(12px + env(safe-area-inset-bottom)); display: grid; grid-template-columns: repeat(4, 1fr); width: min(540px, calc(100% - 32px)); height: 64px; margin: 0 auto; align-self: auto; gap: 4px; padding: 5px; border: 1px solid #e3b98c40; border-radius: 10px; background: linear-gradient(130deg, #583b55ad, #142b24d9); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); box-shadow: inset 0 1px 0 #fff3fb19, 0 8px 36px #00000055; }
   .mycelial-theme :is(.nav-item, .guide-global-nav a) { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px; min-height: 44px; padding: 6px 2px; border: 0; border-radius: 7px; font-size: 10px; line-height: 1.3; text-align: center; }
   .mycelial-theme :is(.nav-item, .guide-global-nav a) > svg { display: block; width: 18px; height: 18px; }
   .mycelial-theme :is(.nav-item, .guide-global-nav a)::after { display: none; }
