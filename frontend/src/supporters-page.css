@@ -25,8 +25,11 @@
 .supporter-profile-preview strong, .supporter-names strong { display: block; font-size: 12px; overflow-wrap: anywhere; font-weight: 500; }
 .supporter-profile-preview small, .supporter-names small { display: block; font-size: 10px; color: #aeb899; margin-top: 4px; }
 .supporter-avatar { display: flex; width: 30px; height: 30px; flex: 0 0 30px; justify-content: center; align-items: center; border-radius: 6px; background: #cbb36e19; color: #eddbad; font-size: 13px; }
-.supporter-listing-choice { display: flex; align-items: flex-start; gap: 10px; font-size: 11px; color: #cbd0bd; line-height: 1.6; margin: 18px 0; }
-.supporter-listing-choice input { width: 16px; height: 16px; margin: 2px 0 0; accent-color: #c7ad70; flex-shrink: 0; }
+.supporter-listing-choice { display: grid; grid-template-columns: 16px minmax(0, 1fr); align-items: start; gap: 10px; min-height: 46px; font-size: 11px; color: #cbd0bd; line-height: 1.6; margin: 18px 0; }
+.supporter-listing-choice input { appearance: none; display: grid; width: 16px; height: 16px; box-sizing: border-box; place-content: center; margin: 2px 0 0; border: 1px solid #c7ad70; border-radius: 3px; background: #0e130f; flex-shrink: 0; }
+.supporter-listing-choice input::before { width: 8px; height: 5px; border: solid #171711; border-width: 0 0 2px 2px; content: ''; transform: translateY(-1px) rotate(-45deg) scale(0); transition: transform 100ms ease-out; }
+.supporter-listing-choice input:checked { background: #d6c18d; }
+.supporter-listing-choice input:checked::before { transform: translateY(-1px) rotate(-45deg) scale(1); }
 .supporter-listing-choice strong { font-weight: 500; overflow-wrap: anywhere; }
 .supporter-listing-choice small { display: block; color: #a7b19b; margin-top: 3px; }
 .supporter-cta { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; min-height: 48px; padding: 12px; border: 1px solid #e3c98b; border-radius: 6px; color: #1c241a; background: linear-gradient(110deg, #e4d2a1, #cbb876); font-size: 12px; font-weight: 600; cursor: pointer; }
