@@ -18,6 +18,7 @@ EVENT_TYPES = {"checkout.session.completed", "checkout.session.async_payment_suc
                "customer.subscription.created", "customer.subscription.updated",
                "customer.subscription.deleted", "invoice.paid", "invoice.payment_failed",
                "invoice.marked_uncollectible", "invoice.voided"}
+CHECKOUT_INTEGRATION_IDENTIFIER = "world_foraging_supporter_kmushroo"
 
 
 def enabled():
@@ -212,6 +213,8 @@ def billing_router(current_user, rate_limit):
     def preference(payload: ListingPreference, request: Request, user: User = Depends(current_user), db: Session = Depends(get_db)):
         mutation(request, db, user, "billing-preference")
         member = lock_member(db, user)
+        if payload.public_listing and not member.entitled:
+            raise HTTPException(409, "Subscribe before joining the public supporter list.")
         member.public_listing = payload.public_listing
         db.commit()
         return member_view(member)
@@ -250,7 +253,8 @@ def billing_router(current_user, rate_limit):
             session = client.v1.checkout.sessions.create({
                 "mode": "subscription", "customer": member.customer_id,
                 "client_reference_id": str(user.id), "line_items": [{"price": member.price_id, "quantity": 1}],
-                "payment_method_types": ["card"], "allow_promotion_codes": False,
+                "integration_identifier": CHECKOUT_INTEGRATION_IDENTIFIER,
+                "allow_promotion_codes": False,
                 "subscription_data": {"metadata": {"forager_user_id": str(user.id)}},
                 "success_url": app_url() + "/supporters?checkout=success&session_id={CHECKOUT_SESSION_ID}",
                 "cancel_url": app_url() + "/supporters?checkout=canceled",

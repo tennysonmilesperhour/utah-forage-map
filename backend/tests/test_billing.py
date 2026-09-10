@@ -112,6 +112,9 @@ class BillingTests(unittest.TestCase):
         self.assertEqual(self.checkout().status_code, 200)
         self.assertEqual(self.checkout().status_code, 200)
         self.remote.v1.checkout.sessions.create.assert_called_once()
+        params = self.remote.v1.checkout.sessions.create.call_args.args[0]
+        self.assertNotIn("payment_method_types", params)
+        self.assertEqual(params["integration_identifier"], billing.CHECKOUT_INTEGRATION_IDENTIFIER)
         self.assertFalse(self.member()["active"])
         response = self.client.post("/api/billing/confirm", json={"session_id": "cs_test_friend"})
         self.assertEqual(response.status_code, 200)
@@ -141,6 +144,13 @@ class BillingTests(unittest.TestCase):
         self.event()
         self.assertTrue(self.member()["active"])
         self.assertEqual(self.client.get("/api/supporters").json()["total"], 0)
+
+    def test_unpaid_member_cannot_join_public_listing(self):
+        self.assertEqual(
+            self.client.patch("/api/billing/membership", json={"public_listing": True}).status_code,
+            409,
+        )
+        self.assertFalse(self.member()["public_listing"])
 
     def test_invalid_signature_or_wrong_environment_never_grants(self):
         self.checkout()
