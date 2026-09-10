@@ -262,6 +262,24 @@ class BillingTests(unittest.TestCase):
         self.assertEqual(self.event("evt_late", "checkout.session.completed").status_code, 200)
         self.assertEqual(self.remote.v1.subscriptions.cancel.call_count, 2)
 
+    def test_unverified_user_can_correct_email_and_old_links_are_retired(self):
+        from app.models import AccountToken
+        with SessionLocal() as db:
+            user = db.get(User, self.user.id)
+            old_token = main.issue_account_token(db, user, "verify_email", 24)
+            db.commit()
+
+        with patch.object(main, "send_account_email") as send_email:
+            result = self.client.patch("/api/account/email", json={"email": "Corrected@Example.com"})
+        self.assertEqual(result.status_code, 200)
+        self.assertEqual(result.json()["email"], "corrected@example.com")
+        send_email.assert_called_once()
+        self.assertEqual(send_email.call_args.args[0], "corrected@example.com")
+        self.assertEqual(
+            self.client.post("/api/auth/verify-email", json={"token": old_token}).status_code,
+            400,
+        )
+
     def test_provisioning_uses_exact_plan_and_keeps_signing_secret_private(self):
         from scripts.setup_supporter_billing import provision
         self.remote.v1.accounts.retrieve_current.return_value = sdk({"id": "acct_test", "charges_enabled": True})

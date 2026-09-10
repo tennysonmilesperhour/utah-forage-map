@@ -562,6 +562,50 @@ def resend_verification(
     return {"message": "Verification email requested"}
 
 
+@app.patch("/api/account/email", response_model=UserRead)
+def change_unverified_email(
+    payload: EmailRequest,
+    request: Request,
+    background_tasks: BackgroundTasks,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    account = db.get(User, user.id)
+    if account.email_verified:
+        raise HTTPException(status_code=409, detail="Verified email addresses cannot be changed here")
+
+    email = payload.email.lower()
+    enforce_rate_limit(db, "change_email", f"{request_ip(request)}:{account.id}", 3, 60)
+    existing = db.query(User).filter(
+        func.lower(User.email) == email, User.id != account.id
+    ).one_or_none()
+    if existing:
+        db.commit()
+        raise HTTPException(status_code=409, detail="That email is already in use")
+
+    account.email = email
+    account.email_verified = False
+    account.email_verified_at = None
+    db.query(AccountToken).filter(
+        AccountToken.user_id == account.id,
+        AccountToken.purpose == "verify_email",
+        AccountToken.consumed_at.is_(None),
+    ).update({AccountToken.consumed_at: now()}, synchronize_session=False)
+    token = issue_account_token(db, account, "verify_email", 24)
+    db.commit()
+    db.refresh(account)
+    background_tasks.add_task(
+        send_account_email,
+        account.email,
+        "Verify your Mushroom Forage Map email",
+        "Verify your field account",
+        "Confirm this email so you can always recover your logbook.",
+        "Verify email",
+        f"/map?verify={token}",
+    )
+    return account
+
+
 @app.post("/api/auth/password/forgot", status_code=202)
 def forgot_password(
     payload: EmailRequest,
