@@ -26,7 +26,7 @@ def provision(client, account_id, mode, site_url, webhook_url, output):
         check_price(price)
     else:
         product = client.v1.products.create({
-            "name": "World Mushroom Foraging — Annual Supporter", "url": site_url + "/supporters",
+            "name": "World Mushroom Foraging: Annual Supporter", "url": site_url + "/supporters",
             "description": "One year of supporter recognition across fungi and herbs: a gilded profile, an optional public supporter listing and occasional surprises.",
             "metadata": {"foraging_plan": PLAN},
         }, {"idempotency_key": PLAN + "-product"}).to_dict()
