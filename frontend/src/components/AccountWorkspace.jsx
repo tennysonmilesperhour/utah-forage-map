@@ -4,7 +4,7 @@ import {
   LocateFixed, MapPin, MapPinned, MoonStar, NotebookPen, Save, Settings,
   ShieldCheck, Trash2, X, XCircle,
 } from 'lucide-react'
-import { getApiError, useResendVerification } from '../hooks/useAuth'
+import { getApiError, useChangeUnverifiedEmail, useResendVerification } from '../hooks/useAuth'
 import { useUnitSystem } from '../hooks/useUnits'
 import { approximateOffsetLabel, displayToMetres, elevationUnit, metresToDisplay } from '../lib/units'
 import {
@@ -216,6 +216,8 @@ function AlertRow({ item, onUpdate, onDelete }) {
 export default function AccountWorkspace({ user, species, initialTab = 'logbook', onClose, onDeleted, onToast }) {
   const [tab, setTab] = useState(initialTab)
   const [password, setPassword] = useState('')
+  const [email, setEmail] = useState(user.email)
+  const [emailError, setEmailError] = useState('')
   const [error, setError] = useState('')
   const logbook = useLogbook(tab === 'logbook')
   const saved = useSavedLocations(tab === 'saved')
@@ -234,6 +236,7 @@ export default function AccountWorkspace({ user, species, initialTab = 'logbook'
   const deleteAccount = useDeleteAccount()
   const review = useReviewSighting()
   const resend = useResendVerification()
+  const changeEmail = useChangeUnverifiedEmail()
   const tabs = ['admin', 'moderator'].includes(user.role)
     ? [...BASE_TABS.slice(0, 3), ['moderation', <ShieldCheck size={17} aria-hidden="true" />, 'Review'], ...BASE_TABS.slice(3)]
     : BASE_TABS
@@ -250,6 +253,18 @@ export default function AccountWorkspace({ user, species, initialTab = 'logbook'
     setError('')
     try { await deleteAccount.mutateAsync(password); onDeleted() }
     catch (requestError) { setError(getApiError(requestError, 'The account could not be deleted.')) }
+  }
+
+  async function correctEmail(event) {
+    event.preventDefault()
+    setEmailError('')
+    try {
+      const updated = await changeEmail.mutateAsync(email.trim())
+      setEmail(updated.email)
+      onToast(`Verification email sent to ${updated.email}.`)
+    } catch (requestError) {
+      setEmailError(getApiError(requestError, 'The email address could not be updated.'))
+    }
   }
 
   async function createFungiWatch(payload) {
@@ -279,7 +294,7 @@ export default function AccountWorkspace({ user, species, initialTab = 'logbook'
 
           {tab === 'sessions' && <section><div className="section-heading"><div><h3>Active sessions</h3><p>Revoke access from devices you no longer use.</p></div><button className="button button-secondary compact-button" type="button" onClick={() => revokeOthers.mutate()}>Sign out others</button></div>{sessions.data?.map(item => <article className="account-row session-row" key={item.id}><Clock3 size={19} /><div><h3>{item.current ? 'This device' : 'Signed-in device'}</h3><p>{item.user_agent || 'Unknown browser'} · active {new Date(item.last_seen_at).toLocaleDateString()}</p></div>{!item.current && <button className="button button-secondary compact-button" type="button" onClick={() => revokeSession.mutate(item.id)}>Revoke</button>}</article>)}</section>}
 
-          {tab === 'settings' && <section className="settings-section"><div className="settings-block"><h3>Email verification</h3><p>{user.email_verified ? 'Your account email is verified.' : `Verification is pending for ${user.email}.`}</p>{!user.email_verified && <button className="button button-secondary" type="button" onClick={async () => { await resend.mutateAsync(); onToast('Verification email requested.') }}>Resend verification</button>}</div><form className="settings-block danger-zone" onSubmit={removeAccount}><h3>Delete account</h3><p>Private saves, alerts, and unpublished observations are removed. Approved public contributions are anonymized. Any supporter renewal is stopped before your account is deleted.</p><label>Confirm password<input type="password" autoComplete="current-password" value={password} onChange={event => setPassword(event.target.value)} required minLength={8} /></label>{error && <p className="form-error" role="alert">{error}</p>}<button className="button danger-button" disabled={deleteAccount.isPending}><Trash2 size={16} /> Delete account</button></form></section>}
+          {tab === 'settings' && <section className="settings-section"><div className="settings-block"><h3>Email verification</h3><p>{user.email_verified ? 'Your account email is verified.' : `Verification is pending for ${user.email}.`}</p>{!user.email_verified && <><form onSubmit={correctEmail}><label>Correct email address<input type="email" autoComplete="email" value={email} onChange={event => setEmail(event.target.value)} required /></label>{emailError && <p className="form-error" role="alert">{emailError}</p>}<button className="button button-secondary" disabled={changeEmail.isPending || email.trim().toLowerCase() === user.email.toLowerCase()}>Update and send verification</button></form><button className="button button-secondary" type="button" disabled={resend.isPending} onClick={async () => { await resend.mutateAsync(); onToast('Verification email requested.') }}>Resend verification</button></>}</div><form className="settings-block danger-zone" onSubmit={removeAccount}><h3>Delete account</h3><p>Private saves, alerts, and unpublished observations are removed. Approved public contributions are anonymized. Any supporter renewal is stopped before your account is deleted.</p><label>Confirm password<input type="password" autoComplete="current-password" value={password} onChange={event => setPassword(event.target.value)} required minLength={8} /></label>{error && <p className="form-error" role="alert">{error}</p>}<button className="button danger-button" disabled={deleteAccount.isPending}><Trash2 size={16} /> Delete account</button></form></section>}
         </div>
       </aside>
     </div>

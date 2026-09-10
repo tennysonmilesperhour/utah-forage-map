@@ -73,6 +73,14 @@ export function useResendVerification() {
   return useMutation({ mutationFn: async () => (await axios.post('/api/auth/verification/resend')).data })
 }
 
+export function useChangeUnverifiedEmail() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async email => (await axios.patch('/api/account/email', { email })).data,
+    onSuccess: user => queryClient.setQueryData(['current-user'], user),
+  })
+}
+
 export function useForgotPassword() {
   return useMutation({ mutationFn: async email => (await axios.post('/api/auth/password/forgot', { email })).data })
 }
