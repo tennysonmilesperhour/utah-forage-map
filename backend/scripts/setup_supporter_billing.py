@@ -26,7 +26,7 @@ def provision(client, account_id, mode, site_url, webhook_url, output):
         check_price(price)
     else:
         product = client.v1.products.create({
-            "name": "World Foraging Project — Annual Supporter", "url": site_url + "/supporters",
+            "name": "World Mushroom Foraging — Annual Supporter", "url": site_url + "/supporters",
             "description": "One year of supporter recognition across fungi and herbs: a gilded profile, an optional public supporter listing and occasional surprises.",
             "metadata": {"foraging_plan": PLAN},
         }, {"idempotency_key": PLAN + "-product"}).to_dict()
@@ -36,7 +36,7 @@ def provision(client, account_id, mode, site_url, webhook_url, output):
         }, {"idempotency_key": PLAN + "-price"}).to_dict()
     configs = client.v1.billing_portal.configurations.list({"limit": 100}).to_dict()["data"]
     portal = next((c for c in configs if c.get("metadata", {}).get("foraging_plan") == PLAN), None)
-    portal_params = {"name": "World Foraging supporter membership", "default_return_url": site_url + "/supporters?billing=returned",
+    portal_params = {"name": "World Mushroom Foraging supporter membership", "default_return_url": site_url + "/supporters?billing=returned",
         "business_profile": {"headline": "Your supporter membership", "privacy_policy_url": site_url + "/privacy", "terms_of_service_url": site_url + "/supporters"},
         "features": {"invoice_history": {"enabled": True}, "payment_method_update": {"enabled": True},
             "customer_update": {"enabled": False}, "subscription_update": {"enabled": False},
@@ -53,7 +53,7 @@ def provision(client, account_id, mode, site_url, webhook_url, output):
         client.v1.webhook_endpoints.update(webhook["id"], {"enabled_events": sorted(EVENT_TYPES), "disabled": False})
     else:
         webhook = client.v1.webhook_endpoints.create({"url": webhook_url, "api_version": stripe.api_version,
-            "enabled_events": sorted(EVENT_TYPES), "description": "World Foraging supporter membership synchronization",
+            "enabled_events": sorted(EVENT_TYPES), "description": "World Mushroom Foraging supporter membership synchronization",
             "metadata": {"foraging_plan": PLAN},
         }, {"idempotency_key": PLAN + "-webhook-" + mode}).to_dict()
         secret = webhook["secret"]
