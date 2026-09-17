@@ -40,7 +40,8 @@
 .herbal-shell--forest .herb-solid-button:hover { background: #e5f2e9; }
 .herbal-shell--forest .herb-kicker { color: #c0d6ca; }
 .herbal-shell--forest .herbal-main { width: min(1760px, 100%); }
-.forest-immersive-hero { position: relative; isolation: isolate; min-height: 790px; height: min(940px, 92svh); display: flex; flex-direction: column; padding: 118px 64px 25px; }
+.forest-immersive-hero { position: relative; isolation: isolate; min-height: clamp(790px, 92svh, 940px); height: auto; display: flex; flex-direction: column; padding: 118px 64px 25px; }
+.forest-immersive-hero > :is(.forest-dateline, .forest-hero-layout, .forest-hero-foot) { flex-shrink: 0; }
 .forest-immersive-image { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; object-position: center 44%; }
 .forest-immersive-hero::after { position: absolute; inset: 0; content: ""; z-index: -1; background: linear-gradient(90deg, #00000059, #00000000 65%, #00000038), linear-gradient(0deg, #000000ed, #00000014 70%); }
 .forest-dateline { display: flex; align-items: center; justify-content: space-between; gap: 18px; color: #d2e2d8; font-size: 10px; letter-spacing: .5px; }
