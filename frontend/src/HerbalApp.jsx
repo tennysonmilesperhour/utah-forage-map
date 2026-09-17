@@ -68,11 +68,11 @@ function WeatherReading({ weather, locating, hasLocation, onLocate }) {
   if (!hasLocation) return (
     <section className="weather-reading is-empty">
       <CloudSun size={28} aria-hidden="true" />
-      <div><p className="herb-kicker">Local conditions</p><h2>Bring the weather into view</h2><p>Use an approximate device location to check rain, wind, and a practical dry gathering window. It is not saved until you create a watch zone.</p></div>
-      <button className="herb-outline-button" type="button" onClick={onLocate} disabled={locating}><LocateFixed size={16} /> {locating ? 'Locating...' : 'Use my location'}</button>
+      <div className="weather-copy"><p className="herb-kicker">Local conditions</p><h2>Bring the weather into view</h2><p>Use an approximate device location to check rain, wind, and a practical dry gathering window. It is not saved until you create a watch zone.</p></div>
+      <button className="herb-outline-button" type="button" onClick={onLocate} disabled={locating}><LocateFixed size={16} aria-hidden="true" /><span>{locating ? 'Locating...' : 'Use my location'}</span></button>
     </section>
   )
-  if (!weather) return <section className="weather-reading is-empty"><CloudSun size={28} /><div><p className="herb-kicker">Local conditions</p><h2>Weather reading unavailable</h2><p>The plant and sky almanac still works without it.</p></div></section>
+  if (!weather) return <section className="weather-reading is-empty"><CloudSun size={28} /><div className="weather-copy"><p className="herb-kicker">Local conditions</p><h2>Weather reading unavailable</h2><p>The plant and sky almanac still works without it.</p></div></section>
   const dry = weather.precipitation <= 0.2 && weather.rain_24h <= 1 && weather.wind_speed <= 35
   return (
     <section className="weather-reading">
