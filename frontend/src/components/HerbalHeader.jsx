@@ -15,7 +15,7 @@ export default function HerbalHeader({ view, forest, user, authLoading, onNaviga
       <div className="herbal-account-actions">
         <SupporterSprout collection="herbs" supporter={user?.is_supporter} />
         {!authLoading && !user && <><button className="herb-text-button" type="button" onClick={() => onAuth('login')}><LogIn size={16} /> Sign in</button><button className="herb-solid-button" type="button" aria-label="Create account" onClick={() => onAuth('register')}><UserPlus size={16} /> Join</button></>}
-        {!authLoading && user && <><button className="herb-user-button" type="button" onClick={() => onNavigate('pantry')}><span className={user.is_supporter ? 'supporter-gilded' : undefined}>{user.username.slice(0, 1).toUpperCase()}</span>{user.username}</button><button className="herb-icon-button" type="button" onClick={onLogout} aria-label="Sign out" title="Sign out"><LogOut size={18} /></button></>}
+        {!authLoading && user && <><button className="herb-user-button" type="button" onClick={() => onNavigate('profile')}><span className={user.is_supporter ? 'supporter-gilded' : undefined}>{user.username.slice(0, 1).toUpperCase()}</span>{user.username}</button><button className="herb-icon-button" type="button" onClick={onLogout} aria-label="Sign out" title="Sign out"><LogOut size={18} /></button></>}
       </div>
     </header>
   )

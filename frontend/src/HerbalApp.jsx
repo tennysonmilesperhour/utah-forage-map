@@ -4,6 +4,9 @@ import {
   Heart, Leaf, ListPlus, LocateFixed, LogIn, Minus, MoonStar, Plus, Search, ShieldAlert, ShoppingBasket, Sparkles,
   Trash2, UserPlus, X, ArrowDown, ArrowUpRight,
 } from 'lucide-react'
+import { PlantAstrology } from './components/AstrologyLibrary'
+import ForagerProfile from './components/ForagerProfile'
+import GatheringJournal from './components/GatheringJournal'
 import AuthDialog from './components/AuthDialog'
 import HerbalHeader from './components/HerbalHeader'
 import HerbMoonVisual from './components/HerbMoonVisual'
@@ -24,7 +27,7 @@ import './herbal.css'
 import './herbal-forest.css'
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-const VIEWS = ['today', 'plants', 'practice', 'watches', 'pantry']
+const VIEWS = ['today', 'plants', 'practice', 'watches', 'pantry', 'profile', 'collections']
 
 function dateLabel(value) {
   return new Intl.DateTimeFormat(undefined, { dateStyle: 'medium' }).format(new Date(`${value}T12:00:00`))
@@ -169,7 +172,7 @@ function PlantDetail({ herb, hemisphere, onClose, onWatch, onWish }) {
         <div className="herb-caution"><ShieldAlert size={18} /><span><strong>Before use</strong>{herb.caution}</span></div>
         <div className="herb-tradition"><MoonStar size={18} /><span><strong>{spirit?.lineage ?? 'Traditional sky note'}</strong>{herb.tradition} Suggested lunar window within that practice: {herb.moon.join(' or ')}.</span></div>
         {spirit && <section className="plant-spirit-note"><p className="herb-kicker"><Sparkles size={15} /> Spiritual companionship</p><h3>{spirit.gift}</h3><dl><div><dt>At the patch</dt><dd>{spirit.rite}</dd></div><div><dt>Before making</dt><dd>{spirit.making}</dd></div></dl></section>}
-        <div className="specimen-actions"><button className="herb-solid-button" type="button" onClick={() => onWatch(herb)}><BellRing size={16} /> Watch this plant</button><button className="herb-outline-button" type="button" onClick={() => onWish(herb)}><Heart size={16} /> Add to wish list</button></div>
+        <PlantAstrology slug={herb.slug} /><div className="specimen-actions"><button className="herb-solid-button" type="button" onClick={() => onWatch(herb)}><BellRing size={16} /> Watch this plant</button><button className="herb-outline-button" type="button" onClick={() => onWish(herb)}><Heart size={16} /> Add to wish list</button></div>
       </div>
     </aside>
   )
@@ -296,6 +299,8 @@ export default function HerbalApp() {
   return <div className={`herbal-shell${forest ? ' herbal-shell--forest' : ''}`} data-view={view} ref={shellRef}><HerbalHeader view={view} forest={forest} user={user} authLoading={authLoading} onNavigate={navigate} onAuth={setAuthMode} onLogout={signOut} />
     {view === 'today' && <Today almanac={almanac.data} location={location} locating={locating} moon={moon} onLocate={locate} onOpenPlant={herb => { if (forest) { window.location.assign(`/herbs/atlas/${herb.slug}`); return } setSelected(herb); navigate('plants'); setSelected(herb) }} onNavigate={navigate} />}
     {view === 'plants' && <PlantsView hemisphere={almanac.data?.hemisphere ?? 'north'} selected={selected} onSelect={setSelected} onClose={() => setSelected(null)} onWatch={watchPlant} onWish={wishForPlant} />}
+    {view === 'profile' && <ForagerProfile user={user} onAuth={setAuthMode} />}
+    {view === 'collections' && <GatheringJournal user={user} onAuth={setAuthMode} />}
     {view === 'practice' && <HerbalPracticeLibrary />}
     {view === 'watches' && <WatchesView user={user} location={location} locating={locating} presetHerb={presetHerb} onLocate={locate} onAuth={setAuthMode} onToast={setToast} />}
     {view === 'pantry' && <PantryView user={user} presetHerb={presetHerb} onAuth={setAuthMode} onToast={setToast} />}

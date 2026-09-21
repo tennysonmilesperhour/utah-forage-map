@@ -56,6 +56,7 @@ export function useLogout() {
       await axios.post('/api/auth/logout')
     },
     onSuccess: () => {
+      queryClient.removeQueries({ queryKey: ['journal'] })
       queryClient.setQueryData(['current-user'], null)
     },
   })

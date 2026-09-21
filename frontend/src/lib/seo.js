@@ -82,6 +82,6 @@ export function pageStructuredDataForPath(pathname) {
 export function applyPageMetadata(view) {
   const metadata = pageMetadataForPath(PAGE_METADATA[view]?.path || '/')
   const params = new URLSearchParams(window.location.search)
-  const privatePage = window.location.pathname === '/account' || ['reset', 'verify', 'follow', 'checkout', 'session_id', 'billing'].some(key => params.has(key))
+  const privatePage = ['profile', 'collections'].includes(params.get('view')) || window.location.pathname === '/account' || ['reset', 'verify', 'follow', 'checkout', 'session_id', 'billing'].some(key => params.has(key))
   applyMetadata({ ...metadata, noindex: privatePage }, pageStructuredDataForPath(metadata.path))
 }
