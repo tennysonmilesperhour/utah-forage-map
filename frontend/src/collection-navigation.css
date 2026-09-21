@@ -106,3 +106,13 @@
   #root .collection-header .collection-nav { background: #100e0b; }
   #root .herbal-header .collection-nav { background: #0c2115; }
 }
+
+/* Eight herbal destinations: keep the personal tools visible at every width. */
+#root .herbal-header.collection-header .collection-nav { grid-template-columns: repeat(8, minmax(0, 1fr)); }
+#root .herbal-header.collection-header .collection-nav a { white-space: normal; text-align: center; }
+@media (max-width: 1050px) {
+  #root .herbal-header.collection-header .collection-nav { grid-template-columns: repeat(4, minmax(0, 1fr)); height: 128px; }
+  #root .herbal-shell .herbal-footer { padding-bottom: calc(168px + env(safe-area-inset-bottom)); }
+  #root .analytics-consent.herbal-consent { bottom: calc(150px + env(safe-area-inset-bottom)); }
+  #root .analytics-settings.herbal-consent { bottom: calc(148px + env(safe-area-inset-bottom)); }
+}
