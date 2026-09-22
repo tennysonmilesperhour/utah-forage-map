@@ -15,6 +15,7 @@ from sqlalchemy import func, or_
 from sqlalchemy.orm import Session, joinedload
 
 from app.database import Base, engine, get_db
+from app.journal import journal_router, remove_user_journal
 from app.billing import billing_router, cancel_for_deleted_account
 from app.email_service import send_account_email, send_digest_email, send_herb_watch_email
 from app.models import (
@@ -694,6 +695,7 @@ def delete_account(
     if not passwords.verify(payload.password, auth.user.hashed_password):
         raise HTTPException(status_code=400, detail="Password is incorrect")
     cancel_for_deleted_account(db, auth.user)
+    remove_user_journal(db, auth.user.id)
     stamp = now().strftime("%Y%m%d%H%M%S")
     auth.user.username = f"Deleted forager {str(auth.user.id)[:8]}"
     auth.user.email = f"deleted-{auth.user.id}-{stamp}@invalid.local"
@@ -1760,3 +1762,5 @@ def send_herb_watch_alerts(
 
 # Attach after authentication helpers are defined; billing never accepts a caller-supplied user ID.
 app.include_router(billing_router(get_current_user, enforce_rate_limit))
+
+app.include_router(journal_router(get_current_user))

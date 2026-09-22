@@ -21,6 +21,7 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm run build
+      - run: node --test tests/astrology.test.mjs
       - run: npm run test:herbs
       - run: npm run test:map
       - run: npm run test:motion

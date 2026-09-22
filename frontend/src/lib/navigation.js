@@ -31,6 +31,8 @@ export const herbNavigation = [
   { key: 'practice', label: 'Gathering ways', icon: 'book' },
   { key: 'watches', label: 'Watch zones', icon: 'bell' },
   { key: 'pantry', label: 'Pantry', icon: 'archive' },
+  { key: 'collections', label: 'Collections', icon: 'map' },
+  { key: 'profile', label: 'Profile', icon: 'users' },
 ]
 export function isPlainClick(event) {
   return event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey
