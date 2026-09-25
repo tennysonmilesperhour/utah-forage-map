@@ -14,6 +14,7 @@ export function CollectionSwitch({ collection, forest = true }) {
 
 export default function CollectionNavigation({ collection, active, forest = true, onNavigate, className = '' }) {
   const links = collection === 'herbs' ? herbNavigation : fungiNavigation
+  if (collection === 'herbs' && ['watches', 'pantry', 'collections', 'profile'].includes(active)) active = 'workspace'
   return <nav className={`collection-nav ${className}`} aria-label={collection === 'herbs' ? 'Herbal navigation' : 'Primary navigation'}>
     {links.map(link => {
       const Icon = icons[link.icon]

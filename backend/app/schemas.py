@@ -481,6 +481,7 @@ class CommunitySummaryRead(BaseModel):
     recent_observations: int
     latest_observed_on: Optional[date] = None
     last_synced_at: Optional[datetime] = None
+    freshness: dict = {}
 
 
 class CommunityEventRead(BaseModel):

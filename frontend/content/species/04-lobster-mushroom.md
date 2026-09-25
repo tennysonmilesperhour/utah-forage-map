@@ -15,6 +15,7 @@ warning: Reject soft, purple-tinged, foul, or badly decayed specimens because th
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-08-15
+last_updated: 2026-09-25
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/91707399/large.jpg
   alt: Bright red-orange lobster mushroom on the forest floor
@@ -44,6 +45,12 @@ Fresh lobster mushrooms are firm and hold their texture in stews and sauteed dis
 
 The parasite turns notoriously bland hosts into a commercially sold delicacy.
 
+## Evidence and regional scope
+
+Michael Kuo documents the orange parasitic coating, distorted host shape, and North American host ecology. [Field description and cited specimen evidence](https://www.mushroomexpert.com/hypomyces_lactifluorum.html). This source supports morphology and ecology, not edibility or preparation advice. Independent review of this profile remains pending.
+
 ## Sources
 
 - [iNaturalist taxon reference](https://www.inaturalist.org/taxa/48215)
+
+- [MushroomExpert: hypomyces lactifluorum](https://www.mushroomexpert.com/hypomyces_lactifluorum.html) — morphology, ecology and regional species limits.

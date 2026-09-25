@@ -17,6 +17,7 @@ export const fungiNavigation = [
   { key: 'community', label: 'Community', href: '/community', icon: 'users' },
 ]
 export function herbHref(view, forest = true) {
+  if (view === 'practice') return '/herbs/gathering-ways'
   if (view === 'map') return '/herbs/map'
   if (view === 'plants' && forest) return '/herbs/atlas'
   const params = new URLSearchParams()
@@ -29,10 +30,7 @@ export const herbNavigation = [
   { key: 'map', label: 'Field map', icon: 'map' },
   { key: 'plants', label: 'Plant atlas', icon: 'flower' },
   { key: 'practice', label: 'Gathering ways', icon: 'book' },
-  { key: 'watches', label: 'Watch zones', icon: 'bell' },
-  { key: 'pantry', label: 'Pantry', icon: 'archive' },
-  { key: 'collections', label: 'Collections', icon: 'map' },
-  { key: 'profile', label: 'Profile', icon: 'users' },
+  { key: 'workspace', label: 'My fieldbook', icon: 'users' },
 ]
 export function isPlainClick(event) {
   return event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey

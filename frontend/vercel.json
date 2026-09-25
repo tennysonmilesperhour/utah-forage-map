@@ -122,9 +122,25 @@
       ],
       "destination": "/map",
       "permanent": true
+    },
+    {
+      "source": "/herbs",
+      "has": [
+        {
+          "type": "query",
+          "key": "view",
+          "value": "practice"
+        }
+      ],
+      "destination": "/herbs/gathering-ways",
+      "permanent": true
     }
   ],
   "rewrites": [
+    {
+      "source": "/herbs/gathering-ways",
+      "destination": "/herbs/gathering-ways/index.html"
+    },
     {
       "source": "/map",
       "destination": "/map/index.html"
@@ -279,6 +295,31 @@
         {
           "key": "X-Robots-Tag",
           "value": "noindex"
+        }
+      ]
+    },
+    {
+      "source": "/assets/:path*",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/herbs",
+      "has": [
+        {
+          "type": "query",
+          "key": "view",
+          "value": "(workspace|watches|pantry|profile|collections)"
+        }
+      ],
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, follow"
         }
       ]
     }

@@ -1,0 +1,310 @@
+[
+  {
+    "slug": "stinging-nettle",
+    "name": "Stinging nettle",
+    "latin": "Urtica dioica",
+    "status": "culinary",
+    "caution": "A sting is not an identification test. Do not eat raw stinging foliage."
+  },
+  {
+    "slug": "dandelion",
+    "name": "Dandelion",
+    "latin": "Taraxacum officinale",
+    "status": "culinary",
+    "caution": "Sap may irritate skin. Food use does not establish the safety or effectiveness of concentrated products."
+  },
+  {
+    "slug": "common-yarrow",
+    "name": "Common yarrow",
+    "latin": "Achillea millefolium",
+    "status": "study",
+    "caution": "Can cause contact dermatitis. Do not identify by a flat white flower cluster alone."
+  },
+  {
+    "slug": "elderflower",
+    "name": "Black elder",
+    "latin": "Sambucus nigra",
+    "status": "culinary",
+    "caution": "Raw or unripe berries and leaves or stems contain cyanide-producing substances. Do not use them."
+  },
+  {
+    "slug": "wild-mint",
+    "name": "American wild mint",
+    "latin": "Mentha canadensis",
+    "status": "study",
+    "caution": "Pennyroyal is also a mint and is harmful if eaten. Hybrids complicate identification."
+  },
+  {
+    "slug": "red-clover",
+    "name": "Red clover",
+    "latin": "Trifolium pratense",
+    "status": "study",
+    "caution": "Check with a clinician before herbal use, especially during pregnancy, breastfeeding or when taking medicines."
+  },
+  {
+    "slug": "greater-plantain",
+    "name": "Greater plantain",
+    "latin": "Plantago major",
+    "status": "culinary",
+    "caution": "Road margins, sprayed paths and pet-used lawns are poor gathering sites."
+  },
+  {
+    "slug": "mugwort",
+    "name": "Mugwort",
+    "latin": "Artemisia vulgaris",
+    "status": "study",
+    "caution": "NCCIH advises against use during pregnancy. Evidence for claimed health effects is limited."
+  },
+  {
+    "slug": "dog-rose",
+    "name": "Dog rose",
+    "latin": "Rosa canina",
+    "status": "culinary",
+    "caution": "Wild roses are difficult to separate. Avoid ornamental shrubs with an unknown spray history."
+  },
+  {
+    "slug": "lemon-balm",
+    "name": "Lemon balm",
+    "latin": "Melissa officinalis",
+    "status": "culinary",
+    "caution": "Scent alone does not identify a plant. Confirm leaf arrangement and flowers as well."
+  },
+  {
+    "slug": "german-chamomile",
+    "name": "German chamomile",
+    "latin": "Matricaria chamomilla",
+    "status": "culinary",
+    "caution": "Allergic reactions can be severe, especially with daisy-family allergies. Medicine interactions are possible."
+  },
+  {
+    "slug": "calendula",
+    "name": "Calendula",
+    "latin": "Calendula officinalis",
+    "status": "culinary",
+    "caution": "The common name marigold also refers to Tagetes. Ornamental nursery plants may have unsuitable pesticide treatments."
+  },
+  {
+    "slug": "wild-garlic",
+    "name": "Wild garlic",
+    "latin": "Allium ursinum",
+    "status": "caution",
+    "caution": "Lily of the valley and autumn crocus can grow among ramsons. Garlic scent transferred to hands can mislead."
+  },
+  {
+    "slug": "purslane",
+    "name": "Common purslane",
+    "latin": "Portulaca oleracea",
+    "status": "caution",
+    "caution": "Contains oxalates; avoid large intakes. Rule out spurges before any food use."
+  },
+  {
+    "slug": "chickweed",
+    "name": "Common chickweed",
+    "latin": "Stellaria media",
+    "status": "culinary",
+    "caution": "Avoid mixing several groundcover species. Flowerless fragments are especially easy to confuse."
+  },
+  {
+    "slug": "yellow-wood-sorrel",
+    "name": "Yellow wood sorrel",
+    "latin": "Oxalis stricta",
+    "status": "caution",
+    "caution": "Large amounts can be harmful because of oxalates. Sour taste is never an identification test."
+  },
+  {
+    "slug": "sheep-sorrel",
+    "name": "Sheep sorrel",
+    "latin": "Rumex acetosella",
+    "status": "caution",
+    "caution": "Contains substantial oxalic acid. Do not taste uncertain arrow-shaped leaves."
+  },
+  {
+    "slug": "garlic-mustard",
+    "name": "Garlic mustard",
+    "latin": "Alliaria petiolata",
+    "status": "culinary",
+    "caution": "A garlic smell alone cannot identify it. Do not spread mature seed during collection."
+  },
+  {
+    "slug": "cleavers",
+    "name": "Cleavers",
+    "latin": "Galium aparine",
+    "status": "study",
+    "caution": "Other bedstraws differ chemically. Do not infer edibility from a sticky stem."
+  },
+  {
+    "slug": "fennel",
+    "name": "Fennel",
+    "latin": "Foeniculum vulgare",
+    "status": "caution",
+    "caution": "Carrot-family mistakes can be fatal. Do not gather an unknown umbellifer by smell."
+  },
+  {
+    "slug": "watercress",
+    "name": "Watercress",
+    "latin": "Nasturtium officinale",
+    "status": "caution",
+    "caution": "Wild watercress can carry liver flukes and contaminants. Clear water and rinsing do not establish safety."
+  },
+  {
+    "slug": "selfheal",
+    "name": "Selfheal",
+    "latin": "Prunella vulgaris",
+    "status": "study",
+    "caution": "The common name heal-all is historical language, not evidence of medical effectiveness."
+  },
+  {
+    "slug": "common-blue-violet",
+    "name": "Common blue violet",
+    "latin": "Viola sororia",
+    "status": "culinary",
+    "caution": "Do not identify a plant from a heart-shaped leaf alone. Ornamental African violets are unrelated."
+  },
+  {
+    "slug": "gotu-kola",
+    "name": "Gotu kola",
+    "latin": "Centella asiatica",
+    "status": "culinary",
+    "caution": "Wild wet-ground plants can be contaminated. Food use is not evidence for concentrated supplements or treatment claims."
+  },
+  {
+    "slug": "lemongrass",
+    "name": "Lemongrass",
+    "latin": "Cymbopogon citratus",
+    "status": "culinary",
+    "caution": "Other Cymbopogon species are grown for fragrance or oils. A lemon scent does not make them interchangeable."
+  },
+  {
+    "slug": "roselle",
+    "name": "Roselle",
+    "latin": "Sabdariffa gossypiifolia",
+    "status": "culinary",
+    "caution": "Do not substitute ornamental hibiscus or identify by a red flower alone."
+  },
+  {
+    "slug": "moringa",
+    "name": "Moringa",
+    "latin": "Moringa oleifera",
+    "status": "culinary",
+    "caution": "This entry covers food parts only. Do not infer that roots, bark, extracts or water-treatment claims are safe."
+  },
+  {
+    "slug": "culantro",
+    "name": "Culantro",
+    "latin": "Eryngium foetidum",
+    "status": "culinary",
+    "caution": "Leaf edges and flowering bracts can be sharp. It is not the same species as coriander."
+  },
+  {
+    "slug": "epazote",
+    "name": "Epazote",
+    "latin": "Dysphania ambrosioides",
+    "status": "study",
+    "caution": "Seeds in quantity and concentrated preparations can be dangerous. This guide supplies no home remedy or dose."
+  },
+  {
+    "slug": "lemon-verbena",
+    "name": "Lemon verbena",
+    "latin": "Aloysia citrodora",
+    "status": "culinary",
+    "caution": "Several plants are called verbena or yerba luisa. Do not substitute on the common name alone."
+  },
+  {
+    "slug": "perilla",
+    "name": "Perilla",
+    "latin": "Perilla frutescens",
+    "status": "culinary",
+    "caution": "Color and aroma alone do not identify perilla. Keep it out of livestock grazing areas."
+  },
+  {
+    "slug": "warrigal-greens",
+    "name": "Warrigal greens",
+    "latin": "Tetragonia tetragonoides",
+    "status": "caution",
+    "caution": "Contains oxalic acid; do not present it as a raw salad green or unrestricted spinach substitute."
+  },
+  {
+    "slug": "lemon-myrtle",
+    "name": "Lemon myrtle",
+    "latin": "Backhousia citriodora",
+    "status": "culinary",
+    "caution": "Other aromatic rainforest trees can resemble it. Confirm a named plant before use."
+  },
+  {
+    "slug": "kapokbos",
+    "name": "Kapokbos",
+    "latin": "Eriocephalus africanus",
+    "status": "study",
+    "caution": "The name wild rosemary covers unrelated plants. Do not substitute it for culinary rosemary or ingest oils."
+  },
+  {
+    "slug": "rooibos",
+    "name": "Rooibos",
+    "latin": "Aspalathus linearis",
+    "status": "culinary",
+    "caution": "Do not identify or harvest an unfamiliar fynbos shrub by needlelike leaves alone."
+  },
+  {
+    "slug": "buchu",
+    "name": "Round-leaf buchu",
+    "latin": "Agathosma betulina",
+    "status": "study",
+    "caution": "Related buchus differ chemically. A traditional name does not identify a species or establish safety."
+  },
+  {
+    "slug": "poison-hemlock",
+    "name": "Poison hemlock",
+    "latin": "Conium maculatum",
+    "status": "toxic",
+    "caution": "All parts are highly poisonous. Small amounts can be fatal; obtain urgent poison-service advice after exposure."
+  },
+  {
+    "slug": "water-hemlock",
+    "name": "Spotted water hemlock",
+    "latin": "Cicuta maculata",
+    "status": "toxic",
+    "caution": "All parts are toxic and ingestion can be fatal. Seek urgent poison-service advice."
+  },
+  {
+    "slug": "lily-of-the-valley",
+    "name": "Lily of the valley",
+    "latin": "Convallaria majalis",
+    "status": "toxic",
+    "caution": "Can cause serious poisoning including heart-rhythm disturbances. Seek prompt poison-service advice after ingestion."
+  },
+  {
+    "slug": "autumn-crocus",
+    "name": "Autumn crocus",
+    "latin": "Colchicum autumnale",
+    "status": "toxic",
+    "caution": "Colchicine poisoning can be fatal and symptoms may be delayed. Do not wait for illness before seeking help."
+  },
+  {
+    "slug": "foxglove",
+    "name": "Foxglove",
+    "latin": "Digitalis purpurea",
+    "status": "toxic",
+    "caution": "Cardiac glycosides can cause serious, potentially fatal poisoning. Seek urgent advice after ingestion."
+  },
+  {
+    "slug": "pennyroyal",
+    "name": "Pennyroyal",
+    "latin": "Mentha pulegium",
+    "status": "toxic",
+    "caution": "The RHS explicitly identifies pennyroyal as non-edible and harmful if eaten."
+  },
+  {
+    "slug": "spotted-spurge",
+    "name": "Spotted spurge",
+    "latin": "Euphorbia maculata",
+    "status": "toxic",
+    "caution": "Sap can injure skin and eyes; ingestion irritates the mouth and digestive tract."
+  },
+  {
+    "slug": "comfrey",
+    "name": "Common comfrey",
+    "latin": "Symphytum officinale",
+    "status": "study",
+    "caution": "Ingestion can damage the liver. A history of medicinal use does not establish safety."
+  }
+]

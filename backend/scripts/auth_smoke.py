@@ -46,6 +46,11 @@ def token_from_last_link(name):
 
 def main():
     with TestClient(main_module.app) as client:
+        for path in ['/api/auth/me', '/api/account/logbook', '/api/account/herb-inventory']:
+            response = client.get(path)
+            assert response.status_code == 401
+            assert response.headers['cache-control'] == 'private, no-store'
+            assert 'Cookie' in response.headers['vary']
         # Keep the submitted find inside the rolling 14-day window regardless of
         # when the smoke test runs, so date-relative region metrics stay stable.
         recent_found_on = (date.today() - timedelta(days=2)).isoformat()
@@ -220,6 +225,13 @@ def main():
         inventory_id = inventory.json()["id"]
         inventory_update = client.patch(f"/api/account/herb-inventory/{inventory_id}", json={"quantity": 14})
         assert inventory_update.status_code == 200 and inventory_update.json()["quantity"] == 14
+
+        expanded = client.post('/api/account/herb-inventory', json={'herb_slug':'wild-garlic','quantity':1,'unit':'g','gathered_on':recent_found_on})
+        assert expanded.status_code == 201, expanded.text
+        assert expanded.json()['herb_name'] == 'Wild garlic'
+        for slug in ['lily-of-the-valley', 'unrecognized-plant']:
+            assert client.post('/api/account/herb-inventory', json={'herb_slug':slug,'quantity':1,'unit':'g','gathered_on':recent_found_on}).status_code == 404
+        client.delete(f"/api/account/herb-inventory/{expanded.json()['id']}")
 
         wish = client.post("/api/account/herb-wishlist", json={
             "herb_slug": "stinging-nettle",

@@ -1,12 +1,10 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
+import { usePrivateQuery } from './usePrivateQuery'
+import { setSessionUser } from '../lib/privateQueries'
 
 function useAccountQuery(key, path, enabled = true) {
-  return useQuery({
-    queryKey: [key],
-    queryFn: async () => (await axios.get(path)).data,
-    enabled,
-  })
+  return usePrivateQuery(key, path, enabled)
 }
 
 export function useLogbook(enabled = true) {
@@ -86,7 +84,7 @@ export function useDeleteAccount() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async password => axios.delete('/api/account', { data: { password } }),
-    onSuccess: () => queryClient.setQueryData(['current-user'], null),
+    onSuccess: () => setSessionUser(queryClient, null),
   })
 }
 

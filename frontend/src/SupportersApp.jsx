@@ -46,15 +46,16 @@ export default function SupportersApp() {
   const cache = useQueryClient()
   const motion = useSupporterMotion()
   const publicList = useQuery({ queryKey: ['supporters', offset], queryFn: () => publicSupporters(offset) })
-  const membership = useQuery({ queryKey: ['membership', user?.id], enabled: Boolean(user), queryFn: async () => {
-    try { return (await axios.get('/api/billing/membership')).data }
+  const membership = useQuery({ queryKey: ['membership', user?.id], meta: { private: true }, enabled: Boolean(user), queryFn: async ({ signal }) => {
+    try { return (await axios.get('/api/billing/membership', { signal })).data }
     catch (error) { if (error.response?.status === 404) return { active: false, status: 'none', public_listing: false, can_manage: false }; throw error }
   } })
   const confirmation = useQuery({
     queryKey: ['supporter-confirmation', user?.id, params.get('session_id'), params.get('billing')],
+    meta: { private: true },
     enabled: Boolean(user && ((params.get('checkout') === 'success' && params.get('session_id')) || params.get('billing') === 'returned')),
     retry: 1,
-    queryFn: async () => (await axios.post(params.has('session_id') ? '/api/billing/confirm' : '/api/billing/refresh', params.has('session_id') ? { session_id: params.get('session_id') } : undefined)).data,
+    queryFn: async ({ signal }) => (await axios.post(params.has('session_id') ? '/api/billing/confirm' : '/api/billing/refresh', params.has('session_id') ? { session_id: params.get('session_id') } : undefined, { signal })).data,
   })
   const status = membership.data
   const publicListing = listingChoice && listingChoice.userId === userId ? listingChoice.value : status?.public_listing ?? false
@@ -63,7 +64,7 @@ export default function SupportersApp() {
   const preference = useMutation({
     mutationFn: async value => (await axios.patch('/api/billing/membership', { public_listing: value })).data,
     onError: () => setListingChoice(null),
-    onSuccess: data => { cache.setQueryData(['membership', user.id], data); cache.invalidateQueries({ queryKey: ['supporters'] }) },
+    onSuccess: data => { if (cache.getQueryData(['current-user'])?.id !== user.id) return; cache.setQueryData(['membership', user.id], data); cache.invalidateQueries({ queryKey: ['supporters'] }) },
   })
   useEffect(() => { applyPageMetadata('supporters') }, [])
   useEffect(() => {

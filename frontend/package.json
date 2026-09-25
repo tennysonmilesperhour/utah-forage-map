@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "content": "node scripts/build-content.mjs",
+    "content": "node scripts/build-companion-catalogue.mjs && node scripts/build-content.mjs",
     "predev": "npm run content",
     "dev": "vite",
     "build": "npm run content && vite build && vite build --ssr src/ssr.jsx --outDir .ssr --emptyOutDir && node scripts/prerender.mjs && node scripts/build-ads-txt.mjs",
@@ -16,7 +16,8 @@
     "test:motion": "node --test tests/mushroom-motion.test.mjs tests/supporter-poems.test.mjs",
     "test:navigation": "node --test tests/navigation.test.mjs",
     "test:seo": "node --test tests/seo.test.mjs",
-    "indexnow": "node scripts/submit-indexnow.mjs"
+    "indexnow": "node scripts/submit-indexnow.mjs",
+    "test:privacy": "node --test tests/private-queries.test.mjs"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.96.2",
@@ -26,7 +27,8 @@
     "lucide-react": "^1.31.0",
     "mapbox-gl": "^3.21.0",
     "react": "^19.2.4",
-    "react-dom": "^19.2.4"
+    "react-dom": "^19.2.4",
+    "web-vitals": "^5.3.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",

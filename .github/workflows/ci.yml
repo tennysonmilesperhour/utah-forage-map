@@ -27,6 +27,8 @@ jobs:
       - run: npm run test:motion
       - run: npm run test:navigation
       - run: npm run test:seo
+      - run: npm run test:privacy
+      - run: node --test tests/audit-regressions.test.mjs
 
   backend:
     runs-on: ubuntu-latest

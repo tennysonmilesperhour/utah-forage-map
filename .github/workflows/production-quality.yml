@@ -1,0 +1,42 @@
+name: Production quality
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 14 * * *'
+  deployment_status:
+permissions:
+  contents: read
+jobs:
+  freshness:
+    if: github.event_name != 'deployment_status'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node frontend/scripts/check-production.mjs
+  discovery:
+    if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'Production'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.deployment.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check that this frontend release is live
+        id: release
+        env:
+          EXPECTED_SHA: ${{ github.event.deployment.sha }}
+        run: |
+          node --input-type=module <<'JS'
+          import { appendFileSync } from 'node:fs'
+          const res = await fetch('https://worldmushroomforaging.org/release.json', { signal: AbortSignal.timeout(15000) })
+          const release = res.ok ? await res.json() : {}
+          appendFileSync(process.env.GITHUB_OUTPUT, `live=${release.commit === process.env.EXPECTED_SHA}\n`)
+          JS
+      - name: Notify IndexNow of published canonical pages
+        if: steps.release.outputs.live == 'true'
+        run: node frontend/scripts/submit-indexnow.mjs --submit

@@ -1,3 +1,4 @@
+import DataFreshness from './DataFreshness'
 import { useEffect, useState } from 'react'
 import {
   ArrowRight, BookOpen, CalendarDays, CheckCircle2, CircleUserRound,
@@ -140,6 +141,7 @@ export default function CommunityPanel({
                 </div>
               </section>
 
+              <DataFreshness />
               <p className="community-provenance">
                 Latest observed date: <strong>{formatDate(summary.latest_observed_on)}</strong>
                 {summary.last_synced_at && <>. Source data last reconciled <strong>{formatDate(summary.last_synced_at)}</strong></>}.

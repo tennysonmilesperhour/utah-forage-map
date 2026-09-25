@@ -12,6 +12,7 @@ from app.security import new_token, passwords
 
 INATURALIST_URL = "https://api.inaturalist.org/v1/observations"
 SOURCE_NAME = "iNaturalist"
+INCREMENTAL_SOURCE = "iNaturalist:incremental"
 SYNC_INTERVAL = timedelta(days=14)
 ROLLING_WINDOW = timedelta(days=90)
 PAGE_SIZE = 200
@@ -65,6 +66,8 @@ def fetch_observations(
     per_page=PAGE_SIZE,
     max_pages=MAX_PAGES_PER_RUN,
     sleeper=time.sleep,
+    updated_since=None,
+    descending=False,
 ):
     per_page = min(max(per_page, 1), PAGE_SIZE)
     params = {
@@ -74,9 +77,11 @@ def fetch_observations(
         "geo": "true",
         "d1": window_start.isoformat(),
         "order_by": "id",
-        "order": "asc",
+        "order": "desc" if descending else "asc",
         "per_page": per_page,
     }
+    if updated_since:
+        params["updated_since"] = updated_since.isoformat() + "Z"
     observations = []
     total_results = 0
     next_cursor = cursor
@@ -87,7 +92,7 @@ def fetch_observations(
             sleeper(1.05)
         page_params = {**params}
         if next_cursor is not None:
-            page_params["id_above"] = next_cursor
+            page_params["id_below" if descending else "id_above"] = next_cursor
         response = client.get(INATURALIST_URL, params=page_params)
         response.raise_for_status()
         payload = response.json()
@@ -344,6 +349,7 @@ def run_scheduled_import(db, force=False, client=None, sleeper=time.sleep, now=N
             crawled_at=cycle["cycle_started_at"],
         )
         cycle["cursor"] = cursor
+        cycle["last_batch_at"] = now.isoformat()
         cycle["fetched"] += len(observations)
         cycle["available"] = max(cycle.get("available", 0), available)
         for key in ("imported", "updated", "unchanged", "skipped"):
@@ -383,6 +389,74 @@ def run_scheduled_import(db, force=False, client=None, sleeper=time.sleep, now=N
         if sync is None:
             sync = SourceSync(source_name=SOURCE_NAME, last_started_at=now)
             db.add(sync)
+        sync.last_error = f"{type(error).__name__}: {error}"[:2000]
+        db.commit()
+        raise
+    finally:
+        if owns_client:
+            client.close()
+
+
+def run_incremental_import(db, client=None, sleeper=time.sleep, now=None):
+    """Refresh changed eligible records independently of the 90-day reconciliation.
+
+    A frozen lower bound and descending ID cursor make a capped run resumable.
+    Overlap catches indexing delays/updates that arrive behind the cursor. Missing,
+    private and downgraded observations are retired only by full reconciliation.
+    """
+    now = now or datetime.utcnow()
+    sync = db.get(SourceSync, INCREMENTAL_SOURCE)
+    if sync is None:
+        sync = SourceSync(source_name=INCREMENTAL_SOURCE)
+        db.add(sync)
+        db.flush()
+    if sync.last_started_at and now - sync.last_started_at < timedelta(hours=1):
+        return {"status": "skipped", "reason": "already_running_or_recent"}
+    cycle = parse_cycle(sync)
+    if cycle is None:
+        try:
+            previous = json.loads(sync.last_result or "{}")
+        except (TypeError, ValueError):
+            previous = {}
+        covered = datetime.fromisoformat(previous["covered_through"]) if previous.get("covered_through") else now - timedelta(days=2)
+        cycle = {
+            "cycle_started_at": now, "window_start": (now - ROLLING_WINDOW).date(),
+            "updated_since": (covered - timedelta(hours=2)).isoformat(),
+            "cursor": None, "fetched": 0,
+        }
+    sync.last_started_at = now
+    sync.last_error = None
+    db.commit()
+    owns_client = client is None
+    client = client or httpx.Client(headers=REQUEST_HEADERS, timeout=25)
+    try:
+        species = {item.inaturalist_taxon_id: item for item in db.query(Species).filter(Species.inaturalist_taxon_id.is_not(None)).all()}
+        if not species:
+            raise RuntimeError("No iNaturalist taxon IDs are configured")
+        observations, available, complete, cursor = fetch_observations(
+            client, sorted(species), cycle["window_start"], cursor=cycle["cursor"],
+            updated_since=datetime.fromisoformat(cycle["updated_since"]),
+            descending=True, sleeper=sleeper,
+        )
+        batch = import_observation_batch(db, observations, species, crawled_at=now)
+        result = {
+            **cycle, **batch, "status": "ok" if complete else "in_progress",
+            "cycle_started_at": cycle["cycle_started_at"].isoformat(),
+            "window_start": cycle["window_start"].isoformat(),
+            "cursor": cursor, "fetched": cycle["fetched"] + len(observations),
+            "available": available, "last_batch_at": now.isoformat(),
+            "complete": complete,
+        }
+        if complete:
+            result["covered_through"] = cycle["cycle_started_at"].isoformat()
+            sync.last_succeeded_at = now
+        sync.last_result = json.dumps(result)
+        db.commit()
+        print(json.dumps({"event": "inaturalist_incremental", **result}))
+        return result
+    except Exception as error:
+        db.rollback()
+        sync = db.get(SourceSync, INCREMENTAL_SOURCE)
         sync.last_error = f"{type(error).__name__}: {error}"[:2000]
         db.commit()
         raise
