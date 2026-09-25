@@ -388,7 +388,7 @@ export default function App({ path = '/map' }) {
 
       {accountOpen && user && (
         <AccountWorkspace
-          key={accountInitialTab}
+          key={`${user.id}:${accountInitialTab}`}
           user={user}
           species={species}
           initialTab={accountInitialTab}

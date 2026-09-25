@@ -304,11 +304,11 @@ export default function HerbalApp() {
     {['watches','pantry','collections','profile'].includes(view) && <nav className="fieldbook-tabs" aria-label="Private fieldbook tools">{[['workspace','My fieldbook'],['watches','Watch zones'],['pantry','Pantry'],['collections','Collections'],['profile','Profile']].map(([key,label]) => <a key={key} href={herbHref(key)} aria-current={view === key ? 'page' : undefined} onClick={event => { if (isPlainClick(event)) { event.preventDefault(); navigate(key) } }}>{label}</a>)}</nav>}
     {view === 'today' && <Today almanac={almanac.data} location={location} locating={locating} moon={moon} onLocate={locate} onOpenPlant={herb => { if (forest) { window.location.assign(`/herbs/atlas/${herb.slug}`); return } setSelected(herb); navigate('plants'); setSelected(herb) }} onNavigate={navigate} />}
     {view === 'plants' && <PlantsView hemisphere={almanac.data?.hemisphere ?? 'north'} selected={selected} onSelect={setSelected} onClose={() => setSelected(null)} onWatch={watchPlant} onWish={wishForPlant} />}
-    {view === 'profile' && <ForagerProfile user={user} onAuth={setAuthMode} />}
-    {view === 'collections' && <GatheringJournal user={user} onAuth={setAuthMode} />}
+    {view === 'profile' && <ForagerProfile key={user?.id ?? 'guest'} user={user} onAuth={setAuthMode} />}
+    {view === 'collections' && <GatheringJournal key={user?.id ?? 'guest'} user={user} onAuth={setAuthMode} />}
     {view === 'practice' && <main className="herbal-main"><a href="/herbs/gathering-ways">Open Ways of Gathering</a></main>}
-    {view === 'watches' && <WatchesView user={user} location={location} locating={locating} presetHerb={presetHerb} onLocate={locate} onAuth={setAuthMode} onToast={setToast} />}
-    {view === 'pantry' && <PantryView user={user} presetHerb={presetHerb} onAuth={setAuthMode} onToast={setToast} />}
+    {view === 'watches' && <WatchesView key={user?.id ?? 'guest'} user={user} location={location} locating={locating} presetHerb={presetHerb} onLocate={locate} onAuth={setAuthMode} onToast={setToast} />}
+    {view === 'pantry' && <PantryView key={user?.id ?? 'guest'} user={user} presetHerb={presetHerb} onAuth={setAuthMode} onToast={setToast} />}
     </Suspense>
     <HerbalFooter />
     {authMode && <AuthDialog context="herbs" mode={authMode} onClose={() => setAuthMode(null)} onAuthenticated={() => { setAuthMode(null); setToast('Your field account is ready.') }} />}

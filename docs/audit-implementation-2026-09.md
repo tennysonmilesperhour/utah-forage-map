@@ -2,7 +2,7 @@
 
 ## Delivered in this release
 
-- Account-scoped private queries, cancellation on identity changes and no-store private API responses. Covers notebook, saved places, watches, pantry, journal, sessions, moderation and membership.
+- Account-scoped private queries, cancellation on identity changes and no-store private API responses. Private workspace forms also remount on identity changes to discard unsaved drafts. Covers notebook, saved places, watches, pantry, journal, sessions, moderation and membership.
 - A daily incremental changed-record import, separate from the existing resumable full reconciliation. Full reconciliation retains retirement of deleted/private/downgraded records. No database migration is required.
 - `/api/data-status`, visible stale/backlog information and a daily GitHub Actions check. Initial HTML no longer freezes observation counts, today's date or moon phase at build time.
 - Explicit/selectable hemisphere for fungi seasonal charts; unknown/equatorial countries prompt for a choice. Timing-only herb watches say “Your selected timing matches.”
