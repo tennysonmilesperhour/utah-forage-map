@@ -2,6 +2,7 @@ import { SITE_URL, DEFAULT_IMAGE, HERB_IMAGE, FUNGI_LIBRARY_METADATA, siteEntiti
 export { SITE_URL } from './siteIdentity'
 
 const PAGE_METADATA = {
+  gatheringWays: { path: '/herbs/gathering-ways', title: 'Ways of Gathering | Plant Traditions, Reciprocity & Field Practice', description: 'Explore named plant traditions, lunar gardening, reciprocity and field journaling. Cultural practice is distinguished from identification and evidence of safe use.' },
   library: FUNGI_LIBRARY_METADATA,
   supporters: { path: '/supporters', title: 'Optional Support | World Mushroom Foraging', description: 'All fungi and herb guides, maps and field tools stay free. Optional annual support includes small thank-yous, including forty pocket poems.' },
   map: {
@@ -32,6 +33,7 @@ const PAGE_METADATA = {
 }
 
 export function viewFromPathname(pathname) {
+  if (/^\/herbs\/gathering-ways\/?$/.test(pathname)) return 'gatheringWays'
   if (pathname === '/' || /^\/learn\/?$/.test(pathname)) return 'library'
   if (/^\/supporters\/?$/.test(pathname)) return 'supporters'
   if (/^\/herbs\/map\/?$/.test(pathname)) return 'herbMap'
@@ -82,6 +84,6 @@ export function pageStructuredDataForPath(pathname) {
 export function applyPageMetadata(view) {
   const metadata = pageMetadataForPath(PAGE_METADATA[view]?.path || '/')
   const params = new URLSearchParams(window.location.search)
-  const privatePage = ['profile', 'collections'].includes(params.get('view')) || window.location.pathname === '/account' || ['reset', 'verify', 'follow', 'checkout', 'session_id', 'billing'].some(key => params.has(key))
+  const privatePage = ['workspace', 'watches', 'pantry', 'profile', 'collections'].includes(params.get('view')) || window.location.pathname === '/account' || ['reset', 'verify', 'follow', 'checkout', 'session_id', 'billing'].some(key => params.has(key))
   applyMetadata({ ...metadata, noindex: privatePage }, pageStructuredDataForPath(metadata.path))
 }

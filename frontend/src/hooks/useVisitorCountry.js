@@ -6,7 +6,7 @@ export function useVisitorCountry(enabled) {
   return useQuery({
     queryKey: ['visitor-country-camera'],
     queryFn: ({ signal }) => loadVisitorCountryCamera({ token, signal }),
-    enabled: enabled && !!token,
+    enabled: Boolean(enabled),
     retry: false,
     staleTime: Infinity,
     refetchOnWindowFocus: false,

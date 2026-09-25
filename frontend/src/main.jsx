@@ -4,11 +4,12 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import './index.css'
 import { legacyFungiRedirect } from './lib/navigation'
 import AnalyticsConsent from './components/AnalyticsConsent'
-import { initGoogleTag } from './lib/googleTag'
+import { initGoogleTag, initFieldMeasurement } from './lib/googleTag'
 import { initAdSense } from './lib/adsense'
 
 // Both integrations are no-ops unless configured. GA waits for opt-in consent.
 initGoogleTag()
+initFieldMeasurement()
 initAdSense()
 
 const queryClient = new QueryClient({
@@ -30,7 +31,7 @@ const isGuidePath = pathname === '/' || pathname === '/learn' || pathname.starts
 async function mount() {
   const redirect = legacyFungiRedirect(pathname, window.location.search, window.location.hash)
   if (redirect) { window.location.replace(redirect); return }
-  const { default: Page } = isSupporterPath ? await import('./SupportersApp.jsx') : isHerbMapPath ? await import('./HerbMapApp.jsx') : isHerbalGuidePath ? await import('./HerbAtlasApp.jsx')
+  const { default: Page } = pathname === '/herbs/gathering-ways' ? await import('./GatheringWaysApp.jsx') : isSupporterPath ? await import('./SupportersApp.jsx') : isHerbMapPath ? await import('./HerbMapApp.jsx') : isHerbalGuidePath ? await import('./HerbAtlasApp.jsx')
     : isHerbalPath ? await import('./HerbalApp.jsx')
       : isGuidePath ? await import('./GuideApp.jsx') : await import('./App.jsx')
   const snapshot = document.getElementById('public-query-snapshot')

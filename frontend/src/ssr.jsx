@@ -4,6 +4,7 @@ import GuideApp from './GuideApp.jsx'
 import HerbAtlasApp from './HerbAtlasApp.jsx'
 import App from './App.jsx'
 import HerbalApp from './HerbalApp.jsx'
+import GatheringWaysApp from './GatheringWaysApp.jsx'
 import SupportersApp from './SupportersApp.jsx'
 import HerbMapApp from './HerbMapApp.jsx'
 export { herbGuideRoutes, herbGuideMetadata, herbGuideStructuredData } from './lib/herbGuideSeo'
@@ -24,7 +25,7 @@ export function renderGuide(path, snapshot = []) {
 
 export function renderApp(path) {
   const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } })
-  return renderToString(<QueryClientProvider client={queryClient}>{path === '/supporters' ? <SupportersApp /> : path === '/herbs/map' ? <HerbMapApp /> : path === '/herbs' ? <HerbalApp /> : <App path={path} />}</QueryClientProvider>)
+  return renderToString(<QueryClientProvider client={queryClient}>{path === '/herbs/gathering-ways' ? <GatheringWaysApp /> : path === '/supporters' ? <SupportersApp /> : path === '/herbs/map' ? <HerbMapApp /> : path === '/herbs' ? <HerbalApp /> : <App path={path} />}</QueryClientProvider>)
 }
 
 export { guideMetadataForPath, guideRoutes, guideStructuredData, pageMetadataForPath, pageStructuredDataForPath }

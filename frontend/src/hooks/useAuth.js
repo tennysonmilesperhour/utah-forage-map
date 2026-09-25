@@ -1,25 +1,32 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 import { trackSignupConversion } from '../lib/googleTag'
+import { clearPrivateQueries, setSessionUser } from '../lib/privateQueries'
 
 export function getApiError(error, fallback = 'Something went wrong. Please try again.') {
   return error?.response?.data?.detail ?? fallback
 }
 
 export function useCurrentUser() {
+  const client = useQueryClient()
   return useQuery({
     queryKey: ['current-user'],
-    queryFn: async () => {
+    queryFn: async ({ signal }) => {
       try {
-        const { data } = await axios.get('/api/auth/me')
+        const { data } = await axios.get('/api/auth/me', { signal })
+        if (!signal.aborted && client.getQueryData(['current-user'])?.id !== data?.id) clearPrivateQueries(client)
         return data
       } catch (error) {
-        if (error.response?.status === 401) return null
+        if (error.response?.status === 401) {
+          if (!signal.aborted) clearPrivateQueries(client)
+          return null
+        }
         throw error
       }
     },
     retry: false,
-    staleTime: 1000 * 60 * 5,
+    staleTime: 1000 * 30,
+    refetchOnWindowFocus: true,
   })
 }
 
@@ -32,7 +39,7 @@ function useAuthMutation(path, options = {}) {
       return data
     },
     onSuccess: (user, variables, context) => {
-      queryClient.setQueryData(['current-user'], user)
+      setSessionUser(queryClient, user)
       options.onSuccess?.(user, variables, context)
     },
   })
@@ -56,8 +63,7 @@ export function useLogout() {
       await axios.post('/api/auth/logout')
     },
     onSuccess: () => {
-      queryClient.removeQueries({ queryKey: ['journal'] })
-      queryClient.setQueryData(['current-user'], null)
+      setSessionUser(queryClient, null)
     },
   })
 }
@@ -66,7 +72,7 @@ export function useVerifyEmail() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async token => (await axios.post('/api/auth/verify-email', { token })).data,
-    onSuccess: user => queryClient.setQueryData(['current-user'], user),
+    onSuccess: user => setSessionUser(queryClient, user),
   })
 }
 
@@ -78,7 +84,7 @@ export function useChangeUnverifiedEmail() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async email => (await axios.patch('/api/account/email', { email })).data,
-    onSuccess: user => queryClient.setQueryData(['current-user'], user),
+    onSuccess: user => setSessionUser(queryClient, user),
   })
 }
 
@@ -87,7 +93,9 @@ export function useForgotPassword() {
 }
 
 export function useResetPassword() {
+  const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async ({ token, password }) => axios.post('/api/auth/password/reset', { token, password }),
+    onSuccess: () => setSessionUser(queryClient, null),
   })
 }

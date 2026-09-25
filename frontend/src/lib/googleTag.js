@@ -14,6 +14,7 @@ const CONFIG_IDS = [validAdsId ? ADS_ID : '', validGaId ? GA_ID : ''].filter(Boo
 export const isGoogleTagEnabled = CONFIG_IDS.length > 0
 export const isGoogleAnalyticsEnabled = validGaId
 
+let vitalsStarted = false
 let tagLoaded = false
 let consentDefaultsSet = false
 let lastPagePath = null
@@ -61,6 +62,7 @@ function loadGoogleTag() {
       : {})
   }
   tagLoaded = true
+  startVitals()
   return true
 }
 
@@ -106,6 +108,7 @@ export function setGoogleAnalyticsConsent(choice) {
       analytics_storage: 'granted',
     })
     loadGoogleTag()
+    startVitals()
     trackPageView()
     return
   }
@@ -157,4 +160,36 @@ export function trackSignupConversion(params = {}) {
 
 export function trackSubmissionConversion(params = {}) {
   trackConversion(SUBMIT_LABEL, params)
+}
+
+function startVitals() {
+  if (vitalsStarted || !validGaId || getGoogleAnalyticsConsent() !== 'granted') return
+  vitalsStarted = true
+  import('web-vitals').then(({ onCLS, onINP, onLCP }) => {
+    const report = ({ name, value, rating, id }) => {
+      if (getGoogleAnalyticsConsent() !== 'granted' || !Number.isFinite(value)) return
+      gtag('event', 'web_vital', { metric_name: name, metric_value: value, metric_rating: rating, metric_id: id, page_path: safePagePath(), non_interaction: true, send_to: GA_ID })
+    }
+    onCLS(report); onINP(report); onLCP(report)
+  }).catch(() => { vitalsStarted = false })
+}
+
+// Closed, low-cardinality fields: never forward notes, coordinates, search text or URLs.
+export function trackFieldEvent(name, collection) {
+  if (!validGaId || typeof window === 'undefined' || getGoogleAnalyticsConsent() !== 'granted') return
+  if (!['guide_to_map', 'map_retry', 'map_empty_recovery'].includes(name)) return
+  if (!['fungi', 'herbs'].includes(collection)) return
+  gtag('event', name, { collection, page_path: safePagePath(), send_to: GA_ID })
+}
+
+export function initFieldMeasurement() {
+  if (typeof document === 'undefined') return
+  document.addEventListener('click', event => {
+    const link = event.target.closest?.('a[href]')
+    if (!link) return
+    const url = new URL(link.href, location.origin)
+    if (url.origin !== location.origin || !['/map', '/herbs/map'].includes(url.pathname)) return
+    if (!/^\/learn\/species\/|^\/herbs\/atlas\//.test(location.pathname)) return
+    trackFieldEvent('guide_to_map', url.pathname.startsWith('/herbs') ? 'herbs' : 'fungi')
+  })
 }

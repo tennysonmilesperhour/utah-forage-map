@@ -39,6 +39,8 @@ from app.schemas import (
     HerbWatchZoneRead, HerbWatchZoneUpdate, HerbWishlistCreate, HerbWishlistRead,
 )
 from app.security import DEFAULT_SECRET_KEY, SECRET_KEY, hash_identifier, hash_token, new_token, passwords
+from app.freshness import observation_freshness
+from app.plant_catalogue import RECORD_PLANTS
 
 
 app = FastAPI(title="Mushroom Forage Map API")
@@ -81,6 +83,17 @@ app.add_middleware(
     allow_headers=["*"],
     allow_credentials=True,
 )
+
+
+@app.middleware("http")
+async def private_response_cache_policy(request: Request, call_next):
+    response = await call_next(request)
+    if request.url.path.startswith(("/api/auth/", "/api/account", "/api/moderation/", "/api/billing/")):
+        response.headers["Cache-Control"] = "private, no-store"
+        response.headers["Vary"] = ", ".join(dict.fromkeys([
+            *filter(None, response.headers.get("Vary", "").split(", ")), "Cookie"
+        ]))
+    return response
 
 
 @app.on_event("startup")
@@ -886,14 +899,22 @@ def community_summary(db: Session = Depends(get_db)):
         *public_filters, Sighting.found_on >= recent_cutoff
     ).scalar() or 0
     latest_observed_on = db.query(func.max(Sighting.found_on)).filter(*public_filters).scalar()
-    last_synced_at = db.query(func.max(SourceSync.last_succeeded_at)).scalar()
+    reconciliation = db.get(SourceSync, "iNaturalist")
+    last_synced_at = reconciliation.last_succeeded_at if reconciliation else None
     return {
         "reviewed_observations": reviewed_observations,
         "species_count": species_count,
         "recent_observations": recent_observations,
         "latest_observed_on": latest_observed_on,
         "last_synced_at": last_synced_at,
+        "freshness": observation_freshness(db),
     }
+
+
+@app.get("/api/data-status")
+def data_status(response: Response, db: Session = Depends(get_db)):
+    response.headers["Cache-Control"] = "public, max-age=60"
+    return observation_freshness(db)
 
 
 @app.get("/api/regions", response_model=list[RegionSummaryRead])
@@ -1485,7 +1506,7 @@ def create_herb_inventory_item(
     user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    profile = HERBS_BY_SLUG.get(payload.herb_slug)
+    profile = RECORD_PLANTS.get(payload.herb_slug)
     if profile is None:
         raise HTTPException(status_code=404, detail="Herb not found")
     item = HerbInventoryItem(user_id=user.id, herb_name=profile["name"], **payload.model_dump())
@@ -1534,7 +1555,7 @@ def create_herb_wishlist_item(
     user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    profile = HERBS_BY_SLUG.get(payload.herb_slug)
+    profile = RECORD_PLANTS.get(payload.herb_slug)
     if profile is None:
         raise HTTPException(status_code=404, detail="Herb not found")
     existing = db.query(HerbWishlistItem).filter(
@@ -1607,6 +1628,18 @@ def review_sighting(
 
 @app.get("/api/cron/inaturalist")
 def import_inaturalist(
+    authorization: Optional[str] = Header(None),
+    x_cron_secret: Optional[str] = Header(None),
+    db: Session = Depends(get_db),
+):
+    require_cron(authorization, x_cron_secret)
+    from crawler.inaturalist import run_incremental_import
+
+    return run_incremental_import(db)
+
+
+@app.get("/api/cron/inaturalist-reconcile")
+def reconcile_inaturalist(
     authorization: Optional[str] = Header(None),
     x_cron_secret: Optional[str] = Header(None),
     db: Session = Depends(get_db),

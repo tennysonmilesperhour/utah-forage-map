@@ -42,7 +42,7 @@
 .mycelial-theme :is(.app-header, .guide-site-header) { height: 88px; min-height: 88px; flex-basis: 88px; padding: 0 30px; gap: 18px; grid-template-columns: minmax(220px, 1fr) auto auto minmax(190px, 1fr); border-color: #ecddc347; background: linear-gradient(105deg, #241f19f5, #120f0cf7 65%, #29241df5); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); }
 .mycelial-theme :is(.app-header, .guide-site-header) .brand-mark { width: 29px; height: 38px; flex-basis: 29px; border: 0; border-radius: 0; color: var(--spore-coral); }
 .mycelial-theme .brand-lockup { gap: 10px; }
-.mycelial-theme .brand-copy h1, .mycelial-theme .guide-site-header .brand-copy strong { font-size: 16px; font-weight: 400; letter-spacing: -.3px; }
+.mycelial-theme .brand-copy :is(h1, strong), .mycelial-theme .guide-site-header .brand-copy strong { font-size: 16px; font-weight: 400; letter-spacing: -.3px; }
 .mycelial-theme .brand-copy p, .mycelial-theme .guide-site-header .brand-copy > span { margin-top: 5px; font-size: 8px; letter-spacing: 1.4px; color: #dfd7ca; }
 .mycelial-theme .guide-site-header .brand-copy strong span { font: inherit; letter-spacing: inherit; color: var(--ink); text-transform: none; }
 .mycelial-theme :is(.primary-nav, .guide-global-nav) { gap: 2px; }
@@ -217,7 +217,7 @@ body:has(.analytics-consent) .mycelial-theme .guest-prompt { display: none; }
 }
 @media (max-width: 640px) {
   .mycelial-theme :is(.app-header, .guide-site-header) { height: 72px; min-height: 72px; flex-basis: 72px; gap: 10px; padding: 0 16px; }
-  .mycelial-theme .brand-copy h1, .mycelial-theme .guide-site-header .brand-copy strong { max-width: none; font-size: 14px; }
+  .mycelial-theme .brand-copy :is(h1, strong), .mycelial-theme .guide-site-header .brand-copy strong { max-width: none; font-size: 14px; }
   .mycelial-theme .brand-copy p, .mycelial-theme .guide-site-header .brand-copy > span { display: none; }
   .mycelial-theme .brand-lockup { gap: 6px; }
   .mycelial-theme .guide-site-header .brand-copy strong .brand-name-short { display: inline; }
@@ -230,7 +230,7 @@ body:has(.analytics-consent) .mycelial-theme .guest-prompt { display: none; }
   .mycelial-theme .header-actions .sign-in-button { width: 36px; min-width: 36px; padding: 0; }
   .mycelial-theme .header-actions .button-primary svg { display: none; }
   .mycelial-theme .guide-map-link { width: 42px; padding: 0; overflow: hidden; font-size: 0; gap: 0; }
-  .mycelial-theme .guide-map-link svg { width: 18px; flex-shrink: 0; }
+  .mycelial-theme .header-actions .guide-map-link svg { display: block; width: 18px; flex-shrink: 0; }
   .mycelial-theme .drawer-layer { top: 72px; }
   .mycelial-theme .drawer-heading { padding: 18px; }
   .mycelial-theme .drawer-heading h2 { font-size: 19px; }
@@ -268,7 +268,7 @@ body:has(.analytics-consent) .mycelial-theme .guest-prompt { display: none; }
 }
 @media (max-width: 360px) {
   .mycelial-theme :is(.app-header, .guide-site-header) { gap: 6px; padding: 0 10px; }
-  .mycelial-theme .brand-copy h1 { font-size: 12px; }
+  .mycelial-theme .brand-copy :is(h1, strong) { font-size: 12px; }
   .mycelial-theme .header-actions .button { padding: 0 8px; }
   .mycelial-theme .mycelial-community-hero h3 { font-size: 51px; }
 }
@@ -318,3 +318,15 @@ body:has(.analytics-consent) .mycelial-theme .guest-prompt { display: none; }
   .field-skills-grid { grid-template-columns: 1fr; }
   .field-skills-grid article { padding: 22px; }
 }
+
+.data-freshness { margin: 20px auto; max-width: 1200px; padding: 14px 20px; border: 1px solid #bba77c55; border-radius: 6px; font-size: 12px; line-height: 1.6; }
+.data-freshness strong { display: block; }
+.data-freshness.is-stale { border-color: #c7a75c; }
+.season-scope { display: flex; gap: 12px; align-items: center; margin: 12px 0; flex-wrap: wrap; }
+.season-scope select { color: inherit; background: #151615; border: 1px solid #8d8879; border-radius: 5px; padding: 10px; }
+
+.map-data-status { position:absolute; z-index:4; bottom:12px; left:14px; max-width:min(520px, calc(100% - 86px)); padding:7px 12px; border:1px solid #a9977766; border-radius:6px; background:#121311ed; font-size:12px; }
+.map-data-status .data-freshness { margin:8px 0 0; padding:8px; }
+.map-failure { position:absolute; z-index:5; inset:30% 8% auto; padding:24px; background:#111; border:1px solid #b29c70; border-radius:8px; }
+.map-failure a { display:inline-block; margin:12px; }
+.sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }

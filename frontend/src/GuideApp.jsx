@@ -7,6 +7,8 @@ import {
 import FollowButton from './components/FollowButton'
 import GuideHeader from './components/GuideHeader'
 import SeasonalChart from './components/SeasonalChart'
+import DataFreshness from './components/DataFreshness'
+import { EditorialReview, ReviewQueue } from './components/EditorialReview'
 import { speciesBySlug, speciesGuides, speciesPathForTaxon } from './content/species.generated'
 import { regionBySlug, regions } from './data/regions'
 import { useCurrentUser } from './hooks/useAuth'
@@ -79,8 +81,11 @@ function GuideFooter() {
 function GuideLayout({ children, section = 'library' }) {
   return (
     <div className="learn-shell mycelial-theme">
+      <a className="skip-link" href="#guide-content">Skip to content</a>
       <GuideHeader section={section} />
+      <div id="guide-content" tabIndex="-1" />
       {children}
+      <DataFreshness />
       <GuideFooter />
     </div>
   )
@@ -342,8 +347,9 @@ function SpeciesPage({ species, summary, user, updatedAt }) {
           <div><dt><ShieldCheck size={16} aria-hidden="true" /> Spore evidence</dt><dd>{species.spore_print}</dd></div>
         </dl>
 
+        <EditorialReview collection="fungi" slug={species.slug} />
         <PublicDataDate updatedAt={updatedAt} />
-        <SeasonalChart taxonId={species.taxon_id} hemisphere="north" />
+        <SeasonalChart taxonId={species.taxon_id} />
 
         <div className="species-guide-layout">
           <article className="species-guide-content">
@@ -509,6 +515,7 @@ function AboutPage() {
           <article><h2>Analytics and cookies</h2><p>Google Analytics is optional and stays off until you allow it. When enabled, it helps us understand aggregate use of maps and guides; advertising storage and personalization remain off. Read the <a href="/privacy">privacy notice</a> or reopen Privacy choices at any time to change your selection.</p></article>
           <article id="data-license"><h2>Data provenance and reuse</h2><p>Effective August 27, 2026, you may quote, analyze, and redistribute the privacy-safe observation metadata compiled by Mushroom Forage Map for personal, educational, and research use when you credit Mushroom Forage Map and retain available source links. This permission excludes source photographs and text, commercial resale, attempts to reconstruct obscured locations, and personally identifying data. Imported observations and other third-party material remain subject to their original creators' licenses and attribution requirements.</p></article>
         </section>
+        <ReviewQueue />
         <a className="button button-primary" href={FUNGI_HOME}>Open the fungi library <ArrowRight size={16} aria-hidden="true" /></a>
       </main>
     </GuideLayout>
@@ -523,8 +530,8 @@ function PrivacyPage() {
         <h1>Your field research should remain yours</h1>
         <p className="trust-lede">The public map works without an account and without analytics. Google Analytics loads only after you choose Allow analytics.</p>
         <section className="trust-sections">
-          <article><h2>What analytics measures</h2><p>When allowed, we collect aggregate page views and standard interactions such as scrolls, outbound-link clicks, site searches, form interactions, video engagement, and file downloads. We use this to learn which maps and guides are useful.</p></article>
-          <article><h2>What stays out</h2><p>Advertising storage, advertising user data, and ad personalization remain disabled. Analytics page locations exclude query strings and fragments so account tokens and filter details are not sent as page URLs. Exact private mushroom locations are not intentionally sent to Analytics.</p></article>
+          <article><h2>What analytics measures</h2><p>When allowed, we collect aggregate page views and standard interactions such as scrolls, outbound-link clicks, site searches, form interactions, video engagement, and file downloads. We also measure guide-to-map use, map recovery actions and page performance (LCP, INP and CLS). We use this to learn which maps and guides are useful.</p></article>
+          <article><h2>What stays out</h2><p>Advertising storage, advertising user data, and ad personalization remain disabled. Analytics page locations exclude query strings and fragments so account tokens and filter details are not sent as page URLs. Our custom events exclude search text, notes, coordinates and account identifiers. Performance events contain metric values, ratings and a temporary measurement identifier, without DOM elements or interaction text.</p></article>
           <article><h2>Your choice</h2><p>Choose Not now to keep the Google tag unloaded. After making a choice, use the Privacy control at the bottom of any page to change it. Refusing analytics does not limit the map, guide, community pages, or account features.</p></article>
           <article><h2>Google processing</h2><p>When Analytics is enabled, Google processes measurement data under its own terms and safeguards. See <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noreferrer">how Google uses information from sites that use its services <ExternalLink size={13} aria-hidden="true" /></a>.</p></article>
           <article><h2>Supporter memberships</h2><p>Stripe processes annual supporter payments and stores payment details. We keep the Stripe customer and subscription identifiers, membership status, and paid-through date to manage renewals and profile benefits. We do not store card numbers. Your profile name appears on the supporter list only if you opt in; you can remove it on the <a href="/supporters">membership page</a>. Deleting your account stops future supporter renewals. Payment records held by Stripe may remain for accounting and payment obligations. For billing or privacy help, contact <a href="mailto:morphiclabsdata@gmail.com">morphiclabsdata@gmail.com</a>.</p></article>

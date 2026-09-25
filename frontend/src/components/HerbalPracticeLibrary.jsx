@@ -10,7 +10,7 @@ function SectionHeading({ icon, kicker, title, children }) {
 
 export default function HerbalPracticeLibrary() {
   return (
-    <main className="herbal-main practice-library-main">
+    <main id="gathering-content" tabIndex="-1" className="herbal-main practice-library-main">
       <section className="practice-hero">
         <div><p className="herb-kicker"><BookOpen size={16} /> Living lineages · personal practice</p><h1>Ways of gathering</h1></div>
         <div><p>Let season, sky, plant, place, and spirit speak together. These practices are offered as doorways—not as one universal tradition.</p><p className="practice-vow">Name the lineage. Honor the place. Take less. Return care.</p></div>

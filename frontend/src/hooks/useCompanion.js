@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
+import { usePrivateQuery } from './usePrivateQuery'
 
 export function useRegions() {
   return useQuery({
@@ -18,7 +19,7 @@ export function useRegion(slug) {
   })
 }
 
-export function useSeasonality({ taxonId, regionSlug, hemisphere = 'north' }) {
+export function useSeasonality({ taxonId, regionSlug, hemisphere }) {
   return useQuery({
     queryKey: ['seasonality', taxonId, regionSlug, hemisphere],
     queryFn: async () => (await axios.get('/api/seasonality', {
@@ -29,6 +30,7 @@ export function useSeasonality({ taxonId, regionSlug, hemisphere = 'north' }) {
       },
     })).data,
     staleTime: 1000 * 60 * 60 * 12,
+    enabled: Boolean(regionSlug || hemisphere),
   })
 }
 
@@ -55,11 +57,7 @@ export function useVerifyObservation() {
 }
 
 export function useAlerts(enabled = true) {
-  return useQuery({
-    queryKey: ['alerts'],
-    queryFn: async () => (await axios.get('/api/account/alerts')).data,
-    enabled,
-  })
+  return usePrivateQuery('alerts', '/api/account/alerts', enabled)
 }
 
 function useAlertMutation(mutationFn) {

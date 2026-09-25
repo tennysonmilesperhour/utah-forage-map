@@ -345,3 +345,13 @@
 @media (prefers-reduced-motion: reduce) {
   .herbal-shell *, .herbal-shell *::before, .herbal-shell *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
 }
+
+.fieldbook-tabs { display:flex; flex-wrap:wrap; gap:12px; padding:16px 24px; }
+.fieldbook-tabs a { padding:8px 12px; border:1px solid #8eac8155; border-radius:5px; }
+.fieldbook-tabs a[aria-current="page"] { background:#2c4735; }
+
+.herbal-shell .fieldbook-home { width: 100%; margin: 0 auto; padding: 65px clamp(22px, 6vw, 90px) 90px; min-height: 60vh; }
+.herbal-shell .fieldbook-home h1 { font-family: inherit; font-size: clamp(38px, 5vw, 64px); line-height: 1.1; font-weight: 400; margin: 18px 0; }
+.herbal-shell .fieldbook-home > p { max-width: 650px; line-height: 1.7; color: #c4cdbf; }
+.herbal-shell .fieldbook-home .herb-callouts { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; margin-top: 30px; }
+@media(max-width: 600px) { .herbal-shell .fieldbook-home { padding-top: 38px; } .herbal-shell .fieldbook-home .herb-callouts { grid-template-columns: 1fr; } }

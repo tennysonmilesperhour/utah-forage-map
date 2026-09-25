@@ -23,7 +23,7 @@ export default function AppHeader({
       <a className="brand-lockup" href={FUNGI_HOME} aria-label="Mushroom Forage Map home">
         <div className="brand-mark"><MyceliumMark /></div>
         <div className="brand-copy">
-          <h1><span className="brand-name-full">The Living Fungi Library</span><span className="brand-name-short">Fungi Library</span></h1>
+          <strong><span className="brand-name-full">The Living Fungi Library</span><span className="brand-name-short">Fungi Library</span></strong>
           <p>Mushroom Forage Map</p>
         </div>
       </a>

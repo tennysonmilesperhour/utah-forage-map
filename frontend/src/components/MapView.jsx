@@ -93,7 +93,8 @@ export default function MapView({
 
     mapboxgl.accessToken = token
     const compactViewport = containerRef.current.clientWidth < 600
-    const map = new mapboxgl.Map({
+    let map
+    try { map = new mapboxgl.Map({
       container: containerRef.current,
       style: 'mapbox://styles/mapbox/dark-v11',
       ...initialMapCamera({ ...initialCameraRef.current, compact: compactViewport }),
@@ -101,7 +102,7 @@ export default function MapView({
       maxBounds: [[-180, -85], [180, 85]],
       renderWorldCopies: false,
       projection: 'globe',
-    })
+    }) } catch { onMapErrorRef.current?.(true); return undefined }
 
     map.addControl(new mapboxgl.NavigationControl(), 'top-right')
     map.addControl(new mapboxgl.GeolocateControl({

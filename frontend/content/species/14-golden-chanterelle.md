@@ -15,6 +15,7 @@ warning: Golden chanterelles are a regional species complex. Confirm local taxon
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-08-15
+last_updated: 2026-09-25
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/430849322/large.jpeg
   alt: Golden chanterelle showing blunt ridges beneath a wavy cap
@@ -53,6 +54,12 @@ Chanterelles exchange soil nutrients and water with living trees. That partnersh
 
 The false gills are not attached structures; they are wrinkles molded from the cap's own flesh.
 
+## Evidence and regional scope
+
+Michael Kuo explains false gills and the regional naming problem: the European species should not be assumed to identify North American chanterelles. [Field description and cited specimen evidence](https://www.mushroomexpert.com/cantharellus_cibarius.html). This source supports morphology and ecology, not edibility or preparation advice. Independent review of this profile remains pending.
+
 ## Sources
 
 - [iNaturalist taxon reference](https://www.inaturalist.org/taxa/47347)
+
+- [MushroomExpert: cantharellus cibarius](https://www.mushroomexpert.com/cantharellus_cibarius.html) — morphology, ecology and regional species limits.

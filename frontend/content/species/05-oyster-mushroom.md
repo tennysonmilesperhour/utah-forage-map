@@ -8,13 +8,14 @@ summary: Pale fan-shaped caps growing in shelves on wood, with gills descending 
 edibility: edible
 difficulty: intermediate
 season: Cool weather, including spring, fall, and winter thaws
-habitat: Dead or declining hardwood, especially cottonwood, aspen, and box elder inland
+habitat: Dead or declining hardwood; substrate helps separate similar Pleurotus species
 underside: White to cream gills running down the stem
 spore_print: White to pale lilac-gray
 warning: Confirm the substrate and spore print. Thin white fans on conifer wood may be angel wings, which have been implicated in severe illness.
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-08-15
+last_updated: 2026-09-25
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/34047624/large.jpg
   alt: Layered oyster mushroom caps growing from hardwood
@@ -37,7 +38,7 @@ lookalikes:
 
 ## Identification
 
-Oyster mushrooms form overlapping fans or shelves on wood. Their white to cream gills run down a short, off-center stem, and the spore print is pale. The caps should smell pleasant and mild, sometimes faintly of anise. Substrate is a core field mark: inland oysters commonly fruit from hardwood logs and snags.
+Oyster mushrooms form overlapping fans or shelves on wood. Their white to cream gills run down a short, off-center stem, and the spore print is pale. The caps should smell pleasant and mild, sometimes faintly of anise. Substrate is a core field mark. Closely related oysters overlap in appearance; quaking-aspen specialists may be Pleurotus populinus rather than P. ostreatus. See the field description below.
 
 ## Uses and ecology
 
@@ -47,6 +48,12 @@ Oysters are good cooked edibles and one of the easiest mushrooms to cultivate on
 
 Oyster mycelium can paralyze and digest nematode worms to obtain nitrogen.
 
+## Evidence and regional scope
+
+Michael Kuo describes the descending pale gills, lateral stem and cool-season North American ecology; similar Pleurotus species require additional distinctions. [Field description and cited specimen evidence](https://www.mushroomexpert.com/pleurotus_ostreatus.html). This source supports morphology and ecology, not edibility or preparation advice. Independent review of this profile remains pending.
+
 ## Sources
 
 - [iNaturalist taxon reference](https://www.inaturalist.org/taxa/48494)
+
+- [MushroomExpert: pleurotus ostreatus](https://www.mushroomexpert.com/pleurotus_ostreatus.html) — morphology, ecology and regional species limits.

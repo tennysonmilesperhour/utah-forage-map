@@ -1,3 +1,4 @@
+import DataFreshness from './components/DataFreshness'
 import { lazy, Suspense, useEffect, useState } from 'react'
 import { CheckCircle2, Filter, MailCheck, MapPin, NotebookPen, SearchX, Sprout } from 'lucide-react'
 import AccountWorkspace from './components/AccountWorkspace'
@@ -18,7 +19,7 @@ import { useVisitorCountry } from './hooks/useVisitorCountry'
 import { countActiveFilters, DEFAULT_FILTERS } from './lib/filters'
 import { regionBySlug } from './data/regions'
 import { applyPageMetadata, pathForView, viewFromPathname } from './lib/seo'
-import { trackPageView } from './lib/googleTag'
+import { trackPageView, trackFieldEvent } from './lib/googleTag'
 import './mycelial.css'
 
 const MapView = lazy(() => import('./components/MapView'))
@@ -32,6 +33,8 @@ export default function App({ path = '/map' }) {
   const [flyTarget, setFlyTarget] = useState(() => initialRegion ? { bbox: initialRegion.bounds } : null)
   const [selected, setSelected] = useState(null)
   const [draftLocation, setDraftLocation] = useState(null)
+  const [mapError, setMapError] = useState(false)
+  const [mapAttempt, setMapAttempt] = useState(0)
   const [authMode, setAuthMode] = useState(initialParams.get('reset') ? 'reset' : null)
   const [resetToken] = useState(initialParams.get('reset'))
   const [pendingAction, setPendingAction] = useState(null)
@@ -57,7 +60,7 @@ export default function App({ path = '/map' }) {
   const verifyEmail = useVerifyEmail()
   const saveLocation = useSaveLocation()
   const createAlert = useCreateAlert()
-  const { data: sightings = [], isLoading } = useSightings(filters, initialTaxonId ? null : viewport)
+  const { data: sightings = [], isLoading, isError: sightingsError, refetch: retrySightings } = useSightings(filters, initialTaxonId ? null : viewport)
   const { data: species = [] } = useSpecies()
   const { data: portal = {}, isLoading: portalLoading } = useCommunityPortal()
   const createSighting = useCreateSighting()
@@ -253,7 +256,7 @@ export default function App({ path = '/map' }) {
         onLogout={signOut}
       />
 
-      <main className="workspace">
+      <main className="workspace"><h1 className="sr-only">Fungi field map and community</h1>
         <Sidebar
           filters={filters}
           onChange={setFilters}
@@ -264,7 +267,7 @@ export default function App({ path = '/map' }) {
 
         <section className={`map-stage ${submissionOpen ? 'is-picking' : ''}`} aria-label="Worldwide mushroom observations map">
           <Suspense fallback={<div className="map-loading" role="status"><span>Loading map...</span></div>}>
-            {shouldLocateCountry && countryCamera.isLoading ? <div className="map-loading" role="status"><span>Loading map...</span></div> : <MapView
+            {shouldLocateCountry && countryCamera.isLoading ? <div className="map-loading" role="status"><span>Loading map...</span></div> : <MapView key={mapAttempt} onMapError={setMapError}
               countryCamera={countryCamera.data}
               sightings={sightings}
               onSightingClick={setSelected}
@@ -276,6 +279,8 @@ export default function App({ path = '/map' }) {
             />}
           </Suspense>
 
+          <details className="map-data-status"><summary>Observation updates</summary><DataFreshness /></details>
+          {mapError && <div className="map-failure" role="alert"><h2>The map could not load</h2><p>Your library and regional guides remain available.</p><button className="button button-secondary" onClick={() => { trackFieldEvent('map_retry', 'fungi'); setMapError(false); setMapAttempt(value => value + 1) }}>Retry map</button><a href="/regions">Browse regions</a><a href="/">Open the library</a></div>}
           <div className="map-toolbar">
             <PlaceSearch onSelect={goToPlace} />
             <button className="map-filter-button" type="button" onClick={() => setFiltersOpen(true)}>
@@ -300,7 +305,8 @@ export default function App({ path = '/map' }) {
             <span><i className="legend-dot recent" /> Recent, reviewed field observations</span>
           </div>
 
-          {!isLoading && sightings.length === 0 && !submissionOpen && (
+          {sightingsError && <div className="map-empty-state" role="alert"><div><strong>Observations could not be loaded</strong><p>The map is still available. Retry, or browse the library.</p></div><button className="button button-secondary" onClick={() => { trackFieldEvent('map_retry', 'fungi'); retrySightings() }}>Retry records</button><a href="/">Open library</a></div>}
+          {!sightingsError && !isLoading && sightings.length === 0 && !submissionOpen && (
             <div className="map-empty-state" role="status">
               <SearchX size={22} aria-hidden="true" />
               <div>
@@ -308,7 +314,7 @@ export default function App({ path = '/map' }) {
                 <p>{activeFilterCount > 0 ? 'Try clearing a lens or zooming out.' : 'Zoom out or search another place.'}</p>
               </div>
               {activeFilterCount > 0 && (
-                <button className="button button-secondary" type="button" onClick={() => setFilters({ ...DEFAULT_FILTERS })}>Clear filters</button>
+                <button className="button button-secondary" type="button" onClick={() => { trackFieldEvent('map_empty_recovery', 'fungi'); setFilters({ ...DEFAULT_FILTERS }) }}>Clear filters</button>
               )}
             </div>
           )}
@@ -382,7 +388,7 @@ export default function App({ path = '/map' }) {
 
       {accountOpen && user && (
         <AccountWorkspace
-          key={accountInitialTab}
+          key={`${user.id}:${accountInitialTab}`}
           user={user}
           species={species}
           initialTab={accountInitialTab}

@@ -1,8 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
+import { usePrivateQuery } from './usePrivateQuery'
 
 function useAccountQuery(key, path, enabled) {
-  return useQuery({ queryKey: [key], queryFn: async () => (await axios.get(path)).data, enabled })
+  return usePrivateQuery(key, path, enabled)
 }
 
 function useInvalidatingMutation(fn, keys) {

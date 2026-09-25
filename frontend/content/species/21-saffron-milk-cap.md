@@ -15,6 +15,7 @@ warning: The deliciosus group contains regional species with different ranges an
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-08-15
+last_updated: 2026-09-25
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/453385752/large.jpeg
   alt: Group of orange saffron milk caps with green bruising and visible gills
@@ -52,6 +53,12 @@ The orange pigment can temporarily color urine after a meal. That striking but g
 
 The green marks that make an old specimen look spoiled are an oxidation response and an important field clue.
 
+## Evidence and regional scope
+
+Michael Kuo distinguishes the European species from North American members historically placed in the deliciosus group. Similar common names do not establish the same species. [Field description and cited specimen evidence](https://www.mushroomexpert.com/lactarius_deliciosus.html). This source supports morphology and ecology, not edibility or preparation advice. Independent review of this profile remains pending.
+
 ## Sources
 
 - [iNaturalist taxon reference](https://www.inaturalist.org/taxa/155197)
+
+- [MushroomExpert: lactarius deliciosus](https://www.mushroomexpert.com/lactarius_deliciosus.html) — morphology, ecology and regional species limits.

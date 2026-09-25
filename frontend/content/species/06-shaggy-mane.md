@@ -15,6 +15,7 @@ warning: Only young, all-white specimens are considered edible, and every lawn b
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-08-15
+last_updated: 2026-09-25
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/93399523/large.jpeg
   alt: Tall white shaggy mane mushrooms in grass
@@ -47,6 +48,12 @@ Young, completely white shaggy manes are delicate cooked edibles and deteriorate
 
 These mushrooms can force their way through and buckle asphalt.
 
+## Evidence and regional scope
+
+Michael Kuo describes the elongated shaggy cap, darkening gills and disturbed-ground habitat, with comparisons to other inkcaps. [Field description and cited specimen evidence](https://www.mushroomexpert.com/coprinus_comatus.html). This source supports morphology and ecology, not edibility or preparation advice. Independent review of this profile remains pending.
+
 ## Sources
 
 - [iNaturalist taxon reference](https://www.inaturalist.org/taxa/47392)
+
+- [MushroomExpert: coprinus comatus](https://www.mushroomexpert.com/coprinus_comatus.html) — morphology, ecology and regional species limits.

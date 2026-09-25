@@ -12,33 +12,12 @@ const renderer = await import(pathToFileURL(path.join(root, '.ssr', 'ssr.js')).h
 const routes = renderer.guideRoutes()
 const herbRoutes = renderer.herbGuideRoutes()
 const siteUrl = 'https://worldmushroomforaging.org'
-const appRoutes = ['/map', '/community', '/field-guide', '/herbs', '/herbs/map', '/supporters']
-// Public, aggregate responses only. An unavailable upstream must never break the static guide.
-const publicQueries = [
-  { key: ['guide-species-summaries'], endpoint: '/api/guide/species' },
-  { key: ['regions'], endpoint: '/api/regions' },
-  ...routes.filter(route => /^\/regions\/[^/]+$/.test(route)).map(route => ({ key: ['region', route.split('/').at(-1)], endpoint: `/api${route}` })),
-]
+const appRoutes = ['/map', '/community', '/field-guide', '/herbs', '/herbs/map', '/herbs/gathering-ways', '/supporters']
+// Keep static education date-neutral. Current counts are fetched when connected;
+// a build-time snapshot must never silently masquerade as live field conditions.
+const publicQueries = []
 const snapshots = []
-let queryCursor = 0
-await Promise.all(Array.from({ length: 3 }, async () => {
-  while (queryCursor < publicQueries.length) {
-    const query = publicQueries[queryCursor++]
-    try {
-      const response = await fetch(`${siteUrl}${query.endpoint}`, { signal: AbortSignal.timeout(6000) })
-      if (!response.ok) throw new Error(`HTTP ${response.status}`)
-      const data = await response.json()
-      if ((query.key[0] === 'region' && (!data || !Array.isArray(data.recent_observations))) || (query.key[0] !== 'region' && !Array.isArray(data))) throw new Error('Unexpected response shape')
-      snapshots.push({ key: query.key, data, updatedAt: Date.now() })
-    } catch (error) { console.warn(`Static public data unavailable for ${query.endpoint}: ${error.message}`) }
-  }
-}))
-function snapshotFor(route) {
-  return snapshots.filter(entry =>
-    (entry.key[0] === 'guide-species-summaries' && (route === '/' || route.startsWith('/learn/species/'))) ||
-    (entry.key[0] === 'regions' && route === '/regions') ||
-    (entry.key[0] === 'region' && route === `/regions/${entry.key[1]}`))
-}
+function snapshotFor() { return [] }
 
 
 function escapeXml(value) {
@@ -71,7 +50,7 @@ function updateMeta($, selector, attribute, value) {
 }
 
 function applyMetadata($, metadata) {
-  const entry = metadata.path === '/supporters' ? 'src/SupportersApp.jsx' : metadata.path === '/herbs/map' ? 'src/HerbMapApp.jsx' : metadata.path.startsWith('/herbs/') ? 'src/HerbAtlasApp.jsx' : metadata.path === '/herbs' ? 'src/HerbalApp.jsx' : appRoutes.includes(metadata.path) ? 'src/App.jsx' : 'src/GuideApp.jsx'
+  const entry = metadata.path === '/herbs/gathering-ways' ? 'src/GatheringWaysApp.jsx' : metadata.path === '/supporters' ? 'src/SupportersApp.jsx' : metadata.path === '/herbs/map' ? 'src/HerbMapApp.jsx' : metadata.path.startsWith('/herbs/') ? 'src/HerbAtlasApp.jsx' : metadata.path === '/herbs' ? 'src/HerbalApp.jsx' : appRoutes.includes(metadata.path) ? 'src/App.jsx' : 'src/GuideApp.jsx'
   const visited = new Set()
   function preload(key) {
     if (visited.has(key) || !manifest[key]) return
@@ -201,7 +180,7 @@ ${entries.map(entry => `  <url>
 
 const childSitemaps = [
   { name: 'sitemap-pages.xml', entries: pageEntries },
-  { name: 'sitemap-herbs.xml', entries: herbRoutes.filter(path => !renderer.herbGuideMetadata(path).noindex).map(path => ({ path, lastmod: gitLastModified(['src/data/herbGuide.js', 'src/data/herbFieldcraft.js']) || '2026-09-09' })) },
+  { name: 'sitemap-herbs.xml', entries: herbRoutes.filter(path => !renderer.herbGuideMetadata(path).noindex).map(path => ({ path, lastmod: gitLastModified(['src/data/herbGuide.js', 'src/data/herb-guide.json', 'src/data/herbFieldcraft.js', 'src/data/herbTraditions.js', 'src/HerbAtlasApp.jsx', 'src/components/EditorialReview.jsx', 'src/data/editorialReviews.json']) || '2026-09-09' })) },
   { name: 'sitemap-species.xml', entries: speciesEntries, images: true },
   { name: 'sitemap-regions.xml', entries: regionEntries },
 ].map(sitemap => ({
@@ -259,6 +238,7 @@ Observation records are not identification, proof of edibility, or access permis
 - [Wild plant atlas](${siteUrl}/herbs/atlas): Plant identification, toxic lookalikes, regional context, and source notes.
 - [Practical foraging guides](${siteUrl}/learn/foraging): Identification process, seasons, land access, and recording finds.
 - [Regional mushroom records](${siteUrl}/regions): Observation-based reports with coverage limitations.
+- [Ways of gathering](${siteUrl}/herbs/gathering-ways): Named cultural traditions, reciprocity, and field practice.
 - [Herb fieldcraft](${siteUrl}/herbs/fieldcraft): Gathering practice and source library.
 
 ## Provenance and safety
@@ -273,3 +253,5 @@ Observation records are not identification, proof of edibility, or access permis
 `)
 await writeFile(path.join(dist, 'indexnow-urls.json'), JSON.stringify(referencePages.map(page => page.url), null, 2))
 console.log(`Published ${referencePages.length} readable reference pages; ${snapshots.length}/${publicQueries.length} public data snapshots available.`)
+
+await writeFile(path.join(dist, 'release.json'), JSON.stringify({ commit: process.env.VERCEL_GIT_COMMIT_SHA || execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim() }))
