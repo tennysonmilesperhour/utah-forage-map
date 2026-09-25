@@ -23,8 +23,10 @@ export function createSpecimenRenderer(canvas, [specimen, ground]) {
   let frame = 0, destroyed = false, visible = true, carryPose = null
   let lastPose = specimenPose('still', 0)
   const columns = 10, rows = 16
-  const sourceWidth = specimen.naturalWidth, sourceHeight = specimen.naturalHeight
-  const cellWidth = sourceWidth / columns, cellHeight = sourceHeight / rows
+  const texture = document.createElement('canvas')
+  const textureContext = texture.getContext('2d')
+  if (!textureContext) return null
+  let cellWidth = 1, cellHeight = 1
   const vertices = Array.from({ length: (columns + 1) * (rows + 1) }, () => ({ x: 0, y: 0 }))
 
   function triangle(points, a, b, c, d, e, f) {
@@ -43,7 +45,7 @@ export function createSpecimenRenderer(canvas, [specimen, ground]) {
     context.closePath()
     context.clip()
     context.transform(a, b, c, d, e, f)
-    context.drawImage(specimen, 0, 0)
+    context.drawImage(texture, 0, 0)
     context.restore()
   }
 
@@ -53,7 +55,7 @@ export function createSpecimenRenderer(canvas, [specimen, ground]) {
     let pose = specimenPose(phase, elapsed)
     if (carryPose && phase === 'wilting') {
       const blend = 1 - easeBetween(elapsed, 0, 650)
-      pose = { ...pose, bend: pose.bend + carryPose.bend * blend, spread: pose.spread + (carryPose.spread - 1) * blend }
+      pose = { ...pose, bend: pose.bend + carryPose.bend * blend }
     }
     lastPose = pose
     context.setTransform(ratio, 0, 0, ratio, 0, 0)
@@ -63,7 +65,19 @@ export function createSpecimenRenderer(canvas, [specimen, ground]) {
     const size = Math.min(width, height), x0 = (width - size) / 2, y0 = height - size
     const soilY = y0 + size * .87
     const soilHeight = size * .25
-    const soilWidth = size * .9
+    const soilWidth = size * .8
+    // A soft contact shadow anchors the specimen to the same patch of earth.
+    context.save()
+    context.globalAlpha = .24 * pose.alpha
+    const shadow = context.createRadialGradient(x0 + size * .57, soilY, 0, x0 + size * .57, soilY, size * .32)
+    shadow.addColorStop(0, '#000')
+    shadow.addColorStop(1, 'transparent')
+    context.fillStyle = shadow
+    context.translate(x0 + size * .57, soilY)
+    context.scale(1, .2)
+    context.translate(-x0 - size * .57, -soilY)
+    context.fillRect(x0, soilY - size * .4, size, size * .8)
+    context.restore()
 
     if (pose.alpha > .001) {
       for (let row = 0; row <= rows; row++) for (let col = 0; col <= columns; col++) {
@@ -87,7 +101,11 @@ export function createSpecimenRenderer(canvas, [specimen, ground]) {
       }
       context.save()
       context.globalCompositeOperation = 'source-atop'
-      context.fillStyle = `rgba(0, 0, 0, ${pose.curl * .16})`
+      const shade = context.createLinearGradient(0, y0, 0, soilY)
+      shade.addColorStop(0, `rgba(0,0,0,${.05 + pose.curl * .3})`)
+      shade.addColorStop(.65, `rgba(0,0,0,${pose.curl * .09})`)
+      shade.addColorStop(1, 'rgba(0,0,0,.25)')
+      context.fillStyle = shade
       context.fillRect(0, 0, width, height)
       context.globalCompositeOperation = 'destination-in'
       const mask = context.createLinearGradient(0, soilY - size * .08, 0, soilY + size * .016)
@@ -98,8 +116,9 @@ export function createSpecimenRenderer(canvas, [specimen, ground]) {
       context.restore()
     }
     // Actual bark and grass texture masks the foot of the emerging specimen.
-    context.globalAlpha = .7 + .3 * pose.alpha
-    context.drawImage(ground, x0 + (size - soilWidth) / 2, soilY - soilHeight / 2, soilWidth, soilHeight)
+    context.globalAlpha = .42 + .38 * pose.alpha
+    const pressure = phase === 'forming' ? Math.sin(Math.PI * easeBetween(elapsed, 0, MUSHROOM_TIMING.forming * .5)) * size * .008 : 0
+    context.drawImage(ground, x0 + (size - soilWidth) / 2, soilY - soilHeight / 2 - pressure, soilWidth, soilHeight)
     context.globalAlpha = 1
     canvas.dataset.renderedPhase = phase
     canvas.dataset.progress = String(Math.min(1, elapsed / (MUSHROOM_TIMING[phase] || 1)).toFixed(3))
@@ -128,6 +147,12 @@ export function createSpecimenRenderer(canvas, [specimen, ground]) {
     resize(w, h) {
       width = w; height = h; ratio = Math.min(window.devicePixelRatio || 1, 2)
       canvas.width = Math.max(1, Math.round(width * ratio)); canvas.height = Math.max(1, Math.round(height * ratio))
+      // Resample once at display resolution, instead of redrawing a large
+      // source photograph through hundreds of clipped triangles each frame.
+      texture.width = texture.height = Math.max(1, Math.min(specimen.naturalWidth, Math.ceil(Math.min(w, h) * ratio * 1.5)))
+      textureContext.imageSmoothingQuality = 'high'
+      textureContext.drawImage(specimen, 0, 0, texture.width, texture.height)
+      cellWidth = texture.width / columns; cellHeight = texture.height / rows
       draw(performance.now()); wake()
     },
     destroy() { destroyed = true; cancelAnimationFrame(frame); observer.disconnect(); document.removeEventListener('visibilitychange', visibility) },

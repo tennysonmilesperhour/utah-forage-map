@@ -32,3 +32,16 @@ test('phase boundaries join without a visible pose jump', () => {
   assert.equal(specimenPose('forming', 0).alpha, 0)
   assert.equal(specimenPose('wilting', MUSHROOM_TIMING.wilting).alpha, 0)
 })
+
+
+test('the bud keeps its depth while the stem grows ahead of the cap', () => {
+  const pin = specimenPose('forming', MUSHROOM_TIMING.forming * .2)
+  const growing = specimenPose('forming', MUSHROOM_TIMING.forming * .4)
+  const opening = specimenPose('forming', MUSHROOM_TIMING.forming * .7)
+  assert.ok(pin.crown > pin.rise, 'The early pin must not flatten into a strip')
+  assert.ok(growing.rise > growing.spread * 2, 'Stem should elongate before cap expansion')
+  assert.ok(opening.spread > growing.spread, 'Cap opens after the stem has emerged')
+  assert.ok(opening.twist > 0, 'Cap rims must release asymmetrically during opening')
+  const folded = specimenPose('wilting', MUSHROOM_TIMING.wilting * .4)
+  assert.ok(folded.rise > .95 && folded.spread < .95, 'Cap should fold before the stem sinks')
+})
