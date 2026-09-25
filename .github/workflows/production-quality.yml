@@ -17,7 +17,7 @@ jobs:
           node-version: 22
       - run: node frontend/scripts/check-production.mjs
   discovery:
-    if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'Production'
+    if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success' && (github.event.deployment.environment == 'Production' || startsWith(github.event.deployment.environment, 'Production – '))
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
