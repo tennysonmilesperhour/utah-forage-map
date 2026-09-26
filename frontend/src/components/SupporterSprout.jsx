@@ -2,7 +2,7 @@ import { useEffect, useId, useReducer, useRef, useState, useSyncExternalStore } 
 import { ArrowRight, X } from 'lucide-react'
 import { useSupporterMotion } from '../lib/supporterMotion'
 import { BANNER_FADE_MS, initialSupporterLife, supporterLife, supporterPhaseDuration } from '../lib/supporterLifecycle'
-import MushroomFriend from './BotanicalMushroom'
+import BotanicalSpecimen from './BotanicalSpecimen'
 import { nextSupporterPoem, SUPPORTER_POEMS } from '../data/supporter-poems'
 import '../supporter.css'
 
@@ -22,7 +22,7 @@ export default function SupporterSprout({ collection = 'fungi', supporter = fals
   const [poemIndex, setPoemIndex] = useState(0)
   const trigger = useRef(null)
   const sprout = useRef(null)
-  const [placement, setPlacement] = useState({ side: 'right', width: supporter ? 270 : 176, offset: 0 })
+  const [placement, setPlacement] = useState({ side: 'left', width: supporter ? 270 : 246, offset: 0 })
   const skipFocus = useRef(false)
   const popupId = useId()
   const { paused } = useSupporterMotion()
@@ -40,13 +40,9 @@ export default function SupporterSprout({ collection = 'fungi', supporter = fals
     if (!header) return
     function place() {
       const box = slot.getBoundingClientRect()
-      const nextAction = Array.from(slot.parentElement.children).filter(element => element !== slot).map(element => element.getBoundingClientRect()).find(rect => rect.width > 0 && rect.left >= box.right)
-      const rightEdge = nextAction?.left ?? header.getBoundingClientRect().right - 24
-      const width = supporter ? 270 : 176
-      const room = rightEdge - box.right
-      const next = room >= width + 20
-        ? { side: 'right', width, offset: 0 }
-        : { side: 'left', width: Math.max(140, Math.min(supporter ? 270 : 246, box.left - 24)), offset: header.getBoundingClientRect().bottom - box.top + 24 }
+      // Use the approved herb-side placement in both collections. Account
+      // controls must not flip the invitation to the other side of the sprout.
+      const next = { side: 'left', width: Math.max(140, Math.min(supporter ? 270 : 246, box.left - 24)), offset: header.getBoundingClientRect().bottom - box.top + 24 }
       setPlacement(current => current.side === next.side && current.width === next.width && current.offset === next.offset ? current : next)
     }
     place()
@@ -103,7 +99,7 @@ export default function SupporterSprout({ collection = 'fungi', supporter = fals
     <div className="sprout-anchor">
       <button ref={trigger} className="sprout-trigger" type="button" aria-label={supporter ? 'Open a pocket mushroom or herb poem' : 'Optional project support for 10 US dollars per year'} aria-expanded={showing} aria-controls={popupId}
         onMouseEnter={() => { if (!motionDisabled) start() }} onFocus={() => { if (!skipFocus.current && !motionDisabled) start() }} onClick={() => showing ? dismiss() : start()}>
-        <MushroomFriend phase={motionDisabled ? 'still' : phase === 'fading' ? 'dormant' : phase} onReady={setArtworkReady} />
+        <BotanicalSpecimen key={collection} collection={collection} phase={motionDisabled ? 'still' : phase === 'fading' ? 'dormant' : phase} onReady={setArtworkReady} />
       </button>
       {showing && <div className={`sprout-bubble${supporter ? ' sprout-bubble--poem' : ''}`} id={popupId} inert={fading} aria-hidden={fading || undefined} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} onFocusCapture={() => setFocused(true)} onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget)) setFocused(false) }}>
         {supporter ? <div className="sprout-poem"><span>Pocket poem · {poemIndex + 1} of {SUPPORTER_POEMS.length}</span><strong>{poem.title}</strong><p>{poem.lines.map(line => <span key={line}>{line}</span>)}</p><button type="button" onClick={advancePoem}>Another poem <ArrowRight size={12} aria-hidden="true" /></button></div>

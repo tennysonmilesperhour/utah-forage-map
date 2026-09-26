@@ -1,27 +1,31 @@
 import { deformSpecimen, easeBetween, MUSHROOM_TIMING, specimenPose } from './mushroomMotion'
 
-const ART = '/images/fungi/oyster-specimen.webp'
+import { deformHerb, herbPose } from './herbMotion'
+
+export const SPECIMEN_ART = { fungi: '/images/fungi/oyster-specimen.webp', herbs: '/images/herbs/lemon-balm-sprout.webp' }
 const GROUND = '/images/fungi/oyster-ground.webp'
-let artworkPromise
+const artworkPromises = {}
 function loadImage(src) {
   const image = new Image()
   image.decoding = 'async'
   image.src = src
   return image.decode().then(() => image)
 }
-export function loadSpecimenArtwork() {
-  if (!artworkPromise) artworkPromise = Promise.all([loadImage(ART), loadImage(GROUND)]).catch(error => { artworkPromise = undefined; throw error })
-  return artworkPromise
+export function loadSpecimenArtwork(collection = 'fungi') {
+  if (!artworkPromises[collection]) artworkPromises[collection] = Promise.all([loadImage(SPECIMEN_ART[collection]), loadImage(GROUND)]).catch(error => { delete artworkPromises[collection]; throw error })
+  return artworkPromises[collection]
 }
 
 // Texture mesh, not a collection of drawn outlines. A shared grid bends the
 // photographic cap and stem continuously, preserving their joined anatomy.
-export function createSpecimenRenderer(canvas, [specimen, ground]) {
+export function createSpecimenRenderer(canvas, [specimen, ground], collection = 'fungi') {
+  const poseAt = collection === 'herbs' ? herbPose : specimenPose
+  const deform = collection === 'herbs' ? deformHerb : deformSpecimen
   const context = canvas.getContext('2d', { alpha: true })
   if (!context) return null
   let width = 0, height = 0, ratio = 1, phase = 'still', started = performance.now()
   let frame = 0, destroyed = false, visible = true, carryPose = null
-  let lastPose = specimenPose('still', 0)
+  let lastPose = poseAt('still', 0)
   const columns = 10, rows = 16
   const texture = document.createElement('canvas')
   const textureContext = texture.getContext('2d')
@@ -52,7 +56,7 @@ export function createSpecimenRenderer(canvas, [specimen, ground]) {
   function draw(now) {
     if (destroyed || !width || !height) return
     const elapsed = Math.max(0, now - started)
-    let pose = specimenPose(phase, elapsed)
+    let pose = poseAt(phase, elapsed)
     if (carryPose && phase === 'wilting') {
       const blend = 1 - easeBetween(elapsed, 0, 650)
       pose = { ...pose, bend: pose.bend + carryPose.bend * blend }
@@ -81,7 +85,7 @@ export function createSpecimenRenderer(canvas, [specimen, ground]) {
 
     if (pose.alpha > .001) {
       for (let row = 0; row <= rows; row++) for (let col = 0; col <= columns; col++) {
-        const point = deformSpecimen(col / columns, row / rows, pose)
+        const point = deform(col / columns, row / rows, pose)
         const vertex = vertices[row * (columns + 1) + col]
         vertex.x = x0 + point.x * size
         vertex.y = y0 + point.y * size
