@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
-import { createSpecimenRenderer, loadSpecimenArtwork } from '../lib/mushroomRenderer'
+import { createSpecimenRenderer, loadSpecimenArtwork, SPECIMEN_ART } from '../lib/mushroomRenderer'
 
-export default function BotanicalMushroom({ className = '', phase = 'still', onReady }) {
+export default function BotanicalSpecimen({ collection = 'fungi', className = '', phase = 'still', onReady }) {
   const container = useRef(null)
   const canvas = useRef(null)
   const renderer = useRef(null)
@@ -21,9 +21,9 @@ export default function BotanicalMushroom({ className = '', phase = 'still', onR
     }
     const observer = new ResizeObserver(resize)
     observer.observe(container.current)
-    loadSpecimenArtwork().then(artwork => {
+    loadSpecimenArtwork(collection).then(artwork => {
       if (canceled) return
-      renderer.current = createSpecimenRenderer(canvas.current, artwork)
+      renderer.current = createSpecimenRenderer(canvas.current, artwork, collection)
       if (renderer.current) {
         resize()
         renderer.current.setPhase(phaseRef.current)
@@ -32,10 +32,10 @@ export default function BotanicalMushroom({ className = '', phase = 'still', onR
       onReady?.(true)
     }).catch(() => { if (!canceled) onReady?.(true) })
     return () => { canceled = true; observer.disconnect(); renderer.current?.destroy(); renderer.current = null }
-  }, [onReady])
+  }, [onReady, collection])
 
-  return <span ref={container} className={`mushroom-friend ${className}`} data-phase={phase} data-rendered={rendered} aria-hidden="true">
-    <img className="mushroom-fallback" src="/images/fungi/oyster-specimen.webp" alt="" decoding="async" />
+  return <span ref={container} className={`mushroom-friend ${className}`} data-specimen={collection} data-phase={phase} data-rendered={rendered} aria-hidden="true">
+    <img className="mushroom-fallback" src={SPECIMEN_ART[collection]} alt="" decoding="async" />
     <canvas ref={canvas} className="mushroom-canvas" />
   </span>
 }
