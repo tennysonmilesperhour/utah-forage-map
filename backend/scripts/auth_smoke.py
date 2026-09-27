@@ -269,13 +269,13 @@ def main():
         assert poll.json()["total_votes"] == 0
         assert len(poll.json()["options"]) == 8
         voter_headers = {"X-Guide-Voter": "00000000-0000-4000-8000-000000000001"}
-        vote = client.post("/api/guide/requests", headers=voter_headers, json={"choice_slug": "reishi"})
+        vote = client.post("/api/guide/requests", headers=voter_headers, json={"choice_slug": "black-morel"})
         assert vote.status_code == 200, vote.text
-        assert vote.json()["selection"] == "reishi"
+        assert vote.json()["selection"] == "black-morel"
         assert vote.json()["total_votes"] == 1
-        changed_vote = client.post("/api/guide/requests", headers=voter_headers, json={"choice_slug": "chaga"})
+        changed_vote = client.post("/api/guide/requests", headers=voter_headers, json={"choice_slug": "pink-oyster"})
         assert changed_vote.status_code == 200, changed_vote.text
-        assert changed_vote.json()["selection"] == "chaga"
+        assert changed_vote.json()["selection"] == "pink-oyster"
         assert changed_vote.json()["total_votes"] == 1
         assert client.post("/api/guide/requests", headers=voter_headers, json={"choice_slug": "not-listed"}).status_code == 422
 

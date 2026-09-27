@@ -177,7 +177,7 @@ function startVitals() {
 // Closed, low-cardinality fields: never forward notes, coordinates, search text or URLs.
 export function trackFieldEvent(name, collection) {
   if (!validGaId || typeof window === 'undefined' || getGoogleAnalyticsConsent() !== 'granted') return
-  if (!['guide_to_map', 'map_retry', 'map_empty_recovery'].includes(name)) return
+  if (!['guide_to_map', 'map_retry', 'map_empty_recovery', 'id_helper_focus'].includes(name)) return
   if (!['fungi', 'herbs'].includes(collection)) return
   gtag('event', name, { collection, page_path: safePagePath(), send_to: GA_ID })
 }

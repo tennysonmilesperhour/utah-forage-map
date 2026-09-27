@@ -13,7 +13,7 @@ updated: "2026-09-09"
 Begin with living plants you can revisit through the season. Record their structure and setting before considering collection. A familiar name or culinary association is not enough: the precise plant, part, stage and local context matter. Kew’s [Grow Wild guidance](https://growwild.kew.org/sensory-and-edible-native-plants) favors growing known edible native plants and cautions that wild identification and over-foraging can cause problems.
 
 ## Use the atlas in a deliberate order
-The [global herb atlas](/herbs/atlas) contains 44 reference profiles and six regional collections. It is a starting collection rather than an inventory of every useful or hazardous plant worldwide.
+The [global herb atlas](/herbs/atlas) contains more than 100 reference profiles and six regional collections. It is a starting collection rather than an inventory of every useful or hazardous plant worldwide.
 
 1. Search by scientific name as well as common name. Check that the page describes the plant you mean.
 2. Read the field marks and compare multiple visible structures. A leaf silhouette alone is a weak match.

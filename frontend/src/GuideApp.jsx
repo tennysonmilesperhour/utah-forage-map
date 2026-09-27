@@ -8,6 +8,7 @@ import FollowButton from './components/FollowButton'
 import GuideHeader from './components/GuideHeader'
 import SeasonalChart from './components/SeasonalChart'
 import DataFreshness from './components/DataFreshness'
+import SpeciesDistribution from './components/SpeciesDistribution'
 import { EditorialReview, ReviewQueue } from './components/EditorialReview'
 import { speciesBySlug, speciesGuides, speciesPathForTaxon } from './content/species.generated'
 import { regionBySlug, regions } from './data/regions'
@@ -18,8 +19,10 @@ import { FUNGI_HOME } from './lib/navigation'
 import { applyGuideMetadata } from './lib/guideSeo'
 import { trackPageView } from './lib/googleTag'
 import { foragingBySlug } from './content/foraging.generated'
+import counts from './data/catalogue-counts.json'
 import { ForagingIndex, ForagingArticle, ForagingCards, GuideContents } from './components/ForagingGuides'
 import './mycelial.css'
+import './occurrence.css'
 
 const EDIBLE_GROUP = new Set(['choice', 'edible'])
 const HAZARD_GROUP = new Set(['poisonous', 'deadly'])
@@ -348,6 +351,7 @@ function SpeciesPage({ species, summary, user, updatedAt }) {
         </dl>
 
         <EditorialReview collection="fungi" slug={species.slug} />
+        <SpeciesDistribution collection="fungi" slug={species.slug} name={species.common_name} mapHref={`/map?taxon=${species.taxon_id}`} />
         <PublicDataDate updatedAt={updatedAt} />
         <SeasonalChart taxonId={species.taxon_id} />
 
@@ -509,7 +513,7 @@ function AboutPage() {
           <article><h2>What reviewed means</h2><p>Public observations have passed source or community review and use privacy-safe coordinates. Review supports data quality; it does not certify the mushroom in a visitor's hand.</p></article>
           <article id="editorial"><h2>How guide content is handled</h2><p>Species content lives as Markdown in the public repository, so changes are versioned and reviewable. Pages name their compiler, review status, date, and sources. Until a qualified expert signs off, they say that review is pending.</p></article>
           <article id="corrections"><h2>Corrections and contact</h2><p>Send the page URL, the statement in question, and a reliable supporting source to <a href="mailto:morphiclabsdata@gmail.com">morphiclabsdata@gmail.com</a>. Corrections are recorded in the <a href="https://github.com/tennysonmilesperhour/utah-forage-map/commits/main/">public revision history</a>. A content update is not an independent expert review; review status changes only after a qualified reviewer signs off.</p></article>
-          <article><h2>Coverage and limitations</h2><p>The collection includes 30 mushroom guides, 44 wild plant profiles, ten mushroom habitat regions, and a growing field-skills library. Observation coverage depends on public records and varies considerably by country. This is a developing reference, not a complete catalogue of all edible or poisonous species worldwide.</p></article>
+          <article><h2>Coverage and limitations</h2><p>The collection includes {counts.fungi} mushroom guides, {counts.herbs} wild plant profiles, ten mushroom habitat regions, and a growing field-skills library. Observation coverage depends on public records and varies considerably by country. This is a developing reference, not a complete catalogue of all edible or poisonous species worldwide.</p></article>
           <article><h2>What we cite</h2><p>Safety and medical claims prioritize poison centers, government agencies, university resources, toxicology literature, and established mycological organizations. Observation photography is licensed and attributed.</p></article>
           <article><h2>How locations are protected</h2><p>Approximate public coordinates are shifted before publication. Exact contributor coordinates remain private unless the contributor explicitly chooses otherwise.</p></article>
           <article><h2>Analytics and cookies</h2><p>Google Analytics is optional and stays off until you allow it. When enabled, it helps us understand aggregate use of maps and guides; advertising storage and personalization remain off. Read the <a href="/privacy">privacy notice</a> or reopen Privacy choices at any time to change your selection.</p></article>

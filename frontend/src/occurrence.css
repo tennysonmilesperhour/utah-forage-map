@@ -1,0 +1,152 @@
+/* iNaturalist-style squares, growing zones and the species-focus key, shared by both maps. */
+.occurrence-legend { --legend-bg: #17131adb; --legend-edge: #d9c7e433; --legend-ink: #f1eae1; --legend-muted: #bfb4ba; --ramp-low: #51365a; --ramp-mid: #9a74b3; --ramp-high: #e9d6ff; --zone: #f5dcbc; --accent: #e7d3f5;
+  position: absolute; z-index: 11; right: 14px; bottom: 40px; width: min(300px, calc(100% - 28px)); display: grid; gap: 8px; padding: 12px 13px; border: 1px solid var(--legend-edge); border-radius: 10px; background: var(--legend-bg); color: var(--legend-ink); font-size: 11px; line-height: 1.45; -webkit-backdrop-filter: blur(14px) saturate(110%); backdrop-filter: blur(14px) saturate(110%); box-shadow: inset 0 1px 0 #ffffff12, 0 10px 35px #00000040; }
+.occurrence-legend.herbs { --legend-bg: #07180ee0; --legend-edge: #bdcca63d; --legend-ink: #e7ecdf; --legend-muted: #b3c4a8; --ramp-low: #1f4a4a; --ramp-mid: #3f9486; --ramp-high: #c3f2df; --zone: #ecf7d5; --accent: #d3e5b9; }
+.occurrence-legend-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.occurrence-legend-heading span { display: block; color: var(--legend-muted); font-size: 9px; letter-spacing: .9px; text-transform: uppercase; }
+.occurrence-legend-heading strong { display: block; margin-top: 3px; font-size: 16px; font-weight: 400; line-height: 1.25; }
+.occurrence-legend-heading em { display: block; color: var(--legend-muted); font-size: 11px; }
+.occurrence-legend-heading button { display: grid; place-items: center; width: 32px; height: 32px; flex: 0 0 32px; border: 1px solid var(--legend-edge); border-radius: 6px; color: var(--legend-ink); background: #ffffff0d; }
+.occurrence-legend-heading button:hover { background: #ffffff1f; }
+.occurrence-scale { display: grid; grid-template-columns: 1fr 1fr; gap: 3px 0; }
+.occurrence-scale i { grid-column: 1 / -1; height: 9px; border-radius: 2px; background: linear-gradient(90deg, var(--ramp-low), var(--ramp-mid), var(--ramp-high)); }
+.occurrence-scale span { color: var(--legend-muted); font-size: 10px; }
+.occurrence-scale span:last-child { text-align: right; }
+.occurrence-scale-note, .occurrence-points-key span { margin: 0; color: var(--legend-muted); font-size: 10px; }
+.occurrence-zone-key, .occurrence-points-key { display: flex; align-items: center; gap: 8px; }
+.occurrence-zone-key i { width: 22px; height: 12px; flex: 0 0 22px; border: 1.5px dashed var(--zone); border-radius: 3px; background: color-mix(in srgb, var(--zone) 18%, transparent); }
+.occurrence-points-key i { width: 9px; height: 9px; flex: 0 0 9px; margin: 0 6px; border: 1.5px solid #f0f3e9; border-radius: 50%; background: #a9c986; }
+.occurrence-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin: 2px 0 0; overflow: hidden; border-radius: 6px; background: var(--legend-edge); }
+.occurrence-stats div { padding: 7px 8px; background: var(--legend-bg); }
+.occurrence-stats div:last-child { grid-column: 1 / -1; }
+.occurrence-stats dt { color: var(--legend-muted); font-size: 9px; }
+.occurrence-stats dd { margin: 2px 0 0; font-size: 13px; }
+.occurrence-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+.occurrence-actions :is(a, button) { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 0 11px; border: 1px solid var(--legend-edge); border-radius: 6px; color: var(--legend-ink); background: #ffffff0f; font-size: 11px; text-decoration: none; }
+.occurrence-actions :is(a, button):hover { background: #ffffff21; }
+.occurrence-source { color: var(--legend-muted); font-size: 9px; line-height: 1.5; }
+
+.occurrence-popup .mapboxgl-popup-content { padding: 8px 10px; border: 1px solid #ffffff26; background: #17131af2 !important; color: #f1eae1; font-size: 11px; line-height: 1.45; }
+.occurrence-popup.herbs .mapboxgl-popup-content { background: #0b1d13f2 !important; color: #e7ecdf; }
+.occurrence-popup .mapboxgl-popup-tip { display: none; }
+.occurrence-popup strong, .occurrence-popup span, .occurrence-popup small { display: block; }
+.occurrence-popup strong { font-size: 12px; font-weight: 500; }
+.occurrence-popup small { margin-top: 2px; opacity: .75; font-size: 10px; }
+
+/* The fungi map keeps observation records bottom-centre; the key sits at the right. */
+.mycelial-theme .map-occurrence-legend { bottom: 40px; }
+.herb-map-surface .herb-occurrence-legend { right: 12px; bottom: 36px; }
+.herb-map-surface .herb-map-legend { bottom: 36px; }
+
+.herb-map-where { margin: 0 0 18px; padding: 14px; border: 1px solid #b5ca9536; border-radius: 7px; background: #0f2418; }
+.herb-map-where .herb-kicker { margin: 0 0 6px; font-size: 9px; }
+.herb-map-where > p:not(.herb-kicker) { color: #b8c9ad; font-size: 11px; line-height: 1.65; }
+.herb-map-where dl { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0; }
+.herb-map-where dl div:last-child { grid-column: 1 / -1; }
+.herb-map-where dt { color: #a4b79c; font-size: 9px; }
+.herb-map-where dd { margin: 2px 0 0; color: #e1e9d7; font-size: 13px; }
+.herb-map-where button { display: inline-flex; align-items: center; gap: 7px; min-height: 36px; padding: 0 11px; border: 1px solid #99af7d66; border-radius: 6px; color: #e0ebce; font-size: 11px; }
+
+@media (max-width: 720px) {
+  .occurrence-legend { right: 10px; bottom: 34px; width: min(250px, calc(100% - 20px)); gap: 6px; padding: 10px; }
+  .occurrence-scale-note, .occurrence-points-key, .occurrence-source, .occurrence-stats { display: none; }
+  .occurrence-legend-heading strong { font-size: 14px; }
+  .herb-map-surface .herb-map-legend { display: none; }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .occurrence-legend { background: #17131a; -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .occurrence-legend.herbs { background: #07180e; }
+}
+
+/* "Where it grows" on library pages: world outline, growing zone, record squares. */
+.species-distribution { --dist-ink: #f1eae1; --dist-muted: #bfb4ba; --dist-edge: #d9c7e433; --dist-panel: #17131a; --dist-land: #3a3040; --dist-square: #d9c2f2; --dist-zone: #f5dcbc; --dist-bar: #b894d0;
+  margin: 28px 0; padding: 22px; border: 1px solid var(--dist-edge); border-radius: 10px; background: linear-gradient(160deg, #221c25, var(--dist-panel)); color: var(--dist-ink); }
+.species-distribution.herbs { --dist-ink: #e7ecdf; --dist-muted: #b3c4a8; --dist-edge: #b5ca9536; --dist-panel: #0b1b13; --dist-land: #24402f; --dist-square: #b9f0dc; --dist-zone: #ecf7d5; --dist-bar: #7cc4ad;
+  max-width: 1180px; margin: 28px auto; background: linear-gradient(160deg, #13281c, var(--dist-panel)); }
+.distribution-heading { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 24px; margin-bottom: 16px; }
+.distribution-heading p { margin: 0 0 6px; color: var(--dist-muted); font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; }
+.distribution-heading h2 { margin: 0; font-size: clamp(22px, 2.4vw, 30px); font-weight: 300; line-height: 1.2; }
+.distribution-heading a { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 14px; border: 1px solid var(--dist-edge); border-radius: 8px; color: var(--dist-ink); background: #ffffff0d; font-size: 12px; text-decoration: none; }
+.distribution-heading a:hover { background: #ffffff1c; }
+.distribution-body { display: grid; grid-template-columns: minmax(0, 1.75fr) minmax(240px, 1fr); gap: 22px; align-items: start; }
+.distribution-map { position: relative; margin: 0; }
+.distribution-map > svg, .distribution-land { display: block; width: 100%; aspect-ratio: 360 / 144; }
+.distribution-land { position: absolute; inset: 0 0 auto; background: var(--dist-land); -webkit-mask: url('/images/world-land.svg') center / 100% 100% no-repeat; mask: url('/images/world-land.svg') center / 100% 100% no-repeat; }
+.distribution-map > svg { position: relative; overflow: visible; }
+.distribution-map rect { fill: var(--dist-square); }
+.distribution-zone-fill { fill: var(--dist-zone); fill-opacity: .14; }
+.distribution-zone-line { fill: none; stroke: var(--dist-zone); stroke-opacity: .9; stroke-width: 1.3px; stroke-dasharray: 4 3; }
+.distribution-loading { position: absolute; top: 8px; left: 10px; color: var(--dist-muted); font-size: 11px; }
+.distribution-map figcaption { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 10px; color: var(--dist-muted); font-size: 11px; }
+.distribution-map figcaption span { display: inline-flex; align-items: center; gap: 7px; }
+.distribution-key-squares { width: 12px; height: 12px; border-radius: 2px; background: var(--dist-square); }
+.distribution-key-zone { width: 20px; height: 12px; border: 1.5px dashed var(--dist-zone); border-radius: 3px; background: color-mix(in srgb, var(--dist-zone) 16%, transparent); }
+.distribution-facts dl { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin: 0; overflow: hidden; border-radius: 8px; background: var(--dist-edge); }
+.distribution-facts dl div { padding: 10px 12px; background: var(--dist-panel); }
+.distribution-facts dt { color: var(--dist-muted); font-size: 10px; }
+.distribution-facts dd { margin: 3px 0 0; font-size: 17px; font-weight: 300; }
+.distribution-note { margin: 12px 0 0; color: var(--dist-muted); font-size: 11px; line-height: 1.6; }
+.distribution-months { margin: 14px 0 0; }
+.distribution-months figcaption { color: var(--dist-muted); font-size: 10px; margin-bottom: 6px; }
+.distribution-month-bars { display: grid; grid-template-columns: repeat(12, 1fr); gap: 2px; height: 72px; align-items: end; }
+.distribution-month-bars span { display: flex; flex-direction: column; justify-content: flex-end; height: 100%; }
+.distribution-month-bars i { display: block; width: 100%; border-radius: 4px 4px 0 0; background: var(--dist-bar); }
+.distribution-month-bars span:hover i { filter: brightness(1.25); }
+.distribution-month-bars b { margin-top: 4px; color: var(--dist-muted); font-size: 9px; font-weight: 400; text-align: center; }
+@media (max-width: 820px) {
+  .species-distribution { padding: 16px; }
+  .distribution-body { grid-template-columns: 1fr; }
+}
+
+/* Suggest-an-ID panel, shared by both maps. */
+.identify-panel { --id-ink: #f1eae1; --id-muted: #bfb4ba; --id-edge: #d9c7e433; --id-bg: #17131af2; --id-chip: #ffffff0d; --id-active: #e7d3f5; --id-active-ink: #1d1620; --id-seen: #d9c2f2; --id-expected: #f5dcbc;
+  display: flex; flex-direction: column; gap: 14px; padding: 16px; color: var(--id-ink); font-size: 12px; }
+.identify-panel.herbs { --id-ink: #e7ecdf; --id-muted: #b3c4a8; --id-edge: #b5ca9536; --id-bg: transparent; --id-chip: #ffffff0a; --id-active: #d3e5b9; --id-active-ink: #13271b; --id-seen: #b9f0dc; --id-expected: #ecf7d5; padding: 20px; }
+.map-identify-panel { position: absolute; z-index: 13; top: 72px; left: 14px; width: min(380px, calc(100% - 28px)); max-height: calc(100% - 90px); overflow: auto; border: 1px solid var(--id-edge); border-radius: 10px; background: var(--id-bg); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); box-shadow: 0 16px 50px #00000055; }
+.identify-heading { display: flex; justify-content: space-between; gap: 12px; }
+.identify-heading p { display: flex; align-items: center; gap: 6px; margin: 0 0 4px; color: var(--id-muted); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; }
+.identify-heading h2 { margin: 0 0 6px; font-size: 22px; font-weight: 300; }
+.identify-heading span { display: block; color: var(--id-muted); font-size: 11px; line-height: 1.55; }
+.identify-heading button { display: grid; place-items: center; width: 34px; height: 34px; flex: 0 0 34px; border: 1px solid var(--id-edge); border-radius: 6px; color: var(--id-ink); }
+.identify-where { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding: 10px; border: 1px solid var(--id-edge); border-radius: 8px; }
+.identify-where strong { display: block; font-size: 12px; font-weight: 500; }
+.identify-where small { display: block; margin-top: 2px; color: var(--id-muted); font-size: 10px; }
+.identify-where button, .identify-actions :is(a, button) { display: inline-flex; align-items: center; gap: 6px; min-height: 34px; padding: 0 10px; border: 1px solid var(--id-edge); border-radius: 6px; color: var(--id-ink); background: var(--id-chip); font-size: 11px; text-decoration: none; }
+.identify-where p { flex-basis: 100%; margin: 0; color: var(--id-muted); font-size: 10px; }
+.identify-month { display: flex; align-items: center; justify-content: space-between; gap: 10px; color: var(--id-muted); font-size: 11px; }
+.identify-month select { min-height: 36px; padding: 0 10px; border: 1px solid var(--id-edge); border-radius: 6px; color: var(--id-ink); background: #0000004d; font: inherit; }
+.identify-group { margin: 0; padding: 0; border: 0; }
+.identify-group legend { margin-bottom: 7px; color: var(--id-muted); font-size: 10px; letter-spacing: .6px; text-transform: uppercase; }
+.identify-group > div { display: flex; flex-wrap: wrap; gap: 6px; }
+.identify-group button { display: inline-flex; align-items: center; gap: 6px; min-height: 34px; padding: 0 10px; border: 1px solid var(--id-edge); border-radius: 999px; color: var(--id-ink); background: var(--id-chip); font-size: 11px; }
+.identify-group button.active { border-color: var(--id-active); background: var(--id-active); color: var(--id-active-ink); }
+.swatch { width: 11px; height: 11px; border-radius: 50%; border: 1px solid #ffffff55; }
+.swatch.white { background: #f4f1ea; } .swatch.yellow { background: #f2d24b; } .swatch.orange { background: #eb8a2f; } .swatch.red { background: #d8392b; } .swatch.pink { background: #eb8fb2; }
+.swatch.purple { background: #8d5bb5; } .swatch.blue { background: #4a78d0; } .swatch.green { background: #5c9a4a; } .swatch.brown { background: #8a5a36; } .swatch.gray { background: #8c8c8c; } .swatch.black { background: #1e1e1e; }
+.identify-results h3 { margin: 4px 0 10px; font-size: 14px; font-weight: 500; }
+.identify-results ol { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.identify-results li { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 10px; padding: 10px; border: 1px solid var(--id-edge); border-radius: 8px; background: #ffffff06; }
+.identify-results li.danger { border-color: #ed907e66; }
+.identify-results img, .identify-thumb { width: 64px; height: 64px; border-radius: 6px; object-fit: cover; background: #ffffff10; }
+.identify-results strong { display: block; font-size: 13px; font-weight: 500; }
+.identify-results em { display: block; color: var(--id-muted); font-size: 11px; }
+.identify-status { display: inline-flex; align-items: center; gap: 4px; margin-top: 4px; color: var(--id-muted); font-size: 10px; }
+.identify-status.danger, .identify-warning { color: #f0a594; }
+.identify-badges { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+.identify-badges span { padding: 3px 7px; border: 1px solid var(--id-edge); border-radius: 999px; font-size: 10px; }
+.identify-badges .seen { border-color: color-mix(in srgb, var(--id-seen) 55%, transparent); }
+.identify-badges .expected { border-style: dashed; border-color: var(--id-expected); }
+.identify-warning { display: flex; align-items: center; gap: 5px; margin: 6px 0 0; font-size: 10px; }
+.identify-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.identify-note { margin: 10px 0 0; color: var(--id-muted); font-size: 10px; line-height: 1.6; }
+.mycelial-theme .map-identify-button.active { border-color: #e7d3f5; }
+@media (max-width: 720px) {
+  .map-identify-panel { top: auto; bottom: 0; left: 0; width: 100%; max-height: 72%; border-radius: 12px 12px 0 0; }
+}
+@media (prefers-reduced-transparency: reduce) { .map-identify-panel { background: #17131a; -webkit-backdrop-filter: none; backdrop-filter: none; } }
+
+/* While a fungi record card is open at the bottom, the key moves up and drops its notes. */
+.map-occurrence-legend.is-compact { top: 150px; bottom: auto; }
+.occurrence-legend.is-compact :is(.occurrence-scale-note, .occurrence-points-key, .occurrence-source, .occurrence-stats) { display: none; }
+@media (max-width: 720px) { .map-occurrence-legend.is-compact { display: none; } }

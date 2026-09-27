@@ -60,6 +60,7 @@ class IncrementalTests(unittest.TestCase):
         params=client.get.call_args.kwargs['params']
         self.assertEqual(params['id_below'],8); self.assertEqual(params['order'],'desc'); self.assertTrue(params['updated_since'].endswith('Z'))
     def test_record_catalogue_supports_new_plants_but_not_toxic_references(self):
-        self.assertEqual(len(PLANTS),44); self.assertEqual(len(RECORD_PLANTS),37)
+        self.assertEqual(len(PLANTS),113); self.assertEqual(len(RECORD_PLANTS),93)
+        self.assertIn('ramps', RECORD_PLANTS); self.assertNotIn('deadly-nightshade', RECORD_PLANTS)
         self.assertIn('wild-garlic', RECORD_PLANTS)
         self.assertNotIn('lily-of-the-valley', RECORD_PLANTS)

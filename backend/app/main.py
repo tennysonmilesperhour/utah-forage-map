@@ -49,17 +49,18 @@ SESSION_DAYS = int(os.getenv("SESSION_DAYS", "30"))
 ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
 ADMIN_EMAILS = {value.strip().lower() for value in os.getenv("ADMIN_EMAILS", "").split(",") if value.strip()}
 CRON_SECRET = os.getenv("CRON_SECRET")
-GUIDE_REQUEST_POLL_KEY = "next-species-2026-08"
+GUIDE_REQUEST_POLL_KEY = "next-species-2026-10"
 GUIDE_REQUEST_QUESTION = "Which mushroom should we add to the guide next?"
+# The August 2026 candidates are all in the library now, so the poll starts fresh.
 GUIDE_REQUEST_OPTIONS = (
-    {"slug": "reishi", "common_name": "Reishi", "latin_name": "Ganoderma tsugae", "reason": "A varnished woodland conk with widespread supplement interest."},
-    {"slug": "chaga", "common_name": "Chaga", "latin_name": "Inonotus obliquus", "reason": "A birch canker often confused with other dark growths."},
-    {"slug": "wood-ear", "common_name": "Wood Ear", "latin_name": "Auricularia species", "reason": "A globally familiar edible group with a distinctive gelatinous form."},
-    {"slug": "cauliflower-mushroom", "common_name": "Cauliflower Mushroom", "latin_name": "Sparassis species", "reason": "A large, folded woodland mushroom that draws frequent ID requests."},
-    {"slug": "indigo-milk-cap", "common_name": "Indigo Milk Cap", "latin_name": "Lactarius indigo", "reason": "A vivid blue mushroom with blue latex and memorable bruising."},
-    {"slug": "dryads-saddle", "common_name": "Dryad's Saddle", "latin_name": "Cerioporus squamosus", "reason": "A common spring polypore found on hardwood trunks and stumps."},
-    {"slug": "beefsteak-fungus", "common_name": "Beefsteak Fungus", "latin_name": "Fistulina hepatica", "reason": "A red, fleshy bracket fungus associated with mature hardwoods."},
-    {"slug": "candy-cap", "common_name": "Candy Cap", "latin_name": "Lactarius rubidus", "reason": "A small western milk cap known for its maple-like aroma when dried."},
+    {"slug": "termite-mushroom", "common_name": "Termite Mushroom", "latin_name": "Termitomyces species", "reason": "A prized African and Asian edible that grows from termite mounds."},
+    {"slug": "black-morel", "common_name": "Black Morel", "latin_name": "Morchella importuna", "reason": "The dark morel of burns, wood chips, and cultivation."},
+    {"slug": "smooth-chanterelle", "common_name": "Smooth Chanterelle", "latin_name": "Cantharellus lateritius", "reason": "An eastern chanterelle with an almost smooth underside."},
+    {"slug": "bears-head-tooth", "common_name": "Bear's Head Tooth", "latin_name": "Hericium americanum", "reason": "A Hericium with long spines clustered at the branch tips."},
+    {"slug": "hawks-wing", "common_name": "Hawk's Wing", "latin_name": "Sarcodon imbricatus", "reason": "A large scaly tooth fungus used for dye and flavoring."},
+    {"slug": "pink-oyster", "common_name": "Pink Oyster", "latin_name": "Pleurotus djamor", "reason": "A tropical oyster mushroom that grows wild across warm regions."},
+    {"slug": "white-chicken-of-the-woods", "common_name": "White Chicken of the Woods", "latin_name": "Laetiporus cincinnatus", "reason": "A root-growing rosette with a white pore surface."},
+    {"slug": "blue-chanterelle", "common_name": "Blue Chanterelle", "latin_name": "Polyozellus multiplex", "reason": "A rare, dark blue clustered chanterelle relative of northern forests."},
 )
 GUIDE_REQUEST_OPTION_SLUGS = {item["slug"] for item in GUIDE_REQUEST_OPTIONS}
 SEASONALITY_MAX_AGE = timedelta(days=14)
@@ -740,31 +741,52 @@ def guide_species_summaries(db: Session = Depends(get_db)):
         Sighting.location_privacy != "private",
         Sighting.found_on >= cutoff,
     )
+    species_rows = db.query(Species).filter(Species.inaturalist_taxon_id.isnot(None)).all()
+    # Three grouped queries instead of four per species; the catalogue now holds over a hundred.
+    totals = {
+        species_id: (count, latest_found)
+        for species_id, count, latest_found in db.query(
+            Sighting.species_id, func.count(Sighting.id), func.max(Sighting.found_on)
+        ).filter(*public_filters).group_by(Sighting.species_id).all()
+    }
+    ranked = db.query(
+        Sighting.id.label("sighting_id"),
+        Sighting.species_id.label("species_id"),
+        Sighting.photo_url.label("photo_url"),
+        func.row_number().over(
+            partition_by=Sighting.species_id,
+            order_by=(Sighting.found_on.desc(), Sighting.created_at.desc()),
+        ).label("position"),
+    ).filter(*public_filters, Sighting.photo_url.isnot(None)).subquery()
+    latest_by_species = {
+        row.species_id: row
+        for row in db.query(ranked).filter(ranked.c.position == 1).all()
+    }
+    latest_ids = [row.sighting_id for row in latest_by_species.values()]
+    sources = {
+        source.sighting_id: source
+        for source in db.query(CrawledSource).filter(CrawledSource.sighting_id.in_(latest_ids)).all()
+    } if latest_ids else {}
     summaries = []
 
-    for species in db.query(Species).filter(Species.inaturalist_taxon_id.isnot(None)).all():
-        query = db.query(Sighting).filter(*public_filters, Sighting.species_id == species.id)
-        latest = query.filter(Sighting.photo_url.isnot(None)).order_by(
-            Sighting.found_on.desc(), Sighting.created_at.desc()
-        ).first()
-        source_url = None
+    for species in species_rows:
+        latest = latest_by_species.get(species.id)
+        source = sources.get(latest.sighting_id) if latest else None
+        source_url = source.source_url if source else None
         attribution = None
-
-        if latest:
-            source = db.query(CrawledSource).filter(CrawledSource.sighting_id == latest.id).first()
-            if source:
-                source_url = source.source_url
-                try:
-                    raw_data = json.loads(source.raw_data or "{}")
-                    attribution = ((raw_data.get("photos") or [{}])[0]).get("attribution")
-                except (TypeError, ValueError, json.JSONDecodeError):
-                    attribution = None
+        if source:
+            try:
+                raw_data = json.loads(source.raw_data or "{}")
+                attribution = ((raw_data.get("photos") or [{}])[0]).get("attribution")
+            except (TypeError, ValueError, json.JSONDecodeError, AttributeError):
+                attribution = None
+        count, latest_found = totals.get(species.id, (0, None))
 
         summaries.append({
             "species_id": species.id,
             "inaturalist_taxon_id": species.inaturalist_taxon_id,
-            "recent_observations": query.count(),
-            "latest_observed_on": query.with_entities(func.max(Sighting.found_on)).scalar(),
+            "recent_observations": count,
+            "latest_observed_on": latest_found,
             "latest_photo_url": latest.photo_url if latest else None,
             "latest_photo_attribution": attribution,
             "latest_source_url": source_url,
