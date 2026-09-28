@@ -86,6 +86,14 @@ test('discovery files are text and unknown routes have an explicit 404 document'
   assert.ok(config.headers.some(rule => rule.source === '/account' && rule.headers.some(header => /noindex/.test(header.value))))
 })
 
+test('prerendered markup names its route for hydration and shows valid calendar dates', () => {
+  for (const [path, $] of pages) {
+    assert.equal($('#root').attr('data-prerendered-path'), path, `${path}: client would not hydrate`)
+    assert.ok(!$('#root').text().includes('Invalid Date'), `${path}: invalid date`)
+    for (const time of $('time[datetime]').toArray()) assert.match($(time).attr('datetime'), /^\d{4}-\d{2}-\d{2}$/, path)
+  }
+})
+
 test('page styles and route modules load without a JavaScript discovery waterfall', () => {
   for (const [path, $] of pages) {
     assert.ok($('link[rel="modulepreload"]').length > 0, path)

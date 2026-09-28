@@ -39,7 +39,10 @@ async function mount() {
     for (const entry of JSON.parse(snapshot.textContent)) queryClient.setQueryData(entry.key, entry.data, { updatedAt: entry.updatedAt })
   }
   const content = <StrictMode><QueryClientProvider client={queryClient}><Page path={pathname} /><AnalyticsConsent collection={isHerbalPath ? 'herbs' : 'fungi'} /></QueryClientProvider></StrictMode>
-  if ((isGuidePath || isHerbalGuidePath) && root.hasChildNodes()) hydrateRoot(root, content)
+  // Hydrate only markup prerendered for this route. A host fallback (such as
+  // `vite preview` serving the home page for an unknown path) would mismatch.
+  const routePath = pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname
+  if ((isGuidePath || isHerbalGuidePath) && root.hasChildNodes() && root.dataset.prerenderedPath === routePath) hydrateRoot(root, content)
   else createRoot(root).render(content)
 }
 mount()
