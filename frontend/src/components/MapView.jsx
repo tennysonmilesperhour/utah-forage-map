@@ -202,7 +202,7 @@ export default function MapView({
         paint: {
           'fill-color': ['interpolate', ['linear'], ['get', 'intensity'], 0, ramp[0], 0.5, ramp[1], 1, ramp[2]],
           'fill-opacity': ['interpolate', ['linear'], ['get', 'intensity'], 0, 0.42, 1, 0.9],
-          'fill-outline-color': '#00000055',
+          'fill-outline-color': 'rgba(0, 0, 0, 0.333333)',
         },
       }, firstLabel)
 
