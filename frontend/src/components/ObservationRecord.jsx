@@ -5,7 +5,7 @@ import {
 } from 'lucide-react'
 import { useObservationRecord, useVerifyObservation } from '../hooks/useCompanion'
 import { getApiError } from '../hooks/useAuth'
-import { speciesPathForTaxon } from '../content/species.generated'
+import { speciesPathForTaxon } from '../content/species-index.generated'
 import { formatElevation } from '../lib/units'
 
 const FIELD_MARKS = [

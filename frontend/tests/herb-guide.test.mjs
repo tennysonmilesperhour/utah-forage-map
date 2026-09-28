@@ -18,7 +18,7 @@ test('facets intersect; saved-only with no saved plants has no false results', (
 })
 test('toxic references remain explicit and cannot imply gathering parts or food use', () => {
   const toxic = filterHerbGuides({ status: 'toxic' })
-  assert.equal(toxic.length, 7)
+  assert.equal(toxic.length, 20)
   for (const p of toxic) {
     assert.deepEqual(p.parts, [], p.name)
     assert.deepEqual(p.uses, ['toxic'], p.name)
@@ -27,13 +27,13 @@ test('toxic references remain explicit and cannot imply gathering parts or food 
   }
 })
 test('every entry has unambiguous identifiers, valid internal references and source attribution', async () => {
-  assert.equal(herbGuides.length, 44)
+  assert.equal(herbGuides.length, 113)
   assert.equal(new Set(herbGuides.map(p => p.slug)).size, herbGuides.length)
   for (const p of herbGuides) {
     assert.ok(statusLabels[p.status], p.name)
     for (const [values, allowed] of [[p.regions, Object.fromEntries(herbRegions.map(r => [r.slug, r.name]))], [p.habitats, habitatLabels], [p.uses, useLabels], [p.stages, stageLabels]]) for (const v of values) assert.ok(allowed[v], `${p.name}: ${v}`)
     assert.ok(p.marks.length >= 3 && p.caution && p.preparation && p.range && p.season && p.stewardship, p.name)
-    assert.ok(p.sources.length && p.sourceChecked === '2026-09-09', p.name)
+    assert.ok(p.sources.length && ['2026-09-09', '2026-09-27'].includes(p.sourceChecked), p.name)
     assert.match(p.reviewStatus, /pending/, p.name)
     assert.ok(p.lookalikes.length, p.name)
     p.lookalikes.forEach(l => { if (l.slug) assert.ok(herbGuideBySlug[l.slug], `${p.name}: ${l.slug}`) })
@@ -67,7 +67,7 @@ test('prerendered plant pages expose evidence and warnings without JavaScript', 
     if (plant.status === 'toxic') assert.ok(html.includes('Toxic. Keep out of food and tea.'), plant.name)
   }
   const sitemap = await readFile(new URL('../dist/sitemap-herbs.xml', import.meta.url), 'utf8')
-  assert.equal((sitemap.match(/<loc>/g) || []).length, 53)
+  assert.equal((sitemap.match(/<loc>/g) || []).length, 53 + herbGuides.length - 44)
   assert.ok(!sitemap.includes('/herbs/atlas/compare'), 'Empty comparison is intentionally not indexed')
 })
 

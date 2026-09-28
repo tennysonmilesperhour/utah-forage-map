@@ -23,7 +23,7 @@ These are small baselines, not evidence of broad authority. Search Console repor
 - Serve explicit routes and a genuine 404 instead of a successful home-page fallback for arbitrary URLs. Normalize trailing slashes and `index.html` aliases. Preserve the existing domain redirects and verification files.
 - Use one canonical and one consistent structured-data graph per page. Include the real organization, publisher, editorial and correction links, relevant page/article type, scientific identity, source citations and licensed specimen-image metadata. Do not invent people, credentials, expert review, ratings, awards or endorsements.
 - Exclude account/token routes, reference copies, and the empty comparison page from indexing as appropriate. Keep canonical guide pages crawlable. The map opens near the visitor's country without producing country-specific duplicate URLs.
-- Generate four sitemaps listing 113 canonical pages. Species modification dates reflect the corresponding content, not an unrelated build date. Expert review dates are not advanced by deployment.
+- Generate four sitemaps listing 263 canonical pages. Species modification dates reflect the corresponding content, not an unrelated build date. Expert review dates are not advanced by deployment.
 - Include bounded, public-only observation snapshots on relevant mushroom and region pages. Retain retrieval timestamps and refresh them through the existing public API in the browser. Upstream failure leaves the static guide available; unavailable data must not be presented as a zero count.
 - Publish nine original practical guides with question headings, a direct answer, primary citations, contents links and connections to the map/atlases. Expand the hedgehog and black trumpet pages because the actual search and AI reports already show interest in them.
 - Generate `llms.txt`, a reference index and readable text copies from the same visible public content. These are convenience formats, not special ranking signals or instructions for assistants to promote the site.
@@ -32,7 +32,7 @@ These are small baselines, not evidence of broad authority. Search Console repor
 
 ## Authority and editorial priorities
 
-The current collection has 30 mushroom profiles, 44 wild plant profiles, ten mushroom habitat regions and nine practical guides. It is a developing reference, not an exhaustive global identification key. A number of older species pages still need deeper primary sourcing and independent specialist review.
+The current collection has 108 mushroom profiles, 113 wild plant profiles, ten mushroom habitat regions and nine practical guides. It is a developing reference, not an exhaustive global identification key. A number of older species pages still need deeper primary sourcing and independent specialist review.
 
 1. Recruit a qualified mycologist and botanist as named reviewers, obtain permission to publish their credentials and scope of review, then update only the pages they actually review. Until then, retain review-pending labels.
 2. Expand the existing pages that earn impressions before creating hundreds of new pages. Next candidates from the current query table include meadow mushrooms, jack-o'-lantern mushrooms, and hedgehog lookalikes. Use Search Console page/query data to refine this order.

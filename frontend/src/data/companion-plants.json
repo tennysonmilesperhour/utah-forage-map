@@ -306,5 +306,488 @@
     "latin": "Symphytum officinale",
     "status": "study",
     "caution": "Ingestion can damage the liver. A history of medicinal use does not establish safety."
+  },
+  {
+    "slug": "wild-strawberry",
+    "name": "Wild strawberry",
+    "latin": "Fragaria vesca",
+    "status": "culinary",
+    "caution": "Mock strawberry has yellow flowers and bland fruit; confirm white flowers."
+  },
+  {
+    "slug": "red-raspberry",
+    "name": "Red raspberry",
+    "latin": "Rubus idaeus",
+    "status": "culinary",
+    "caution": "Raspberry-leaf tea is widely promoted in pregnancy; evidence is limited, so ask a clinician."
+  },
+  {
+    "slug": "bilberry",
+    "name": "Bilberry",
+    "latin": "Vaccinium myrtillus",
+    "status": "culinary",
+    "caution": "Several toxic berries grow in the same heath; check each plant."
+  },
+  {
+    "slug": "hawthorn",
+    "name": "Common hawthorn",
+    "latin": "Crataegus monogyna",
+    "status": "caution",
+    "caution": "Hawthorn preparations can interact with heart medicines. Seeds contain cyanogenic compounds; strain them out."
+  },
+  {
+    "slug": "small-leaved-lime",
+    "name": "Small-leaved lime",
+    "latin": "Tilia cordata",
+    "status": "culinary",
+    "caution": "Use modest amounts. Street trees collect traffic pollution, so gather from parks and woods away from roads."
+  },
+  {
+    "slug": "meadowsweet",
+    "name": "Meadowsweet",
+    "latin": "Filipendula ulmaria",
+    "status": "caution",
+    "caution": "Contains salicylates. Avoid if allergic to aspirin, if taking blood thinners, or when advised against aspirin, including for children."
+  },
+  {
+    "slug": "lambs-quarters",
+    "name": "Lamb's quarters",
+    "latin": "Chenopodium album",
+    "status": "culinary",
+    "caution": "High in oxalate and can accumulate nitrate on fertilized soil. Avoid sprayed fields."
+  },
+  {
+    "slug": "miners-lettuce",
+    "name": "Miner's lettuce",
+    "latin": "Claytonia perfoliata",
+    "status": "culinary",
+    "caution": "Contains some oxalate; eat in normal salad amounts."
+  },
+  {
+    "slug": "ramps",
+    "name": "Ramps",
+    "latin": "Allium tricoccum",
+    "status": "caution",
+    "caution": "Deadly false hellebore and lily of the valley grow in the same woods. Crush every leaf to check for onion smell."
+  },
+  {
+    "slug": "three-cornered-leek",
+    "name": "Three-cornered leek",
+    "latin": "Allium triquetrum",
+    "status": "culinary",
+    "caution": "Smell every plant. Snowdrops and snowflakes have similar white bells but no onion smell and are toxic."
+  },
+  {
+    "slug": "burdock",
+    "name": "Greater burdock",
+    "latin": "Arctium lappa",
+    "status": "caution",
+    "caution": "Young rosettes can resemble foxglove and deadly nightshade leaves. Confirm burrs from last year nearby."
+  },
+  {
+    "slug": "chicory",
+    "name": "Chicory",
+    "latin": "Cichorium intybus",
+    "status": "culinary",
+    "caution": "Roadside plants accumulate pollutants; gather away from traffic."
+  },
+  {
+    "slug": "ground-ivy",
+    "name": "Ground ivy",
+    "latin": "Glechoma hederacea",
+    "status": "caution",
+    "caution": "Toxic to horses in quantity. Use in modest amounts; avoid in pregnancy."
+  },
+  {
+    "slug": "oregano",
+    "name": "Wild oregano",
+    "latin": "Origanum vulgare",
+    "status": "culinary",
+    "caution": "Concentrated oregano oil is not the same as the herb; avoid essential oil internally."
+  },
+  {
+    "slug": "field-horsetail",
+    "name": "Field horsetail",
+    "latin": "Equisetum arvense",
+    "status": "caution",
+    "caution": "Contains thiaminase and can deplete vitamin B1. Not for long-term use, children, pregnancy, or people with kidney disease. Marsh horsetail is more toxic."
+  },
+  {
+    "slug": "st-johns-wort",
+    "name": "St John's wort",
+    "latin": "Hypericum perforatum",
+    "status": "caution",
+    "caution": "Interacts with many medicines, including contraceptives, antidepressants, blood thinners and transplant drugs. Can cause sun sensitivity."
+  },
+  {
+    "slug": "common-mullein",
+    "name": "Common mullein",
+    "latin": "Verbascum thapsus",
+    "status": "study",
+    "caution": "Leaf hairs irritate the throat unless filtered. Seeds are toxic and have been used as a fish poison."
+  },
+  {
+    "slug": "ribwort-plantain",
+    "name": "Ribwort plantain",
+    "latin": "Plantago lanceolata",
+    "status": "culinary",
+    "caution": "Plantain pollen is a common allergen."
+  },
+  {
+    "slug": "sea-buckthorn",
+    "name": "Sea buckthorn",
+    "latin": "Hippophae rhamnoides",
+    "status": "culinary",
+    "caution": "Very sour; the juice can be irritating raw in quantity."
+  },
+  {
+    "slug": "common-juniper",
+    "name": "Common juniper",
+    "latin": "Juniperus communis",
+    "status": "caution",
+    "caution": "Avoid in pregnancy and kidney disease. Other junipers, such as savin, are toxic."
+  },
+  {
+    "slug": "sweet-woodruff",
+    "name": "Sweet woodruff",
+    "latin": "Galium odoratum",
+    "status": "caution",
+    "caution": "Contains coumarin; large amounts cause headaches and liver concerns. Avoid with blood thinners."
+  },
+  {
+    "slug": "common-sorrel",
+    "name": "Common sorrel",
+    "latin": "Rumex acetosa",
+    "status": "culinary",
+    "caution": "High in oxalate. Avoid large amounts with kidney stones or gout."
+  },
+  {
+    "slug": "curly-dock",
+    "name": "Curly dock",
+    "latin": "Rumex crispus",
+    "status": "caution",
+    "caution": "High in oxalate; large amounts can harm the kidneys. Not for people with kidney stones."
+  },
+  {
+    "slug": "hops",
+    "name": "Common hop",
+    "latin": "Humulus lupulus",
+    "status": "study",
+    "caution": "Hops can cause drowsiness. Hop cones are toxic to dogs."
+  },
+  {
+    "slug": "fireweed",
+    "name": "Fireweed",
+    "latin": "Chamaenerion angustifolium",
+    "status": "culinary",
+    "caution": "Large amounts can be laxative."
+  },
+  {
+    "slug": "wild-bergamot",
+    "name": "Wild bergamot",
+    "latin": "Monarda fistulosa",
+    "status": "culinary",
+    "caution": "Strong; use sparingly. Avoid in pregnancy."
+  },
+  {
+    "slug": "water-mint",
+    "name": "Water mint",
+    "latin": "Mentha aquatica",
+    "status": "culinary",
+    "caution": "Wash well; wild water can carry liver fluke and other parasites. Avoid pennyroyal confusion."
+  },
+  {
+    "slug": "prickly-pear",
+    "name": "Prickly pear",
+    "latin": "Opuntia ficus-indica",
+    "status": "culinary",
+    "caution": "Glochids lodge in skin and are hard to remove. Handle with tongs and thick gloves."
+  },
+  {
+    "slug": "staghorn-sumac",
+    "name": "Staghorn sumac",
+    "latin": "Rhus typhina",
+    "status": "culinary",
+    "caution": "Poison sumac has white, drooping berries and grows in swamps; never use white-berried sumacs. People with cashew or mango allergy may react."
+  },
+  {
+    "slug": "pawpaw",
+    "name": "Pawpaw",
+    "latin": "Asimina triloba",
+    "status": "culinary",
+    "caution": "Seeds and skin contain toxic compounds. Some people react with digestive upset or skin rash."
+  },
+  {
+    "slug": "saskatoon",
+    "name": "Saskatoon serviceberry",
+    "latin": "Amelanchier alnifolia",
+    "status": "culinary",
+    "caution": "Seeds contain small amounts of cyanogenic compounds; do not crush large quantities."
+  },
+  {
+    "slug": "chokecherry",
+    "name": "Chokecherry",
+    "latin": "Prunus virginiana",
+    "status": "caution",
+    "caution": "Pits, leaves and bark contain cyanogenic compounds. Never crush pits or brew leaves."
+  },
+  {
+    "slug": "hazel",
+    "name": "Common hazel",
+    "latin": "Corylus avellana",
+    "status": "culinary",
+    "caution": "Tree nut allergy is common and can be severe."
+  },
+  {
+    "slug": "glasswort",
+    "name": "Glasswort",
+    "latin": "Salicornia europaea",
+    "status": "culinary",
+    "caution": "Salt marshes can be polluted; harvest from clean coasts and follow local rules."
+  },
+  {
+    "slug": "wild-carrot",
+    "name": "Wild carrot",
+    "latin": "Daucus carota",
+    "status": "caution",
+    "caution": "Deadly poison hemlock and water hemlock are close lookalikes. Hairy stems and carrot smell help but do not replace an expert check."
+  },
+  {
+    "slug": "cow-parsley",
+    "name": "Cow parsley",
+    "latin": "Anthriscus sylvestris",
+    "status": "caution",
+    "caution": "Poison hemlock and fool's parsley grow in the same hedges. Many experts recommend avoiding this plant entirely."
+  },
+  {
+    "slug": "shepherds-purse",
+    "name": "Shepherd's purse",
+    "latin": "Capsella bursa-pastoris",
+    "status": "culinary",
+    "caution": "Avoid in pregnancy in medicinal amounts."
+  },
+  {
+    "slug": "borage",
+    "name": "Borage",
+    "latin": "Borago officinalis",
+    "status": "caution",
+    "caution": "Contains pyrrolizidine alkaloids that can harm the liver. Avoid regular use of leaves, and avoid in pregnancy."
+  },
+  {
+    "slug": "tamarind",
+    "name": "Tamarind",
+    "latin": "Tamarindus indica",
+    "status": "culinary",
+    "caution": "Pulp is mildly laxative in large amounts."
+  },
+  {
+    "slug": "baobab",
+    "name": "African baobab",
+    "latin": "Adansonia digitata",
+    "status": "culinary",
+    "caution": "Respect community and customary ownership of trees."
+  },
+  {
+    "slug": "african-wormwood",
+    "name": "African wormwood",
+    "latin": "Artemisia afra",
+    "status": "caution",
+    "caution": "Contains thujone; large amounts are toxic to the nervous system. Avoid in pregnancy."
+  },
+  {
+    "slug": "spekboom",
+    "name": "Spekboom",
+    "latin": "Portulacaria afra",
+    "status": "culinary",
+    "caution": "Many succulents are toxic, including jade plant; confirm the species."
+  },
+  {
+    "slug": "holy-basil",
+    "name": "Holy basil",
+    "latin": "Ocimum tenuiflorum",
+    "status": "study",
+    "caution": "Medicinal-strength use may affect blood sugar and blood clotting; ask a clinician."
+  },
+  {
+    "slug": "butterfly-pea",
+    "name": "Butterfly pea",
+    "latin": "Clitoria ternatea",
+    "status": "culinary",
+    "caution": "Seeds and roots are strongly laxative; use flowers only."
+  },
+  {
+    "slug": "water-spinach",
+    "name": "Water spinach",
+    "latin": "Ipomoea aquatica",
+    "status": "culinary",
+    "caution": "Wild plants from polluted water can carry parasites and heavy metals; cook well. It is a regulated invasive in some countries."
+  },
+  {
+    "slug": "japanese-knotweed",
+    "name": "Japanese knotweed",
+    "latin": "Reynoutria japonica",
+    "status": "caution",
+    "caution": "Often sprayed with herbicide; ask the landowner. High in oxalate. Never move plant fragments, which regrow."
+  },
+  {
+    "slug": "yerba-mate",
+    "name": "Yerba mate",
+    "latin": "Ilex paraguariensis",
+    "status": "culinary",
+    "caution": "Contains caffeine. Very hot mate drunk regularly is linked to esophageal cancer; let it cool."
+  },
+  {
+    "slug": "maqui",
+    "name": "Maqui",
+    "latin": "Aristotelia chilensis",
+    "status": "culinary",
+    "caution": "Confirm the plant; several shrubs with dark berries grow in the same forests."
+  },
+  {
+    "slug": "calafate",
+    "name": "Calafate",
+    "latin": "Berberis microphylla",
+    "status": "culinary",
+    "caution": "Roots and bark contain berberine and are not for casual use."
+  },
+  {
+    "slug": "huacatay",
+    "name": "Huacatay",
+    "latin": "Tagetes minuta",
+    "status": "culinary",
+    "caution": "Use as a seasoning in small amounts; the oil can irritate skin."
+  },
+  {
+    "slug": "kawakawa",
+    "name": "Kawakawa",
+    "latin": "Piper excelsum",
+    "status": "study",
+    "caution": "Traditional practice selects insect-chewed leaves; follow guidance from Māori knowledge holders."
+  },
+  {
+    "slug": "manuka",
+    "name": "Mānuka",
+    "latin": "Leptospermum scoparium",
+    "status": "study",
+    "caution": "Tea tree oil from Melaleuca is a different plant and is toxic if swallowed."
+  },
+  {
+    "slug": "sour-fig",
+    "name": "Sour fig",
+    "latin": "Carpobrotus edulis",
+    "status": "culinary",
+    "caution": "Leaf juice is used on skin in traditional practice; confirm the species."
+  },
+  {
+    "slug": "purple-passionflower",
+    "name": "Purple passionflower",
+    "latin": "Passiflora incarnata",
+    "status": "caution",
+    "caution": "Can cause drowsiness; avoid with sedatives and in pregnancy."
+  },
+  {
+    "slug": "valerian",
+    "name": "Valerian",
+    "latin": "Valeriana officinalis",
+    "status": "caution",
+    "caution": "Can cause drowsiness and interact with sedatives. Not for use with alcohol or before driving."
+  },
+  {
+    "slug": "common-mallow",
+    "name": "Common mallow",
+    "latin": "Malva sylvestris",
+    "status": "culinary",
+    "caution": "Can accumulate nitrate in fertilized soils."
+  },
+  {
+    "slug": "deadly-nightshade",
+    "name": "Deadly nightshade",
+    "latin": "Atropa bella-donna",
+    "status": "toxic",
+    "caution": "All parts contain tropane alkaloids. A few berries can seriously poison a child. Seek urgent poison-service advice after any exposure."
+  },
+  {
+    "slug": "giant-hogweed",
+    "name": "Giant hogweed",
+    "latin": "Heracleum mantegazzianum",
+    "status": "toxic",
+    "caution": "Sap on skin plus sunlight causes severe burns and long-lasting scars. Wash skin immediately, cover it from sun, and seek medical advice. Keep children and pets away."
+  },
+  {
+    "slug": "jimsonweed",
+    "name": "Jimsonweed",
+    "latin": "Datura stramonium",
+    "status": "toxic",
+    "caution": "Tropane alkaloids cause delirium, fever, rapid heart rate and death. Seeds contaminate grain and vegetable crops. Seek urgent help after exposure."
+  },
+  {
+    "slug": "pokeweed",
+    "name": "American pokeweed",
+    "latin": "Phytolacca americana",
+    "status": "toxic",
+    "caution": "Roots, mature stems, leaves and berries are poisonous. Traditional poke sallet uses specific preparation that does not make casual use safe."
+  },
+  {
+    "slug": "castor-bean",
+    "name": "Castor bean",
+    "latin": "Ricinus communis",
+    "status": "toxic",
+    "caution": "Seeds contain ricin; chewing even a few can be fatal. Keep seeds away from children and pets."
+  },
+  {
+    "slug": "oleander",
+    "name": "Oleander",
+    "latin": "Nerium oleander",
+    "status": "toxic",
+    "caution": "Contains cardiac glycosides. Leaves, flowers, sap and smoke from burning are dangerous. Never use stems as skewers."
+  },
+  {
+    "slug": "monkshood",
+    "name": "Monkshood",
+    "latin": "Aconitum napellus",
+    "status": "toxic",
+    "caution": "Contains aconitine, which can be absorbed through skin and causes fatal heart rhythm problems. Wear gloves in gardens and seek urgent care after exposure."
+  },
+  {
+    "slug": "death-camas",
+    "name": "Meadow death camas",
+    "latin": "Toxicoscordion venenosum",
+    "status": "toxic",
+    "caution": "All parts contain steroidal alkaloids. Bulbs have been confused with edible camas and wild onions, with fatal results."
+  },
+  {
+    "slug": "green-false-hellebore",
+    "name": "Green false hellebore",
+    "latin": "Veratrum viride",
+    "status": "toxic",
+    "caution": "Highly toxic alkaloids cause vomiting, slowed heart rate and low blood pressure. Spring shoots have been mistaken for ramps and other greens."
+  },
+  {
+    "slug": "hemlock-water-dropwort",
+    "name": "Hemlock water dropwort",
+    "latin": "Oenanthe crocata",
+    "status": "toxic",
+    "caution": "Contains oenanthotoxin, which causes seizures and death. Roots have been mistaken for wild parsnip or carrot, and leaves for celery."
+  },
+  {
+    "slug": "lords-and-ladies",
+    "name": "Lords-and-ladies",
+    "latin": "Arum maculatum",
+    "status": "toxic",
+    "caution": "Contains calcium oxalate crystals that burn the mouth and throat. Leaves grow among wild garlic and have been gathered by mistake."
+  },
+  {
+    "slug": "yew",
+    "name": "European yew",
+    "latin": "Taxus baccata",
+    "status": "toxic",
+    "caution": "Contains taxine alkaloids that stop the heart. The red aril flesh is not toxic, but the seed inside is. Never eat any part."
+  },
+  {
+    "slug": "lantana",
+    "name": "Lantana",
+    "latin": "Lantana camara",
+    "status": "toxic",
+    "caution": "Unripe berries and leaves are toxic to people and livestock and can cause liver damage and sun sensitivity in animals."
   }
 ]

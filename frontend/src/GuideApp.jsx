@@ -8,6 +8,7 @@ import FollowButton from './components/FollowButton'
 import GuideHeader from './components/GuideHeader'
 import SeasonalChart from './components/SeasonalChart'
 import DataFreshness from './components/DataFreshness'
+import SpeciesDistribution from './components/SpeciesDistribution'
 import { EditorialReview, ReviewQueue } from './components/EditorialReview'
 import { speciesBySlug, speciesGuides, speciesPathForTaxon } from './content/species.generated'
 import { regionBySlug, regions } from './data/regions'
@@ -18,8 +19,10 @@ import { FUNGI_HOME } from './lib/navigation'
 import { applyGuideMetadata } from './lib/guideSeo'
 import { trackPageView } from './lib/googleTag'
 import { foragingBySlug } from './content/foraging.generated'
+import counts from './data/catalogue-counts.json'
 import { ForagingIndex, ForagingArticle, ForagingCards, GuideContents } from './components/ForagingGuides'
 import './mycelial.css'
+import './occurrence.css'
 
 const EDIBLE_GROUP = new Set(['choice', 'edible'])
 const HAZARD_GROUP = new Set(['poisonous', 'deadly'])
@@ -348,6 +351,7 @@ function SpeciesPage({ species, summary, user, updatedAt }) {
         </dl>
 
         <EditorialReview collection="fungi" slug={species.slug} />
+        <SpeciesDistribution collection="fungi" slug={species.slug} name={species.common_name} mapHref={`/map?taxon=${species.taxon_id}`} />
         <PublicDataDate updatedAt={updatedAt} />
         <SeasonalChart taxonId={species.taxon_id} />
 
@@ -509,7 +513,7 @@ function AboutPage() {
           <article><h2>What reviewed means</h2><p>Public observations have passed source or community review and use privacy-safe coordinates. Review supports data quality; it does not certify the mushroom in a visitor's hand.</p></article>
           <article id="editorial"><h2>How guide content is handled</h2><p>Species content lives as Markdown in the public repository, so changes are versioned and reviewable. Pages name their compiler, review status, date, and sources. Until a qualified expert signs off, they say that review is pending.</p></article>
           <article id="corrections"><h2>Corrections and contact</h2><p>Send the page URL, the statement in question, and a reliable supporting source to <a href="mailto:morphiclabsdata@gmail.com">morphiclabsdata@gmail.com</a>. Corrections are recorded in the <a href="https://github.com/tennysonmilesperhour/utah-forage-map/commits/main/">public revision history</a>. A content update is not an independent expert review; review status changes only after a qualified reviewer signs off.</p></article>
-          <article><h2>Coverage and limitations</h2><p>The collection includes 30 mushroom guides, 44 wild plant profiles, ten mushroom habitat regions, and a growing field-skills library. Observation coverage depends on public records and varies considerably by country. This is a developing reference, not a complete catalogue of all edible or poisonous species worldwide.</p></article>
+          <article><h2>Coverage and limitations</h2><p>The collection includes {counts.fungi} mushroom guides, {counts.herbs} wild plant profiles, ten mushroom habitat regions, and a growing field-skills library. Observation coverage depends on public records and varies considerably by country. This is a developing reference, not a complete catalogue of all edible or poisonous species worldwide.</p></article>
           <article><h2>What we cite</h2><p>Safety and medical claims prioritize poison centers, government agencies, university resources, toxicology literature, and established mycological organizations. Observation photography is licensed and attributed.</p></article>
           <article><h2>How locations are protected</h2><p>Approximate public coordinates are shifted before publication. Exact contributor coordinates remain private unless the contributor explicitly chooses otherwise.</p></article>
           <article><h2>Analytics and cookies</h2><p>Google Analytics is optional and stays off until you allow it. When enabled, it helps us understand aggregate use of maps and guides; advertising storage and personalization remain off. Read the <a href="/privacy">privacy notice</a> or reopen Privacy choices at any time to change your selection.</p></article>
@@ -537,6 +541,7 @@ function PrivacyPage() {
           <article><h2>Supporter memberships</h2><p>Stripe processes annual supporter payments and stores payment details. We keep the Stripe customer and subscription identifiers, membership status, and paid-through date to manage renewals and profile benefits. We do not store card numbers. Your profile name appears on the supporter list only if you opt in; you can remove it on the <a href="/supporters">membership page</a>. Deleting your account stops future supporter renewals. Payment records held by Stripe may remain for accounting and payment obligations. For billing or privacy help, contact <a href="mailto:morphiclabsdata@gmail.com">morphiclabsdata@gmail.com</a>.</p></article>
           <article><h2>Account and community data</h2><p>Account email is used for account access. Public observations follow the location-privacy choice selected by the contributor; approximate coordinates are shifted before publication, and private coordinates remain in the contributor's notebook.</p></article>
           <article><h2>Profiles and gathering collections</h2><p>Your optional chart placements, profile biography, gathering coordinates, notes and harvest amounts are saved to your account. Profiles and charts are private. Collections begin private; you can publish a collection or individual places and separately choose to publish exact coordinates and harvest dates and amounts. Public pages exclude field and harvest notes. Named accounts you invite can read exact locations, notes and history for the scope you grant. You can revoke access, edit or delete records, clear chart placements, or delete your account to remove its journal data. Copies already made by readers cannot be recalled. This feature does not collect birth dates, birth times or birthplaces.</p></article>
+          <article><h2>Photo ID suggestions</h2><p>Adding a photo to Suggest an ID is optional. Your browser shrinks the photo and redraws it, which removes camera data such as GPS position, before it is sent. Our server passes it to Anthropic's Claude API to compare with the catalogue and keeps no copy. To limit use, we record only a one-way hash of your network address and the time of each check. Anthropic processes the photo under its <a href="https://www.anthropic.com/legal/commercial-terms" target="_blank" rel="noreferrer">commercial terms <ExternalLink size={13} aria-hidden="true" /></a>.</p></article>
           <article><h2>The map’s starting country</h2><p>We use the approximate country supplied by our hosting provider to open the map near you. This does not request precise device location or save a location to your account. Mapbox supplies the map and, when needed, country bounds. A VPN can change the detected country; you can search for any place or choose the map’s location button to use device location.</p></article>
         </section>
         <a className="button button-primary" href="/map">Return to the field map <ArrowRight size={16} aria-hidden="true" /></a>

@@ -1,5 +1,6 @@
 import { SITE_URL, DEFAULT_IMAGE, HERB_IMAGE, FUNGI_LIBRARY_METADATA, siteEntities, applyMetadata } from './siteIdentity'
 export { SITE_URL } from './siteIdentity'
+import counts from '../data/catalogue-counts.json' with { type: 'json' }
 
 const PAGE_METADATA = {
   gatheringWays: { path: '/herbs/gathering-ways', title: 'Ways of Gathering | Plant Traditions, Reciprocity & Field Practice', description: 'Explore named plant traditions, lunar gardening, reciprocity and field journaling. Cultural practice is distinguished from identification and evidence of safe use.' },
@@ -23,12 +24,12 @@ const PAGE_METADATA = {
   herbMap: {
     path: '/herbs/map',
     title: 'Global Herb Foraging Map | Wild Plant Observations',
-    description: 'Explore real, publicly shared wild herb observations worldwide. Search by country, plant, date and month, with 44 atlas profiles, source credits and location privacy.',
+    description: `Explore real, publicly shared wild herb observations worldwide as iNaturalist-style squares. Search by country, plant, date and month, with ${counts.herbs} atlas profiles and growing zones.`,
   },
   herbs: {
     path: '/herbs',
     title: 'Wild Herb Foraging Guide & Plant Atlas | The Verdant Hours',
-    description: 'Explore 44 wild plant profiles, toxic lookalikes, regional seasons, and responsible herb gathering. Plan field visits with The Verdant Hours almanac.',
+    description: `Explore ${counts.herbs} wild plant profiles, toxic lookalikes, regional seasons, and responsible herb gathering. Plan field visits with The Verdant Hours almanac.`,
   },
 }
 

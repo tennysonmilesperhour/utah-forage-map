@@ -16,7 +16,7 @@ test('pantry catalogue uses atlas identifiers and excludes toxic references on b
   const back = await json('../../backend/app/data/companion-plants.json')
   assert.deepEqual(front, back)
   assert.deepEqual(front.map(p => p.slug), atlas.map(p => p.slug))
-  assert.equal(front.filter(p => p.status !== 'toxic').length, 37)
+  assert.equal(front.filter(p => p.status !== 'toxic').length, 93)
 })
 test('collection navigation has five stable destinations and public gathering route', () => {
   assert.equal(herbNavigation.length, 5)
@@ -27,7 +27,7 @@ test('collection navigation has five stable destinations and public gathering ro
 test('published specialist reviews require a named reviewer, scope and evidence', async () => {
   const reviews = await json('../src/data/editorialReviews.json')
   const coverage = await json('../src/data/editorialCoverage.json')
-  assert.equal(new Set(coverage.map(p => p.key)).size, 74)
+  assert.equal(new Set(coverage.map(p => p.key)).size, 221)
   for (const [key, review] of Object.entries(reviews)) {
     assert.ok(coverage.some(p => p.key === key))
     for (const field of ['reviewer', 'credentials', 'date', 'scope', 'evidence']) assert.ok(review[field]?.trim(), `${key}: missing ${field}`)

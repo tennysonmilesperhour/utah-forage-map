@@ -1,3 +1,5 @@
+import counts from '../data/catalogue-counts.json' with { type: 'json' }
+
 export const SITE_URL = 'https://worldmushroomforaging.org'
 export const SITE_NAME = 'Mushroom Forage Map'
 export const SUPPORT_EMAIL = 'morphiclabsdata@gmail.com'
@@ -5,7 +7,7 @@ export const DEFAULT_IMAGE = `${SITE_URL}/images/fungi/forest-floor-extended.web
 export const FUNGI_LIBRARY_METADATA = {
   path: '/',
   title: 'Fungi Library | Mushroom Identification, Field Marks & Lookalikes',
-  description: 'Explore the living fungi library: 30 mushroom profiles with field marks, dangerous lookalikes, licensed photos, cited safety guidance, and recent reviewed observations.',
+  description: `Explore the living fungi library: ${counts.fungi} mushroom profiles with field marks, dangerous lookalikes, licensed photos, cited safety guidance, and recent reviewed observations.`,
 }
 export const HERB_IMAGE = `${SITE_URL}/images/herbs/forest-immersion.webp`
 

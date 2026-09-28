@@ -1,11 +1,12 @@
 import DataFreshness from './components/DataFreshness'
 import { lazy, Suspense, useEffect, useState } from 'react'
-import { CheckCircle2, Filter, MailCheck, MapPin, NotebookPen, SearchX, Sprout } from 'lucide-react'
+import { CheckCircle2, Filter, MailCheck, MapPin, NotebookPen, SearchX, Sparkles, Sprout } from 'lucide-react'
 import AccountWorkspace from './components/AccountWorkspace'
 import AppHeader from './components/AppHeader'
 import AuthDialog from './components/AuthDialog'
 import CommunityPanel from './components/CommunityPanel'
 import GuestPrompt from './components/GuestPrompt'
+import OccurrenceLegend from './components/OccurrenceLegend'
 import ObservationRecord from './components/ObservationRecord'
 import PlaceSearch from './components/PlaceSearch'
 import Sidebar from './components/Sidebar'
@@ -14,15 +15,20 @@ import { useCurrentUser, useLogout, useVerifyEmail } from './hooks/useAuth'
 import { useSaveLocation } from './hooks/useAccount'
 import { useCreateAlert } from './hooks/useCompanion'
 import { useCommunityPortal, useCreateSighting, useSightings, useSpecies } from './hooks/useSightings'
+import { useGrowingZone, useOccurrence } from './hooks/useOccurrence'
 import { useUnitSystem } from './hooks/useUnits'
 import { useVisitorCountry } from './hooks/useVisitorCountry'
 import { countActiveFilters, DEFAULT_FILTERS } from './lib/filters'
 import { regionBySlug } from './data/regions'
+import { hemisphereFor } from './data/occurrence'
+import { speciesIndexBySlug, speciesIndexByTaxon } from './content/species-index.generated'
 import { applyPageMetadata, pathForView, viewFromPathname } from './lib/seo'
 import { trackPageView, trackFieldEvent } from './lib/googleTag'
 import './mycelial.css'
+import './occurrence.css'
 
 const MapView = lazy(() => import('./components/MapView'))
+const IdentifyPanel = lazy(() => import('./components/IdentifyPanel'))
 export default function App({ path = '/map' }) {
   const initialParams = new URLSearchParams(typeof window === 'undefined' ? '' : window.location.search)
   const initialTaxonId = Number(initialParams.get('taxon')) || undefined
@@ -48,6 +54,8 @@ export default function App({ path = '/map' }) {
   const [followHandled, setFollowHandled] = useState(false)
   const [observationHandled, setObservationHandled] = useState(false)
   const [toast, setToast] = useState('')
+  const [userZoneFitKey, setZoneFitKey] = useState(null)
+  const [identifyOpen, setIdentifyOpen] = useState(() => initialParams.get('identify') === '1')
   const [guestPromptVisible, setGuestPromptVisible] = useState(
     () => typeof window === 'undefined' || window.localStorage.getItem('ufm:onboarding:guest-message:v1') !== 'true',
   )
@@ -65,8 +73,22 @@ export default function App({ path = '/map' }) {
   const { data: portal = {}, isLoading: portalLoading } = useCommunityPortal()
   const createSighting = useCreateSighting()
   const displayedSpeciesCount = new Set(sightings.map(item => item.species_id)).size
-  const sourceCount = new Set(sightings.map(item => item.source)).size
   const activeFilterCount = countActiveFilters(filters)
+  const filterTaxonId = species.find(item => item.id === filters.species_id)?.inaturalist_taxon_id ?? filters.taxon_id
+  // An open record focuses its own species; otherwise the species filter decides.
+  const focusGuide = speciesIndexByTaxon[selected?.species?.inaturalist_taxon_id] ?? speciesIndexByTaxon[filterTaxonId] ?? null
+  const focus = focusGuide ? { slug: focusGuide.slug, name: focusGuide.common_name, latin: focusGuide.latin_name } : null
+  const occurrence = useOccurrence('fungi', focus?.slug)
+  const growingZone = useGrowingZone('fungi', focus?.slug)
+  const zone = focus ? growingZone.data ?? null : null
+  const hemisphere = hemisphereFor(viewport ? (viewport.north + viewport.south) / 2 : NaN)
+  // A guide's "Show on map" link opens on the species' whole growing zone.
+  const arrivalSlug = speciesIndexByTaxon[initialTaxonId]?.slug
+  const zoneFitKey = userZoneFitKey ?? (arrivalSlug && zone && focus?.slug === arrivalSlug ? `arrival:${arrivalSlug}` : null)
+  const mapCentre = viewport ? {
+    latitude: (viewport.north + viewport.south) / 2,
+    longitude: viewport.west <= viewport.east ? (viewport.west + viewport.east) / 2 : ((viewport.west + viewport.east + 360) / 2 + 180) % 360 - 180,
+  } : null
 
   useEffect(() => {
     if (!initialTaxonId || species.length === 0) return
@@ -179,6 +201,14 @@ export default function App({ path = '/map' }) {
     setSubmissionOpen(true)
   }
 
+  function focusSpecies(slug) {
+    const taxonId = speciesIndexBySlug[slug]?.taxon_id
+    const match = species.find(item => item.inaturalist_taxon_id === taxonId)
+    setSelected(null)
+    setFilters(current => ({ ...current, species_id: match?.id, taxon_id: match ? undefined : taxonId }))
+    trackFieldEvent('id_helper_focus', 'fungi')
+  }
+
   function goToPlace(target) {
     setSelected(null)
     setFlyTarget({ ...target, selectedAt: Date.now() })
@@ -276,6 +306,9 @@ export default function App({ path = '/map' }) {
               draftLocation={draftLocation}
               onMapClick={submissionOpen ? setDraftLocation : undefined}
               isPickingLocation={submissionOpen}
+              density={occurrence.data ?? null}
+              zone={zone}
+              zoneFitKey={zoneFitKey}
             />}
           </Suspense>
 
@@ -286,6 +319,9 @@ export default function App({ path = '/map' }) {
             <button className="map-filter-button" type="button" onClick={() => setFiltersOpen(true)}>
               <Filter size={17} aria-hidden="true" /> Filters
               {activeFilterCount > 0 && <span className="filter-count" aria-label={`${activeFilterCount} active filters`}>{activeFilterCount}</span>}
+            </button>
+            <button className={`map-filter-button map-identify-button ${identifyOpen ? 'active' : ''}`} type="button" aria-expanded={identifyOpen} onClick={() => setIdentifyOpen(open => !open)}>
+              <Sparkles size={17} aria-hidden="true" /> Suggest an ID
             </button>
             <div className="map-results" aria-live="polite">
               <MapPin size={17} aria-hidden="true" />
@@ -301,9 +337,18 @@ export default function App({ path = '/map' }) {
             </button>
           </div>
 
-          <div className="map-legend" aria-label={`${sourceCount} observation sources`}>
-            <span><i className="legend-dot recent" /> Recent, reviewed field observations</span>
-          </div>
+          <OccurrenceLegend
+            className={`map-occurrence-legend ${selected ? 'is-compact' : ''}`}
+            collection="fungi"
+            focus={focus}
+            hemisphere={hemisphere}
+            zone={zone}
+            zoneLoading={growingZone.isLoading}
+            onFitZone={() => setZoneFitKey(Date.now())}
+            onClear={selected ? () => setSelected(null) : () => setFilters(current => ({ ...current, species_id: undefined, taxon_id: undefined }))}
+            clearLabel={selected ? 'Close this record' : 'Show all species'}
+            guideHref={focus ? `/learn/species/${focus.slug}` : undefined}
+          />
 
           {sightingsError && <div className="map-empty-state" role="alert"><div><strong>Observations could not be loaded</strong><p>The map is still available. Retry, or browse the library.</p></div><button className="button button-secondary" onClick={() => { trackFieldEvent('map_retry', 'fungi'); retrySightings() }}>Retry records</button><a href="/">Open library</a></div>}
           {!sightingsError && !isLoading && sightings.length === 0 && !submissionOpen && (
@@ -319,7 +364,13 @@ export default function App({ path = '/map' }) {
             </div>
           )}
 
-          {!authLoading && !user && guestPromptVisible && !submissionOpen && !selected && sightings.length > 0 && (
+          {identifyOpen && (
+            <Suspense fallback={null}>
+              <IdentifyPanel className="map-identify-panel" collection="fungi" location={mapCentre} onClose={() => setIdentifyOpen(false)} onShowOnMap={focusSpecies} />
+            </Suspense>
+          )}
+
+          {!authLoading && !user && guestPromptVisible && !submissionOpen && !selected && !identifyOpen && sightings.length > 0 && (
             <GuestPrompt
               onDismiss={dismissGuestPrompt}
               onCreateAccount={() => openAuth('register')}

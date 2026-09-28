@@ -13,7 +13,7 @@ test('the home page serves the fungi library and the map has its own canonical p
   assert.ok(home && map)
   assert.match(home('title').text(), /Fungi Library/)
   assert.ok(home('.learn-hero').length)
-  assert.equal(home('.guide-species-card').length, 30)
+  assert.equal(home('.guide-species-card').length, 108)
   assert.equal(home('.collection-nav a[aria-current="page"]').text().trim(), 'Library')
   assert.ok(home('a[href="/map"]').length)
   assert.ok(map('.map-stage').length)

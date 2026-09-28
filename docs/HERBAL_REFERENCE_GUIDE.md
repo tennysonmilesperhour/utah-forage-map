@@ -4,7 +4,7 @@ Source-check date: **9 September 2026**. Independent botanical field review is *
 
 ## Scope and navigation
 
-The guide starts a global botanical reference alongside the existing fungi guide. It contains 44 source-linked profiles, six regional collections, seven explicitly toxic reference plants, 73 licensed botanical photographs, six field-skills chapters, a glossary, and an editorial coverage page. It covers selected culinary plants, teas, cultivated herbs and traditional-use plants for study. It does not provide medicinal dosing or treatment recipes.
+The guide starts a global botanical reference alongside the existing fungi guide. It contains 113 source-linked profiles (44 from 9 September 2026 and 69 added on 27 September 2026), six regional collections, 20 explicitly toxic reference plants, 211 licensed botanical photographs, six field-skills chapters, a glossary, and an editorial coverage page. It covers selected culinary plants, teas, cultivated herbs and traditional-use plants for study. It does not provide medicinal dosing or treatment recipes.
 
 - `/herbs/atlas`: common/scientific-name and synonym search, accent normalization, region/habitat/use/reference-type/growth-stage facets, local saved plants and a two-plant comparison tray.
 - `/herbs/atlas/:slug`: a shareable, printable profile with field marks, dangerous lookalikes, range, local-season context, preparation, stewardship, source links and photo credits.
@@ -71,4 +71,4 @@ Corrections: **morphiclabsdata@gmail.com**. Include the affected plant page, pro
 
 ## Validation
 
-From `frontend`: `npm run lint`, `npm run build`, then `npm run test:herbs`. Tests cover synonyms, intersecting filters, saved-only empty results, toxic-label invariants, source/asset/route integrity, regional links, all 44 prerendered profiles and 54 sitemap routes, and empty/duplicate comparison selections. Browser checks cover desktop and 390px mobile layouts, search, saved plants, comparison hydration, navigation and overflow. These tests verify software and content structure; they are not botanical field validation.
+From `frontend`: `npm run lint`, `npm run build`, then `npm run test:herbs`. Tests cover synonyms, intersecting filters, saved-only empty results, toxic-label invariants, source/asset/route integrity, regional links, every prerendered profile and its sitemap route, and empty/duplicate comparison selections. Browser checks cover desktop and 390px mobile layouts, search, saved plants, comparison hydration, navigation and overflow. These tests verify software and content structure; they are not botanical field validation.
