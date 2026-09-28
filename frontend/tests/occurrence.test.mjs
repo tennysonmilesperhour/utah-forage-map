@@ -6,6 +6,16 @@ import { matchMarks, nearbyEvidence, rankSuggestions, seasonSignal, tilesForLoca
 import { fitWithin, photoSignals } from '../src/lib/photoId.js'
 import { markGroups } from '../src/data/fieldMarks.js'
 import { herbGuides } from '../src/data/herbGuide.js'
+import { createRequire } from 'node:module'
+
+const { Color } = createRequire(import.meta.url)('mapbox-gl/dist/style-spec/index.cjs')
+
+test('map layer colors are supported by the installed Mapbox style parser', async () => {
+  const source = await readFile(new URL('../src/components/MapView.jsx', import.meta.url), 'utf8')
+  const colors = [...source.matchAll(/['"](#[0-9a-fA-F]+|rgba?\([^)'"\n]+\))['"]/g)].map(match => match[1])
+  assert.ok(colors.length > 0)
+  for (const color of colors) assert.ok(Color.parse(color), `Mapbox rejects ${color}`)
+})
 
 const json = async path => JSON.parse(await readFile(new URL(path, import.meta.url), 'utf8'))
 const fungiSlugs = (await readdir(new URL('../content/species/', import.meta.url))).filter(file => file.endsWith('.md')).map(file => file.replace(/^\d+-/, '').replace(/\.md$/, ''))
