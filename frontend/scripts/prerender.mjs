@@ -87,7 +87,7 @@ function applyMetadata($, metadata) {
 for (const route of appRoutes) {
   const metadata = renderer.pageMetadataForPath(route)
   const $ = load(template)
-  $('#root').html(renderer.renderApp(route))
+  $('#root').attr('data-prerendered-path', route).html(renderer.renderApp(route))
   applyMetadata($, metadata)
   const structuredData = renderer.pageStructuredDataForPath(route)
   if (structuredData) {
@@ -104,7 +104,7 @@ for (const route of routes) {
   const metadata = renderer.guideMetadataForPath(route)
   const $ = load(template)
   const snapshot = snapshotFor(route)
-  $('#root').html(renderer.renderGuide(route, snapshot))
+  $('#root').attr('data-prerendered-path', route).html(renderer.renderGuide(route, snapshot))
   if (snapshot.length) $('body').append(`<script id="public-query-snapshot" type="application/json">${JSON.stringify(snapshot).replace(/</g, '\\u003c')}</script>`)
 
   applyMetadata($, metadata)
@@ -120,7 +120,7 @@ for (const route of routes) {
 for (const route of herbRoutes) {
   const metadata = renderer.herbGuideMetadata(route)
   const $ = load(template)
-  $('#root').html(renderer.renderHerbGuide(route))
+  $('#root').attr('data-prerendered-path', route).html(renderer.renderHerbGuide(route))
   applyMetadata($, metadata)
   updateMeta($, 'meta[property="og:type"]', 'content', metadata.plant ? 'article' : 'website')
   $('script[type="application/ld+json"]').remove()

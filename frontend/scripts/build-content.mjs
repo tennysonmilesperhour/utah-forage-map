@@ -19,6 +19,14 @@ const requiredImageFields = [
 
 marked.use({ gfm: true })
 
+// YAML parses unquoted dates as Date objects, which would serialize as full
+// timestamps; the guide renders these as calendar days, so keep YYYY-MM-DD.
+function calendarDate(value, file, field) {
+  const date = value instanceof Date ? value.toISOString().slice(0, 10) : String(value)
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) throw new Error(`${file} ${field} must be a YYYY-MM-DD date: ${value}`)
+  return date
+}
+
 const files = (await readdir(contentDirectory)).filter(file => file.endsWith('.md')).sort()
 const guides = []
 const slugs = new Set()
@@ -56,9 +64,8 @@ for (const file of files) {
   guides.push({
     ...data,
     taxon_id: Number(data.taxon_id),
-    last_reviewed: data.last_reviewed instanceof Date
-      ? data.last_reviewed.toISOString().slice(0, 10)
-      : String(data.last_reviewed),
+    last_reviewed: calendarDate(data.last_reviewed, file, 'last_reviewed'),
+    ...(data.last_updated != null && { last_updated: calendarDate(data.last_updated, file, 'last_updated') }),
     content_html: $.html(), headings, sources, source_file: `content/species/${file}`,
   })
 }
