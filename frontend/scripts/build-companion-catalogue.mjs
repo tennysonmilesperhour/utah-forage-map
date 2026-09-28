@@ -29,6 +29,13 @@ const fungi = species
   }))
 await writeFile(new URL('../../backend/app/data/fungi-species.json', import.meta.url), JSON.stringify(fungi, null, 2) + '\n')
 
+// Photo ID compares a photo against this fixed list; the server never takes names from the browser.
+const identifyCandidates = {
+  fungi: species.map(data => ({ slug: data.slug, name: data.common_name, latin: data.latin_name })),
+  herbs: profiles.map(({ slug, name, latin }) => ({ slug, name, latin })),
+}
+await writeFile(new URL('../../backend/app/data/identify-candidates.json', import.meta.url), JSON.stringify(identifyCandidates, null, 2) + '\n')
+
 // Page copy and metadata read these so catalogue counts cannot drift from the data.
 const counts = { fungi: species.length, herbs: profiles.length, herbToxic: profiles.filter(p => p.status === 'toxic').length }
 await writeFile(new URL('../src/data/catalogue-counts.json', import.meta.url), JSON.stringify(counts, null, 2) + '\n')

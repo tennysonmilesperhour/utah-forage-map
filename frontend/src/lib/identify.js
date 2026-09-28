@@ -1,6 +1,8 @@
 // Suggest-an-ID, modelled on iNaturalist's suggestions: candidates ranked by the field marks
-// someone saw, by who has recorded them nearby ("Seen nearby") and by the growing zone
-// ("Expected nearby"), with a seasonal check. It narrows the search; it never identifies.
+// someone saw, by an optional photo comparison, by who has recorded them nearby ("Seen nearby")
+// and by the growing zone ("Expected nearby"), with a seasonal check. It narrows the search;
+// it never identifies.
+import { photoScore } from './photoId.js'
 
 export const NEARBY_RADIUS_CELLS = 1
 
@@ -62,7 +64,7 @@ export function matchMarks(traits = {}, selected = {}) {
   return { chosen: chosen.length, matched, missed }
 }
 
-export function rankSuggestions({ candidates, traits, selected = {}, evidence, month, hemisphere, summaries, limit = 12 }) {
+export function rankSuggestions({ candidates, traits, selected = {}, evidence, month, hemisphere, summaries, photo = null, limit = 12 }) {
   const seenMax = Math.max(1, ...(evidence ? [...evidence.seen.values()] : [1]))
   const anyNearby = evidence && (evidence.seen.size > 0 || evidence.expected.size > 0)
   const scored = candidates.map(candidate => {
@@ -71,17 +73,20 @@ export function rankSuggestions({ candidates, traits, selected = {}, evidence, m
     const expected = evidence?.expected.has(candidate.slug) ?? false
     const inSeason = seasonSignal(summaries[candidate.slug]?.months?.[hemisphere], month)
     const markScore = marks.chosen ? marks.matched.length / marks.chosen : 0.5
-    const score = 3 * markScore - 3 * marks.missed.length
+    const photoMatch = photo?.get(candidate.slug) ?? null
+    const score = 3 * markScore - 3 * marks.missed.length + photoScore(photoMatch)
       + 2 * (seenPeople ? Math.log1p(seenPeople) / Math.log1p(seenMax) : 0)
       + (expected ? 1.5 : 0)
       + (inSeason === null ? 0.5 : inSeason ? 1 : 0)
-    return { ...candidate, marks, seenPeople, expected, inSeason, score }
+    return { ...candidate, marks, seenPeople, expected, inSeason, photo: photoMatch, score }
   })
   // Near a mapped place, suggestions stay local, as on iNaturalist. Elsewhere field marks decide.
-  const local = anyNearby ? scored.filter(item => item.seenPeople > 0 || item.expected) : scored
+  // A photo match always stays listed, so a lookalike from outside the area is still checked.
+  const local = anyNearby ? scored.filter(item => item.photo || item.seenPeople > 0 || item.expected) : scored
   return local
-    .filter(item => item.marks.missed.length === 0 || item.marks.matched.length >= 2)
-    .sort((a, b) => b.score - a.score || b.seenPeople - a.seenPeople || a.name.localeCompare(b.name))
+    .filter(item => item.photo || item.marks.missed.length === 0 || item.marks.matched.length >= 2)
+    // Once a photo is compared, entries it resembles lead; records and season order them.
+    .sort((a, b) => Boolean(b.photo) - Boolean(a.photo) || b.score - a.score || b.seenPeople - a.seenPeople || a.name.localeCompare(b.name))
     .slice(0, limit)
 }
 

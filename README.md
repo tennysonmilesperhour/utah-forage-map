@@ -139,6 +139,17 @@ RESEND_API_KEY
 EMAIL_FROM
 ```
 
+Optional backend variables for photo ID suggestions in Suggest an ID:
+
+```text
+ANTHROPIC_API_KEY            # enables the photo button; without it the helper uses field marks only
+IDENTIFY_PHOTO_MODEL         # default claude-opus-5
+IDENTIFY_PHOTO_HOURLY_LIMIT  # checks per network address per hour, default 10
+IDENTIFY_PHOTO_DAILY_LIMIT   # checks across the whole site per day, default 300
+```
+
+The browser resizes each photo to at most 1024 px and redraws it, which drops EXIF data such as GPS position. The API sends it once to Claude with the fixed catalogue list and keeps no copy. Declined requests are retried on Anthropic's default fallback model (`fallbacks: "default"`).
+
 Run migrations and seed once against the production database before the first release:
 
 ```bash

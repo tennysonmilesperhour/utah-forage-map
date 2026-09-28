@@ -114,6 +114,20 @@
 .identify-where small { display: block; margin-top: 2px; color: var(--id-muted); font-size: 10px; }
 .identify-where button, .identify-actions :is(a, button) { display: inline-flex; align-items: center; gap: 6px; min-height: 34px; padding: 0 10px; border: 1px solid var(--id-edge); border-radius: 6px; color: var(--id-ink); background: var(--id-chip); font-size: 11px; text-decoration: none; }
 .identify-where p { flex-basis: 100%; margin: 0; color: var(--id-muted); font-size: 10px; }
+.identify-photo { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: 10px; padding: 10px; border: 1px solid var(--id-edge); border-radius: 8px; }
+.identify-photo > img, .identify-photo-empty { width: 72px; height: 72px; border-radius: 6px; object-fit: cover; background: #ffffff10; }
+.identify-photo-empty { display: grid; place-items: center; color: var(--id-muted); border: 1px dashed var(--id-edge); }
+.identify-photo strong { display: block; font-size: 12px; font-weight: 500; line-height: 1.45; }
+.identify-photo small { display: block; margin-top: 4px; color: var(--id-muted); font-size: 10px; line-height: 1.5; }
+.identify-photo p { margin: 6px 0 0; color: #f0a594; font-size: 10px; }
+.identify-photo-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.identify-photo-actions :is(label, button) { position: relative; display: inline-flex; align-items: center; gap: 6px; min-height: 34px; padding: 0 10px; border: 1px solid var(--id-edge); border-radius: 6px; color: var(--id-ink); background: var(--id-chip); font-size: 11px; cursor: pointer; }
+.identify-photo-actions label:focus-within { outline: 2px solid var(--id-active); outline-offset: 2px; }
+.identify-photo-actions label.disabled { opacity: .6; cursor: progress; }
+.identify-photo-actions input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: inherit; }
+.identify-badges .photo { border-color: var(--id-active); }
+.identify-badges .photo.strong { background: color-mix(in srgb, var(--id-active) 22%, transparent); }
+.identify-photo-features { margin: 6px 0 0; color: var(--id-muted); font-size: 10px; line-height: 1.5; }
 .identify-month { display: flex; align-items: center; justify-content: space-between; gap: 10px; color: var(--id-muted); font-size: 11px; }
 .identify-month select { min-height: 36px; padding: 0 10px; border: 1px solid var(--id-edge); border-radius: 6px; color: var(--id-ink); background: #0000004d; font: inherit; }
 .identify-group { margin: 0; padding: 0; border: 0; }

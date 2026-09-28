@@ -3,6 +3,7 @@ import assert from 'node:assert/strict'
 import { readFile, readdir } from 'node:fs/promises'
 import { cellAt, decodeCells, geometryBounds, GRID_LEVELS, intensityScale, levelForZoom, monthRangeLabel, peakMonths, prepareDataset, squaresGeoJSON } from '../src/lib/occurrenceGrid.js'
 import { matchMarks, nearbyEvidence, rankSuggestions, seasonSignal, tilesForLocation } from '../src/lib/identify.js'
+import { fitWithin, photoSignals } from '../src/lib/photoId.js'
 import { markGroups } from '../src/data/fieldMarks.js'
 import { herbGuides } from '../src/data/herbGuide.js'
 
@@ -70,6 +71,28 @@ test('ID suggestions stay local, respect field marks, and rank people seen nearb
   assert.deepEqual(matchMarks({ colors: ['red', 'orange'] }, { colors: 'orange', underside: undefined }), { chosen: 1, matched: ['colors'], missed: [] })
   const anywhere = rankSuggestions({ candidates, traits, selected: { underside: 'pores' }, evidence: null, month: 0, hemisphere: 'north', summaries })
   assert.deepEqual(anywhere.map(item => item.slug), ['c'], 'without nearby data, field marks alone decide')
+})
+
+test('a photo comparison lifts its matches, keeps an out-of-area lookalike, and never shrinks the photo past the limit', () => {
+  const index = { tile: 30, species: ['a', 'b', 'c'], tiles: ['6_4'] }
+  const evidence = nearbyEvidence(index, [{ cells: { '180_130': { s: [[0, 12], [1, 3]], e: [] } } }], 40.5, 0.5)
+  const candidates = ['a', 'b', 'c', 'd'].map(slug => ({ slug, name: slug.toUpperCase() }))
+  const traits = { a: { underside: ['gills'] }, b: { underside: ['gills'] }, c: { underside: ['pores'] }, d: { underside: ['gills'] } }
+  const summaries = {}
+  const photo = photoSignals({ suggestions: [
+    { slug: 'b', likeness: 'strong', features: 'Ridges fit.' },
+    { slug: 'd', likeness: 'possible', features: 'Colour fits.' },
+    { slug: 'b', likeness: 'weak', features: 'Duplicate.' },
+    { slug: 'x', likeness: 'unknown', features: 'Ignored.' },
+  ] })
+  assert.deepEqual([...photo.keys()], ['b', 'd'])
+  const ranked = rankSuggestions({ candidates, traits, selected: {}, evidence, month: 0, hemisphere: 'north', summaries, photo })
+  assert.deepEqual(ranked.map(item => item.slug), ['b', 'd', 'a'], 'photo matches first; d is listed although not recorded nearby')
+  assert.equal(ranked[0].photo.features, 'Ridges fit.')
+  const without = rankSuggestions({ candidates, traits, selected: {}, evidence, month: 0, hemisphere: 'north', summaries })
+  assert.deepEqual(without.map(item => item.slug), ['a', 'b'])
+  assert.deepEqual(fitWithin(4032, 3024), { width: 1024, height: 768 })
+  assert.deepEqual(fitWithin(600, 800), { width: 600, height: 800 })
 })
 
 test('every catalogue species has squares, a growing zone, a lookup slot and valid field marks', async () => {

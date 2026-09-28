@@ -1,10 +1,12 @@
 import { useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
-import { BookOpen, Crosshair, LoaderCircle, MapPinned, ShieldAlert, Sparkles, X } from 'lucide-react'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import axios from 'axios'
+import { BookOpen, Camera, Crosshair, LoaderCircle, MapPinned, ShieldAlert, Sparkles, X } from 'lucide-react'
 import { fieldMarks, markGroups } from '../data/fieldMarks'
 import { hemisphereFor, occurrenceSummary } from '../data/occurrence'
 import { loadNearbyEvidence, rankSuggestions } from '../lib/identify'
 import { MONTH_NAMES } from '../lib/occurrenceGrid'
+import { PHOTO_LABELS, photoSignals, preparePhoto } from '../lib/photoId'
 
 const EDIBILITY_LABELS = { choice: 'Choice edible', edible: 'Edible-listed', caution: 'Edible with caution', inedible: 'Not a food mushroom', poisonous: 'Poisonous', deadly: 'Deadly' }
 const HERB_LABELS = { culinary: 'Culinary reference', caution: 'Extra care needed', study: 'Study first', toxic: 'Toxic' }
@@ -28,6 +30,13 @@ async function candidatesFor(collection) {
   }))
 }
 
+function photoErrorMessage(error) {
+  const detail = error?.response?.data?.detail
+  if (typeof detail === 'string') return detail
+  if (error?.response?.status === 429) return 'Photo checks are limited for now. Try again later, or use field marks.'
+  return error?.message && !error.response ? error.message : 'The photo could not be checked. Try again, or use field marks.'
+}
+
 function formatCoordinate(value, positive, negative) {
   return `${Math.abs(value).toFixed(2)}° ${value >= 0 ? positive : negative}`
 }
@@ -38,6 +47,8 @@ export default function IdentifyPanel({ collection, location, onClose, onShowOnM
   const [ownLocation, setOwnLocation] = useState(null)
   const [locating, setLocating] = useState(false)
   const [locationError, setLocationError] = useState('')
+  const [photo, setPhoto] = useState(null)
+  const [photoError, setPhotoError] = useState('')
   const place = ownLocation ?? location
   const latitude = place ? Number(place.latitude.toFixed(1)) : null
   const longitude = place ? Number(place.longitude.toFixed(1)) : null
@@ -51,14 +62,47 @@ export default function IdentifyPanel({ collection, location, onClose, onShowOnM
     staleTime: Infinity,
     retry: 1,
   })
+  const photoStatus = useQuery({
+    queryKey: ['identify-status'],
+    queryFn: async () => (await axios.get('/api/identify/status')).data,
+    staleTime: 5 * 60 * 1000,
+    retry: false,
+  })
+  const photoCheck = useMutation({
+    mutationFn: async prepared => (await axios.post('/api/identify/photo', { collection, media_type: prepared.mediaType, image: prepared.image }, { timeout: 90000 })).data,
+  })
+  const photoResult = photo ? photoCheck.data : null
   const suggestions = rankSuggestions({
     candidates, traits: fieldMarks[collection], selected, evidence: evidence.data, month, hemisphere, summaries: occurrenceSummary[collection],
+    photo: photoSignals(photoResult),
   })
   const groups = markGroups[collection]
   const localCount = evidence.data ? new Set([...evidence.data.seen.keys(), ...evidence.data.expected]).size : 0
 
   function choose(key, value) {
     setSelected(current => ({ ...current, [key]: current[key] === value ? undefined : value }))
+  }
+
+  async function choosePhoto(event) {
+    const file = event.target.files?.[0]
+    event.target.value = ''
+    if (!file) return
+    setPhotoError('')
+    photoCheck.reset()
+    try {
+      const prepared = await preparePhoto(file)
+      setPhoto(prepared)
+      photoCheck.mutate(prepared)
+    } catch (error) {
+      setPhoto(null)
+      setPhotoError(error.message)
+    }
+  }
+
+  function clearPhoto() {
+    setPhoto(null)
+    setPhotoError('')
+    photoCheck.reset()
   }
 
   function locateMe() {
@@ -77,7 +121,7 @@ export default function IdentifyPanel({ collection, location, onClose, onShowOnM
         <div>
           <p><Sparkles size={14} aria-hidden="true" />Suggest an ID</p>
           <h2 id="identify-title">What did you find?</h2>
-          <span>Choose what you can see. Suggestions are ranked by your field marks, by who has recorded each {collection === 'herbs' ? 'plant' : 'species'} near you, and by where it is known to grow.</span>
+          <span>Choose what you can see{photoStatus.data?.photo ? ' or add a photo' : ''}. Suggestions are ranked by {photoStatus.data?.photo ? 'what you saw' : 'your field marks'}, by who has recorded each {collection === 'herbs' ? 'plant' : 'species'} near you, and by where it is known to grow.</span>
         </div>
         <button type="button" onClick={onClose} aria-label="Close ID suggestions"><X size={17} /></button>
       </header>
@@ -90,6 +134,26 @@ export default function IdentifyPanel({ collection, location, onClose, onShowOnM
         <button type="button" onClick={ownLocation ? () => setOwnLocation(null) : locateMe} disabled={locating}>{locating ? <LoaderCircle className="spin" size={14} /> : <Crosshair size={14} />}{ownLocation ? 'Use map centre' : 'Use my location'}</button>
         {locationError && <p role="status">{locationError}</p>}
       </div>
+
+      {photoStatus.data?.photo && (
+        <div className="identify-photo">
+          {photo ? <img src={photo.dataUrl} alt="Your photo" /> : <span className="identify-photo-empty" aria-hidden="true"><Camera size={20} /></span>}
+          <div>
+            <strong>{photoCheck.isPending ? 'Comparing your photo with the catalogue…' : photoResult ? photoResult.seen : photo ? 'Your photo was not checked' : 'Add a photo'}</strong>
+            {!photo && <small>Claude compares it with the catalogue; the ranking still weighs local records and season. Location data is removed on this device and the photo is not stored.</small>}
+            {photoResult?.check_next && <small>Check next: {photoResult.check_next}</small>}
+            {photoResult?.outside_catalogue && <small>It may also be {photoResult.outside_catalogue}, which is not in this catalogue.</small>}
+            <div className="identify-photo-actions">
+              <label className={photoCheck.isPending ? 'disabled' : ''}>
+                <input type="file" accept="image/*" onChange={choosePhoto} disabled={photoCheck.isPending} />
+                {photoCheck.isPending ? <LoaderCircle className="spin" size={14} aria-hidden="true" /> : <Camera size={14} aria-hidden="true" />}{photo ? 'Try another photo' : 'Take or choose a photo'}
+              </label>
+              {photo && !photoCheck.isPending && <button type="button" onClick={clearPhoto}>Remove photo</button>}
+            </div>
+            {(photoError || photoCheck.isError) && <p role="status">{photoError || photoErrorMessage(photoCheck.error)}</p>}
+          </div>
+        </div>
+      )}
 
       <label className="identify-month">When<select value={month} onChange={event => setMonth(Number(event.target.value))}>{MONTH_NAMES.map((name, index) => <option key={name} value={index}>{name}</option>)}</select></label>
 
@@ -107,7 +171,7 @@ export default function IdentifyPanel({ collection, location, onClose, onShowOnM
       ))}
 
       <div className="identify-results" aria-live="polite">
-        <h3>{evidence.isFetching || catalogue.isLoading ? 'Checking what grows nearby…' : `Top suggestions${Object.values(selected).some(Boolean) ? '' : ' for this place and month'}`}</h3>
+        <h3>{evidence.isFetching || catalogue.isLoading ? 'Checking what grows nearby…' : `Top suggestions${photoResult?.suggestions.length ? ' for your photo' : Object.values(selected).some(Boolean) ? '' : ' for this place and month'}`}</h3>
         {evidence.isError && <p className="identify-note">Nearby records could not load, so suggestions use field marks and season only.</p>}
         {suggestions.length === 0 && !evidence.isFetching && !catalogue.isLoading && <p className="identify-note">No catalogue {collection === 'herbs' ? 'plant' : 'species'} matches those marks here. The catalogue is a small part of what grows; try fewer marks.</p>}
         <ol>
@@ -119,11 +183,14 @@ export default function IdentifyPanel({ collection, location, onClose, onShowOnM
                 <em>{item.latin}</em>
                 <span className={`identify-status ${item.danger ? 'danger' : ''}`}>{item.danger && <ShieldAlert size={12} aria-hidden="true" />}{item.label}</span>
                 <div className="identify-badges">
+                  {item.photo && <span className={`photo ${item.photo.likeness}`}>{PHOTO_LABELS[item.photo.likeness]}</span>}
                   {item.marks.chosen > 0 && <span>Matches {item.marks.matched.length} of {item.marks.chosen} {item.marks.chosen === 1 ? 'mark' : 'marks'}</span>}
                   {item.seenPeople > 0 && <span className="seen">Seen nearby · {item.seenPeople.toLocaleString()} {item.seenPeople === 1 ? 'person' : 'people'}</span>}
                   {item.expected && <span className="expected">Expected nearby</span>}
                   {item.inSeason && <span>Records in {MONTH_NAMES[month]}</span>}
                 </div>
+                {item.photo?.features && <p className="identify-photo-features">{item.photo.features}</p>}
+                {item.photo && !item.seenPeople && !item.expected && evidence.data && <p className="identify-photo-features">Not recorded or expected near this place.</p>}
                 {item.dangerousLookalikes.length > 0 && <p className="identify-warning"><ShieldAlert size={13} aria-hidden="true" />Rule out: {item.dangerousLookalikes.join(', ')}</p>}
                 <div className="identify-actions">
                   <button type="button" onClick={() => onShowOnMap(item.slug)}><MapPinned size={14} />Where it grows</button>

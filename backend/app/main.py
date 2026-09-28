@@ -40,6 +40,7 @@ from app.schemas import (
 )
 from app.security import DEFAULT_SECRET_KEY, SECRET_KEY, hash_identifier, hash_token, new_token, passwords
 from app.freshness import observation_freshness
+from app.identify import identify_router
 from app.plant_catalogue import RECORD_PLANTS
 
 
@@ -1819,3 +1820,4 @@ def send_herb_watch_alerts(
 app.include_router(billing_router(get_current_user, enforce_rate_limit))
 
 app.include_router(journal_router(get_current_user))
+app.include_router(identify_router(enforce_rate_limit, request_ip))

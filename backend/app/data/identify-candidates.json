@@ -1,0 +1,1111 @@
+{
+  "fungi": [
+    {
+      "slug": "morel",
+      "name": "Morel",
+      "latin": "Morchella esculenta"
+    },
+    {
+      "slug": "king-bolete",
+      "name": "King Bolete",
+      "latin": "Boletus edulis"
+    },
+    {
+      "slug": "rainbow-chanterelle",
+      "name": "Rainbow Chanterelle",
+      "latin": "Cantharellus roseocanus"
+    },
+    {
+      "slug": "lobster-mushroom",
+      "name": "Lobster Mushroom",
+      "latin": "Hypomyces lactifluorum"
+    },
+    {
+      "slug": "oyster-mushroom",
+      "name": "Oyster Mushroom",
+      "latin": "Pleurotus ostreatus"
+    },
+    {
+      "slug": "shaggy-mane",
+      "name": "Shaggy Mane",
+      "latin": "Coprinus comatus"
+    },
+    {
+      "slug": "gem-studded-puffball",
+      "name": "Gem-studded Puffball",
+      "latin": "Lycoperdon perlatum"
+    },
+    {
+      "slug": "hedgehog-mushroom",
+      "name": "Hedgehog Mushroom",
+      "latin": "Hydnum repandum"
+    },
+    {
+      "slug": "lions-mane",
+      "name": "Lion's Mane",
+      "latin": "Hericium erinaceus"
+    },
+    {
+      "slug": "fly-agaric",
+      "name": "Fly Agaric",
+      "latin": "Amanita muscaria"
+    },
+    {
+      "slug": "destroying-angel",
+      "name": "Destroying Angel",
+      "latin": "Amanita bisporigera"
+    },
+    {
+      "slug": "false-morel",
+      "name": "False Morel",
+      "latin": "Gyromitra esculenta"
+    },
+    {
+      "slug": "chicken-of-the-woods",
+      "name": "Chicken of the Woods",
+      "latin": "Laetiporus sulphureus"
+    },
+    {
+      "slug": "golden-chanterelle",
+      "name": "Golden Chanterelle",
+      "latin": "Cantharellus cibarius"
+    },
+    {
+      "slug": "giant-puffball",
+      "name": "Giant Puffball",
+      "latin": "Calvatia gigantea"
+    },
+    {
+      "slug": "hen-of-the-woods",
+      "name": "Hen of the Woods",
+      "latin": "Grifola frondosa"
+    },
+    {
+      "slug": "turkey-tail",
+      "name": "Turkey Tail",
+      "latin": "Trametes versicolor"
+    },
+    {
+      "slug": "western-matsutake",
+      "name": "Western Matsutake",
+      "latin": "Tricholoma murrillianum"
+    },
+    {
+      "slug": "meadow-mushroom",
+      "name": "Meadow Mushroom",
+      "latin": "Agaricus campestris"
+    },
+    {
+      "slug": "black-trumpet",
+      "name": "Black Trumpet",
+      "latin": "Craterellus cornucopioides"
+    },
+    {
+      "slug": "saffron-milk-cap",
+      "name": "Saffron Milk Cap",
+      "latin": "Lactarius deliciosus"
+    },
+    {
+      "slug": "death-cap",
+      "name": "Death Cap",
+      "latin": "Amanita phalloides"
+    },
+    {
+      "slug": "green-spored-parasol",
+      "name": "Green-spored Parasol",
+      "latin": "Chlorophyllum molybdites"
+    },
+    {
+      "slug": "jack-o-lantern",
+      "name": "Jack-o'-lantern",
+      "latin": "Omphalotus illudens"
+    },
+    {
+      "slug": "deadly-galerina",
+      "name": "Deadly Galerina",
+      "latin": "Galerina marginata"
+    },
+    {
+      "slug": "common-earthball",
+      "name": "Common Earthball",
+      "latin": "Scleroderma citrinum"
+    },
+    {
+      "slug": "common-ink-cap",
+      "name": "Common Ink Cap",
+      "latin": "Coprinopsis atramentaria"
+    },
+    {
+      "slug": "rocky-mountain-porcini",
+      "name": "Rocky Mountain Porcini",
+      "latin": "Boletus rubriceps"
+    },
+    {
+      "slug": "spring-king-bolete",
+      "name": "Spring King Bolete",
+      "latin": "Boletus rex-veris"
+    },
+    {
+      "slug": "aspen-bolete",
+      "name": "Aspen Bolete",
+      "latin": "Leccinum insigne"
+    },
+    {
+      "slug": "reishi",
+      "name": "Hemlock Reishi",
+      "latin": "Ganoderma tsugae"
+    },
+    {
+      "slug": "chaga",
+      "name": "Chaga",
+      "latin": "Inonotus obliquus"
+    },
+    {
+      "slug": "wood-ear",
+      "name": "Jelly Ear",
+      "latin": "Auricularia auricula-judae"
+    },
+    {
+      "slug": "cauliflower-mushroom",
+      "name": "Cauliflower Mushroom",
+      "latin": "Sparassis crispa"
+    },
+    {
+      "slug": "indigo-milk-cap",
+      "name": "Indigo Milk Cap",
+      "latin": "Lactarius indigo"
+    },
+    {
+      "slug": "dryads-saddle",
+      "name": "Dryad's Saddle",
+      "latin": "Cerioporus squamosus"
+    },
+    {
+      "slug": "beefsteak-fungus",
+      "name": "Beefsteak Fungus",
+      "latin": "Fistulina hepatica"
+    },
+    {
+      "slug": "candy-cap",
+      "name": "Candy Cap",
+      "latin": "Lactarius rubidus"
+    },
+    {
+      "slug": "pacific-golden-chanterelle",
+      "name": "Pacific Golden Chanterelle",
+      "latin": "Cantharellus formosus"
+    },
+    {
+      "slug": "cinnabar-chanterelle",
+      "name": "Cinnabar Chanterelle",
+      "latin": "Cantharellus cinnabarinus"
+    },
+    {
+      "slug": "yellowfoot",
+      "name": "Yellowfoot",
+      "latin": "Craterellus tubaeformis"
+    },
+    {
+      "slug": "wood-blewit",
+      "name": "Wood Blewit",
+      "latin": "Collybia nuda"
+    },
+    {
+      "slug": "parasol-mushroom",
+      "name": "Parasol Mushroom",
+      "latin": "Macrolepiota procera"
+    },
+    {
+      "slug": "shaggy-parasol",
+      "name": "Shaggy Parasol",
+      "latin": "Chlorophyllum rhacodes"
+    },
+    {
+      "slug": "honey-mushroom",
+      "name": "Honey Mushroom",
+      "latin": "Armillaria mellea"
+    },
+    {
+      "slug": "velvet-shank",
+      "name": "Velvet Shank",
+      "latin": "Flammulina velutipes"
+    },
+    {
+      "slug": "wine-cap",
+      "name": "Wine Cap",
+      "latin": "Stropharia rugosoannulata"
+    },
+    {
+      "slug": "bay-bolete",
+      "name": "Bay Bolete",
+      "latin": "Imleria badia"
+    },
+    {
+      "slug": "slippery-jack",
+      "name": "Slippery Jack",
+      "latin": "Suillus luteus"
+    },
+    {
+      "slug": "old-man-of-the-woods",
+      "name": "Old Man of the Woods",
+      "latin": "Strobilomyces strobilaceus"
+    },
+    {
+      "slug": "pine-bolete",
+      "name": "Pine Bolete",
+      "latin": "Boletus pinophilus"
+    },
+    {
+      "slug": "summer-bolete",
+      "name": "Summer Bolete",
+      "latin": "Boletus reticulatus"
+    },
+    {
+      "slug": "orange-birch-bolete",
+      "name": "Orange Birch Bolete",
+      "latin": "Leccinum versipelle"
+    },
+    {
+      "slug": "brown-birch-bolete",
+      "name": "Brown Birch Bolete",
+      "latin": "Leccinum scabrum"
+    },
+    {
+      "slug": "st-georges-mushroom",
+      "name": "St George's Mushroom",
+      "latin": "Calocybe gambosa"
+    },
+    {
+      "slug": "fairy-ring-mushroom",
+      "name": "Fairy Ring Mushroom",
+      "latin": "Marasmius oreades"
+    },
+    {
+      "slug": "horse-mushroom",
+      "name": "Horse Mushroom",
+      "latin": "Agaricus arvensis"
+    },
+    {
+      "slug": "amethyst-deceiver",
+      "name": "Amethyst Deceiver",
+      "latin": "Laccaria amethystina"
+    },
+    {
+      "slug": "blusher",
+      "name": "The Blusher",
+      "latin": "Amanita rubescens"
+    },
+    {
+      "slug": "caesars-mushroom",
+      "name": "Caesar's Mushroom",
+      "latin": "Amanita caesarea"
+    },
+    {
+      "slug": "american-caesars-mushroom",
+      "name": "American Caesar's Mushroom",
+      "latin": "Amanita jacksonii"
+    },
+    {
+      "slug": "charcoal-burner",
+      "name": "Charcoal Burner",
+      "latin": "Russula cyanoxantha"
+    },
+    {
+      "slug": "shrimp-russula",
+      "name": "Shrimp Russula",
+      "latin": "Russula xerampelina"
+    },
+    {
+      "slug": "weeping-milk-cap",
+      "name": "Weeping Milk Cap",
+      "latin": "Lactifluus volemus"
+    },
+    {
+      "slug": "pigs-ear",
+      "name": "Pig's Ear",
+      "latin": "Gomphus clavatus"
+    },
+    {
+      "slug": "coral-tooth",
+      "name": "Coral Tooth Fungus",
+      "latin": "Hericium coralloides"
+    },
+    {
+      "slug": "golden-oyster",
+      "name": "Golden Oyster",
+      "latin": "Pleurotus citrinopileatus"
+    },
+    {
+      "slug": "mica-cap",
+      "name": "Mica Cap",
+      "latin": "Coprinellus micaceus"
+    },
+    {
+      "slug": "aborted-entoloma",
+      "name": "Aborted Entoloma",
+      "latin": "Entoloma abortivum"
+    },
+    {
+      "slug": "sheathed-woodtuft",
+      "name": "Sheathed Woodtuft",
+      "latin": "Kuehneromyces mutabilis"
+    },
+    {
+      "slug": "matsutake",
+      "name": "Matsutake",
+      "latin": "Tricholoma matsutake"
+    },
+    {
+      "slug": "llao-llao",
+      "name": "Llao Llao",
+      "latin": "Cyttaria hariotii"
+    },
+    {
+      "slug": "deer-mushroom",
+      "name": "Deer Mushroom",
+      "latin": "Pluteus cervinus"
+    },
+    {
+      "slug": "crown-tipped-coral",
+      "name": "Crown-tipped Coral",
+      "latin": "Artomyces pyxidatus"
+    },
+    {
+      "slug": "panther-cap",
+      "name": "Panther Cap",
+      "latin": "Amanita pantherina"
+    },
+    {
+      "slug": "european-destroying-angel",
+      "name": "European Destroying Angel",
+      "latin": "Amanita virosa"
+    },
+    {
+      "slug": "western-destroying-angel",
+      "name": "Western Destroying Angel",
+      "latin": "Amanita ocreata"
+    },
+    {
+      "slug": "smiths-amanita",
+      "name": "Smith's Amanita",
+      "latin": "Amanita smithiana"
+    },
+    {
+      "slug": "false-death-cap",
+      "name": "False Death Cap",
+      "latin": "Amanita citrina"
+    },
+    {
+      "slug": "sulphur-tuft",
+      "name": "Sulphur Tuft",
+      "latin": "Hypholoma fasciculare"
+    },
+    {
+      "slug": "fools-funnel",
+      "name": "Fool's Funnel",
+      "latin": "Collybia rivulosa"
+    },
+    {
+      "slug": "deadly-webcap",
+      "name": "Deadly Webcap",
+      "latin": "Cortinarius rubellus"
+    },
+    {
+      "slug": "fools-webcap",
+      "name": "Fool's Webcap",
+      "latin": "Cortinarius orellanus"
+    },
+    {
+      "slug": "brown-roll-rim",
+      "name": "Brown Roll-rim",
+      "latin": "Paxillus involutus"
+    },
+    {
+      "slug": "devils-bolete",
+      "name": "Devil's Bolete",
+      "latin": "Rubroboletus satanas"
+    },
+    {
+      "slug": "bitter-bolete",
+      "name": "Bitter Bolete",
+      "latin": "Tylopilus felleus"
+    },
+    {
+      "slug": "the-sickener",
+      "name": "The Sickener",
+      "latin": "Russula emetica"
+    },
+    {
+      "slug": "woolly-milk-cap",
+      "name": "Woolly Milk Cap",
+      "latin": "Lactarius torminosus"
+    },
+    {
+      "slug": "yellow-stainer",
+      "name": "Yellow Stainer",
+      "latin": "Agaricus xanthodermus"
+    },
+    {
+      "slug": "false-chanterelle",
+      "name": "False Chanterelle",
+      "latin": "Hygrophoropsis aurantiaca"
+    },
+    {
+      "slug": "ghost-fungus",
+      "name": "Ghost Fungus",
+      "latin": "Omphalotus nidiformis"
+    },
+    {
+      "slug": "stinking-dapperling",
+      "name": "Stinking Dapperling",
+      "latin": "Lepiota cristata"
+    },
+    {
+      "slug": "deadly-fibrecap",
+      "name": "Deadly Fibrecap",
+      "latin": "Inosperma erubescens"
+    },
+    {
+      "slug": "ringed-conecap",
+      "name": "Ringed Conecap",
+      "latin": "Pholiotina rugosa"
+    },
+    {
+      "slug": "livid-pinkgill",
+      "name": "Livid Pinkgill",
+      "latin": "Entoloma sinuatum"
+    },
+    {
+      "slug": "man-on-horseback",
+      "name": "Man on Horseback",
+      "latin": "Tricholoma equestre"
+    },
+    {
+      "slug": "early-false-morel",
+      "name": "Early False Morel",
+      "latin": "Verpa bohemica"
+    },
+    {
+      "slug": "white-saddle",
+      "name": "White Saddle",
+      "latin": "Helvella crispa"
+    },
+    {
+      "slug": "angel-wings",
+      "name": "Angel Wings",
+      "latin": "Pleurocybella porrigens"
+    },
+    {
+      "slug": "artists-conk",
+      "name": "Artist's Conk",
+      "latin": "Ganoderma applanatum"
+    },
+    {
+      "slug": "birch-polypore",
+      "name": "Birch Polypore",
+      "latin": "Fomitopsis betulina"
+    },
+    {
+      "slug": "tinder-fungus",
+      "name": "Tinder Fungus",
+      "latin": "Fomes fomentarius"
+    },
+    {
+      "slug": "scarlet-elf-cup",
+      "name": "Scarlet Elf Cup",
+      "latin": "Sarcoscypha coccinea"
+    },
+    {
+      "slug": "orange-peel-fungus",
+      "name": "Orange Peel Fungus",
+      "latin": "Aleuria aurantia"
+    },
+    {
+      "slug": "common-stinkhorn",
+      "name": "Common Stinkhorn",
+      "latin": "Phallus impudicus"
+    },
+    {
+      "slug": "collared-earthstar",
+      "name": "Collared Earthstar",
+      "latin": "Geastrum triplex"
+    },
+    {
+      "slug": "scarlet-waxcap",
+      "name": "Scarlet Waxcap",
+      "latin": "Hygrocybe coccinea"
+    },
+    {
+      "slug": "witches-butter",
+      "name": "Witches' Butter",
+      "latin": "Tremella mesenterica"
+    }
+  ],
+  "herbs": [
+    {
+      "slug": "stinging-nettle",
+      "name": "Stinging nettle",
+      "latin": "Urtica dioica"
+    },
+    {
+      "slug": "dandelion",
+      "name": "Dandelion",
+      "latin": "Taraxacum officinale"
+    },
+    {
+      "slug": "common-yarrow",
+      "name": "Common yarrow",
+      "latin": "Achillea millefolium"
+    },
+    {
+      "slug": "elderflower",
+      "name": "Black elder",
+      "latin": "Sambucus nigra"
+    },
+    {
+      "slug": "wild-mint",
+      "name": "American wild mint",
+      "latin": "Mentha canadensis"
+    },
+    {
+      "slug": "red-clover",
+      "name": "Red clover",
+      "latin": "Trifolium pratense"
+    },
+    {
+      "slug": "greater-plantain",
+      "name": "Greater plantain",
+      "latin": "Plantago major"
+    },
+    {
+      "slug": "mugwort",
+      "name": "Mugwort",
+      "latin": "Artemisia vulgaris"
+    },
+    {
+      "slug": "dog-rose",
+      "name": "Dog rose",
+      "latin": "Rosa canina"
+    },
+    {
+      "slug": "lemon-balm",
+      "name": "Lemon balm",
+      "latin": "Melissa officinalis"
+    },
+    {
+      "slug": "german-chamomile",
+      "name": "German chamomile",
+      "latin": "Matricaria chamomilla"
+    },
+    {
+      "slug": "calendula",
+      "name": "Calendula",
+      "latin": "Calendula officinalis"
+    },
+    {
+      "slug": "wild-garlic",
+      "name": "Wild garlic",
+      "latin": "Allium ursinum"
+    },
+    {
+      "slug": "purslane",
+      "name": "Common purslane",
+      "latin": "Portulaca oleracea"
+    },
+    {
+      "slug": "chickweed",
+      "name": "Common chickweed",
+      "latin": "Stellaria media"
+    },
+    {
+      "slug": "yellow-wood-sorrel",
+      "name": "Yellow wood sorrel",
+      "latin": "Oxalis stricta"
+    },
+    {
+      "slug": "sheep-sorrel",
+      "name": "Sheep sorrel",
+      "latin": "Rumex acetosella"
+    },
+    {
+      "slug": "garlic-mustard",
+      "name": "Garlic mustard",
+      "latin": "Alliaria petiolata"
+    },
+    {
+      "slug": "cleavers",
+      "name": "Cleavers",
+      "latin": "Galium aparine"
+    },
+    {
+      "slug": "fennel",
+      "name": "Fennel",
+      "latin": "Foeniculum vulgare"
+    },
+    {
+      "slug": "watercress",
+      "name": "Watercress",
+      "latin": "Nasturtium officinale"
+    },
+    {
+      "slug": "selfheal",
+      "name": "Selfheal",
+      "latin": "Prunella vulgaris"
+    },
+    {
+      "slug": "common-blue-violet",
+      "name": "Common blue violet",
+      "latin": "Viola sororia"
+    },
+    {
+      "slug": "gotu-kola",
+      "name": "Gotu kola",
+      "latin": "Centella asiatica"
+    },
+    {
+      "slug": "lemongrass",
+      "name": "Lemongrass",
+      "latin": "Cymbopogon citratus"
+    },
+    {
+      "slug": "roselle",
+      "name": "Roselle",
+      "latin": "Sabdariffa gossypiifolia"
+    },
+    {
+      "slug": "moringa",
+      "name": "Moringa",
+      "latin": "Moringa oleifera"
+    },
+    {
+      "slug": "culantro",
+      "name": "Culantro",
+      "latin": "Eryngium foetidum"
+    },
+    {
+      "slug": "epazote",
+      "name": "Epazote",
+      "latin": "Dysphania ambrosioides"
+    },
+    {
+      "slug": "lemon-verbena",
+      "name": "Lemon verbena",
+      "latin": "Aloysia citrodora"
+    },
+    {
+      "slug": "perilla",
+      "name": "Perilla",
+      "latin": "Perilla frutescens"
+    },
+    {
+      "slug": "warrigal-greens",
+      "name": "Warrigal greens",
+      "latin": "Tetragonia tetragonoides"
+    },
+    {
+      "slug": "lemon-myrtle",
+      "name": "Lemon myrtle",
+      "latin": "Backhousia citriodora"
+    },
+    {
+      "slug": "kapokbos",
+      "name": "Kapokbos",
+      "latin": "Eriocephalus africanus"
+    },
+    {
+      "slug": "rooibos",
+      "name": "Rooibos",
+      "latin": "Aspalathus linearis"
+    },
+    {
+      "slug": "buchu",
+      "name": "Round-leaf buchu",
+      "latin": "Agathosma betulina"
+    },
+    {
+      "slug": "poison-hemlock",
+      "name": "Poison hemlock",
+      "latin": "Conium maculatum"
+    },
+    {
+      "slug": "water-hemlock",
+      "name": "Spotted water hemlock",
+      "latin": "Cicuta maculata"
+    },
+    {
+      "slug": "lily-of-the-valley",
+      "name": "Lily of the valley",
+      "latin": "Convallaria majalis"
+    },
+    {
+      "slug": "autumn-crocus",
+      "name": "Autumn crocus",
+      "latin": "Colchicum autumnale"
+    },
+    {
+      "slug": "foxglove",
+      "name": "Foxglove",
+      "latin": "Digitalis purpurea"
+    },
+    {
+      "slug": "pennyroyal",
+      "name": "Pennyroyal",
+      "latin": "Mentha pulegium"
+    },
+    {
+      "slug": "spotted-spurge",
+      "name": "Spotted spurge",
+      "latin": "Euphorbia maculata"
+    },
+    {
+      "slug": "comfrey",
+      "name": "Common comfrey",
+      "latin": "Symphytum officinale"
+    },
+    {
+      "slug": "wild-strawberry",
+      "name": "Wild strawberry",
+      "latin": "Fragaria vesca"
+    },
+    {
+      "slug": "red-raspberry",
+      "name": "Red raspberry",
+      "latin": "Rubus idaeus"
+    },
+    {
+      "slug": "bilberry",
+      "name": "Bilberry",
+      "latin": "Vaccinium myrtillus"
+    },
+    {
+      "slug": "hawthorn",
+      "name": "Common hawthorn",
+      "latin": "Crataegus monogyna"
+    },
+    {
+      "slug": "small-leaved-lime",
+      "name": "Small-leaved lime",
+      "latin": "Tilia cordata"
+    },
+    {
+      "slug": "meadowsweet",
+      "name": "Meadowsweet",
+      "latin": "Filipendula ulmaria"
+    },
+    {
+      "slug": "lambs-quarters",
+      "name": "Lamb's quarters",
+      "latin": "Chenopodium album"
+    },
+    {
+      "slug": "miners-lettuce",
+      "name": "Miner's lettuce",
+      "latin": "Claytonia perfoliata"
+    },
+    {
+      "slug": "ramps",
+      "name": "Ramps",
+      "latin": "Allium tricoccum"
+    },
+    {
+      "slug": "three-cornered-leek",
+      "name": "Three-cornered leek",
+      "latin": "Allium triquetrum"
+    },
+    {
+      "slug": "burdock",
+      "name": "Greater burdock",
+      "latin": "Arctium lappa"
+    },
+    {
+      "slug": "chicory",
+      "name": "Chicory",
+      "latin": "Cichorium intybus"
+    },
+    {
+      "slug": "ground-ivy",
+      "name": "Ground ivy",
+      "latin": "Glechoma hederacea"
+    },
+    {
+      "slug": "oregano",
+      "name": "Wild oregano",
+      "latin": "Origanum vulgare"
+    },
+    {
+      "slug": "field-horsetail",
+      "name": "Field horsetail",
+      "latin": "Equisetum arvense"
+    },
+    {
+      "slug": "st-johns-wort",
+      "name": "St John's wort",
+      "latin": "Hypericum perforatum"
+    },
+    {
+      "slug": "common-mullein",
+      "name": "Common mullein",
+      "latin": "Verbascum thapsus"
+    },
+    {
+      "slug": "ribwort-plantain",
+      "name": "Ribwort plantain",
+      "latin": "Plantago lanceolata"
+    },
+    {
+      "slug": "sea-buckthorn",
+      "name": "Sea buckthorn",
+      "latin": "Hippophae rhamnoides"
+    },
+    {
+      "slug": "common-juniper",
+      "name": "Common juniper",
+      "latin": "Juniperus communis"
+    },
+    {
+      "slug": "sweet-woodruff",
+      "name": "Sweet woodruff",
+      "latin": "Galium odoratum"
+    },
+    {
+      "slug": "common-sorrel",
+      "name": "Common sorrel",
+      "latin": "Rumex acetosa"
+    },
+    {
+      "slug": "curly-dock",
+      "name": "Curly dock",
+      "latin": "Rumex crispus"
+    },
+    {
+      "slug": "hops",
+      "name": "Common hop",
+      "latin": "Humulus lupulus"
+    },
+    {
+      "slug": "fireweed",
+      "name": "Fireweed",
+      "latin": "Chamaenerion angustifolium"
+    },
+    {
+      "slug": "wild-bergamot",
+      "name": "Wild bergamot",
+      "latin": "Monarda fistulosa"
+    },
+    {
+      "slug": "water-mint",
+      "name": "Water mint",
+      "latin": "Mentha aquatica"
+    },
+    {
+      "slug": "prickly-pear",
+      "name": "Prickly pear",
+      "latin": "Opuntia ficus-indica"
+    },
+    {
+      "slug": "staghorn-sumac",
+      "name": "Staghorn sumac",
+      "latin": "Rhus typhina"
+    },
+    {
+      "slug": "pawpaw",
+      "name": "Pawpaw",
+      "latin": "Asimina triloba"
+    },
+    {
+      "slug": "saskatoon",
+      "name": "Saskatoon serviceberry",
+      "latin": "Amelanchier alnifolia"
+    },
+    {
+      "slug": "chokecherry",
+      "name": "Chokecherry",
+      "latin": "Prunus virginiana"
+    },
+    {
+      "slug": "hazel",
+      "name": "Common hazel",
+      "latin": "Corylus avellana"
+    },
+    {
+      "slug": "glasswort",
+      "name": "Glasswort",
+      "latin": "Salicornia europaea"
+    },
+    {
+      "slug": "wild-carrot",
+      "name": "Wild carrot",
+      "latin": "Daucus carota"
+    },
+    {
+      "slug": "cow-parsley",
+      "name": "Cow parsley",
+      "latin": "Anthriscus sylvestris"
+    },
+    {
+      "slug": "shepherds-purse",
+      "name": "Shepherd's purse",
+      "latin": "Capsella bursa-pastoris"
+    },
+    {
+      "slug": "borage",
+      "name": "Borage",
+      "latin": "Borago officinalis"
+    },
+    {
+      "slug": "tamarind",
+      "name": "Tamarind",
+      "latin": "Tamarindus indica"
+    },
+    {
+      "slug": "baobab",
+      "name": "African baobab",
+      "latin": "Adansonia digitata"
+    },
+    {
+      "slug": "african-wormwood",
+      "name": "African wormwood",
+      "latin": "Artemisia afra"
+    },
+    {
+      "slug": "spekboom",
+      "name": "Spekboom",
+      "latin": "Portulacaria afra"
+    },
+    {
+      "slug": "holy-basil",
+      "name": "Holy basil",
+      "latin": "Ocimum tenuiflorum"
+    },
+    {
+      "slug": "butterfly-pea",
+      "name": "Butterfly pea",
+      "latin": "Clitoria ternatea"
+    },
+    {
+      "slug": "water-spinach",
+      "name": "Water spinach",
+      "latin": "Ipomoea aquatica"
+    },
+    {
+      "slug": "japanese-knotweed",
+      "name": "Japanese knotweed",
+      "latin": "Reynoutria japonica"
+    },
+    {
+      "slug": "yerba-mate",
+      "name": "Yerba mate",
+      "latin": "Ilex paraguariensis"
+    },
+    {
+      "slug": "maqui",
+      "name": "Maqui",
+      "latin": "Aristotelia chilensis"
+    },
+    {
+      "slug": "calafate",
+      "name": "Calafate",
+      "latin": "Berberis microphylla"
+    },
+    {
+      "slug": "huacatay",
+      "name": "Huacatay",
+      "latin": "Tagetes minuta"
+    },
+    {
+      "slug": "kawakawa",
+      "name": "Kawakawa",
+      "latin": "Piper excelsum"
+    },
+    {
+      "slug": "manuka",
+      "name": "Mānuka",
+      "latin": "Leptospermum scoparium"
+    },
+    {
+      "slug": "sour-fig",
+      "name": "Sour fig",
+      "latin": "Carpobrotus edulis"
+    },
+    {
+      "slug": "purple-passionflower",
+      "name": "Purple passionflower",
+      "latin": "Passiflora incarnata"
+    },
+    {
+      "slug": "valerian",
+      "name": "Valerian",
+      "latin": "Valeriana officinalis"
+    },
+    {
+      "slug": "common-mallow",
+      "name": "Common mallow",
+      "latin": "Malva sylvestris"
+    },
+    {
+      "slug": "deadly-nightshade",
+      "name": "Deadly nightshade",
+      "latin": "Atropa bella-donna"
+    },
+    {
+      "slug": "giant-hogweed",
+      "name": "Giant hogweed",
+      "latin": "Heracleum mantegazzianum"
+    },
+    {
+      "slug": "jimsonweed",
+      "name": "Jimsonweed",
+      "latin": "Datura stramonium"
+    },
+    {
+      "slug": "pokeweed",
+      "name": "American pokeweed",
+      "latin": "Phytolacca americana"
+    },
+    {
+      "slug": "castor-bean",
+      "name": "Castor bean",
+      "latin": "Ricinus communis"
+    },
+    {
+      "slug": "oleander",
+      "name": "Oleander",
+      "latin": "Nerium oleander"
+    },
+    {
+      "slug": "monkshood",
+      "name": "Monkshood",
+      "latin": "Aconitum napellus"
+    },
+    {
+      "slug": "death-camas",
+      "name": "Meadow death camas",
+      "latin": "Toxicoscordion venenosum"
+    },
+    {
+      "slug": "green-false-hellebore",
+      "name": "Green false hellebore",
+      "latin": "Veratrum viride"
+    },
+    {
+      "slug": "hemlock-water-dropwort",
+      "name": "Hemlock water dropwort",
+      "latin": "Oenanthe crocata"
+    },
+    {
+      "slug": "lords-and-ladies",
+      "name": "Lords-and-ladies",
+      "latin": "Arum maculatum"
+    },
+    {
+      "slug": "yew",
+      "name": "European yew",
+      "latin": "Taxus baccata"
+    },
+    {
+      "slug": "lantana",
+      "name": "Lantana",
+      "latin": "Lantana camara"
+    }
+  ]
+}
