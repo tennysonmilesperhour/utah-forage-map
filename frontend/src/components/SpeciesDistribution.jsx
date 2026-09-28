@@ -4,6 +4,8 @@ import { occurrenceSnapshotLabel, speciesOccurrence } from '../data/occurrence'
 import { cellBounds, intensityScale, MONTH_NAMES, monthRangeLabel, peakMonths } from '../lib/occurrenceGrid'
 
 const VIEW = { west: -180, north: 84, width: 360, height: 144 }
+// Prerendered in Node, so a fixed locale keeps hydration identical in every browser.
+const formatCount = new Intl.NumberFormat('en-US').format
 
 function ringPath(ring) {
   return `M${ring.map(([x, y]) => `${x.toFixed(2)} ${(-y).toFixed(2)}`).join('L')}Z`
@@ -29,10 +31,10 @@ function MonthBars({ months, hemisphere, name }) {
   const label = hemisphere === 'north' ? 'Northern hemisphere' : 'Southern hemisphere'
   return (
     <figure className="distribution-months">
-      <figcaption>{label} · {total.toLocaleString()} dated records</figcaption>
+      <figcaption>{label} · {formatCount(total)} dated records</figcaption>
       <div className="distribution-month-bars" aria-hidden="true">
         {months.map((value, index) => (
-          <span key={MONTH_NAMES[index]} title={`${MONTH_NAMES[index]}: ${value.toLocaleString()} records`}>
+          <span key={MONTH_NAMES[index]} title={`${MONTH_NAMES[index]}: ${formatCount(value)} records`}>
             <i style={{ height: `${Math.max(value ? 4 : 0, (value / max) * 100)}%` }} />
             <b>{MONTH_NAMES[index][0]}</b>
           </span>
@@ -76,7 +78,7 @@ export default function SpeciesDistribution({ collection, slug, name, mapHref, s
             {level?.decoded.map(cell => {
               const [west, south, east, north] = cellBounds(cell, level.res)
               if (north < -60) return null
-              return <rect key={`${cell.x}-${cell.y}`} x={west} y={-north} width={east - west} height={north - south} style={{ opacity: 0.35 + scale(cell.observers) * 0.65 }}><title>{`${cell.observers.toLocaleString()} ${cell.observers === 1 ? 'person' : 'people'}, ${cell.count.toLocaleString()} records`}</title></rect>
+              return <rect key={`${cell.x}-${cell.y}`} x={west} y={-north} width={east - west} height={north - south} style={{ opacity: 0.35 + scale(cell.observers) * 0.65 }}><title>{`${formatCount(cell.observers)} ${cell.observers === 1 ? 'person' : 'people'}, ${formatCount(cell.count)} records`}</title></rect>
             })}
             {path && <path className="distribution-zone-line" d={path} fillRule="evenodd" vectorEffect="non-scaling-stroke" />}
           </svg>
@@ -88,8 +90,8 @@ export default function SpeciesDistribution({ collection, slug, name, mapHref, s
         </figure>
         <div className="distribution-facts">
           <dl>
-            <div><dt>Verified records</dt><dd>{summary.total.toLocaleString()}</dd></div>
-            <div><dt>People who recorded it</dt><dd>{summary.observers.toLocaleString()}</dd></div>
+            <div><dt>Verified records</dt><dd>{formatCount(summary.total)}</dd></div>
+            <div><dt>People who recorded it</dt><dd>{formatCount(summary.observers)}</dd></div>
             <div><dt>Most records ({mainHemisphere === 'north' ? 'northern' : 'southern'} hemisphere)</dt><dd>{monthRangeLabel(peak)}</dd></div>
             {summary.firstYear && <div><dt>Records span</dt><dd>{summary.firstYear}–{summary.lastMonth?.slice(0, 4)}</dd></div>}
           </dl>
