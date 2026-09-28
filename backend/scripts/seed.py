@@ -1,4 +1,6 @@
+import json
 from datetime import date, timedelta
+from pathlib import Path
 
 from app.database import Base, SessionLocal, engine
 from app.models import CommunityEvent, CommunityFind, ForageClub, ResourceGuide, Sighting, Species, User
@@ -211,11 +213,23 @@ def get_or_create(db, model, lookup, **values):
     return item
 
 
+def catalogue_species():
+    """Hand-written entries above, plus every other guide species generated from the frontend library."""
+    defined = {item["latin_name"] for item in SPECIES}
+    generated = json.loads((Path(__file__).resolve().parents[1] / "app" / "data" / "fungi-species.json").read_text())
+    extra = [
+        {**item, "peak_months": None, "elevation_min_ft": None, "elevation_max_ft": None}
+        for item in generated
+        if item["latin_name"] not in defined
+    ]
+    return [*SPECIES, *extra]
+
+
 def seed():
     Base.metadata.create_all(bind=engine)
     db = SessionLocal()
     try:
-        for values in SPECIES:
+        for values in catalogue_species():
             latin_name = values["latin_name"]
             existing = db.query(Species).filter_by(latin_name=latin_name).one_or_none()
             if existing:

@@ -350,5 +350,557 @@
     "name": "Common comfrey",
     "latin": "Symphytum officinale",
     "status": "study"
+  },
+  {
+    "slug": "wild-strawberry",
+    "taxonId": 50298,
+    "taxonName": "Fragaria vesca",
+    "name": "Wild strawberry",
+    "latin": "Fragaria vesca",
+    "status": "culinary"
+  },
+  {
+    "slug": "red-raspberry",
+    "taxonId": 54436,
+    "taxonName": "Rubus idaeus",
+    "name": "Red raspberry",
+    "latin": "Rubus idaeus",
+    "status": "culinary"
+  },
+  {
+    "slug": "bilberry",
+    "taxonId": 127029,
+    "taxonName": "Vaccinium myrtillus",
+    "name": "Bilberry",
+    "latin": "Vaccinium myrtillus",
+    "status": "culinary"
+  },
+  {
+    "slug": "hawthorn",
+    "taxonId": 1437600,
+    "taxonName": "Crataegus monogyna",
+    "name": "Common hawthorn",
+    "latin": "Crataegus monogyna",
+    "status": "caution"
+  },
+  {
+    "slug": "small-leaved-lime",
+    "taxonId": 132600,
+    "taxonName": "Tilia cordata",
+    "name": "Small-leaved lime",
+    "latin": "Tilia cordata",
+    "status": "culinary"
+  },
+  {
+    "slug": "meadowsweet",
+    "taxonId": 63134,
+    "taxonName": "Filipendula ulmaria",
+    "name": "Meadowsweet",
+    "latin": "Filipendula ulmaria",
+    "status": "caution"
+  },
+  {
+    "slug": "lambs-quarters",
+    "taxonId": 58127,
+    "taxonName": "Chenopodium album",
+    "name": "Lamb's quarters",
+    "latin": "Chenopodium album",
+    "status": "culinary"
+  },
+  {
+    "slug": "miners-lettuce",
+    "taxonId": 52994,
+    "taxonName": "Claytonia perfoliata",
+    "name": "Miner's lettuce",
+    "latin": "Claytonia perfoliata",
+    "status": "culinary"
+  },
+  {
+    "slug": "ramps",
+    "taxonId": 1457593,
+    "taxonName": "Allium tricoccum",
+    "name": "Ramps",
+    "latin": "Allium tricoccum",
+    "status": "caution"
+  },
+  {
+    "slug": "three-cornered-leek",
+    "taxonId": 55505,
+    "taxonName": "Allium triquetrum",
+    "name": "Three-cornered leek",
+    "latin": "Allium triquetrum",
+    "status": "culinary"
+  },
+  {
+    "slug": "burdock",
+    "taxonId": 75501,
+    "taxonName": "Arctium lappa",
+    "name": "Greater burdock",
+    "latin": "Arctium lappa",
+    "status": "caution"
+  },
+  {
+    "slug": "chicory",
+    "taxonId": 52913,
+    "taxonName": "Cichorium intybus",
+    "name": "Chicory",
+    "latin": "Cichorium intybus",
+    "status": "culinary"
+  },
+  {
+    "slug": "ground-ivy",
+    "taxonId": 55830,
+    "taxonName": "Glechoma hederacea",
+    "name": "Ground ivy",
+    "latin": "Glechoma hederacea",
+    "status": "caution"
+  },
+  {
+    "slug": "oregano",
+    "taxonId": 61396,
+    "taxonName": "Origanum vulgare",
+    "name": "Wild oregano",
+    "latin": "Origanum vulgare",
+    "status": "culinary"
+  },
+  {
+    "slug": "field-horsetail",
+    "taxonId": 52724,
+    "taxonName": "Equisetum arvense",
+    "name": "Field horsetail",
+    "latin": "Equisetum arvense",
+    "status": "caution"
+  },
+  {
+    "slug": "st-johns-wort",
+    "taxonId": 56077,
+    "taxonName": "Hypericum perforatum",
+    "name": "St John's wort",
+    "latin": "Hypericum perforatum",
+    "status": "caution"
+  },
+  {
+    "slug": "common-mullein",
+    "taxonId": 59029,
+    "taxonName": "Verbascum thapsus",
+    "name": "Common mullein",
+    "latin": "Verbascum thapsus",
+    "status": "study"
+  },
+  {
+    "slug": "ribwort-plantain",
+    "taxonId": 53178,
+    "taxonName": "Plantago lanceolata",
+    "name": "Ribwort plantain",
+    "latin": "Plantago lanceolata",
+    "status": "culinary"
+  },
+  {
+    "slug": "sea-buckthorn",
+    "taxonId": 163812,
+    "taxonName": "Hippophae rhamnoides",
+    "name": "Sea buckthorn",
+    "latin": "Hippophae rhamnoides",
+    "status": "culinary"
+  },
+  {
+    "slug": "common-juniper",
+    "taxonId": 58725,
+    "taxonName": "Juniperus communis",
+    "name": "Common juniper",
+    "latin": "Juniperus communis",
+    "status": "caution"
+  },
+  {
+    "slug": "sweet-woodruff",
+    "taxonId": 56065,
+    "taxonName": "Galium odoratum",
+    "name": "Sweet woodruff",
+    "latin": "Galium odoratum",
+    "status": "caution"
+  },
+  {
+    "slug": "common-sorrel",
+    "taxonId": 55821,
+    "taxonName": "Rumex acetosa",
+    "name": "Common sorrel",
+    "latin": "Rumex acetosa",
+    "status": "culinary"
+  },
+  {
+    "slug": "curly-dock",
+    "taxonId": 53197,
+    "taxonName": "Rumex crispus",
+    "name": "Curly dock",
+    "latin": "Rumex crispus",
+    "status": "caution"
+  },
+  {
+    "slug": "hops",
+    "taxonId": 1603987,
+    "taxonName": "Humulus lupulus",
+    "name": "Common hop",
+    "latin": "Humulus lupulus",
+    "status": "study"
+  },
+  {
+    "slug": "fireweed",
+    "taxonId": 564969,
+    "taxonName": "Chamaenerion angustifolium",
+    "name": "Fireweed",
+    "latin": "Chamaenerion angustifolium",
+    "status": "culinary"
+  },
+  {
+    "slug": "wild-bergamot",
+    "taxonId": 85320,
+    "taxonName": "Monarda fistulosa",
+    "name": "Wild bergamot",
+    "latin": "Monarda fistulosa",
+    "status": "culinary"
+  },
+  {
+    "slug": "water-mint",
+    "taxonId": 77990,
+    "taxonName": "Mentha aquatica",
+    "name": "Water mint",
+    "latin": "Mentha aquatica",
+    "status": "culinary"
+  },
+  {
+    "slug": "prickly-pear",
+    "taxonId": 64119,
+    "taxonName": "Opuntia ficus-indica",
+    "name": "Prickly pear",
+    "latin": "Opuntia ficus-indica",
+    "status": "culinary"
+  },
+  {
+    "slug": "staghorn-sumac",
+    "taxonId": 167829,
+    "taxonName": "Rhus typhina",
+    "name": "Staghorn sumac",
+    "latin": "Rhus typhina",
+    "status": "culinary"
+  },
+  {
+    "slug": "pawpaw",
+    "taxonId": 50897,
+    "taxonName": "Asimina triloba",
+    "name": "Pawpaw",
+    "latin": "Asimina triloba",
+    "status": "culinary"
+  },
+  {
+    "slug": "saskatoon",
+    "taxonId": 75415,
+    "taxonName": "Amelanchier alnifolia",
+    "name": "Saskatoon serviceberry",
+    "latin": "Amelanchier alnifolia",
+    "status": "culinary"
+  },
+  {
+    "slug": "chokecherry",
+    "taxonId": 54835,
+    "taxonName": "Prunus virginiana",
+    "name": "Chokecherry",
+    "latin": "Prunus virginiana",
+    "status": "caution"
+  },
+  {
+    "slug": "hazel",
+    "taxonId": 54491,
+    "taxonName": "Corylus avellana",
+    "name": "Common hazel",
+    "latin": "Corylus avellana",
+    "status": "culinary"
+  },
+  {
+    "slug": "glasswort",
+    "taxonId": 1149072,
+    "taxonName": "Salicornia europaea",
+    "name": "Glasswort",
+    "latin": "Salicornia europaea",
+    "status": "culinary"
+  },
+  {
+    "slug": "wild-carrot",
+    "taxonId": 76610,
+    "taxonName": "Daucus carota",
+    "name": "Wild carrot",
+    "latin": "Daucus carota",
+    "status": "caution"
+  },
+  {
+    "slug": "cow-parsley",
+    "taxonId": 124544,
+    "taxonName": "Anthriscus sylvestris",
+    "name": "Cow parsley",
+    "latin": "Anthriscus sylvestris",
+    "status": "caution"
+  },
+  {
+    "slug": "shepherds-purse",
+    "taxonId": 56121,
+    "taxonName": "Capsella bursa-pastoris",
+    "name": "Shepherd's purse",
+    "latin": "Capsella bursa-pastoris",
+    "status": "culinary"
+  },
+  {
+    "slug": "borage",
+    "taxonId": 52287,
+    "taxonName": "Borago officinalis",
+    "name": "Borage",
+    "latin": "Borago officinalis",
+    "status": "caution"
+  },
+  {
+    "slug": "tamarind",
+    "taxonId": 62844,
+    "taxonName": "Tamarindus indica",
+    "name": "Tamarind",
+    "latin": "Tamarindus indica",
+    "status": "culinary"
+  },
+  {
+    "slug": "baobab",
+    "taxonId": 81500,
+    "taxonName": "Adansonia digitata",
+    "name": "African baobab",
+    "latin": "Adansonia digitata",
+    "status": "culinary"
+  },
+  {
+    "slug": "african-wormwood",
+    "taxonId": 342710,
+    "taxonName": "Artemisia afra",
+    "name": "African wormwood",
+    "latin": "Artemisia afra",
+    "status": "caution"
+  },
+  {
+    "slug": "spekboom",
+    "taxonId": 326086,
+    "taxonName": "Portulacaria afra",
+    "name": "Spekboom",
+    "latin": "Portulacaria afra",
+    "status": "culinary"
+  },
+  {
+    "slug": "holy-basil",
+    "taxonId": 181060,
+    "taxonName": "Ocimum tenuiflorum",
+    "name": "Holy basil",
+    "latin": "Ocimum tenuiflorum",
+    "status": "study"
+  },
+  {
+    "slug": "butterfly-pea",
+    "taxonId": 160759,
+    "taxonName": "Clitoria ternatea",
+    "name": "Butterfly pea",
+    "latin": "Clitoria ternatea",
+    "status": "culinary"
+  },
+  {
+    "slug": "water-spinach",
+    "taxonId": 164077,
+    "taxonName": "Ipomoea aquatica",
+    "name": "Water spinach",
+    "latin": "Ipomoea aquatica",
+    "status": "culinary"
+  },
+  {
+    "slug": "japanese-knotweed",
+    "taxonId": 914922,
+    "taxonName": "Reynoutria japonica",
+    "name": "Japanese knotweed",
+    "latin": "Reynoutria japonica",
+    "status": "caution"
+  },
+  {
+    "slug": "yerba-mate",
+    "taxonId": 193722,
+    "taxonName": "Ilex paraguariensis",
+    "name": "Yerba mate",
+    "latin": "Ilex paraguariensis",
+    "status": "culinary"
+  },
+  {
+    "slug": "maqui",
+    "taxonId": 181593,
+    "taxonName": "Aristotelia chilensis",
+    "name": "Maqui",
+    "latin": "Aristotelia chilensis",
+    "status": "culinary"
+  },
+  {
+    "slug": "calafate",
+    "taxonId": 84707,
+    "taxonName": "Berberis microphylla",
+    "name": "Calafate",
+    "latin": "Berberis microphylla",
+    "status": "culinary"
+  },
+  {
+    "slug": "huacatay",
+    "taxonId": 79313,
+    "taxonName": "Tagetes minuta",
+    "name": "Huacatay",
+    "latin": "Tagetes minuta",
+    "status": "culinary"
+  },
+  {
+    "slug": "kawakawa",
+    "taxonId": 404899,
+    "taxonName": "Piper excelsum",
+    "name": "Kawakawa",
+    "latin": "Piper excelsum",
+    "status": "study"
+  },
+  {
+    "slug": "manuka",
+    "taxonId": 54699,
+    "taxonName": "Leptospermum scoparium",
+    "name": "Mānuka",
+    "latin": "Leptospermum scoparium",
+    "status": "study"
+  },
+  {
+    "slug": "sour-fig",
+    "taxonId": 49322,
+    "taxonName": "Carpobrotus edulis",
+    "name": "Sour fig",
+    "latin": "Carpobrotus edulis",
+    "status": "culinary"
+  },
+  {
+    "slug": "purple-passionflower",
+    "taxonId": 51453,
+    "taxonName": "Passiflora incarnata",
+    "name": "Purple passionflower",
+    "latin": "Passiflora incarnata",
+    "status": "caution"
+  },
+  {
+    "slug": "valerian",
+    "taxonId": 1105640,
+    "taxonName": "Valeriana officinalis",
+    "name": "Valerian",
+    "latin": "Valeriana officinalis",
+    "status": "caution"
+  },
+  {
+    "slug": "common-mallow",
+    "taxonId": 56162,
+    "taxonName": "Malva sylvestris",
+    "name": "Common mallow",
+    "latin": "Malva sylvestris",
+    "status": "culinary"
+  },
+  {
+    "slug": "deadly-nightshade",
+    "taxonId": 159098,
+    "taxonName": "Atropa bella-donna",
+    "name": "Deadly nightshade",
+    "latin": "Atropa bella-donna",
+    "status": "toxic"
+  },
+  {
+    "slug": "giant-hogweed",
+    "taxonId": 1557658,
+    "taxonName": "Heracleum mantegazzianum",
+    "name": "Giant hogweed",
+    "latin": "Heracleum mantegazzianum",
+    "status": "toxic"
+  },
+  {
+    "slug": "jimsonweed",
+    "taxonId": 55854,
+    "taxonName": "Datura stramonium",
+    "name": "Jimsonweed",
+    "latin": "Datura stramonium",
+    "status": "toxic"
+  },
+  {
+    "slug": "pokeweed",
+    "taxonId": 48599,
+    "taxonName": "Phytolacca americana",
+    "name": "American pokeweed",
+    "latin": "Phytolacca americana",
+    "status": "toxic"
+  },
+  {
+    "slug": "castor-bean",
+    "taxonId": 56739,
+    "taxonName": "Ricinus communis",
+    "name": "Castor bean",
+    "latin": "Ricinus communis",
+    "status": "toxic"
+  },
+  {
+    "slug": "oleander",
+    "taxonId": 47563,
+    "taxonName": "Nerium oleander",
+    "name": "Oleander",
+    "latin": "Nerium oleander",
+    "status": "toxic"
+  },
+  {
+    "slug": "monkshood",
+    "taxonId": 131201,
+    "taxonName": "Aconitum napellus",
+    "name": "Monkshood",
+    "latin": "Aconitum napellus",
+    "status": "toxic"
+  },
+  {
+    "slug": "death-camas",
+    "taxonId": 59087,
+    "taxonName": "Toxicoscordion venenosum",
+    "name": "Meadow death camas",
+    "latin": "Toxicoscordion venenosum",
+    "status": "toxic"
+  },
+  {
+    "slug": "green-false-hellebore",
+    "taxonId": 79484,
+    "taxonName": "Veratrum viride",
+    "name": "Green false hellebore",
+    "latin": "Veratrum viride",
+    "status": "toxic"
+  },
+  {
+    "slug": "hemlock-water-dropwort",
+    "taxonId": 82616,
+    "taxonName": "Oenanthe crocata",
+    "name": "Hemlock water dropwort",
+    "latin": "Oenanthe crocata",
+    "status": "toxic"
+  },
+  {
+    "slug": "lords-and-ladies",
+    "taxonId": 61318,
+    "taxonName": "Arum maculatum",
+    "name": "Lords-and-ladies",
+    "latin": "Arum maculatum",
+    "status": "toxic"
+  },
+  {
+    "slug": "yew",
+    "taxonId": 47553,
+    "taxonName": "Taxus baccata",
+    "name": "European yew",
+    "latin": "Taxus baccata",
+    "status": "toxic"
+  },
+  {
+    "slug": "lantana",
+    "taxonId": 50333,
+    "taxonName": "Lantana camara",
+    "name": "Lantana",
+    "latin": "Lantana camara",
+    "status": "toxic"
   }
 ]

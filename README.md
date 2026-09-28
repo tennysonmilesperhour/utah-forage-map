@@ -8,7 +8,10 @@ The project takes inspiration from the usefulness of community location catalogu
 
 ## Product
 
-- Guest-first world map with place search, viewport queries, clustering, recency, species, season, metric elevation, habitat, source, and review filters
+- Guest-first world map with place search, viewport queries, recency, species, season, metric elevation, habitat, source, and review filters
+- iNaturalist-style grid squares on both maps: all-time research-grade records counted into squares that shrink as you zoom, shaded by how many different people reported there, with individual recent points appearing as you zoom in
+- Species focus: choosing a species, or opening one of its records, shows its tracked squares plus a known growing zone that combines iNaturalist's Geomodel expected range with areas of repeated verified records
+- Suggest an ID: pick field marks, and catalogue species are ranked like iNaturalist suggestions, with Seen nearby, Expected nearby, and in-season signals for the map centre or your location
 - Email/password accounts using revocable, HTTP-only opaque sessions
 - Email verification, password reset, login rate limits, device sessions, and account deletion
 - Private exact-coordinate field notebook with edit, delete, and CSV export controls
@@ -16,7 +19,7 @@ The project takes inspiration from the usefulness of community location catalogu
 - Saved public locations with notes and planned revisit dates
 - Species and region follows with an in-app seven-day activity watchlist and optional weekly email delivery
 - Place-based fungi watch zones that combine current season, recent local observations, optional weather, and optional traditional lunar timing
-- A separate 12-plant herbal atlas with harvest parts, broad seasonal windows, field marks, stewardship notes, cautions, and licensed photography
+- A 113-plant herbal atlas (20 toxic references) with a "Where it grows" map on every profile, harvest parts, broad seasonal windows, field marks, stewardship notes, cautions, and licensed photography
 - A live astronomical moon clock and optional local weather reading, paired with a transparent eight-phase devotional practice rooted in European and Euro-American lunar gardening
 - Herbal watch zones with an intention and private reason, plus daily alignment alerts for selected season, weather, and optional lunar signals
 - A private gathered-herb inventory and wish list linked to the same field account
@@ -31,7 +34,7 @@ The project takes inspiration from the usefulness of community location catalogu
 - Community finds, events, clubs, access guides, and poison-safety resources
 - Resumable biweekly reconciliation of worldwide, research-grade iNaturalist observations with source provenance
 - A rolling 90-day field signal based on when each mushroom was found, across both hemispheres
-- Prerendered identification guides for a curated 30-species catalogue, with cited safety notes, licensed photography, lookalike checks, and map links
+- Prerendered identification guides for a 108-species mushroom catalogue, with cited safety notes, licensed photography, lookalike checks, a "Where it grows" map, and map links
 - An account-free community poll that lets visitors prioritize the next mushroom guide with one changeable anonymous vote per browser
 - Alembic migrations for SQLite development and PostgreSQL production
 
@@ -44,6 +47,7 @@ frontend/           React, Vite, Tailwind CSS, Mapbox GL JS
 backend/app/        FastAPI application and SQLAlchemy models
 backend/alembic/    Database migrations
 backend/crawler/    iNaturalist ingestion
+data-pipeline/      iNaturalist open-data squares, growing zones, and ID index (see its README)
 backend/scripts/    Seed and end-to-end API smoke tests
 .github/workflows/  Frontend and backend CI
 ```
@@ -134,6 +138,17 @@ ADMIN_EMAILS
 RESEND_API_KEY
 EMAIL_FROM
 ```
+
+Optional backend variables for photo ID suggestions in Suggest an ID:
+
+```text
+ANTHROPIC_API_KEY            # enables the photo button; without it the helper uses field marks only
+IDENTIFY_PHOTO_MODEL         # default claude-opus-5
+IDENTIFY_PHOTO_HOURLY_LIMIT  # checks per network address per hour, default 10
+IDENTIFY_PHOTO_DAILY_LIMIT   # checks across the whole site per day, default 300
+```
+
+The browser resizes each photo to at most 1024 px and redraws it, which drops EXIF data such as GPS position. The API sends it once to Claude with the fixed catalogue list and keeps no copy. Declined requests are retried on Anthropic's default fallback model (`fallbacks: "default"`).
 
 Run migrations and seed once against the production database before the first release:
 

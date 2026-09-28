@@ -27,7 +27,8 @@ function calendarDate(value, file, field) {
   return date
 }
 
-const files = (await readdir(contentDirectory)).filter(file => file.endsWith('.md')).sort()
+// Files are numbered in catalogue order; compare numerically so 100 follows 99.
+const files = (await readdir(contentDirectory)).filter(file => file.endsWith('.md')).sort((a, b) => parseInt(a, 10) - parseInt(b, 10) || a.localeCompare(b))
 const guides = []
 const slugs = new Set()
 const taxonIds = new Set()
@@ -84,6 +85,21 @@ await writeFile(outputPath, `// Generated from content/species/*.md by scripts/b
   `export const speciesBySlug = Object.fromEntries(speciesGuides.map(item => [item.slug, item]))\n` +
   `export function speciesPathForTaxon(taxonId) {\n` +
   `  const guide = speciesGuides.find(item => item.taxon_id === Number(taxonId))\n` +
+  `  return guide ? \`/learn/species/\${guide.slug}\` : null\n` +
+  `}\n`, 'utf8')
+
+// A light index for the field maps and ID helper, without guide bodies.
+const index = guides.map(guide => ({
+  slug: guide.slug, common_name: guide.common_name, latin_name: guide.latin_name, taxon_id: guide.taxon_id,
+  edibility: guide.edibility, summary: guide.summary, image: guide.image.url,
+  lookalikes: guide.lookalikes.map(({ name, slug, severity }) => ({ name, slug: slug ?? null, severity })),
+}))
+await writeFile(path.join(root, 'src', 'content', 'species-index.generated.js'), `// Generated from content/species/*.md by scripts/build-content.mjs.\n` +
+  `export const speciesIndex = ${JSON.stringify(index, null, 2)}\n\n` +
+  `export const speciesIndexBySlug = Object.fromEntries(speciesIndex.map(item => [item.slug, item]))\n` +
+  `export const speciesIndexByTaxon = Object.fromEntries(speciesIndex.map(item => [item.taxon_id, item]))\n` +
+  `export function speciesPathForTaxon(taxonId) {\n` +
+  `  const guide = speciesIndexByTaxon[Number(taxonId)]\n` +
   `  return guide ? \`/learn/species/\${guide.slug}\` : null\n` +
   `}\n`, 'utf8')
 

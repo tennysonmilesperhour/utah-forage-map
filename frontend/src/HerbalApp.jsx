@@ -211,7 +211,7 @@ function WatchForm({ location, presetHerb, onLocate, locating, onSubmit, busy })
   }
   return (
     <form className="watch-form" onSubmit={submit}>
-      <div className="watch-form-heading"><p className="herb-kicker">New watch zone</p><h2>Name a place and a purpose</h2><p>Timing watches currently cover 12 almanac plants with broad temperate calendars. All 44 plants can be studied in the atlas and recorded in collections; more watch calendars need regional review.</p></div>
+      <div className="watch-form-heading"><p className="herb-kicker">New watch zone</p><h2>Name a place and a purpose</h2><p>Timing watches currently cover 12 almanac plants with broad temperate calendars. Every atlas plant can be studied and recorded in collections; more watch calendars need regional review.</p></div>
       <label>Zone name<input required maxLength="120" placeholder="Creek path, home valley..." value={form.name} onChange={event => setForm({ ...form, name: event.target.value })} /></label>
       <div className="herb-paired-fields"><label>Plant<select value={form.herb_slug} onChange={event => setForm({ ...form, herb_slug: event.target.value })}>{herbProfiles.map(herb => <option value={herb.slug} key={herb.slug}>{herb.name}</option>)}</select></label><label>Intention<select value={form.intention} onChange={event => setForm({ ...form, intention: event.target.value })}>{herbIntents.map(value => <option key={value}>{value}</option>)}</select></label></div>
       <label>Why this matters to you<textarea rows="3" maxLength="500" placeholder="What would you like to make room for? A slower walk, time to notice, a familiar place to return to…" value={form.why} onChange={event => setForm({ ...form, why: event.target.value })} /></label>

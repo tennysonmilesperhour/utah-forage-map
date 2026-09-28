@@ -5,7 +5,7 @@ export function herbGuideMetadata(pathname) {
   const path = pathname.replace(/\/$/, '')
   const route = herbAtlasRoute(path)
   let title = 'Global Herb Gathering Atlas | The Verdant Hours'
-  let description = 'Explore 44 plant profiles, six regional collections, toxic lookalikes and practical field skills in the herbal gathering reference guide.'
+  let description = `Explore ${herbGuides.length} plant profiles, six regional collections, toxic lookalikes and practical field skills in the herbal gathering reference guide.`
   if (route.plant) { title = `${route.plant.name} Identification & Foraging Guide | The Verdant Hours`; description = `${route.plant.summary} Read identification notes, local-season context, safety cautions and botanical sources.` }
   else if (route.region) { title = `${route.region.name} Herbal Reference | The Verdant Hours`; description = route.region.description }
   else if (route.type === 'regions') { title = 'Regional Herb Guides | The Verdant Hours'; description = 'Explore six world regions with selected plant references, climate context and local botanical sources.' }

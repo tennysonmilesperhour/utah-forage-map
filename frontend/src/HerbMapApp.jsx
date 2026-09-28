@@ -1,9 +1,13 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { ArrowLeft, ArrowUpRight, BookOpen, Globe2, Leaf, LoaderCircle, MapPinned, Search, ShieldAlert, SlidersHorizontal } from 'lucide-react'
+import { ArrowLeft, ArrowUpRight, BookOpen, Globe2, Leaf, LoaderCircle, MapPinned, Maximize2, Search, ShieldAlert, SlidersHorizontal, Sparkles } from 'lucide-react'
 import HerbalHeader from './components/HerbalHeader'
 import AuthDialog from './components/AuthDialog'
 import PlaceSearch from './components/PlaceSearch'
+import OccurrenceLegend from './components/OccurrenceLegend'
+import { useGrowingZone, useOccurrence } from './hooks/useOccurrence'
+import { hemisphereFor, speciesOccurrence } from './data/occurrence'
+import { monthRangeLabel, peakMonths } from './lib/occurrenceGrid'
 import { useCurrentUser, useLogout } from './hooks/useAuth'
 import { useVisitorCountry } from './hooks/useVisitorCountry'
 import { herbHref } from './lib/navigation'
@@ -13,8 +17,10 @@ import { boundsArray, dateLabel, licenseHref, mapPlants, mapPlantBySlug, mapSear
 import './herbal.css'
 import './herbal-forest.css'
 import './herb-map.css'
+import './occurrence.css'
 
 const MapView = lazy(() => import('./components/MapView'))
+const IdentifyPanel = lazy(() => import('./components/IdentifyPanel'))
 const statusLabels = { culinary: 'Culinary reference', caution: 'Special caution', study: 'Study reference', toxic: 'Toxic · do not gather' }
 
 function ObservationPhoto({ record, plant }) {
@@ -22,7 +28,19 @@ function ObservationPhoto({ record, plant }) {
   if (!record.photo || failed) return <div className="herb-map-photo-empty"><Leaf size={32} strokeWidth={1} /><span>Open the original observation for photographs</span></div>
   return <figure className="herb-map-photo"><img src={record.photo.url.replace('/square.', '/medium.')} alt={`${plant.name} observed by ${record.observer}`} onError={() => setFailed(true)} /><figcaption><a href={record.sourceUrl} target="_blank" rel="noreferrer">{record.photo.credit}</a> · <a href={licenseHref(record.photo.license)} target="_blank" rel="noreferrer">{record.photo.license.toUpperCase()}</a></figcaption></figure>
 }
-function ObservationDetail({ record, onClose }) {
+function WhereItGrows({ plant, hemisphere, zone, onFitZone }) {
+  const summary = speciesOccurrence('herbs', plant.slug)
+  if (!summary) return null
+  const months = summary.months[hemisphere]
+  const local = months.reduce((sum, value) => sum + value, 0) >= 12
+  return <section className="herb-map-where" aria-label={`Where ${plant.name} grows`}>
+    <p className="herb-kicker">Where it grows</p>
+    <p>The map now shows every verified {plant.name.toLowerCase()} record as squares, shaded by how many people reported there, with its known growing zone outlined.</p>
+    <dl><div><dt>Verified records</dt><dd>{summary.total.toLocaleString()}</dd></div><div><dt>People</dt><dd>{summary.observers.toLocaleString()}</dd></div><div><dt>Most records</dt><dd>{monthRangeLabel(peakMonths(local ? months : summary.months[hemisphere === 'north' ? 'south' : 'north']))}</dd></div></dl>
+    {zone && <button type="button" onClick={onFitZone}><Maximize2 size={14} />Show the whole growing zone</button>}
+  </section>
+}
+function ObservationDetail({ record, onClose, hemisphere, zone, onFitZone }) {
   const plant = mapPlantBySlug[record.plant]
   return <article className="herb-map-detail">
     <button className="herb-map-back" onClick={onClose}><ArrowLeft size={15} />All observations</button>
@@ -31,6 +49,7 @@ function ObservationDetail({ record, onClose }) {
     <h2>{plant.name}</h2><p className="herb-map-latin">{plant.latin}</p>
     <dl><div><dt>Observed</dt><dd>{dateLabel(record.observedOn)}</dd></div><div><dt>Observer</dt><dd>{record.observer}</dd></div><div><dt>Place</dt><dd>{record.locality}</dd></div><div><dt>Location precision</dt><dd>{record.obscured ? 'Approximate public point; the exact location is protected.' : record.accuracy === null ? 'Accuracy not supplied by the observer.' : `Reported accuracy: ${Math.round(record.accuracy).toLocaleString()} m`}</dd></div></dl>
     {plant.status === 'toxic' && <p className="herb-map-danger"><ShieldAlert size={17} />This toxic plant is included for recognition. Do not gather or consume it.</p>}
+    <WhereItGrows plant={plant} hemisphere={hemisphere} zone={zone} onFitZone={onFitZone} />
     <a className="herb-solid-button" href={`/herbs/atlas/${plant.slug}`}><BookOpen size={15} />Read the plant profile</a>
     <a className="herb-map-source" href={record.sourceUrl} target="_blank" rel="noreferrer">Original observation <ArrowUpRight size={15} /></a>
     <p className="herb-map-fine">Community identification · iNaturalist research grade. This record does not establish safe identification, current abundance or permission to gather.</p>
@@ -50,6 +69,8 @@ export default function HerbMapApp() {
   const [filtersOpen, setFiltersOpen] = useState(false)
   const [authMode, setAuthMode] = useState(null)
   const [mapError, setMapError] = useState(null)
+  const [identifyOpen, setIdentifyOpen] = useState(() => typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('identify') === '1')
+  const [mapCentre, setMapCentre] = useState(null)
   const { data: user = null, isLoading: authLoading } = useCurrentUser()
   const logout = useLogout()
   const country = useVisitorCountry(!search.bbox)
@@ -69,6 +90,16 @@ export default function HerbMapApp() {
   })
   const observations = results.data?.observations || []
   const plant = mapPlantBySlug[search.plant]
+  // An open record focuses its own plant; otherwise the plant filter decides.
+  const focusPlant = (selected && mapPlantBySlug[selected.plant]) || plant || null
+  const occurrence = useOccurrence('herbs', focusPlant?.slug)
+  const growingZone = useGrowingZone('herbs', focusPlant?.slug)
+  const zone = focusPlant ? growingZone.data ?? null : null
+  const [userZoneFitKey, setZoneFitKey] = useState(null)
+  // Arriving from a plant profile (plant chosen, no shared area) opens on the whole growing zone.
+  const [arrivalPlant] = useState(() => !search.bbox && plant ? plant.slug : null)
+  const zoneFitKey = userZoneFitKey ?? (arrivalPlant && zone && focusPlant?.slug === arrivalPlant ? `arrival:${arrivalPlant}` : null)
+  const hemisphere = hemisphereFor(search.bbox ? (search.bbox[1] + search.bbox[3]) / 2 : NaN)
 
   useEffect(() => {
     applyPageMetadata('herbMap')
@@ -99,6 +130,7 @@ export default function HerbMapApp() {
   }
   function updateBounds(bounds) {
     const bbox = boundsArray(bounds)
+    setMapCentre({ latitude: (bounds.north + bounds.south) / 2, longitude: bounds.west <= bounds.east ? (bounds.west + bounds.east) / 2 : ((bounds.west + bounds.east + 360) / 2 + 180) % 360 - 180 })
     viewportRef.current = bbox
     if (!startedRef.current) {
       startedRef.current = true
@@ -114,6 +146,7 @@ export default function HerbMapApp() {
     applySearch({ ...search, bbox: viewportRef.current || WORLD_BOUNDS })
   }
   function chooseRecord(record, fly = false) {
+    setIdentifyOpen(false)
     setSelected(record)
     if (fly) setFlyTarget({ center: [record.longitude, record.latitude], key: record.id })
   }
@@ -122,11 +155,11 @@ export default function HerbMapApp() {
     <a className="herb-map-skip" href="#herb-map-results">Skip to observation list</a>
     <HerbalHeader view="map" forest user={user} authLoading={authLoading} onNavigate={view => window.location.assign(herbHref(view))} onAuth={setAuthMode} onLogout={() => logout.mutate()} />
     <main className="herb-map-main">
-      <section className="herb-map-heading"><div><p className="herb-kicker">The Verdant Hours · Global field map</p><h1>meet the wild<span>.</span></h1><p>Explore real plant observations, from your country to the wider world.</p></div><a href="/herbs/atlas"><span>44 plant profiles</span><BookOpen size={17} />Open the atlas <ArrowUpRight size={14} /></a></section>
+      <section className="herb-map-heading"><div><p className="herb-kicker">The Verdant Hours · Global field map</p><h1>meet the wild<span>.</span></h1><p>Explore real plant observations, from your country to the wider world.</p></div><a href="/herbs/atlas"><span>{mapPlants.length} plant profiles</span><BookOpen size={17} />Open the atlas <ArrowUpRight size={14} /></a></section>
       <button className="herb-map-filter-toggle" onClick={() => setFiltersOpen(!filtersOpen)} aria-expanded={filtersOpen} aria-controls="herb-map-filters"><SlidersHorizontal size={16} />{filtersOpen ? 'Hide filters' : 'Place, plant & date filters'}<span>{plant?.name || 'All atlas plants'}</span></button>
       <section id="herb-map-filters" className={`herb-map-filters ${filtersOpen ? 'is-open' : ''}`} aria-label="Map filters">
         <div><label>Search a place</label><PlaceSearch onSelect={setFlyTarget} /></div>
-        <label>Plant<select value={search.plant} onChange={event => filter('plant', event.target.value)}><option value="all">All 44 atlas plants</option>{mapPlants.map(item => <option value={item.slug} key={item.slug}>{item.name}{item.status === 'toxic' ? ' · TOXIC' : ''}</option>)}</select></label>
+        <label>Plant<select value={search.plant} onChange={event => filter('plant', event.target.value)}><option value="all">All {mapPlants.length} atlas plants</option>{mapPlants.map(item => <option value={item.slug} key={item.slug}>{item.name}{item.status === 'toxic' ? ' · TOXIC' : ''}</option>)}</select></label>
         <label>Observed<select value={search.period} onChange={event => filter('period', event.target.value)}><option value="30">Last 30 days</option><option value="365">Last 12 months</option><option value="all">All recorded years</option></select></label>
         <label>Seasonal month<select value={search.month} onChange={event => filter('month', event.target.value)}><option value="">Any month</option>{MONTHS.map((month, index) => <option key={month} value={index + 1}>{month}</option>)}</select></label>
       </section>
@@ -134,14 +167,15 @@ export default function HerbMapApp() {
       <div className="herb-map-workspace">
         <section className="herb-map-surface" aria-label="Interactive global herb observation map">
           <Suspense fallback={<div className="herb-map-loading"><LoaderCircle className="spin" />Opening the field map…</div>}>
-            {countryPending ? <div className="herb-map-loading"><LoaderCircle className="spin" />Finding your country…</div> : <MapView collection="herbs" sightings={observations} onSightingClick={record => chooseRecord(record)} onBoundsChange={updateBounds} countryCamera={country.data} flyTarget={flyTarget} onMapError={setMapError} />}
+            {countryPending ? <div className="herb-map-loading"><LoaderCircle className="spin" />Finding your country…</div> : <MapView collection="herbs" sightings={observations} onSightingClick={record => chooseRecord(record)} onBoundsChange={updateBounds} countryCamera={country.data} flyTarget={flyTarget} onMapError={setMapError} density={occurrence.data ?? null} zone={zone} zoneFitKey={zoneFitKey} />}
           </Suspense>
-          <div className="herb-map-map-actions"><button onClick={searchArea} disabled={results.isFetching || countryPending} className={areaChanged ? 'area-changed' : ''}><Search size={15} />{results.isFetching ? 'Loading observations…' : areaChanged ? 'Search this area' : 'Refresh this area'}</button><button aria-label="View the whole world" title="View the whole world" onClick={() => setFlyTarget({ bbox: WORLD_BOUNDS, key: Date.now() })}><Globe2 size={17} /></button></div>
+          <div className="herb-map-map-actions"><button onClick={searchArea} disabled={results.isFetching || countryPending} className={areaChanged ? 'area-changed' : ''}><Search size={15} />{results.isFetching ? 'Loading observations…' : areaChanged ? 'Search this area' : 'Refresh this area'}</button><button aria-label="View the whole world" title="View the whole world" onClick={() => setFlyTarget({ bbox: WORLD_BOUNDS, key: Date.now() })}><Globe2 size={17} /></button><button className={identifyOpen ? 'area-changed' : ''} aria-expanded={identifyOpen} aria-controls="herb-map-results" onClick={() => setIdentifyOpen(open => !open)}><Sparkles size={15} />Suggest an ID</button></div>
           {mapError && <p className="herb-map-error" role="status">The map could not load. You can still search and browse the observation list.</p>}
-          <div className="herb-map-legend" aria-label="Map legend"><span><i />Reference plant</span><span><i className="caution" />Caution / study</span><span><i className="toxic" />Toxic lookalike</span></div>
+          <OccurrenceLegend className="herb-occurrence-legend" collection="herbs" focus={focusPlant ? { slug: focusPlant.slug, name: focusPlant.name, latin: focusPlant.latin } : null} hemisphere={hemisphere} zone={zone} zoneLoading={growingZone.isLoading} onFitZone={() => setZoneFitKey(Date.now())} onClear={selected ? () => setSelected(null) : () => filter('plant', 'all')} clearLabel={selected ? 'Close this record' : 'Show all plants'} guideHref={focusPlant ? `/herbs/atlas/${focusPlant.slug}` : undefined} />
+          <div className="herb-map-legend" aria-label="Point colours"><span><i />Reference plant</span><span><i className="caution" />Caution / study</span><span><i className="toxic" />Toxic lookalike</span></div>
         </section>
         <aside ref={resultsRef} id="herb-map-results" className="herb-map-results" aria-label="Plant observations" tabIndex={-1}>
-          {selected ? <ObservationDetail record={selected} onClose={() => setSelected(null)} /> : <>
+          {identifyOpen ? <Suspense fallback={<div className="herb-map-empty"><LoaderCircle className="spin" size={25} /></div>}><IdentifyPanel collection="herbs" location={mapCentre} onClose={() => setIdentifyOpen(false)} onShowOnMap={slug => { trackFieldEvent('id_helper_focus', 'herbs'); filter('plant', slug) }} /></Suspense> : selected ? <ObservationDetail record={selected} onClose={() => setSelected(null)} hemisphere={hemisphere} zone={zone} onFitZone={() => setZoneFitKey(Date.now())} /> : <>
             <div className="herb-map-result-heading"><p className="herb-kicker">In this area</p><h2>{plant?.name || 'Field observations'}</h2><p role="status" aria-live="polite">{results.isFetching ? 'Loading public observations…' : results.isError ? 'Observations unavailable' : results.data ? `${observations.length.toLocaleString()} shown · ${results.data.total.toLocaleString()} matching records` : 'Choose an area to explore'}</p></div>
             {results.isError ? <div className="herb-map-empty" role="alert"><Leaf size={26} /><h3>Field records are taking a pause.</h3><p>{results.error.message}</p><button onClick={() => results.refetch()}>Try again</button></div> : results.isFetching ? <div className="herb-map-empty"><LoaderCircle className="spin" size={25} /><p>Gathering the latest public records…</p></div> : results.data && !observations.length ? <div className="herb-map-empty"><Leaf size={28} /><h3>No matching public records.</h3><p>Try all recorded years, another plant, or a wider area. An empty map does not mean a plant is absent.</p><button onClick={() => { trackFieldEvent('map_empty_recovery', 'herbs'); filter('period', 'all') }}>Search all recorded years</button></div> : !results.data ? <div className="herb-map-empty"><MapPinned size={26} /><p>The map opens on your country when available. Search an area to see public plant records.</p><button onClick={searchArea}>Load observations</button></div> : <>
               <ol className="herb-map-records">{observations.slice(0, visibleCount).map(record => {

@@ -5,6 +5,7 @@ import { pathToFileURL, fileURLToPath } from 'node:url'
 import { load } from 'cheerio'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
+const catalogueCounts = JSON.parse(await readFile(path.join(root, 'src', 'data', 'catalogue-counts.json'), 'utf8'))
 const dist = path.join(root, 'dist')
 const template = await readFile(path.join(dist, 'index.html'), 'utf8')
 const manifest = JSON.parse(await readFile(path.join(dist, '.vite/manifest.json'), 'utf8'))
@@ -224,10 +225,10 @@ for (const route of [...appRoutes, ...routes, ...herbRoutes]) {
   await writeFile(path.join(dist, 'reference', filename), `# ${metadata.title}\n\nCanonical: ${siteUrl}${route}\n\n${metadata.description}\n\nThis text mirrors the public page. Consult the canonical page for current observations, source credits, and review status. Educational reference only; it does not establish edibility or land access.\n\n${body}\n`)
   referencePages.push({ title: metadata.title, description: metadata.description, url: `${siteUrl}${route}`, text: `${siteUrl}/reference/${filename}` })
 }
-await writeFile(path.join(dist, 'reference', 'index.json'), JSON.stringify({ site: siteUrl, scope: '30 mushroom guides, 44 plant profiles, 10 mushroom habitat regions, and practical field skills. Global observation coverage varies.', editorialPolicy: `${siteUrl}/about#editorial`, pages: referencePages }, null, 2))
+await writeFile(path.join(dist, 'reference', 'index.json'), JSON.stringify({ site: siteUrl, scope: `${catalogueCounts.fungi} mushroom guides, ${catalogueCounts.herbs} plant profiles, 10 mushroom habitat regions, and practical field skills. Global observation coverage varies.`, editorialPolicy: `${siteUrl}/about#editorial`, pages: referencePages }, null, 2))
 await writeFile(path.join(dist, 'llms.txt'), `# Mushroom Forage Map and The Verdant Hours
 
-> A worldwide public mushroom observation map, 30 mushroom profiles, 44 wild plant profiles, ten mushroom habitat regions, and practical field-skills guides. Coverage is developing and varies by place. Independent expert review is pending where indicated on each page.
+> A worldwide public mushroom observation map, ${catalogueCounts.fungi} mushroom profiles, ${catalogueCounts.herbs} wild plant profiles, ten mushroom habitat regions, and practical field-skills guides. Coverage is developing and varies by place. Independent expert review is pending where indicated on each page.
 
 Observation records are not identification, proof of edibility, or access permission. Traditional herb associations are distinguished from scientific evidence. Photographs retain their source licenses; the decorative fungi hero includes disclosed AI outpainting.
 

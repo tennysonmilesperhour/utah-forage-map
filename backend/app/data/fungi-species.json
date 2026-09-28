@@ -1,0 +1,1082 @@
+[
+  {
+    "common_name": "Morel",
+    "latin_name": "Morchella esculenta",
+    "inaturalist_taxon_id": 58682,
+    "edibility": "choice",
+    "look_alikes": "False Morel, Verpa bohemica",
+    "habitat_notes": "Disturbed woods, burn edges, orchards, and cottonwood corridors",
+    "range_notes": "A spring mushroom recognized by a pitted cap and a single hollow interior, with dangerous false-morel confusion to rule out.",
+    "notes": "Toxic raw or undercooked. False morels can cause severe poisoning."
+  },
+  {
+    "common_name": "King Bolete",
+    "latin_name": "Boletus edulis",
+    "inaturalist_taxon_id": 48701,
+    "edibility": "choice",
+    "look_alikes": "Bitter Bolete, Red-pored boletes",
+    "habitat_notes": "Conifer and mixed forest, often at montane elevations",
+    "range_notes": "A stout, brown-capped bolete with pale pores and fine white netting on the upper stem.",
+    "notes": "Skip boletes with red or orange pores or strong blue bruising until an expert has ruled out toxic species."
+  },
+  {
+    "common_name": "Rainbow Chanterelle",
+    "latin_name": "Cantharellus roseocanus",
+    "inaturalist_taxon_id": 499666,
+    "edibility": "choice",
+    "look_alikes": "False Chanterelle, Jack-o'-lantern, Woolly Chanterelle",
+    "habitat_notes": "Moist spruce and other conifer forest",
+    "range_notes": "A western chanterelle with blunt forked ridges, solid pale flesh, and a young pinkish cap bloom.",
+    "notes": "True gills or growth in dense clusters on wood point away from chanterelles and toward possible toxic lookalikes."
+  },
+  {
+    "common_name": "Lobster Mushroom",
+    "latin_name": "Hypomyces lactifluorum",
+    "inaturalist_taxon_id": 48215,
+    "edibility": "choice",
+    "look_alikes": "Old lobster mushroom, Unparasitized Russula or Lactarius",
+    "habitat_notes": "Conifer and mixed forest floor, often partly buried",
+    "range_notes": "A firm host mushroom transformed by a red-orange parasitic fungus that erases most of the original gills.",
+    "notes": "Reject soft, purple-tinged, foul, or badly decayed specimens because the original host can no longer be identified."
+  },
+  {
+    "common_name": "Oyster Mushroom",
+    "latin_name": "Pleurotus ostreatus",
+    "inaturalist_taxon_id": 48494,
+    "edibility": "edible",
+    "look_alikes": "Angel Wings, Jack-o'-lantern, Crepidotus species",
+    "habitat_notes": "Dead or declining hardwood; substrate helps separate similar Pleurotus species",
+    "range_notes": "Pale fan-shaped caps growing in shelves on wood, with gills descending a short off-center stem.",
+    "notes": "Confirm the substrate and spore print. Thin white fans on conifer wood may be angel wings, which have been implicated in severe illness."
+  },
+  {
+    "common_name": "Shaggy Mane",
+    "latin_name": "Coprinus comatus",
+    "inaturalist_taxon_id": 47392,
+    "edibility": "edible",
+    "look_alikes": "Common Inky Cap, Green-spored Parasol, Amanita button",
+    "habitat_notes": "Lawns, trail edges, compacted ground, and other disturbed soil",
+    "range_notes": "A tall white ink cap whose shaggy cylinder dissolves from the rim into black liquid as it matures.",
+    "notes": "Only young, all-white specimens are considered edible, and every lawn button should be sliced to rule out an Amanita structure."
+  },
+  {
+    "common_name": "Gem-studded Puffball",
+    "latin_name": "Lycoperdon perlatum",
+    "inaturalist_taxon_id": 48443,
+    "edibility": "edible",
+    "look_alikes": "Amanita button, Earthball, Mature puffball",
+    "habitat_notes": "Forest litter, trail edges, and disturbed ground",
+    "range_notes": "A pear-shaped puffball with detachable cone-shaped spines and a mandatory pure-white slice test.",
+    "notes": "Slice every specimen top to bottom. Any internal cap, gills, stem, dark center, or yellowing rules it out for eating."
+  },
+  {
+    "common_name": "Hedgehog Mushroom",
+    "latin_name": "Hydnum repandum",
+    "inaturalist_taxon_id": 48641,
+    "edibility": "edible",
+    "look_alikes": "Other Hydnum species, Scaly Hedgehog, Hydnellum species",
+    "habitat_notes": "Mossy conifer and mixed forest",
+    "range_notes": "A woodland mushroom with soft detachable teeth under the cap instead of gills or pores.",
+    "notes": "The toothed group is distinctive, but regional Hydnum taxonomy is complex. Confirm all field marks and local range."
+  },
+  {
+    "common_name": "Lion's Mane",
+    "latin_name": "Hericium erinaceus",
+    "inaturalist_taxon_id": 49158,
+    "edibility": "choice",
+    "look_alikes": "Bear's Head Tooth, Coral Tooth",
+    "habitat_notes": "Wounds in living hardwoods and fallen hardwood logs",
+    "range_notes": "A white hardwood fungus formed from one cushion of long dangling teeth, without a cap, gills, or stem.",
+    "notes": "Supplement claims outpace human evidence. A wild identification and a medicinal claim are separate questions."
+  },
+  {
+    "common_name": "Fly Agaric",
+    "latin_name": "Amanita muscaria",
+    "inaturalist_taxon_id": 48715,
+    "edibility": "poisonous",
+    "look_alikes": "Panther Cap, Rain-washed Amanita, Russula species",
+    "habitat_notes": "Under conifers and birch",
+    "range_notes": "The iconic red or yellow Amanita with white veil warts, white gills, a ring, and a bulbous base marked by scaly rings.",
+    "notes": "Poisonous. Muscimol and ibotenic acid products are not a safe shortcut, and ordinary cooking does not make this mushroom safe."
+  },
+  {
+    "common_name": "Destroying Angel",
+    "latin_name": "Amanita bisporigera",
+    "inaturalist_taxon_id": 125390,
+    "edibility": "deadly",
+    "look_alikes": "Young Puffball, Meadow Mushroom, White Parasol",
+    "habitat_notes": "Woodland soil near host trees",
+    "range_notes": "A deadly white Amanita pattern defined by free white gills, a ring, white spores, and a buried sack-like volva.",
+    "notes": "Potentially fatal. If ingestion is possible, call Poison Control immediately before symptoms appear."
+  },
+  {
+    "common_name": "False Morel",
+    "latin_name": "Gyromitra esculenta",
+    "inaturalist_taxon_id": 85120,
+    "edibility": "poisonous",
+    "look_alikes": "Morel, Snow Morels, Verpa species",
+    "habitat_notes": "Conifer forest and disturbed ground",
+    "range_notes": "A spring mushroom with brain-like folds and a chambered interior that overlaps true-morel habitat and can cause severe poisoning.",
+    "notes": "Poisonous. The site does not endorse traditional detoxification methods, and cooking fumes have caused illness."
+  },
+  {
+    "common_name": "Chicken of the Woods",
+    "latin_name": "Laetiporus sulphureus",
+    "inaturalist_taxon_id": 53713,
+    "edibility": "choice",
+    "look_alikes": "Jack-o'-lantern, Berkeley's Polypore, Black-staining Polypore",
+    "habitat_notes": "Living or dead hardwood trunks, stumps, and buried roots",
+    "range_notes": "Bright orange and yellow shelves on wood, with a sulfur-yellow pore surface and no gills.",
+    "notes": "Regional Laetiporus species and host trees matter. Cook thoroughly and try only a small portion because gastrointestinal reactions occur."
+  },
+  {
+    "common_name": "Golden Chanterelle",
+    "latin_name": "Cantharellus cibarius",
+    "inaturalist_taxon_id": 47347,
+    "edibility": "choice",
+    "look_alikes": "Jack-o'-lantern, False Chanterelle, Rainbow Chanterelle",
+    "habitat_notes": "Soil in mature broadleaf and conifer forests, depending on region",
+    "range_notes": "A golden woodland chanterelle with blunt forked ridges, solid pale flesh, and no true gill blades.",
+    "notes": "Golden chanterelles are a regional species complex. Confirm local taxonomy and rule out orange, gilled mushrooms growing from wood."
+  },
+  {
+    "common_name": "Giant Puffball",
+    "latin_name": "Calvatia gigantea",
+    "inaturalist_taxon_id": 57692,
+    "edibility": "edible",
+    "look_alikes": "Amanita button, Common Earthball, Western Giant Puffball",
+    "habitat_notes": "Meadows, pasture edges, open woods, parks, and rich disturbed soil",
+    "range_notes": "A stemless white ball that can grow larger than a basketball and must be cut open before any culinary consideration.",
+    "notes": "Slice the entire specimen. Edible-stage flesh must be uniformly white with no internal outline, discoloration, or forming cap and gills."
+  },
+  {
+    "common_name": "Hen of the Woods",
+    "latin_name": "Grifola frondosa",
+    "inaturalist_taxon_id": 53714,
+    "edibility": "choice",
+    "look_alikes": "Black-staining Polypore, Berkeley's Polypore, Umbrella Polypore",
+    "habitat_notes": "At the base of mature oaks and other hardwoods, often recurring on the same tree",
+    "range_notes": "A large gray-brown rosette of many spoon-shaped fronds joined to a branched base beside mature hardwoods.",
+    "notes": "Use young, fresh fronds and confirm the white pore surface. Similar rosette polypores differ in staining, color, and texture."
+  },
+  {
+    "common_name": "Turkey Tail",
+    "latin_name": "Trametes versicolor",
+    "inaturalist_taxon_id": 54134,
+    "edibility": "inedible",
+    "look_alikes": "False Turkey Tail, Violet-toothed Polypore, Other Trametes species",
+    "habitat_notes": "Overlapping shelves on dead hardwood logs, stumps, and branches",
+    "range_notes": "Thin flexible fans with velvety multicolored bands above and a dense white pore surface below.",
+    "notes": "Color bands alone do not identify turkey tail. Confirm a velvety cap and a true pore surface; medical extracts are not equivalent to a wild tea or supplement."
+  },
+  {
+    "common_name": "Western Matsutake",
+    "latin_name": "Tricholoma murrillianum",
+    "inaturalist_taxon_id": 521711,
+    "edibility": "choice",
+    "look_alikes": "Amanita smithiana, Catathelasma species, Scaly Tricholoma species",
+    "habitat_notes": "Deep duff under conifers, madrone, and other regional host trees",
+    "range_notes": "A dense white pine mushroom with brown cap fibers, a sheathing ring, firm buried base, and a strong spicy odor.",
+    "notes": "Amanita smithiana can resemble matsutake and cause kidney failure. This is not a beginner edible; use a qualified regional expert."
+  },
+  {
+    "common_name": "Meadow Mushroom",
+    "latin_name": "Agaricus campestris",
+    "inaturalist_taxon_id": 143563,
+    "edibility": "edible",
+    "look_alikes": "Destroying Angel, Yellow Stainer, Green-spored Parasol",
+    "habitat_notes": "Lawns, pastures, playing fields, and other grassy soil",
+    "range_notes": "A white grassland Agaricus whose free gills mature from pink to chocolate brown and whose base has no volva.",
+    "notes": "White lawn mushrooms are a high-consequence identification problem. Dig the entire base and rule out deadly Amanita and yellow-staining Agaricus."
+  },
+  {
+    "common_name": "Black Trumpet",
+    "latin_name": "Craterellus cornucopioides",
+    "inaturalist_taxon_id": 48607,
+    "edibility": "choice",
+    "look_alikes": "Devil's Urn, Pig's Ear, Other Craterellus species",
+    "habitat_notes": "Leaf litter in mature broadleaf and mixed forest",
+    "range_notes": "A thin charcoal funnel that is hollow to the base, with a smooth to faintly wrinkled gray outer surface and no gills.",
+    "notes": "Dark cup fungi and regional Craterellus species require comparison. Confirm the thin hollow trumpet and smooth outer surface."
+  },
+  {
+    "common_name": "Saffron Milk Cap",
+    "latin_name": "Lactarius deliciosus",
+    "inaturalist_taxon_id": 155197,
+    "edibility": "edible",
+    "look_alikes": "False Saffron Milk Cap, Woolly Milk Cap, Jack-o'-lantern",
+    "habitat_notes": "Soil beneath pines, including plantations in introduced ranges",
+    "range_notes": "An orange pine-associated milk cap with concentric cap zones, orange latex, and green staining where damaged.",
+    "notes": "The deliciosus group contains regional species with different ranges and flavors. Confirm latex color, staining, gills, and host tree."
+  },
+  {
+    "common_name": "Death Cap",
+    "latin_name": "Amanita phalloides",
+    "inaturalist_taxon_id": 52135,
+    "edibility": "deadly",
+    "look_alikes": "Meadow Mushroom, Paddy Straw Mushroom, Green Russula species",
+    "habitat_notes": "Soil near oaks and other host trees in native and introduced ranges",
+    "range_notes": "A deadly olive, bronze, yellow, or pale Amanita with free white gills, a ring, white spores, and a buried sack-like volva.",
+    "notes": "Potentially fatal. If ingestion is possible, contact a poison center immediately and do not wait for symptoms."
+  },
+  {
+    "common_name": "Green-spored Parasol",
+    "latin_name": "Chlorophyllum molybdites",
+    "inaturalist_taxon_id": 117308,
+    "edibility": "poisonous",
+    "look_alikes": "Shaggy Parasol, Meadow Mushroom, Amanita species",
+    "habitat_notes": "Lawns, parks, golf courses, and grassy disturbed soil",
+    "range_notes": "A large lawn parasol with brown cap scales, a movable ring, and gills that turn gray-green as its green spores mature.",
+    "notes": "Poisonous and capable of causing severe vomiting, abdominal pain, and diarrhea. Never use cap shape alone to identify a parasol."
+  },
+  {
+    "common_name": "Jack-o'-lantern",
+    "latin_name": "Omphalotus illudens",
+    "inaturalist_taxon_id": 126831,
+    "edibility": "poisonous",
+    "look_alikes": "Golden Chanterelle, Rainbow Chanterelle, Chicken of the Woods",
+    "habitat_notes": "Hardwood stumps, buried roots, and the bases of dead or declining trees",
+    "range_notes": "A poisonous orange mushroom in dense wood-based clusters, with sharp true gills descending the stem.",
+    "notes": "Poisonous. It is repeatedly mistaken for chanterelles; growth from wood and sharp true gills are critical differences."
+  },
+  {
+    "common_name": "Deadly Galerina",
+    "latin_name": "Galerina marginata",
+    "inaturalist_taxon_id": 154735,
+    "edibility": "deadly",
+    "look_alikes": "Sheathed Woodtuft, Honey Mushroom, Mica Cap",
+    "habitat_notes": "Decaying conifer and hardwood logs, stumps, and woody debris",
+    "range_notes": "A small brown wood-growing mushroom with rusty gills and spores, a fragile ring zone, and potentially fatal amatoxins.",
+    "notes": "Potentially fatal. Never eat little brown mushrooms from wood, and contact a poison center immediately after a possible ingestion."
+  },
+  {
+    "common_name": "Common Earthball",
+    "latin_name": "Scleroderma citrinum",
+    "inaturalist_taxon_id": 55927,
+    "edibility": "poisonous",
+    "look_alikes": "Giant Puffball, Gem-studded Puffball, Amanita button",
+    "habitat_notes": "Acidic soil, moss, path edges, and rotting wood near trees",
+    "range_notes": "A firm yellow-brown ball with a thick cracked rind and a purple-black interior that distinguishes it from edible-stage puffballs.",
+    "notes": "Poisonous. Cut every puffball-like mushroom vertically; earthballs develop a dark, firm center while edible-stage puffballs remain uniform white."
+  },
+  {
+    "common_name": "Common Ink Cap",
+    "latin_name": "Coprinopsis atramentaria",
+    "inaturalist_taxon_id": 48521,
+    "edibility": "caution",
+    "look_alikes": "Shaggy Mane, Mica Cap, Other Ink Caps",
+    "habitat_notes": "Buried wood, stumps, roots, lawns, and disturbed ground near hardwoods",
+    "range_notes": "Smooth gray-brown clustered caps that dissolve into black ink and can trigger a severe alcohol reaction.",
+    "notes": "Coprine can cause flushing, pounding heartbeat, nausea, and low blood pressure when alcohol is consumed around the same time."
+  },
+  {
+    "common_name": "Rocky Mountain Porcini",
+    "latin_name": "Boletus rubriceps",
+    "inaturalist_taxon_id": 499696,
+    "edibility": "choice",
+    "look_alikes": "King Bolete, Bitter Bolete, Red-pored Boletes",
+    "habitat_notes": "High-elevation spruce and fir forest in the southern Rocky Mountains",
+    "range_notes": "A high-elevation spruce bolete with a red-brown cap, white then yellow pores, and pale netting on a thick stem.",
+    "notes": "Confirm pale stem reticulation, non-blue-staining pores, and local range. Avoid all red-pored or strongly blue-staining boletes as a beginner."
+  },
+  {
+    "common_name": "Spring King Bolete",
+    "latin_name": "Boletus rex-veris",
+    "inaturalist_taxon_id": 438025,
+    "edibility": "choice",
+    "look_alikes": "King Bolete, Bitter Bolete, Blue-staining Boletes",
+    "habitat_notes": "Montane pine forest in western North America",
+    "range_notes": "A western spring porcini with a brown cap, thick netted stem, white-to-yellow pores, and little or no blue staining.",
+    "notes": "Western bolete names overlap. Confirm pine habitat, stem reticulation, pore color, bruising, and an expert-supported regional record."
+  },
+  {
+    "common_name": "Aspen Bolete",
+    "latin_name": "Leccinum insigne",
+    "inaturalist_taxon_id": 122466,
+    "edibility": "caution",
+    "look_alikes": "Other Leccinum species, Rocky Mountain Porcini, Orange-capped Boletes",
+    "habitat_notes": "Soil beneath aspen in western North America",
+    "range_notes": "An orange-capped bolete under aspen, with pale pores and a white stem covered in dark scabers.",
+    "notes": "Western Leccinum have caused gastrointestinal illness even after cooking. Regional identification and thorough cooking do not eliminate individual risk."
+  },
+  {
+    "common_name": "Hemlock Reishi",
+    "latin_name": "Ganoderma tsugae",
+    "inaturalist_taxon_id": 63274,
+    "edibility": "inedible",
+    "look_alikes": "Artist's Conk, Ganoderma curtisii, Red-belted conks",
+    "habitat_notes": "Dead or dying hemlock and other conifers in eastern North America",
+    "range_notes": "A lacquered red-brown shelf on hemlock and other conifers, prized for tea and extracts rather than as a food mushroom.",
+    "notes": "Woody and inedible as food. Health claims are not established; ask a clinician before using extracts, especially with blood-thinning medicines."
+  },
+  {
+    "common_name": "Chaga",
+    "latin_name": "Inonotus obliquus",
+    "inaturalist_taxon_id": 127021,
+    "edibility": "inedible",
+    "look_alikes": "Birch burls, Tinder Fungus, Black knot",
+    "habitat_notes": "Living and dying birch in boreal and cool temperate forests of the Northern Hemisphere",
+    "range_notes": "A black, cracked, charcoal-like canker on birch trunks whose rusty orange interior is used for tea.",
+    "notes": "Not a food mushroom. Heavy, long-term chaga tea use has been linked to oxalate kidney injury."
+  },
+  {
+    "common_name": "Jelly Ear",
+    "latin_name": "Auricularia auricula-judae",
+    "inaturalist_taxon_id": 1138427,
+    "edibility": "edible",
+    "look_alikes": "Black witch's butter, Brown cup fungi, Amber jelly roll",
+    "habitat_notes": "Dead branches of elder, sycamore, and other hardwoods",
+    "range_notes": "A rubbery, ear-shaped brown jelly fungus on dead hardwood, especially elder, eaten widely after cooking.",
+    "notes": "Cook before eating. Soak dried wood ears briefly and refrigerate; long room-temperature soaking has caused severe bacterial toxin poisoning."
+  },
+  {
+    "common_name": "Cauliflower Mushroom",
+    "latin_name": "Sparassis crispa",
+    "inaturalist_taxon_id": 63014,
+    "edibility": "choice",
+    "look_alikes": "Coral fungi, Hen of the Woods, Other Sparassis species",
+    "habitat_notes": "At the base of pines and other conifers, attached to roots",
+    "range_notes": "A large cream rosette of flat, curly lobes at the base of conifers, easy to recognize and prized when fresh.",
+    "notes": "Clean thoroughly and cook. Soft, discolored, or bitter specimens should be left."
+  },
+  {
+    "common_name": "Indigo Milk Cap",
+    "latin_name": "Lactarius indigo",
+    "inaturalist_taxon_id": 1366733,
+    "edibility": "edible",
+    "look_alikes": "Silver-blue milky, Blue webcaps, Faded indigo milk caps",
+    "habitat_notes": "Oak and pine forests of eastern North America, Mexico, Central America, and parts of Asia",
+    "range_notes": "A striking blue milk cap whose cut gills bleed blue latex that slowly stains green.",
+    "notes": "Confirm the blue latex. Blue color alone can fade in older specimens."
+  },
+  {
+    "common_name": "Dryad's Saddle",
+    "latin_name": "Cerioporus squamosus",
+    "inaturalist_taxon_id": 940028,
+    "edibility": "edible",
+    "look_alikes": "Hexagonal-pored polypore, Other scaly polypores, Chicken of the Woods",
+    "habitat_notes": "Living and dead hardwoods such as elm, maple, and box elder",
+    "range_notes": "A large spring polypore with feathery brown scales, big angular pores, and a fresh watermelon-rind smell.",
+    "notes": "Only young, tender edges are worth eating. Tough, older shelves are indigestible."
+  },
+  {
+    "common_name": "Beefsteak Fungus",
+    "latin_name": "Fistulina hepatica",
+    "inaturalist_taxon_id": 123897,
+    "edibility": "edible",
+    "look_alikes": "Chicken of the Woods, Red-belted conks, Bleeding polypores",
+    "habitat_notes": "Trunks of oak and sweet chestnut",
+    "range_notes": "A red, tongue-shaped bracket on oak and chestnut whose marbled flesh oozes red juice like raw meat.",
+    "notes": "Sour and acidic; soak or cook, and avoid old, soft specimens."
+  },
+  {
+    "common_name": "Candy Cap",
+    "latin_name": "Lactarius rubidus",
+    "inaturalist_taxon_id": 55276,
+    "edibility": "choice",
+    "look_alikes": "Deadly Galerina, Red-hot milk cap, Other small brown milk caps",
+    "habitat_notes": "Rotting wood and debris under oaks and conifers along the Pacific coast of North America",
+    "range_notes": "A small orange-brown Pacific coast milk cap with watery latex and a maple-syrup aroma that intensifies when dried.",
+    "notes": "Small brown mushrooms on wood include deadly Galerina. Confirm the watery latex and the aroma on every specimen."
+  },
+  {
+    "common_name": "Pacific Golden Chanterelle",
+    "latin_name": "Cantharellus formosus",
+    "inaturalist_taxon_id": 120443,
+    "edibility": "choice",
+    "look_alikes": "False Chanterelle, Jack-o'-lantern, Woolly chanterelle",
+    "habitat_notes": "Douglas-fir and western hemlock forests of the Pacific Northwest",
+    "range_notes": "The common golden chanterelle of the Pacific Northwest, with blunt, forked false gills and a pinkish tone.",
+    "notes": "Rule out false chanterelles and jack-o'-lanterns, which have true blade-like gills."
+  },
+  {
+    "common_name": "Cinnabar Chanterelle",
+    "latin_name": "Cantharellus cinnabarinus",
+    "inaturalist_taxon_id": 143393,
+    "edibility": "edible",
+    "look_alikes": "Scarlet Waxcap, Jack-o'-lantern, Red Russula species",
+    "habitat_notes": "Soil and moss in oak and mixed hardwood forests of eastern North America",
+    "range_notes": "A small, brilliant red-pink chanterelle of eastern North American hardwood forests.",
+    "notes": "Small red mushrooms include waxcaps and other species. Confirm blunt ridges rather than true gills."
+  },
+  {
+    "common_name": "Yellowfoot",
+    "latin_name": "Craterellus tubaeformis",
+    "inaturalist_taxon_id": 350511,
+    "edibility": "choice",
+    "look_alikes": "Deadly Webcap, Golden trumpet, False Chanterelle",
+    "habitat_notes": "Moss, rotting wood, and needle litter in wet conifer forests",
+    "range_notes": "A slender brown-capped chanterelle relative with a hollow yellow stem and gray forked ridges, fruiting late into winter.",
+    "notes": "Small brown mushrooms with true gills, including deadly webcaps, grow in the same moss. Check for hollow stems and blunt ridges."
+  },
+  {
+    "common_name": "Wood Blewit",
+    "latin_name": "Collybia nuda",
+    "inaturalist_taxon_id": 1525548,
+    "edibility": "caution",
+    "look_alikes": "Violet webcaps, Lilac fibrecap, Amethyst Deceiver",
+    "habitat_notes": "Leaf litter, compost heaps, and woodland edges",
+    "range_notes": "A lilac-violet mushroom of autumn leaf litter and compost with a fruity smell and a pinkish-buff spore print.",
+    "notes": "Always take a spore print: violet webcaps have rusty-brown spores and some are dangerous. Cook thoroughly; some people react even to cooked blewits."
+  },
+  {
+    "common_name": "Parasol Mushroom",
+    "latin_name": "Macrolepiota procera",
+    "inaturalist_taxon_id": 63401,
+    "edibility": "choice",
+    "look_alikes": "Green-spored Parasol, Stinking Dapperling, Shaggy Parasol",
+    "habitat_notes": "Grassland, meadows, and open woodland edges",
+    "range_notes": "A towering meadow mushroom with a scaly brown cap up to 30 cm, a snakeskin-patterned stem, and a movable double ring.",
+    "notes": "Confirm a white spore print and a movable ring. Small Lepiota species with similar scales can be deadly."
+  },
+  {
+    "common_name": "Shaggy Parasol",
+    "latin_name": "Chlorophyllum rhacodes",
+    "inaturalist_taxon_id": 56535,
+    "edibility": "caution",
+    "look_alikes": "Green-spored Parasol, Parasol Mushroom, Brown parasol",
+    "habitat_notes": "Conifer litter, gardens, compost, and woodland edges",
+    "range_notes": "A shaggy-scaled parasol of conifer litter and compost whose cut flesh stains saffron then reddish brown.",
+    "notes": "Causes gastrointestinal upset in some people. The green-spored parasol is similar; take a spore print every time."
+  },
+  {
+    "common_name": "Honey Mushroom",
+    "latin_name": "Armillaria mellea",
+    "inaturalist_taxon_id": 55950,
+    "edibility": "caution",
+    "look_alikes": "Deadly Galerina, Sulphur Tuft, Jack-o'-lantern",
+    "habitat_notes": "Stumps, roots, and living trees in hardwood and mixed forests",
+    "range_notes": "Dense clusters of honey-colored caps on wood and roots, linked by black bootlace strands under bark.",
+    "notes": "Always cook thoroughly; raw or undercooked honey mushrooms cause vomiting. Deadly Galerina grows on the same wood."
+  },
+  {
+    "common_name": "Velvet Shank",
+    "latin_name": "Flammulina velutipes",
+    "inaturalist_taxon_id": 67594,
+    "edibility": "edible",
+    "look_alikes": "Deadly Galerina, Sulphur Tuft, Sheathed Woodtuft",
+    "habitat_notes": "Dead or dying hardwood, especially elm, willow, and ash",
+    "range_notes": "A cold-season cluster of sticky orange-brown caps on dead hardwood, with a velvety dark stem.",
+    "notes": "Deadly Galerina grows on wood in the same cold months. Check for a white spore print and the absence of a ring."
+  },
+  {
+    "common_name": "Wine Cap",
+    "latin_name": "Stropharia rugosoannulata",
+    "inaturalist_taxon_id": 119151,
+    "edibility": "edible",
+    "look_alikes": "Ringed Conecap, Yellow Stainer, Other Stropharia",
+    "habitat_notes": "Wood chips, straw, garden beds, and rich disturbed ground",
+    "range_notes": "A large burgundy mushroom of wood chips and gardens with a ridged cogwheel ring and purple-black gills.",
+    "notes": "Take a spore print. Other mulch mushrooms, including Agaricus and Pholiotina, grow in the same beds."
+  },
+  {
+    "common_name": "Bay Bolete",
+    "latin_name": "Imleria badia",
+    "inaturalist_taxon_id": 510854,
+    "edibility": "edible",
+    "look_alikes": "Bitter Bolete, King Bolete, Red-cracked boletes",
+    "habitat_notes": "Conifer and mixed forests on acidic soil",
+    "range_notes": "A chestnut-brown bolete of conifer woods whose cream pores bruise blue when pressed.",
+    "notes": "Avoid boletes with red or orange pores and any with a bitter taste. Cook thoroughly."
+  },
+  {
+    "common_name": "Slippery Jack",
+    "latin_name": "Suillus luteus",
+    "inaturalist_taxon_id": 53488,
+    "edibility": "edible",
+    "look_alikes": "Weeping bolete, Peppery bolete, Other Suillus",
+    "habitat_notes": "Under pines, including planted pines in the Southern Hemisphere",
+    "range_notes": "A slimy brown pine bolete with a prominent purplish ring, now common in pine plantations worldwide.",
+    "notes": "Peel the slimy cap skin before cooking; the slime causes digestive upset in some people."
+  },
+  {
+    "common_name": "Old Man of the Woods",
+    "latin_name": "Strobilomyces strobilaceus",
+    "inaturalist_taxon_id": 352462,
+    "edibility": "edible",
+    "look_alikes": "Strobilomyces confusus, Shaggy Amanita, Scaly tooth fungi",
+    "habitat_notes": "Oak and mixed hardwood forests",
+    "range_notes": "A shaggy gray-and-black bolete that looks like a pine cone, with gray pores bruising red then black.",
+    "notes": "Edible but mediocre. Cook well, and confirm it is a bolete with pores."
+  },
+  {
+    "common_name": "Pine Bolete",
+    "latin_name": "Boletus pinophilus",
+    "inaturalist_taxon_id": 335942,
+    "edibility": "choice",
+    "look_alikes": "Bitter Bolete, King Bolete, Devil's Bolete",
+    "habitat_notes": "Pine and spruce forests on acidic soil",
+    "range_notes": "A porcini with a wine-red to mahogany cap, found under pines and spruce across Europe.",
+    "notes": "Rule out bitter and red-pored boletes. Taste a tiny raw piece and spit it out; bitterness means bitter bolete."
+  },
+  {
+    "common_name": "Summer Bolete",
+    "latin_name": "Boletus reticulatus",
+    "inaturalist_taxon_id": 350216,
+    "edibility": "choice",
+    "look_alikes": "Bitter Bolete, King Bolete, Pine Bolete",
+    "habitat_notes": "Oak, beech, and other broadleaf woodland",
+    "range_notes": "An early porcini with a pale, often cracked brown cap and a fine white net over the entire stem.",
+    "notes": "Rule out the bitter bolete, which has a dark net and pinkish pores."
+  },
+  {
+    "common_name": "Orange Birch Bolete",
+    "latin_name": "Leccinum versipelle",
+    "inaturalist_taxon_id": 343661,
+    "edibility": "caution",
+    "look_alikes": "Aspen Bolete, Red-capped scaber stalk, Bitter Bolete",
+    "habitat_notes": "With birch, in heath, woods, and parks",
+    "range_notes": "A bright orange bolete under birch with a scabrous, black-flecked stem and flesh that darkens when cut.",
+    "notes": "Cook thoroughly. Raw or undercooked Leccinum has caused gastrointestinal illness, and some North American orange Leccinum are implicated in poisonings."
+  },
+  {
+    "common_name": "Brown Birch Bolete",
+    "latin_name": "Leccinum scabrum",
+    "inaturalist_taxon_id": 63232,
+    "edibility": "caution",
+    "look_alikes": "Bitter Bolete, Other brown scaber stalks, Bay Bolete",
+    "habitat_notes": "With birch in woods, heath, and parks",
+    "range_notes": "A common brown-capped bolete of birch with a white stem covered in dark scabers.",
+    "notes": "Cook thoroughly, and discard old, soft caps. Some people react to Leccinum even when cooked."
+  },
+  {
+    "common_name": "St George's Mushroom",
+    "latin_name": "Calocybe gambosa",
+    "inaturalist_taxon_id": 450829,
+    "edibility": "edible",
+    "look_alikes": "Deadly Fibrecap, Livid Pinkgill, Fool's Funnel",
+    "habitat_notes": "Grassland edges, hedgerows, and woodland margins, often in rings",
+    "range_notes": "A stocky white spring mushroom of grassland and hedgerows with crowded white gills and a strong mealy smell.",
+    "notes": "The deadly fibrecap and livid pinkgill also fruit in spring. Confirm a white spore print, mealy smell, and no reddening."
+  },
+  {
+    "common_name": "Fairy Ring Mushroom",
+    "latin_name": "Marasmius oreades",
+    "inaturalist_taxon_id": 118240,
+    "edibility": "edible",
+    "look_alikes": "Fool's Funnel, Ringed Conecap, Other lawn mushrooms",
+    "habitat_notes": "Lawns, pastures, and short grass",
+    "range_notes": "A small tan lawn mushroom with widely spaced gills and a tough, bendable stem, growing in rings.",
+    "notes": "The fool's funnel grows in the same lawns and is poisonous. Check gill spacing and attachment on every specimen."
+  },
+  {
+    "common_name": "Horse Mushroom",
+    "latin_name": "Agaricus arvensis",
+    "inaturalist_taxon_id": 58699,
+    "edibility": "edible",
+    "look_alikes": "Yellow Stainer, European Destroying Angel, Meadow Mushroom",
+    "habitat_notes": "Pastures, meadows, and grassy verges",
+    "range_notes": "A large white grassland Agaricus with an aniseed smell, a cogwheel ring, and gills maturing to chocolate brown.",
+    "notes": "Destroying angels are white with white gills and a volva. The yellow stainer bruises chrome yellow and smells of ink."
+  },
+  {
+    "common_name": "Amethyst Deceiver",
+    "latin_name": "Laccaria amethystina",
+    "inaturalist_taxon_id": 55899,
+    "edibility": "edible",
+    "look_alikes": "Lilac bonnet, Lilac fibrecap, Violet webcaps",
+    "habitat_notes": "Leaf and needle litter in broadleaf and conifer woods",
+    "range_notes": "A slender, intensely violet woodland mushroom with thick, widely spaced gills that fades when dry.",
+    "notes": "It can accumulate arsenic from some soils. Lilac bonnet and lilac fibrecap are toxic lookalikes."
+  },
+  {
+    "common_name": "The Blusher",
+    "latin_name": "Amanita rubescens",
+    "inaturalist_taxon_id": 1678242,
+    "edibility": "caution",
+    "look_alikes": "Panther Cap, Gray spotted amanita, Death Cap",
+    "habitat_notes": "Broadleaf and conifer woodland",
+    "range_notes": "A reddish-brown Amanita with pale warts whose flesh and bruises turn pinkish red, especially at the stem base.",
+    "notes": "An Amanita. It must be thoroughly cooked, and the panther cap is a dangerous lookalike. North American blushers are separate species."
+  },
+  {
+    "common_name": "Caesar's Mushroom",
+    "latin_name": "Amanita caesarea",
+    "inaturalist_taxon_id": 204588,
+    "edibility": "choice",
+    "look_alikes": "Fly Agaric, Death Cap, American Caesar's Mushroom",
+    "habitat_notes": "Oak and chestnut woods of southern Europe and North Africa",
+    "range_notes": "A brilliant orange Amanita with yellow gills and a large white sac volva, prized in southern Europe since Roman times.",
+    "notes": "It is an Amanita. Unopened eggs resemble deadly death cap eggs; cut vertically and confirm yellow internal gills."
+  },
+  {
+    "common_name": "American Caesar's Mushroom",
+    "latin_name": "Amanita jacksonii",
+    "inaturalist_taxon_id": 204589,
+    "edibility": "edible",
+    "look_alikes": "Fly Agaric, Yellow patches, Death Cap",
+    "habitat_notes": "Oak and pine forests of eastern North America",
+    "range_notes": "A red-orange Amanita of eastern North America with a striate cap margin, yellow gills, and a white sac volva.",
+    "notes": "An Amanita. Confirm yellow gills and stem and the white sac volva, and cut eggs vertically."
+  },
+  {
+    "common_name": "Charcoal Burner",
+    "latin_name": "Russula cyanoxantha",
+    "inaturalist_taxon_id": 194437,
+    "edibility": "edible",
+    "look_alikes": "Death Cap, The Sickener, Other Russula",
+    "habitat_notes": "Broadleaf woods, especially beech and oak",
+    "range_notes": "A variably colored Russula in violet, green, and gray whose gills are flexible rather than brittle.",
+    "notes": "Green-tinged Russulas can be confused with the death cap. Confirm no ring and no volva."
+  },
+  {
+    "common_name": "Shrimp Russula",
+    "latin_name": "Russula xerampelina",
+    "inaturalist_taxon_id": 154875,
+    "edibility": "edible",
+    "look_alikes": "The Sickener, Other red Russula, Charcoal Burner",
+    "habitat_notes": "Conifer and mixed forests",
+    "range_notes": "A red to purple-brown Russula that smells of shrimp or crab with age and bruises yellow-brown.",
+    "notes": "Red Russulas include acrid, toxic species. Confirm the fishy odor, brown staining, and mild taste."
+  },
+  {
+    "common_name": "Weeping Milk Cap",
+    "latin_name": "Lactifluus volemus",
+    "inaturalist_taxon_id": 1366740,
+    "edibility": "edible",
+    "look_alikes": "Woolly Milk Cap, Corrugated milk cap, Red-hot milk cap",
+    "habitat_notes": "Hardwood and mixed forests",
+    "range_notes": "An orange-brown milk cap that releases abundant white latex staining brown, with a fishy smell.",
+    "notes": "Other orange milk caps release acrid latex. Confirm mild, abundant white latex that stains brown."
+  },
+  {
+    "common_name": "Pig's Ear",
+    "latin_name": "Gomphus clavatus",
+    "inaturalist_taxon_id": 54121,
+    "edibility": "edible",
+    "look_alikes": "Woolly chanterelle, Black Trumpet, Violet corals",
+    "habitat_notes": "Old conifer forests, often in deep needle litter",
+    "range_notes": "A purple, club-shaped relative of chanterelles with a wrinkled, veined underside, declining in parts of Europe.",
+    "notes": "Protected or red-listed in several European countries. The scaly vase chanterelle is a toxic lookalike."
+  },
+  {
+    "common_name": "Coral Tooth Fungus",
+    "latin_name": "Hericium coralloides",
+    "inaturalist_taxon_id": 49162,
+    "edibility": "edible",
+    "look_alikes": "Bear's head tooth, Lion's Mane, Coral fungi",
+    "habitat_notes": "Fallen logs and stumps of beech, birch, maple, and other hardwoods",
+    "range_notes": "A white, branching fungus on dead hardwood with rows of short spines hanging from every branch.",
+    "notes": "Harvest only fresh, white specimens; yellowing ones are bitter."
+  },
+  {
+    "common_name": "Golden Oyster",
+    "latin_name": "Pleurotus citrinopileatus",
+    "inaturalist_taxon_id": 504060,
+    "edibility": "edible",
+    "look_alikes": "Sulphur Tuft, Oyster Mushroom, Golden Pholiota",
+    "habitat_notes": "Dead elm and other hardwoods; escaped from cultivation in North America",
+    "range_notes": "Bright yellow clusters of oyster mushrooms on hardwood; native to East Asia and invasive in North American forests.",
+    "notes": "Check host wood and gill attachment, and confirm the white to pale lilac spore print."
+  },
+  {
+    "common_name": "Mica Cap",
+    "latin_name": "Coprinellus micaceus",
+    "inaturalist_taxon_id": 56318,
+    "edibility": "edible",
+    "look_alikes": "Deadly Galerina, Brittlestems, Common Ink Cap",
+    "habitat_notes": "Stumps, buried roots, and dead hardwood, often in towns",
+    "range_notes": "Small tawny bell-shaped caps sprinkled with glittering granules, in dense clusters on wood.",
+    "notes": "Very perishable; cook within hours. Small brown mushrooms on wood also include deadly Galerina."
+  },
+  {
+    "common_name": "Aborted Entoloma",
+    "latin_name": "Entoloma abortivum",
+    "inaturalist_taxon_id": 70222,
+    "edibility": "edible",
+    "look_alikes": "Livid Pinkgill, Destroying Angel, Puffballs",
+    "habitat_notes": "Near rotting hardwood and buried wood in eastern North America",
+    "range_notes": "Whitish, lumpy masses beside gray gilled Entoloma mushrooms, formed where Entoloma and honey mushrooms interact.",
+    "notes": "Only the lumpy form is widely eaten. Cut every lump: it must have uniform flesh without internal gills."
+  },
+  {
+    "common_name": "Sheathed Woodtuft",
+    "latin_name": "Kuehneromyces mutabilis",
+    "inaturalist_taxon_id": 153033,
+    "edibility": "edible",
+    "look_alikes": "Deadly Galerina, Honey Mushroom, Sulphur Tuft",
+    "habitat_notes": "Stumps and logs of broadleaf trees",
+    "range_notes": "A clustered brown mushroom on stumps with two-toned drying caps and a scaly stem below the ring.",
+    "notes": "The deadly Galerina marginata is almost identical. Most experts advise beginners to avoid this species entirely."
+  },
+  {
+    "common_name": "Matsutake",
+    "latin_name": "Tricholoma matsutake",
+    "inaturalist_taxon_id": 62486,
+    "edibility": "choice",
+    "look_alikes": "Smith's Amanita, Western Matsutake, Tricholoma focale",
+    "habitat_notes": "Red pine and other pines, in poor, sandy soils",
+    "range_notes": "A prized, spicy-smelling mushroom of red pine forests in East Asia and northern Europe with a sheathing ring.",
+    "notes": "Kidney-toxic Amanita smithiana and other white mushrooms can resemble matsutake. Confirm the spicy odor and the lack of a volva."
+  },
+  {
+    "common_name": "Llao Llao",
+    "latin_name": "Cyttaria hariotii",
+    "inaturalist_taxon_id": 802830,
+    "edibility": "edible",
+    "look_alikes": "Darwin's fungus, Empty galls, Other orange fungi",
+    "habitat_notes": "Branches of southern beech (Nothofagus) in Chile and Argentina",
+    "range_notes": "Golden, pitted balls that grow from galls on southern beech branches in Patagonia.",
+    "notes": "Collect only fresh, firm balls, and leave galls intact."
+  },
+  {
+    "common_name": "Deer Mushroom",
+    "latin_name": "Pluteus cervinus",
+    "inaturalist_taxon_id": 1617451,
+    "edibility": "edible",
+    "look_alikes": "Livid Pinkgill, Amanita, Other Pluteus",
+    "habitat_notes": "Rotting logs, stumps, sawdust, and buried wood",
+    "range_notes": "A brown-capped mushroom on dead wood with free white gills that turn pink and a pink spore print.",
+    "notes": "Confirm pink spores and free gills. Some Pluteus contain psychoactive compounds, and Entoloma are toxic."
+  },
+  {
+    "common_name": "Crown-tipped Coral",
+    "latin_name": "Artomyces pyxidatus",
+    "inaturalist_taxon_id": 334704,
+    "edibility": "edible",
+    "look_alikes": "Ramaria corals, Coral Tooth Fungus, Clavulina corals",
+    "habitat_notes": "Rotting logs of aspen, willow, poplar, and other hardwoods",
+    "range_notes": "A candelabra-like coral fungus on rotting hardwood, each branch ending in a small crown of points.",
+    "notes": "Many corals grow on soil and some cause digestive upset. Confirm growth on wood and crown-shaped tips."
+  },
+  {
+    "common_name": "Panther Cap",
+    "latin_name": "Amanita pantherina",
+    "inaturalist_taxon_id": 48418,
+    "edibility": "poisonous",
+    "look_alikes": "The Blusher, Gray spotted amanita, Fly Agaric",
+    "habitat_notes": "Broadleaf and conifer woodland",
+    "range_notes": "A brown Amanita with pure white warts, a striate margin, and a rimmed bulb, more toxic than the fly agaric.",
+    "notes": "Poisonous. Contains ibotenic acid and muscimol, causing confusion, agitation, and seizures. Seek poison-center advice after any ingestion."
+  },
+  {
+    "common_name": "European Destroying Angel",
+    "latin_name": "Amanita virosa",
+    "inaturalist_taxon_id": 58685,
+    "edibility": "deadly",
+    "look_alikes": "Horse Mushroom, Puffballs, St George's Mushroom",
+    "habitat_notes": "Acidic woodland with birch, pine, and spruce in northern and central Europe",
+    "range_notes": "A pure white, deadly Amanita of northern European woods with a shaggy stem and a large sac-like volva.",
+    "notes": "Potentially fatal. Contains amatoxins that survive cooking. Contact a poison center immediately after any possible ingestion."
+  },
+  {
+    "common_name": "Western Destroying Angel",
+    "latin_name": "Amanita ocreata",
+    "inaturalist_taxon_id": 67356,
+    "edibility": "deadly",
+    "look_alikes": "Meadow Mushroom, Springtime amanita, Puffballs",
+    "habitat_notes": "With oaks, especially coast live oak, in California and neighboring states",
+    "range_notes": "A white, deadly Amanita of California and the Pacific coast that fruits in late winter and spring under oaks.",
+    "notes": "Potentially fatal. Contains amatoxins. Contact a poison center immediately after any possible ingestion."
+  },
+  {
+    "common_name": "Smith's Amanita",
+    "latin_name": "Amanita smithiana",
+    "inaturalist_taxon_id": 62485,
+    "edibility": "poisonous",
+    "look_alikes": "Western Matsutake, Matsutake, Catathelasma",
+    "habitat_notes": "Conifer and mixed forests of the Pacific Northwest",
+    "range_notes": "A shaggy white Amanita of Pacific Northwest conifer forests that causes delayed kidney failure.",
+    "notes": "Poisonous. Causes delayed kidney injury that can require dialysis. It is often mistaken for matsutake."
+  },
+  {
+    "common_name": "False Death Cap",
+    "latin_name": "Amanita citrina",
+    "inaturalist_taxon_id": 63271,
+    "edibility": "inedible",
+    "look_alikes": "Death Cap, European Destroying Angel, Panther Cap",
+    "habitat_notes": "Broadleaf and conifer woods on acidic soil",
+    "range_notes": "A pale lemon to white Amanita with a large rimmed bulb and a raw-potato smell, easily confused with the death cap.",
+    "notes": "Not a food mushroom. Its main danger is confusion with the death cap and other deadly Amanita."
+  },
+  {
+    "common_name": "Sulphur Tuft",
+    "latin_name": "Hypholoma fasciculare",
+    "inaturalist_taxon_id": 48767,
+    "edibility": "poisonous",
+    "look_alikes": "Honey Mushroom, Conifer tuft, Sheathed Woodtuft",
+    "habitat_notes": "Stumps and dead wood of broadleaf and conifer trees",
+    "range_notes": "Dense clusters of sulphur-yellow caps with greenish gills on stumps, bitter tasting and poisonous.",
+    "notes": "Poisonous; causes vomiting and diarrhea, and severe poisonings are reported. Do not confuse with honey mushrooms or woodtufts."
+  },
+  {
+    "common_name": "Fool's Funnel",
+    "latin_name": "Collybia rivulosa",
+    "inaturalist_taxon_id": 1525557,
+    "edibility": "poisonous",
+    "look_alikes": "Fairy Ring Mushroom, The miller, St George's Mushroom",
+    "habitat_notes": "Lawns, pastures, and grassland, often in rings",
+    "range_notes": "A small, frosty-white lawn mushroom with decurrent gills that contains muscarine and grows beside fairy rings.",
+    "notes": "Poisonous. Muscarine causes sweating, salivation, tears, and slowed heart rate. Seek medical care after ingestion."
+  },
+  {
+    "common_name": "Deadly Webcap",
+    "latin_name": "Cortinarius rubellus",
+    "inaturalist_taxon_id": 500053,
+    "edibility": "deadly",
+    "look_alikes": "Yellowfoot, Golden Chanterelle, Other Cortinarius",
+    "habitat_notes": "Wet, mossy conifer forests in northern Europe and North America",
+    "range_notes": "An orange-brown webcap of wet conifer forests containing orellanine, which causes delayed kidney failure.",
+    "notes": "Potentially fatal. Kidney damage may not show for days to weeks after eating. Seek emergency care after any possible ingestion."
+  },
+  {
+    "common_name": "Fool's Webcap",
+    "latin_name": "Cortinarius orellanus",
+    "inaturalist_taxon_id": 337849,
+    "edibility": "deadly",
+    "look_alikes": "Golden Chanterelle, Deadly Webcap, Other Cortinarius",
+    "habitat_notes": "Oak and beech woods in warm parts of Europe",
+    "range_notes": "A tawny-orange webcap of European broadleaf woods whose toxin, orellanine, destroys the kidneys.",
+    "notes": "Potentially fatal. Symptoms can be delayed by days to weeks. Seek emergency care after any possible ingestion."
+  },
+  {
+    "common_name": "Brown Roll-rim",
+    "latin_name": "Paxillus involutus",
+    "inaturalist_taxon_id": 55941,
+    "edibility": "poisonous",
+    "look_alikes": "Milk caps, Velvet roll-rim, Saffron Milk Cap",
+    "habitat_notes": "Woods, heath, and parks, especially with birch",
+    "range_notes": "A brown mushroom with a strongly inrolled rim and soft gills that bruise brown, once eaten but now known to be dangerous.",
+    "notes": "Poisonous and potentially fatal. Repeated meals can trigger an immune reaction that destroys red blood cells."
+  },
+  {
+    "common_name": "Devil's Bolete",
+    "latin_name": "Rubroboletus satanas",
+    "inaturalist_taxon_id": 544554,
+    "edibility": "poisonous",
+    "look_alikes": "Lurid boletes, Other red-pored boletes, King Bolete",
+    "habitat_notes": "Oak and beech woods on calcareous soil in Europe",
+    "range_notes": "A stout pale-capped bolete with red pores and a red-netted stem, found on chalky soils under oak and beech.",
+    "notes": "Poisonous. Causes severe vomiting and diarrhea. Avoid boletes with red or orange pores unless expertly identified."
+  },
+  {
+    "common_name": "Bitter Bolete",
+    "latin_name": "Tylopilus felleus",
+    "inaturalist_taxon_id": 63489,
+    "edibility": "inedible",
+    "look_alikes": "King Bolete, Bay Bolete, Summer Bolete",
+    "habitat_notes": "Conifer and hardwood forests, often on acidic soil",
+    "range_notes": "A king-bolete lookalike with pinkish pores, a dark net on the stem, and a taste so bitter it ruins a meal.",
+    "notes": "Not toxic, but one specimen can make a whole dish inedible."
+  },
+  {
+    "common_name": "The Sickener",
+    "latin_name": "Russula emetica",
+    "inaturalist_taxon_id": 49449,
+    "edibility": "poisonous",
+    "look_alikes": "Beechwood sickener, Shrimp Russula, Other red Russula",
+    "habitat_notes": "Wet, mossy conifer woods, often with sphagnum",
+    "range_notes": "A scarlet Russula of wet conifer woods with pure white gills and a burning, acrid taste.",
+    "notes": "Poisonous raw. Causes vomiting and diarrhea."
+  },
+  {
+    "common_name": "Woolly Milk Cap",
+    "latin_name": "Lactarius torminosus",
+    "inaturalist_taxon_id": 351313,
+    "edibility": "poisonous",
+    "look_alikes": "Saffron Milk Cap, Downy milk cap, Weeping Milk Cap",
+    "habitat_notes": "With birch",
+    "range_notes": "A pinkish, zoned milk cap with a woolly, bearded margin and acrid white latex, found with birch.",
+    "notes": "Poisonous raw. Traditional processing in some countries does not make it safe for casual use."
+  },
+  {
+    "common_name": "Yellow Stainer",
+    "latin_name": "Agaricus xanthodermus",
+    "inaturalist_taxon_id": 118394,
+    "edibility": "poisonous",
+    "look_alikes": "Meadow Mushroom, Horse Mushroom, Destroying Angel",
+    "habitat_notes": "Gardens, parks, hedgerows, and woodland edges",
+    "range_notes": "A white Agaricus that instantly stains chrome yellow when scratched, especially at the cut stem base, and smells of ink.",
+    "notes": "Poisonous. The most common cause of Agaricus poisoning. Always cut the stem base and smell the flesh."
+  },
+  {
+    "common_name": "False Chanterelle",
+    "latin_name": "Hygrophoropsis aurantiaca",
+    "inaturalist_taxon_id": 63538,
+    "edibility": "inedible",
+    "look_alikes": "Golden Chanterelle, Jack-o'-lantern, Pacific Golden Chanterelle",
+    "habitat_notes": "Conifer litter and rotting wood",
+    "range_notes": "An orange mushroom with thin, crowded, repeatedly forked true gills, often mistaken for a chanterelle.",
+    "notes": "Not recommended; it can cause digestive upset. Its main danger is teaching the wrong chanterelle features."
+  },
+  {
+    "common_name": "Ghost Fungus",
+    "latin_name": "Omphalotus nidiformis",
+    "inaturalist_taxon_id": 155166,
+    "edibility": "poisonous",
+    "look_alikes": "Oyster Mushroom, Angel Wings, Other Omphalotus",
+    "habitat_notes": "Dead and dying trees and stumps in southern Australia, including eucalypts and pines",
+    "range_notes": "A creamy, fan-shaped Australian mushroom that glows green in the dark and causes vomiting when eaten.",
+    "notes": "Poisonous. Contains illudin toxins that cause severe vomiting. Often mistaken for oyster mushrooms."
+  },
+  {
+    "common_name": "Stinking Dapperling",
+    "latin_name": "Lepiota cristata",
+    "inaturalist_taxon_id": 58694,
+    "edibility": "poisonous",
+    "look_alikes": "Deadly dapperlings, Parasol Mushroom, Fairy Ring Mushroom",
+    "habitat_notes": "Disturbed ground, lawns, gardens, and woodland edges",
+    "range_notes": "A small white Lepiota with a brown center and concentric scales, a fragile ring, and a rubbery chemical smell.",
+    "notes": "Poisonous. Several small Lepiota contain deadly amatoxins; treat every small Lepiota as potentially lethal."
+  },
+  {
+    "common_name": "Deadly Fibrecap",
+    "latin_name": "Inosperma erubescens",
+    "inaturalist_taxon_id": 1112491,
+    "edibility": "deadly",
+    "look_alikes": "St George's Mushroom, The miller, Other fibrecaps",
+    "habitat_notes": "Beech and other broadleaf woods, parks, and path edges, often on chalk",
+    "range_notes": "A cream fibrous-capped spring mushroom that reddens with age and has caused fatal muscarine poisoning.",
+    "notes": "Potentially fatal. Contains high levels of muscarine. Often confused with St George's mushroom."
+  },
+  {
+    "common_name": "Ringed Conecap",
+    "latin_name": "Pholiotina rugosa",
+    "inaturalist_taxon_id": 877494,
+    "edibility": "deadly",
+    "look_alikes": "Psilocybe species, Fairy Ring Mushroom, Deadly Galerina",
+    "habitat_notes": "Lawns, wood chips, mulch, and gardens",
+    "range_notes": "A small brown lawn and mulch mushroom with a movable ring and rusty spores that contains deadly amatoxins.",
+    "notes": "Potentially fatal to people and pets. Contains amatoxins. Contact a poison center immediately after any ingestion."
+  },
+  {
+    "common_name": "Livid Pinkgill",
+    "latin_name": "Entoloma sinuatum",
+    "inaturalist_taxon_id": 510199,
+    "edibility": "poisonous",
+    "look_alikes": "St George's Mushroom, Clouded agaric, The miller",
+    "habitat_notes": "Broadleaf woods, often on clay or chalk",
+    "range_notes": "A large pale gray-buff mushroom with yellowish gills that turn pink, a mealy smell, and a pink spore print.",
+    "notes": "Poisonous. Causes severe, prolonged vomiting and diarrhea and has caused hospitalizations."
+  },
+  {
+    "common_name": "Man on Horseback",
+    "latin_name": "Tricholoma equestre",
+    "inaturalist_taxon_id": 118215,
+    "edibility": "poisonous",
+    "look_alikes": "Sulphur knight, Aspen knight, Other yellow Tricholoma",
+    "habitat_notes": "Sandy pine forests",
+    "range_notes": "A yellow knight mushroom of sandy pine forests once widely eaten, now linked to fatal muscle breakdown.",
+    "notes": "Poisonous. Repeated meals have caused rhabdomyolysis and deaths in France and Poland."
+  },
+  {
+    "common_name": "Early False Morel",
+    "latin_name": "Verpa bohemica",
+    "inaturalist_taxon_id": 126131,
+    "edibility": "poisonous",
+    "look_alikes": "Morel, Half-free morel, False Morel",
+    "habitat_notes": "With cottonwood, aspen, and poplar along streams",
+    "range_notes": "An early-spring morel lookalike whose wrinkled cap hangs free from the top of a cotton-filled stem.",
+    "notes": "Not recommended. It has caused gastrointestinal upset and loss of coordination, especially after large or repeated meals."
+  },
+  {
+    "common_name": "White Saddle",
+    "latin_name": "Helvella crispa",
+    "inaturalist_taxon_id": 49208,
+    "edibility": "poisonous",
+    "look_alikes": "Black elfin saddle, False Morel, Early False Morel",
+    "habitat_notes": "Woodland paths and broadleaf woods",
+    "range_notes": "A pale, saddle-shaped cup fungus on a deeply furrowed, chambered stem, toxic raw.",
+    "notes": "Toxic raw and not recommended even cooked. Related species contain gyromitrin-like compounds."
+  },
+  {
+    "common_name": "Angel Wings",
+    "latin_name": "Pleurocybella porrigens",
+    "inaturalist_taxon_id": 48509,
+    "edibility": "poisonous",
+    "look_alikes": "Oyster Mushroom, Ghost Fungus, Crepidotus",
+    "habitat_notes": "Rotting conifer logs, especially hemlock",
+    "range_notes": "Thin, pure white, ear-shaped caps on rotting conifer wood, once eaten and now linked to fatal brain illness.",
+    "notes": "Poisonous. Linked to fatal acute encephalopathy, especially in people with kidney disease."
+  },
+  {
+    "common_name": "Artist's Conk",
+    "latin_name": "Ganoderma applanatum",
+    "inaturalist_taxon_id": 48473,
+    "edibility": "inedible",
+    "look_alikes": "Hemlock Reishi, Tinder Fungus, Red-belted conks",
+    "habitat_notes": "Dead and living hardwoods, occasionally conifers",
+    "range_notes": "A large, woody, perennial bracket with a dull crusty top and a white pore surface that bruises brown when scratched.",
+    "notes": "Woody and not a food mushroom."
+  },
+  {
+    "common_name": "Birch Polypore",
+    "latin_name": "Fomitopsis betulina",
+    "inaturalist_taxon_id": 775410,
+    "edibility": "inedible",
+    "look_alikes": "Tinder Fungus, Chaga, Other white brackets",
+    "habitat_notes": "Dead and dying birch",
+    "range_notes": "A smooth, pale, kidney-shaped bracket that grows only on birch, carried by Ötzi the Iceman 5,300 years ago.",
+    "notes": "Tough and bitter; not a food mushroom."
+  },
+  {
+    "common_name": "Tinder Fungus",
+    "latin_name": "Fomes fomentarius",
+    "inaturalist_taxon_id": 127510,
+    "edibility": "inedible",
+    "look_alikes": "Artist's Conk, Willow bracket, Birch Polypore",
+    "habitat_notes": "Birch, beech, and other hardwoods",
+    "range_notes": "A gray, hoof-shaped perennial bracket on birch and beech, used for millennia to carry fire.",
+    "notes": "Woody and not a food mushroom."
+  },
+  {
+    "common_name": "Scarlet Elf Cup",
+    "latin_name": "Sarcoscypha coccinea",
+    "inaturalist_taxon_id": 49134,
+    "edibility": "inedible",
+    "look_alikes": "Stalked scarlet cups, Orange Peel Fungus, Eyelash cup",
+    "habitat_notes": "Fallen hardwood sticks, often buried in moss or leaf litter",
+    "range_notes": "A brilliant scarlet cup fungus on mossy fallen sticks in winter and early spring.",
+    "notes": "Not treated as food here; collect for study only."
+  },
+  {
+    "common_name": "Orange Peel Fungus",
+    "latin_name": "Aleuria aurantia",
+    "inaturalist_taxon_id": 48716,
+    "edibility": "edible",
+    "look_alikes": "Scarlet Elf Cup, Spring orange peel, Eyelash cup",
+    "habitat_notes": "Bare or disturbed soil, paths, and roadsides",
+    "range_notes": "A bright orange cup fungus on bare, disturbed soil that looks like discarded orange peel.",
+    "notes": "Small and fragile. Confirm it is on soil, not wood, and does not stain blue-green."
+  },
+  {
+    "common_name": "Common Stinkhorn",
+    "latin_name": "Phallus impudicus",
+    "inaturalist_taxon_id": 54594,
+    "edibility": "inedible",
+    "look_alikes": "Death Cap, Dog stinkhorn, Puffballs",
+    "habitat_notes": "Woodland and gardens with buried wood",
+    "range_notes": "A white spongy stalk topped with foul-smelling olive slime that hatches from a buried egg and attracts flies.",
+    "notes": "Its egg stage can resemble a deadly Amanita egg. Cut any egg-like mushroom vertically."
+  },
+  {
+    "common_name": "Collared Earthstar",
+    "latin_name": "Geastrum triplex",
+    "inaturalist_taxon_id": 63076,
+    "edibility": "inedible",
+    "look_alikes": "Barometer earthstar, Other earthstars, Puffballs",
+    "habitat_notes": "Leaf litter in broadleaf and conifer woods",
+    "range_notes": "A puffball whose outer skin splits into star-shaped rays, often with a saucer-like collar under the spore sac.",
+    "notes": "Not a food mushroom."
+  },
+  {
+    "common_name": "Scarlet Waxcap",
+    "latin_name": "Hygrocybe coccinea",
+    "inaturalist_taxon_id": 55245,
+    "edibility": "inedible",
+    "look_alikes": "Crimson waxcap, Blackening waxcap, Cinnabar Chanterelle",
+    "habitat_notes": "Old grasslands, lawns, and pastures that have not been fertilized",
+    "range_notes": "A brilliant scarlet waxcap of old, unfertilized grasslands, where it signals valuable habitat.",
+    "notes": "Leave it. Waxcap grasslands are declining and protected in some regions."
+  },
+  {
+    "common_name": "Witches' Butter",
+    "latin_name": "Tremella mesenterica",
+    "inaturalist_taxon_id": 48529,
+    "edibility": "edible",
+    "look_alikes": "Orange jelly spot, Black witch's butter, Wood Ear",
+    "habitat_notes": "Dead hardwood branches, often still attached to the tree",
+    "range_notes": "A bright yellow, lobed jelly fungus on dead hardwood branches in cool, wet weather.",
+    "notes": "Bland and gelatinous. Confirm a hardwood host."
+  }
+]
