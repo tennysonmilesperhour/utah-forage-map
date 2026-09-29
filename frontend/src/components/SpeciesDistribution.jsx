@@ -40,10 +40,13 @@ function MonthBars({ months, hemisphere, name }) {
           </span>
         ))}
       </div>
-      <table className="sr-only">
-        <caption>{name} verified records by month, {label.toLowerCase()}</caption>
-        <tbody>{months.map((value, index) => <tr key={MONTH_NAMES[index]}><th scope="row">{MONTH_NAMES[index]}</th><td>{value}</td></tr>)}</tbody>
-      </table>
+      {/* A table ignores its 1px width and grows to fit its caption, so the wrapper does the clipping. */}
+      <div className="sr-only">
+        <table>
+          <caption>{name} verified records by month, {label.toLowerCase()}</caption>
+          <tbody>{months.map((value, index) => <tr key={MONTH_NAMES[index]}><th scope="row">{MONTH_NAMES[index]}</th><td>{value}</td></tr>)}</tbody>
+        </table>
+      </div>
     </figure>
   )
 }

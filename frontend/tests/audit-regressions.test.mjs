@@ -56,3 +56,21 @@ test('custom analytics stays consent-gated and excludes arbitrary private fields
   new Script('trackFieldEvent("map_retry", "fungi")').runInContext(context)
   assert.equal(context.window.dataLayer.length, 1)
 })
+test('signed-in sessions read as a browser and system, not a raw user agent', async () => {
+  const { deviceLabel } = await import('../src/lib/deviceLabel.js')
+  assert.equal(deviceLabel('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0 Safari/537.36 Edg/141.0'), 'Edge on Windows')
+  assert.equal(deviceLabel('Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1'), 'Safari on iOS')
+  assert.equal(deviceLabel('Mozilla/5.0 (Macintosh; Intel Mac OS X 14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0 Safari/537.36'), 'Chrome on macOS')
+  assert.equal(deviceLabel('Mozilla/5.0 (Android 15; Mobile; rv:131.0) Gecko/131.0 Firefox/131.0'), 'Firefox on Android')
+  assert.equal(deviceLabel(''), 'Unknown browser')
+})
+test('backdrop blurs survive minification in every browser', async () => {
+  // The CSS minifier keeps only the prefixed copy when `backdrop-filter` comes first,
+  // which silently removes the blur in Chrome and Firefox. The prefixed line must lead.
+  const { readdir } = await import('node:fs/promises')
+  const files = (await readdir(new URL('../src/', import.meta.url))).filter(name => name.endsWith('.css'))
+  for (const file of files) {
+    const css = await readFile(new URL(`../src/${file}`, import.meta.url), 'utf8')
+    assert.doesNotMatch(css, /(?<![-\w])backdrop-filter\s*:[^;}]+;\s*-webkit-backdrop-filter/, file)
+  }
+})
