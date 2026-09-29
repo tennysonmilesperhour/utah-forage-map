@@ -8,7 +8,7 @@ The source is the unauthenticated [iNaturalist v1 API](https://api.inaturalist.o
 
 The service requests georeferenced, wild (`captive=false`), research-grade records with CC0, CC BY or CC BY-SA observation licenses. Photographs are displayed only when their own license is one of those three, with creator attribution and a license link. A missing permitted photograph leads to the original observation. Excluding other licenses reduces displayed coverage.
 
-Each search retrieves at most 200 recent matching records, ordered by observation date. A viewport crossing the antimeridian makes two bounded requests, deduplicates by observation ID, sorts and caps the combined display at 200. The source total and displayed count are separate. Live records appear as points once the map is zoomed in. The shaded squares behind them are a separate, all-time layer counted from the iNaturalist open-data export (see `data-pipeline/README.md`); they do not change with the date filters. An empty result never asserts species absence or harvest availability.
+Each search retrieves at most 200 recent matching records, ordered by observation date. A viewport crossing the antimeridian makes two bounded requests, deduplicates by observation ID, sorts and caps the combined display at 200. The source total and displayed count are separate. Live records appear as points. Hotspots, switched on from the map key, are a separate all-time layer counted from the iNaturalist open-data export (see `data-pipeline/README.md`): only the busiest squares in view are drawn, points then appear once the map is zoomed in, and the squares do not change with the date filters. An empty result never asserts species absence or harvest availability.
 
 ## Privacy and operational limits
 

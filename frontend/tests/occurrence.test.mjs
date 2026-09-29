@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { readFile, readdir } from 'node:fs/promises'
-import { cellAt, decodeCells, geometryBounds, GRID_LEVELS, intensityScale, levelForZoom, monthRangeLabel, peakMonths, prepareDataset, squaresGeoJSON } from '../src/lib/occurrenceGrid.js'
+import { cellAt, decodeCells, geometryBounds, GRID_LEVELS, hotspotScale, hotspotThreshold, intensityScale, levelForZoom, monthRangeLabel, peakMonths, prepareDataset, squaresGeoJSON } from '../src/lib/occurrenceGrid.js'
 import { matchMarks, nearbyEvidence, rankSuggestions, seasonSignal, tilesForLocation } from '../src/lib/identify.js'
 import { fitWithin, photoSignals } from '../src/lib/photoId.js'
 import { markGroups } from '../src/data/fieldMarks.js'
@@ -50,6 +50,30 @@ test('intensity follows people, is capped, and never hides a square entirely', (
   assert.ok(scale(1) > 0 && scale(1) < scale(3))
   assert.equal(scale(10_000), 1)
   assert.ok(scale(0) >= 0.08)
+})
+
+test('hotspots keep the busiest squares in view and never a one-person square', () => {
+  // A row of squares along the equator; square x was reported by x + 1 people.
+  const row = count => ({ res: 1, cells: Array.from({ length: count }, (_, x) => [x, 90, x + 1, x + 1]).flat() })
+  assert.equal(hotspotThreshold(row(200)), 181, 'the top tenth of 200 squares')
+  assert.equal(hotspotThreshold(row(40)), 29, 'at least a dozen squares when fewer are in view')
+  const quiet = { west: -180, east: -170.5, south: 0, north: 1 }
+  assert.equal(hotspotThreshold(row(200), quiet), 2, 'a quiet view keeps its own busiest squares')
+  assert.equal(hotspotThreshold(row(200), { west: 0, east: 10, south: 50, north: 60 }), Infinity)
+  assert.equal(hotspotThreshold(null), Infinity)
+
+  const hot = squaresGeoJSON(row(200), null, { minObservers: hotspotThreshold(row(200)) })
+  assert.equal(hot.features.length, 20)
+  assert.ok(hot.features.every(feature => feature.properties.observers >= 181))
+  assert.equal(squaresGeoJSON(row(200), quiet, { minObservers: Infinity }).features.length, 0)
+})
+
+test('hotspot shading runs from the cut-off to the busiest drawn square', () => {
+  const scale = hotspotScale([10, 20, 40, 80].map(observers => ({ observers })), 10)
+  assert.equal(scale(10), 0.3, 'the least busy hotspot still stands out')
+  assert.ok(scale(10) < scale(20) && scale(20) < scale(40))
+  assert.equal(scale(80), 1)
+  assert.equal(hotspotScale([{ observers: 3 }, { observers: 3 }], 3)(3), 1, 'equal squares all read as busiest')
 })
 
 test('month summaries name the busy season, including one that wraps the year', () => {

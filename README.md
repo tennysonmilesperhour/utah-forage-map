@@ -9,8 +9,8 @@ The project takes inspiration from the usefulness of community location catalogu
 ## Product
 
 - Guest-first world map with place search, viewport queries, recency, species, season, metric elevation, habitat, source, and review filters
-- iNaturalist-style grid squares on both maps: all-time research-grade records counted into squares that shrink as you zoom, shaded by how many different people reported there, with individual recent points appearing as you zoom in
-- Species focus: choosing a species, or opening one of its records, shows its tracked squares plus a known growing zone that combines iNaturalist's Geomodel expected range with areas of repeated verified records
+- Hotspots on both maps, off until switched on in the map key: iNaturalist-style grid squares of all-time research-grade records, limited to the busiest squares in view (the top tenth by different people, never a one-person square), shaded by how many people reported there and shrinking as you zoom. The square data only downloads once hotspots are on
+- Species focus: choosing a species, or opening one of its records, shows a known growing zone that combines iNaturalist's Geomodel expected range with areas of repeated verified records, and limits hotspots to that species
 - Suggest an ID: pick field marks, and catalogue species are ranked like iNaturalist suggestions, with Seen nearby, Expected nearby, and in-season signals for the map centre or your location
 - Email/password accounts using revocable, HTTP-only opaque sessions
 - Email verification, password reset, login rate limits, device sessions, and account deletion

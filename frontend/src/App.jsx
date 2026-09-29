@@ -55,6 +55,7 @@ export default function App({ path = '/map' }) {
   const [observationHandled, setObservationHandled] = useState(false)
   const [toast, setToast] = useState('')
   const [userZoneFitKey, setZoneFitKey] = useState(null)
+  const [hotspots, setHotspots] = useState(false)
   const [identifyOpen, setIdentifyOpen] = useState(() => initialParams.get('identify') === '1')
   const [guestPromptVisible, setGuestPromptVisible] = useState(
     () => typeof window === 'undefined' || window.localStorage.getItem('ufm:onboarding:guest-message:v1') !== 'true',
@@ -78,7 +79,7 @@ export default function App({ path = '/map' }) {
   // An open record focuses its own species; otherwise the species filter decides.
   const focusGuide = speciesIndexByTaxon[selected?.species?.inaturalist_taxon_id] ?? speciesIndexByTaxon[filterTaxonId] ?? null
   const focus = focusGuide ? { slug: focusGuide.slug, name: focusGuide.common_name, latin: focusGuide.latin_name } : null
-  const occurrence = useOccurrence('fungi', focus?.slug)
+  const occurrence = useOccurrence('fungi', focus?.slug, hotspots)
   const growingZone = useGrowingZone('fungi', focus?.slug)
   const zone = focus ? growingZone.data ?? null : null
   const hemisphere = hemisphereFor(viewport ? (viewport.north + viewport.south) / 2 : NaN)
@@ -306,7 +307,7 @@ export default function App({ path = '/map' }) {
               draftLocation={draftLocation}
               onMapClick={submissionOpen ? setDraftLocation : undefined}
               isPickingLocation={submissionOpen}
-              density={occurrence.data ?? null}
+              density={hotspots ? occurrence.data ?? null : null}
               zone={zone}
               zoneFitKey={zoneFitKey}
             />}
@@ -344,6 +345,9 @@ export default function App({ path = '/map' }) {
             hemisphere={hemisphere}
             zone={zone}
             zoneLoading={growingZone.isLoading}
+            hotspots={hotspots}
+            hotspotsStatus={occurrence.isError ? 'error' : occurrence.data ? 'ready' : 'loading'}
+            onToggleHotspots={setHotspots}
             onFitZone={() => setZoneFitKey(Date.now())}
             onClear={selected ? () => setSelected(null) : () => setFilters(current => ({ ...current, species_id: undefined, taxon_id: undefined }))}
             clearLabel={selected ? 'Close this record' : 'Show all species'}

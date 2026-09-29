@@ -3,7 +3,7 @@ import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { useUnitSystem } from '../hooks/useUnits'
 import { initialMapCamera } from '../lib/visitorCountry'
-import { datasetLevel, geometryBounds, squareSizeLabel, squaresGeoJSON } from '../lib/occurrenceGrid'
+import { datasetLevel, geometryBounds, hotspotThreshold, squareSizeLabel, squaresGeoJSON } from '../lib/occurrenceGrid'
 
 const SOURCE_ID = 'mushroom-observations'
 const POINT_LAYER = 'observation-points'
@@ -122,8 +122,10 @@ export default function MapView({
     const source = map?.getSource(SQUARES_SOURCE)
     if (!source) return
     const level = datasetLevel(densityRef.current, map.getZoom())
-    // Coarse squares are few enough to draw worldwide; fine squares are limited to the view.
-    source.setData(level ? squaresGeoJSON(level, level.res <= 0.5 ? roundedBounds(map) : null) : EMPTY)
+    const view = roundedBounds(map)
+    // Only hotspots are drawn, ranked within the view. Coarse squares are few enough to draw
+    // worldwide; fine squares are limited to the view.
+    source.setData(level ? squaresGeoJSON(level, level.res <= 0.5 ? view : null, { minObservers: hotspotThreshold(level, view) }) : EMPTY)
     // Individual points take over from the squares as the view narrows, as on iNaturalist.
     if (map.getLayer(POINT_LAYER)) {
       map.setPaintProperty(POINT_LAYER, 'circle-opacity', densityRef.current
@@ -248,12 +250,14 @@ export default function MapView({
       onBoundsChangeRef.current?.(roundedBounds(map))
     })
     const interactiveLayers = () => [POINT_LAYER, SQUARES_LAYER, ZONE_FILL_LAYER].filter(id => map.getLayer(id))
+    // Points are hidden behind hotspots when zoomed out, and always visible without them.
+    const pointsVisible = () => !densityRef.current || map.getZoom() > 2.2
     map.on('click', event => {
       popupRef.current?.remove()
       const features = map.getLayer(POINT_LAYER)
         ? map.queryRenderedFeatures(event.point, { layers: interactiveLayers() })
         : []
-      const point = features.find(feature => feature.layer.id === POINT_LAYER && map.getZoom() > 2.2)
+      const point = features.find(feature => feature.layer.id === POINT_LAYER && pointsVisible())
       if (point && !isPickingLocationRef.current) {
         const sighting = sightingsRef.current.find(item => item.id === point.properties.id)
         if (sighting) onSightingClickRef.current?.(sighting)
@@ -270,7 +274,7 @@ export default function MapView({
       const features = map.getLayer(POINT_LAYER)
         ? map.queryRenderedFeatures(event.point, { layers: interactiveLayers() })
         : []
-      const point = features.find(feature => feature.layer.id === POINT_LAYER && map.getZoom() > 2.2)
+      const point = features.find(feature => feature.layer.id === POINT_LAYER && pointsVisible())
       const square = features.find(feature => feature.layer.id === SQUARES_LAYER)
       const inZone = features.some(feature => feature.layer.id === ZONE_FILL_LAYER)
       map.getCanvas().style.cursor = isPickingLocationRef.current ? 'crosshair' : point || square ? 'pointer' : ''
