@@ -35,7 +35,7 @@ function WhereItGrows({ plant, hemisphere, zone, onFitZone }) {
   const local = months.reduce((sum, value) => sum + value, 0) >= 12
   return <section className="herb-map-where" aria-label={`Where ${plant.name} grows`}>
     <p className="herb-kicker">Where it grows</p>
-    <p>The map now shows every verified {plant.name.toLowerCase()} record as squares, shaded by how many people reported there, with its known growing zone outlined.</p>
+    <p>Its known growing zone is outlined on the map. Switch on Hotspots in the map key to see where the most people have verified {plant.name.toLowerCase()} records.</p>
     <dl><div><dt>Verified records</dt><dd>{summary.total.toLocaleString()}</dd></div><div><dt>People</dt><dd>{summary.observers.toLocaleString()}</dd></div><div><dt>Most records</dt><dd>{monthRangeLabel(peakMonths(local ? months : summary.months[hemisphere === 'north' ? 'south' : 'north']))}</dd></div></dl>
     {zone && <button type="button" onClick={onFitZone}><Maximize2 size={14} />Show the whole growing zone</button>}
   </section>
@@ -92,7 +92,8 @@ export default function HerbMapApp() {
   const plant = mapPlantBySlug[search.plant]
   // An open record focuses its own plant; otherwise the plant filter decides.
   const focusPlant = (selected && mapPlantBySlug[selected.plant]) || plant || null
-  const occurrence = useOccurrence('herbs', focusPlant?.slug)
+  const [hotspots, setHotspots] = useState(false)
+  const occurrence = useOccurrence('herbs', focusPlant?.slug, hotspots)
   const growingZone = useGrowingZone('herbs', focusPlant?.slug)
   const zone = focusPlant ? growingZone.data ?? null : null
   const [userZoneFitKey, setZoneFitKey] = useState(null)
@@ -167,11 +168,11 @@ export default function HerbMapApp() {
       <div className="herb-map-workspace">
         <section className="herb-map-surface" aria-label="Interactive global herb observation map">
           <Suspense fallback={<div className="herb-map-loading"><LoaderCircle className="spin" />Opening the field map…</div>}>
-            {countryPending ? <div className="herb-map-loading"><LoaderCircle className="spin" />Finding your country…</div> : <MapView collection="herbs" sightings={observations} onSightingClick={record => chooseRecord(record)} onBoundsChange={updateBounds} countryCamera={country.data} flyTarget={flyTarget} onMapError={setMapError} density={occurrence.data ?? null} zone={zone} zoneFitKey={zoneFitKey} />}
+            {countryPending ? <div className="herb-map-loading"><LoaderCircle className="spin" />Finding your country…</div> : <MapView collection="herbs" sightings={observations} onSightingClick={record => chooseRecord(record)} onBoundsChange={updateBounds} countryCamera={country.data} flyTarget={flyTarget} onMapError={setMapError} density={hotspots ? occurrence.data ?? null : null} zone={zone} zoneFitKey={zoneFitKey} />}
           </Suspense>
           <div className="herb-map-map-actions"><button onClick={searchArea} disabled={results.isFetching || countryPending} className={areaChanged ? 'area-changed' : ''}><Search size={15} />{results.isFetching ? 'Loading observations…' : areaChanged ? 'Search this area' : 'Refresh this area'}</button><button aria-label="View the whole world" title="View the whole world" onClick={() => setFlyTarget({ bbox: WORLD_BOUNDS, key: Date.now() })}><Globe2 size={17} /></button><button className={identifyOpen ? 'area-changed' : ''} aria-expanded={identifyOpen} aria-controls="herb-map-results" onClick={() => setIdentifyOpen(open => !open)}><Sparkles size={15} />Suggest an ID</button></div>
           {mapError && <p className="herb-map-error" role="status">The map could not load. You can still search and browse the observation list.</p>}
-          <OccurrenceLegend className="herb-occurrence-legend" collection="herbs" focus={focusPlant ? { slug: focusPlant.slug, name: focusPlant.name, latin: focusPlant.latin } : null} hemisphere={hemisphere} zone={zone} zoneLoading={growingZone.isLoading} onFitZone={() => setZoneFitKey(Date.now())} onClear={selected ? () => setSelected(null) : () => filter('plant', 'all')} clearLabel={selected ? 'Close this record' : 'Show all plants'} guideHref={focusPlant ? `/herbs/atlas/${focusPlant.slug}` : undefined} />
+          <OccurrenceLegend className="herb-occurrence-legend" collection="herbs" focus={focusPlant ? { slug: focusPlant.slug, name: focusPlant.name, latin: focusPlant.latin } : null} hemisphere={hemisphere} zone={zone} zoneLoading={growingZone.isLoading} hotspots={hotspots} hotspotsStatus={occurrence.isError ? 'error' : occurrence.data ? 'ready' : 'loading'} onToggleHotspots={setHotspots} onFitZone={() => setZoneFitKey(Date.now())} onClear={selected ? () => setSelected(null) : () => filter('plant', 'all')} clearLabel={selected ? 'Close this record' : 'Show all plants'} guideHref={focusPlant ? `/herbs/atlas/${focusPlant.slug}` : undefined} />
           <div className="herb-map-legend" aria-label="Point colours"><span><i />Reference plant</span><span><i className="caution" />Caution / study</span><span><i className="toxic" />Toxic lookalike</span></div>
         </section>
         <aside ref={resultsRef} id="herb-map-results" className="herb-map-results" aria-label="Plant observations" tabIndex={-1}>

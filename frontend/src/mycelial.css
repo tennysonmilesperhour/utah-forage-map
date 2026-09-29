@@ -83,6 +83,13 @@
 .mycelial-theme .map-submit-button { color: var(--ink); }
 .mycelial-theme .map-submit-button:hover:not(:disabled) { color: #181816; }
 .mycelial-theme .place-search form button:last-child:hover:not(:disabled) { background: #ffefd43d; }
+/* Suggest an ID borrows the Filters button style, but stays visible once the sidebar replaces Filters.
+   The toolbar wraps short of the map controls rather than running under them, and lets map drags through its gaps. */
+.mycelial-theme .map-toolbar .map-identify-button { display: flex; white-space: nowrap; }
+.mycelial-theme .map-toolbar { pointer-events: none; }
+.mycelial-theme .map-toolbar > * { pointer-events: auto; }
+@media (min-width: 601px) { .mycelial-theme .map-toolbar { right: 62px; flex-wrap: wrap; } }
+@media (min-width: 821px) { .mycelial-theme .place-search { width: clamp(300px, 100vw - 920px, 410px); } }
 .mycelial-theme .legend-dot.recent { background: var(--spore-coral); box-shadow: 0 0 0 3px #e5ac7926; }
 .mycelial-theme .sighting-detail h2 { font-weight: 300; font-size: 29px; }
 .mycelial-theme :is(.status-reviewed, .review-chip.approved, .edibility-badge.choice, .edibility-badge.edible, .follow-button.is-following) { border-color: #b8ab94; background: #373027; color: #fff5e3; }

@@ -9,9 +9,11 @@ async function readJson(path, signal) {
 
 // All-time, research-grade iNaturalist squares for one species, or for the whole
 // collection when no species is chosen. Built by data-pipeline/aggregate_occurrence.py.
-export function useOccurrence(collection, slug) {
+// The field maps fetch them only once hotspots are switched on.
+export function useOccurrence(collection, slug, enabled = true) {
   return useQuery({
     queryKey: ['occurrence', collection, slug || '_all'],
+    enabled,
     queryFn: async ({ signal }) => prepareDataset(await readJson(`/data/occurrence/${collection}/${slug || '_all'}.json`, signal)),
     staleTime: Infinity,
     retry: 1,

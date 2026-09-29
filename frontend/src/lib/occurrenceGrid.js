@@ -71,23 +71,49 @@ export function paddedBounds(bounds, res, share = 0.35) {
   }
 }
 
-export function squaresGeoJSON(level, bounds = null) {
+// Hotspots are the busiest squares in view: the top tenth by different people, or the
+// top dozen where fewer squares are in view, and never a one-person square. Ranking
+// within the view keeps a quieter region's busiest ground visible.
+const HOTSPOT_SHARE = 0.1
+const MIN_HOTSPOTS = 12
+
+export function hotspotThreshold(level, bounds = null) {
+  if (!level) return Infinity
+  const values = (level.decoded ?? decodeCells(level.cells))
+    .filter(cell => intersects(cellBounds(cell, level.res), bounds))
+    .map(cell => cell.observers)
+    .sort((a, b) => b - a)
+  if (!values.length) return Infinity
+  const rank = Math.max(Math.ceil(values.length * HOTSPOT_SHARE), Math.min(values.length, MIN_HOTSPOTS)) - 1
+  return Math.max(2, values[rank])
+}
+
+// Hotspots are shaded from the cut-off up to the busiest drawn, starting part-way up the
+// ramp so the least busy hotspot still stands out.
+export function hotspotScale(cells, minObservers) {
+  const values = cells.map(cell => cell.observers).sort((a, b) => a - b)
+  const cap = values[Math.min(values.length - 1, Math.floor(values.length * 0.95))] ?? minObservers
+  const span = Math.log(cap / minObservers)
+  return observers => span > 0 ? Math.max(0.3, Math.min(1, 0.3 + (0.7 * Math.log(observers / minObservers)) / span)) : 1
+}
+
+export function squaresGeoJSON(level, bounds = null, { minObservers = 0 } = {}) {
   if (!level) return { type: 'FeatureCollection', features: [] }
   const cells = level.decoded ?? decodeCells(level.cells)
-  const scale = intensityScale(cells)
   const visible = paddedBounds(bounds, level.res)
-  const features = []
+  const shown = []
   for (const cell of cells) {
+    if (cell.observers < minObservers) continue
     const box = cellBounds(cell, level.res)
-    if (!intersects(box, visible)) continue
-    const [west, south, east, north] = box
-    features.push({
-      type: 'Feature',
-      id: features.length,
-      geometry: { type: 'Polygon', coordinates: [[[west, south], [east, south], [east, north], [west, north], [west, south]]] },
-      properties: { count: cell.count, observers: cell.observers, intensity: Number(scale(cell.observers).toFixed(3)), res: level.res, cx: (west + east) / 2, cy: (south + north) / 2 },
-    })
+    if (intersects(box, visible)) shown.push({ cell, box })
   }
+  const scale = minObservers > 0 ? hotspotScale(shown.map(item => item.cell), minObservers) : intensityScale(cells)
+  const features = shown.map(({ cell, box: [west, south, east, north] }, id) => ({
+    type: 'Feature',
+    id,
+    geometry: { type: 'Polygon', coordinates: [[[west, south], [east, south], [east, north], [west, north], [west, south]]] },
+    properties: { count: cell.count, observers: cell.observers, intensity: Number(scale(cell.observers).toFixed(3)), res: level.res, cx: (west + east) / 2, cy: (south + north) / 2 },
+  }))
   return { type: 'FeatureCollection', features }
 }
 
