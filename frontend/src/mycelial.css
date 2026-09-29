@@ -90,6 +90,9 @@
 .mycelial-theme .map-toolbar > * { pointer-events: auto; }
 @media (min-width: 601px) { .mycelial-theme .map-toolbar { right: 62px; flex-wrap: wrap; } }
 @media (min-width: 821px) { .mycelial-theme .place-search { width: clamp(300px, 100vw - 920px, 410px); } }
+/* The email verification prompt rides in the toolbar, so it wraps with the controls instead of floating over them. */
+.mycelial-theme .map-toolbar .verification-notice { position: static; width: auto; min-height: 44px; transform: none; white-space: nowrap; }
+@media (max-width: 600px) { .mycelial-theme .map-toolbar .verification-notice { flex: 1 0 100%; justify-content: center; white-space: normal; } }
 .mycelial-theme .legend-dot.recent { background: var(--spore-coral); box-shadow: 0 0 0 3px #e5ac7926; }
 .mycelial-theme .sighting-detail h2 { font-weight: 300; font-size: 29px; }
 .mycelial-theme :is(.status-reviewed, .review-chip.approved, .edibility-badge.choice, .edibility-badge.edible, .follow-button.is-following) { border-color: #b8ab94; background: #373027; color: #fff5e3; }
@@ -163,7 +166,8 @@
 .mycelial-theme :is(.guide-safety-band, .guide-request-poll, .learn-footer) { border-color: var(--mycelial-edge); background: #191612; }
 .mycelial-theme .guide-request-intro h2 { font-size: 35px; font-weight: 300; letter-spacing: -.8px; }
 .mycelial-theme .poll-option { border-color: var(--mycelial-edge); border-radius: 8px; }
-.mycelial-theme :is(.regions-main, .region-page, .species-page, .trust-page) { background: radial-gradient(ellipse at 90% 0, #5d52443d, transparent 55%); }
+/* The glow fades out by the column's right edge; a larger one was cut off there in a hard vertical line. */
+.mycelial-theme :is(.regions-main, .region-page, .species-page, .trust-page) { background: radial-gradient(ellipse 34% 560px at 66% 0, #5d52443d, transparent); }
 .mycelial-theme :is(.regions-header h1, .region-page-intro h1, .species-hero h1, .trust-page > h1) { font-weight: 300; letter-spacing: -.045em; }
 .mycelial-theme :is(.regions-header h1, .trust-page > h1) { font-size: clamp(42px, 5.5vw, 80px); }
 .mycelial-theme :is(.region-index, .region-page-header) { gap: 24px; border: 0; background: transparent; }

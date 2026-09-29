@@ -32,7 +32,7 @@ export default function AppHeader({
       <CollectionNavigation collection="fungi" active={activeView} onNavigate={onNavigate} className="primary-nav" />
 
       <div className="header-actions">
-        <SupporterSprout supporter={user?.is_supporter} />
+        <SupporterSprout supporter={user?.is_supporter} clearOf=".map-toolbar" />
         <button className="icon-button mobile-filter-button" type="button" onClick={() => onNavigate('community')} aria-label="Open community field desk" title="Community">
           <Users size={20} aria-hidden="true" />
         </button>
@@ -80,7 +80,7 @@ export default function AppHeader({
                   <a href="/supporters" role="menuitem">{user.is_supporter ? 'Supporter membership · Manage billing' : 'Become a supporter · $10/year'}</a>
                   <div className="account-stat">
                     <NotebookPen size={17} aria-hidden="true" />
-                    <span><strong>{user.total_finds}</strong> logbook finds</span>
+                    <span><strong>{user.total_finds}</strong> logbook {user.total_finds === 1 ? 'find' : 'finds'}</span>
                   </div>
                   <button type="button" role="menuitem" onClick={() => { setAccountOpen(false); onOpenAccount() }}>
                     <NotebookPen size={17} aria-hidden="true" /> Open field desk

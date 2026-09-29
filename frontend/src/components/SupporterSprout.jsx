@@ -14,7 +14,8 @@ function subscribeReducedMotion(callback) {
 function reducedMotionSnapshot() { return window.matchMedia('(prefers-reduced-motion: reduce)').matches }
 const POEM_KEY = 'forage-supporter-poem'
 
-export default function SupporterSprout({ collection = 'fungi', supporter = false }) {
+// `clearOf` names an element the sprout must sit below, such as a toolbar floating just under the header.
+export default function SupporterSprout({ collection = 'fungi', supporter = false, clearOf = null }) {
   const [life, dispatch] = useReducer(supporterLife, initialSupporterLife)
   const [hovered, setHovered] = useState(false)
   const [artworkReady, setArtworkReady] = useState(false)
@@ -38,11 +39,13 @@ export default function SupporterSprout({ collection = 'fungi', supporter = fals
     const slot = sprout.current
     const header = slot.closest('header')
     if (!header) return
+    const obstacle = clearOf ? document.querySelector(clearOf) : null
     function place() {
       const box = slot.getBoundingClientRect()
+      const floor = Math.max(header.getBoundingClientRect().bottom, obstacle?.getBoundingClientRect().bottom ?? 0)
       // Use the approved herb-side placement in both collections. Account
       // controls must not flip the invitation to the other side of the sprout.
-      const next = { side: 'left', width: Math.max(140, Math.min(supporter ? 270 : 246, box.left - 24)), offset: header.getBoundingClientRect().bottom - box.top + 24 }
+      const next = { side: 'left', width: Math.max(140, Math.min(supporter ? 270 : 246, box.left - 24)), offset: floor - box.top + 24 }
       setPlacement(current => current.side === next.side && current.width === next.width && current.offset === next.offset ? current : next)
     }
     place()
@@ -50,9 +53,10 @@ export default function SupporterSprout({ collection = 'fungi', supporter = fals
     observer.observe(header)
     observer.observe(slot.parentElement)
     for (const action of slot.parentElement.children) observer.observe(action)
+    if (obstacle) observer.observe(obstacle)
     window.addEventListener('resize', place)
     return () => { observer.disconnect(); window.removeEventListener('resize', place) }
-  }, [supporter])
+  }, [supporter, clearOf])
 
   useEffect(() => {
     try {

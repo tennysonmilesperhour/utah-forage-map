@@ -467,6 +467,7 @@ function RegionPage({ region, user }) {
         <PublicDataDate updatedAt={dataUpdatedAt} />
         <section className="region-recent" aria-labelledby="recent-region-title">
           <div className="region-section-heading"><div><p className="eyebrow">Recent accessions</p><h2 id="recent-region-title">Latest public records</h2></div><a href={`/map?region=${region.slug}`}>View all on map <ArrowRight size={15} /></a></div>
+          {data && !data.recent_observations.length && <p className="empty-state">No public records have been published for this collection yet.</p>}
           <div className="region-recent-grid">
             {data?.recent_observations.slice(0, 6).map(item => <article key={item.id}>{item.photo_url && <img src={observationImage(item.photo_url)} alt="" loading="lazy" />}<div><span>{formatDate(item.found_on)}</span><h3>{item.species.common_name}</h3><p>{item.place_name || region.name}</p></div></article>)}
           </div>

@@ -114,7 +114,7 @@
 .identify-panel { --id-ink: #f1eae1; --id-muted: #bfb4ba; --id-edge: #d9c7e433; --id-bg: #17131af2; --id-chip: #ffffff0d; --id-active: #e7d3f5; --id-active-ink: #1d1620; --id-seen: #d9c2f2; --id-expected: #f5dcbc;
   display: flex; flex-direction: column; gap: 14px; padding: 16px; color: var(--id-ink); font-size: 12px; }
 .identify-panel.herbs { --id-ink: #e7ecdf; --id-muted: #b3c4a8; --id-edge: #b5ca9536; --id-bg: transparent; --id-chip: #ffffff0a; --id-active: #d3e5b9; --id-active-ink: #13271b; --id-seen: #b9f0dc; --id-expected: #ecf7d5; padding: 20px; }
-.map-identify-panel { position: absolute; z-index: 13; top: 72px; left: 14px; width: min(380px, calc(100% - 28px)); max-height: calc(100% - 90px); overflow: auto; border: 1px solid var(--id-edge); border-radius: 10px; background: var(--id-bg); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); box-shadow: 0 16px 50px #00000055; }
+.map-identify-panel { position: absolute; z-index: 13; top: calc(var(--map-toolbar-bottom, 60px) + 12px); left: 14px; width: min(380px, calc(100% - 28px)); max-height: calc(100% - var(--map-toolbar-bottom, 60px) - 30px); overflow: auto; border: 1px solid var(--id-edge); border-radius: 10px; background: var(--id-bg); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); box-shadow: 0 16px 50px #00000055; }
 .identify-heading { display: flex; justify-content: space-between; gap: 12px; }
 .identify-heading p { display: flex; align-items: center; gap: 6px; margin: 0 0 4px; color: var(--id-muted); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; }
 .identify-heading h2 { margin: 0 0 6px; font-size: 22px; font-weight: 300; }
@@ -171,7 +171,8 @@
 }
 @media (prefers-reduced-transparency: reduce) { .map-identify-panel { background: #17131a; -webkit-backdrop-filter: none; backdrop-filter: none; } }
 
-/* While a fungi record card is open at the bottom, the key moves up and drops its notes. */
-.map-occurrence-legend.is-compact { top: 150px; bottom: auto; }
+/* While a fungi record card is open, the key moves up below the zoom and locate controls
+   and drops its notes. */
+.map-occurrence-legend.is-compact { top: 196px; bottom: auto; }
 .occurrence-legend.is-compact :is(.occurrence-scale-note, .occurrence-points-key, .occurrence-source, .occurrence-stats) { display: none; }
 @media (max-width: 720px) { .map-occurrence-legend.is-compact { display: none; } }

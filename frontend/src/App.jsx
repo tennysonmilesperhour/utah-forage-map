@@ -1,5 +1,5 @@
 import DataFreshness from './components/DataFreshness'
-import { lazy, Suspense, useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { CheckCircle2, Filter, MailCheck, MapPin, NotebookPen, SearchX, Sparkles, Sprout } from 'lucide-react'
 import AccountWorkspace from './components/AccountWorkspace'
 import AppHeader from './components/AppHeader'
@@ -13,7 +13,7 @@ import Sidebar from './components/Sidebar'
 import SubmitDrawer from './components/SubmitDrawer'
 import { useCurrentUser, useLogout, useVerifyEmail } from './hooks/useAuth'
 import { useSaveLocation } from './hooks/useAccount'
-import { useCreateAlert } from './hooks/useCompanion'
+import { useCreateAlert, useObservationRecord } from './hooks/useCompanion'
 import { useCommunityPortal, useCreateSighting, useSightings, useSpecies } from './hooks/useSightings'
 import { useGrowingZone, useOccurrence } from './hooks/useOccurrence'
 import { useUnitSystem } from './hooks/useUnits'
@@ -57,6 +57,7 @@ export default function App({ path = '/map' }) {
   const [userZoneFitKey, setZoneFitKey] = useState(null)
   const [hotspots, setHotspots] = useState(false)
   const [identifyOpen, setIdentifyOpen] = useState(() => initialParams.get('identify') === '1')
+  const stageRef = useRef(null)
   const [guestPromptVisible, setGuestPromptVisible] = useState(
     () => typeof window === 'undefined' || window.localStorage.getItem('ufm:onboarding:guest-message:v1') !== 'true',
   )
@@ -69,6 +70,7 @@ export default function App({ path = '/map' }) {
   const verifyEmail = useVerifyEmail()
   const saveLocation = useSaveLocation()
   const createAlert = useCreateAlert()
+  const sharedRecord = useObservationRecord(initialObservationId)
   const { data: sightings = [], isLoading, isError: sightingsError, refetch: retrySightings } = useSightings(filters, initialTaxonId ? null : viewport)
   const { data: species = [] } = useSpecies()
   const { data: portal = {}, isLoading: portalLoading } = useCommunityPortal()
@@ -100,11 +102,27 @@ export default function App({ path = '/map' }) {
 
   useEffect(() => {
     if (!initialObservationId || observationHandled) return
-    const match = sightings.find(item => item.id === initialObservationId)
+    // A shared record can sit outside the loaded map window, so wait for the record itself
+    // before deciding where to fly.
+    const match = sightings.find(item => item.id === initialObservationId) ?? sharedRecord.data
+    // Open a missing record's panel after its first failed load rather than waiting out the retries.
+    if (!match && sharedRecord.isPending && !sharedRecord.failureCount) return
     setSelected(match ?? { id: initialObservationId })
     setObservationHandled(true)
-    if (match) setFlyTarget({ center: [match.longitude, match.latitude], selectedAt: Date.now() })
-  }, [initialObservationId, observationHandled, sightings])
+    if (Number.isFinite(match?.latitude) && Number.isFinite(match?.longitude)) setFlyTarget({ center: [match.longitude, match.latitude], selectedAt: Date.now() })
+  }, [initialObservationId, observationHandled, sightings, sharedRecord.data, sharedRecord.isPending, sharedRecord.failureCount])
+
+  useEffect(() => {
+    // The toolbar wraps onto a second row on narrower screens; panels below it read its height.
+    const stage = stageRef.current
+    const toolbar = stage?.querySelector('.map-toolbar')
+    if (!toolbar) return undefined
+    const update = () => stage.style.setProperty('--map-toolbar-bottom', `${Math.round(toolbar.offsetTop + toolbar.offsetHeight)}px`)
+    update()
+    const observer = new ResizeObserver(update)
+    observer.observe(toolbar)
+    return () => observer.disconnect()
+  }, [])
 
   useEffect(() => {
     if (!toast) return undefined
@@ -296,7 +314,7 @@ export default function App({ path = '/map' }) {
           species={species}
         />
 
-        <section className={`map-stage ${submissionOpen ? 'is-picking' : ''}`} aria-label="Worldwide mushroom observations map">
+        <section ref={stageRef} className={`map-stage ${submissionOpen ? 'is-picking' : ''}`} aria-label="Worldwide mushroom observations map">
           <Suspense fallback={<div className="map-loading" role="status"><span>Loading map...</span></div>}>
             {shouldLocateCountry && countryCamera.isLoading ? <div className="map-loading" role="status"><span>Loading map...</span></div> : <MapView key={mapAttempt} onMapError={setMapError}
               countryCamera={countryCamera.data}
@@ -336,6 +354,11 @@ export default function App({ path = '/map' }) {
             <button className="button button-primary map-submit-button" type="button" onClick={openSubmission}>
               <NotebookPen size={17} aria-hidden="true" /> Add a find
             </button>
+            {user && !user.email_verified && !submissionOpen && !selected && (
+              <button className="verification-notice" type="button" onClick={() => setAccountOpen(true)}>
+                <MailCheck size={18} aria-hidden="true" /> Verify your email to secure account recovery
+              </button>
+            )}
           </div>
 
           <OccurrenceLegend
@@ -381,11 +404,6 @@ export default function App({ path = '/map' }) {
             />
           )}
 
-          {user && !user.email_verified && !submissionOpen && !selected && (
-            <button className="verification-notice" type="button" onClick={() => setAccountOpen(true)}>
-              <MailCheck size={18} aria-hidden="true" /> Verify your email to secure account recovery
-            </button>
-          )}
 
           {selected && <ObservationRecord
             sighting={selected}

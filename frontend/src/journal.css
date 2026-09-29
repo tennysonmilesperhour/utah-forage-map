@@ -56,6 +56,8 @@
 .journal-page label,
 .journal-library label {
   display: grid;
+  /* Side-by-side fields share a row height; keep each control directly under its label. */
+  align-content: start;
   gap: 7px;
   font-size: 0.93rem;
   line-height: 1.5;
