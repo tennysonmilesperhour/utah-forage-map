@@ -5,6 +5,7 @@ import {
   isGoogleAnalyticsEnabled,
   setGoogleAnalyticsConsent,
 } from '../lib/googleTag'
+import { setPostHogConsent } from '../lib/posthog'
 
 const subscribeToHydration = () => () => {}
 
@@ -21,6 +22,7 @@ export default function AnalyticsConsent({ collection = 'fungi' }) {
 
   function choose(choice) {
     setGoogleAnalyticsConsent(choice)
+    setPostHogConsent(choice)
     setSessionChoice(choice)
     setSettingsOpen(false)
   }

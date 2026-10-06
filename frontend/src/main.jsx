@@ -6,11 +6,13 @@ import { legacyFungiRedirect } from './lib/navigation'
 import AnalyticsConsent from './components/AnalyticsConsent'
 import { initGoogleTag, initFieldMeasurement } from './lib/googleTag'
 import { initAdSense } from './lib/adsense'
+import { initPostHog } from './lib/posthog'
 
 // Both integrations are no-ops unless configured. GA waits for opt-in consent.
 initGoogleTag()
 initFieldMeasurement()
 initAdSense()
+initPostHog()
 
 const queryClient = new QueryClient({
   defaultOptions: {
