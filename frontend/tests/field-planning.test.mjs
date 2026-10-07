@@ -42,3 +42,22 @@ test('calendar handles leap dates and folds Unicode safely', () => {
   assert.throws(() => revisitCalendar({ revisit_on: '2026-02-30' }))
   assert.throws(() => revisitCalendar({ revisit_on: '' }))
 })
+
+test('list scope works without a map and wraps the date line', async () => {
+  const { viewportForTarget } = await import('../src/lib/fieldPlanning.js')
+  assert.deepEqual(viewportForTarget({bbox:[-115,37,-109,42]}), {west:-115,south:37,east:-109,north:42})
+  assert.deepEqual(viewportForTarget({center:[179.5,85]}), {west:178.5,east:-179.5,south:84,north:85})
+  assert.equal(viewportForTarget(null),null)
+})
+test('coverage distinguishes sparse historical evidence from recent records', async () => {
+  const { observationCoverage } = await import('../src/lib/fieldPlanning.js')
+  const value = observationCoverage([{found_on:'2020-01-01'},{found_on:'2026-10-05'},{found_on:'2028-01-01'}], '2026-10-06')
+  assert.equal(value.latest,'2026-10-05'); assert.equal(value.recent,1); assert.equal(value.limited,true)
+  assert.equal(observationCoverage([]).latest,null)
+})
+test('analytics strips auth tokens, notes, locations and automatic capture', async () => {
+  const { sanitizeProductEvent } = await import('../src/lib/analyticsPolicy.js')
+  const event = sanitizeProductEvent({event:'visit_completed',properties:{distinct_id:'anonymous',collection:'fungi',page_path:'/map?reset=secret#token',notes:'private',latitude:40,$current_url:'https://site/map?reset=secret',$referrer:'private',email:'user@example.com',$set:{email:'private'}}})
+  assert.deepEqual(event.properties,{app:'utah-forage-map',page_path:'/map',$geoip_disable:true,distinct_id:'anonymous',collection:'fungi'})
+  assert.equal(sanitizeProductEvent({event:'$autocapture',properties:{}}),null)
+})

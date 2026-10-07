@@ -10,8 +10,8 @@ const EMPTY_FORM = {
   place_name: '', substrate: '', weather_notes: '', photo_links: '', notes: '', location_privacy: 'approximate',
 }
 
-export default function SubmitDrawer({ species = [], location, onSubmit, onClose, creating }) {
-  const [form, setForm] = useState(EMPTY_FORM)
+export default function SubmitDrawer({ species = [], location, onSubmit, onClose, creating, initialVisit }) {
+  const [form, setForm] = useState(() => ({ ...EMPTY_FORM, found_on: initialVisit?.visited_on || '', location_privacy: initialVisit ? 'private' : 'approximate' }))
   const [error, setError] = useState('')
   const { system: unitSystem } = useUnitSystem()
 
@@ -55,6 +55,7 @@ export default function SubmitDrawer({ species = [], location, onSubmit, onClose
       </div>
 
       <form className="submit-form" onSubmit={submit}>
+        {initialVisit && <p className="field-safety-note">Starting from {initialVisit.title}. This saved public point may be approximate. Confirm your actual location and identify what you found independently. This entry starts private.</p>}
         <div className={`location-picker-status ${location ? 'chosen' : ''}`}>
           {location ? <MapPin size={20} aria-hidden="true" /> : <Crosshair size={20} aria-hidden="true" />}
           <div>
@@ -179,7 +180,7 @@ export default function SubmitDrawer({ species = [], location, onSubmit, onClose
         <div className="submit-actions">
           <button className="button button-secondary" type="button" onClick={onClose}>Cancel</button>
           <button className="button button-primary" disabled={!location || !form.species_id || creating}>
-            {creating ? 'Submitting...' : 'Submit for review'}
+            {creating ? 'Saving…' : form.location_privacy === 'private' ? 'Save to notebook' : 'Submit for review'}
           </button>
         </div>
       </form>

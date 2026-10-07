@@ -100,3 +100,6 @@
   .mycelial-theme .is-list .field-list-heading p { font-size: 12px; line-height: 1.5; }
   .mycelial-theme .is-list .field-list-heading h2 { font-size: 23px; }
 }
+
+.field-coverage { margin: 12px 0; padding: 14px 16px; border: 1px solid var(--line, #524b3d); border-radius: 12px; background: rgba(150,170,115,.07); }
+.field-coverage p { margin: 7px 0; font-size: 13px; line-height: 1.5; }

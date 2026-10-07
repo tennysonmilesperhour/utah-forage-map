@@ -72,3 +72,25 @@ export function downloadRevisit(item) {
   link.href = url; link.download = 'field-visit.ics'; link.click()
   setTimeout(() => URL.revokeObjectURL(url), 1000)
 }
+
+// A list can select its scope without downloading or constructing a WebGL map.
+export function viewportForTarget(target) {
+  if (target?.bbox?.length === 4 && target.bbox.every(Number.isFinite)) {
+    const [west, south, east, north] = target.bbox
+    return { west, south, east, north }
+  }
+  if (target?.center?.length === 2 && target.center.every(Number.isFinite)) {
+    const [lng, lat] = target.center
+    const wrap = value => ((value + 180) % 360 + 360) % 360 - 180
+    return { west: wrap(lng - 1), east: wrap(lng + 1), south: Math.max(-85, lat - 1), north: Math.min(85, lat + 1) }
+  }
+  return null
+}
+
+export function observationCoverage(items, today = localDateKey()) {
+  const dates = items.map(item => item.found_on).filter(value => /^\d{4}-\d{2}-\d{2}$/.test(value || '') && value <= today).sort()
+  const cutoff = new Date(`${today}T12:00:00Z`)
+  cutoff.setUTCDate(cutoff.getUTCDate() - 14)
+  const recent = dates.filter(value => value >= cutoff.toISOString().slice(0, 10)).length
+  return { count: items.length, latest: dates.at(-1) ?? null, recent, limited: items.length < 5, capped: items.length >= 4000 }
+}

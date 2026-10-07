@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
-import { trackSubmissionConversion } from '../lib/googleTag'
+import { trackSubmissionConversion, trackFieldEvent } from '../lib/googleTag'
 
 function dateDaysAgo(days) {
   const value = new Date()
@@ -9,9 +9,10 @@ function dateDaysAgo(days) {
   return value.toISOString().slice(0, 10)
 }
 
-export function useSightings(filters = {}, viewport = null) {
+export function useSightings(filters = {}, viewport = null, enabled = true) {
   return useQuery({
     queryKey: ['sightings', filters, viewport],
+    enabled,
     queryFn: async ({ signal }) => {
       const params = {}
       if (filters.species_id) params.species_id = filters.species_id
@@ -56,6 +57,7 @@ export function useCreateSighting() {
     },
     onSuccess: () => {
       trackSubmissionConversion()
+      trackFieldEvent('find_recorded', 'fungi')
       queryClient.invalidateQueries({ queryKey: ['sightings'] })
       queryClient.invalidateQueries({ queryKey: ['species'] })
       queryClient.invalidateQueries({ queryKey: ['logbook'] })

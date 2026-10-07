@@ -1,5 +1,8 @@
 import html
 import os
+import logging
+
+logger = logging.getLogger(__name__)
 
 import httpx
 
@@ -11,6 +14,7 @@ RESEND_API_KEY = os.getenv("RESEND_API_KEY")
 
 def send_account_email(to: str, subject: str, heading: str, message: str, action: str, path: str) -> bool:
     if not RESEND_API_KEY:
+        logger.warning("email_delivery kind=account outcome=not_configured")
         return False
     url = f"{APP_URL}{path}"
     markup = f"""
@@ -29,8 +33,10 @@ def send_account_email(to: str, subject: str, heading: str, message: str, action
             timeout=10,
         )
         response.raise_for_status()
+        logger.info("email_delivery outcome=accepted")
         return True
-    except httpx.HTTPError:
+    except httpx.HTTPError as error:
+        logger.warning("email_delivery outcome=failed status=%s", getattr(getattr(error, "response", None), "status_code", "transport"))
         return False
 
 
@@ -71,8 +77,10 @@ def send_digest_email(to: str, username: str, items: list[dict]) -> bool:
             timeout=10,
         )
         response.raise_for_status()
+        logger.info("email_delivery outcome=accepted")
         return True
-    except httpx.HTTPError:
+    except httpx.HTTPError as error:
+        logger.warning("email_delivery outcome=failed status=%s", getattr(getattr(error, "response", None), "status_code", "transport"))
         return False
 
 
@@ -114,6 +122,8 @@ def send_herb_watch_email(to: str, username: str, items: list[dict]) -> bool:
             timeout=10,
         )
         response.raise_for_status()
+        logger.info("email_delivery outcome=accepted")
         return True
-    except httpx.HTTPError:
+    except httpx.HTTPError as error:
+        logger.warning("email_delivery outcome=failed status=%s", getattr(getattr(error, "response", None), "status_code", "transport"))
         return False

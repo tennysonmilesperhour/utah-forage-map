@@ -20,6 +20,7 @@ import { useCommunityPortal, useCreateSighting, useSightings, useSpecies } from 
 import { useGrowingZone, useOccurrence } from './hooks/useOccurrence'
 import { useUnitSystem } from './hooks/useUnits'
 import { useVisitorCountry } from './hooks/useVisitorCountry'
+import { viewportForTarget } from './lib/fieldPlanning'
 import { countActiveFilters, DEFAULT_FILTERS } from './lib/filters'
 import { regionBySlug } from './data/regions'
 import { hemisphereFor } from './data/occurrence'
@@ -42,6 +43,7 @@ export default function App({ path = '/map' }) {
   const [flyTarget, setFlyTarget] = useState(() => initialRegion ? { bbox: initialRegion.bounds } : null)
   const [selected, setSelected] = useState(null)
   const [draftLocation, setDraftLocation] = useState(null)
+  const [visitDraft, setVisitDraft] = useState(null)
   const [mapError, setMapError] = useState(false)
   const [mapAttempt, setMapAttempt] = useState(0)
   const [authMode, setAuthMode] = useState(initialParams.get('reset') ? 'reset' : null)
@@ -58,7 +60,7 @@ export default function App({ path = '/map' }) {
   const [observationHandled, setObservationHandled] = useState(false)
   const [toast, setToast] = useState('')
   const [userZoneFitKey, setZoneFitKey] = useState(null)
-  const [listOpen, setListOpen] = useState(() => initialParams.get('view') === 'list' || !import.meta.env.VITE_MAPBOX_TOKEN)
+  const [listOpen, setListOpen] = useState(() => initialParams.get('view') === 'list' || !import.meta.env.VITE_MAPBOX_TOKEN || (!initialParams.has('observation') && !initialParams.has('identify') && initialParams.get('view') !== 'map' && typeof window !== 'undefined' && window.matchMedia('(max-width: 640px)').matches))
   const [hotspots, setHotspots] = useState(false)
   const [identifyOpen, setIdentifyOpen] = useState(() => initialParams.get('identify') === '1')
   const stageRef = useRef(null)
@@ -77,7 +79,7 @@ export default function App({ path = '/map' }) {
   const savedIds = useMemo(() => new Set((savedLocations.data ?? []).map(item => item.sighting_id)), [savedLocations.data])
   const createAlert = useCreateAlert()
   const sharedRecord = useObservationRecord(initialObservationId)
-  const { data: sightings = [], isLoading, isError: sightingsError, refetch: retrySightings } = useSightings(filters, viewport)
+  const { data: sightings = [], isLoading, isError: sightingsError, refetch: retrySightings } = useSightings(filters, viewport ?? viewportForTarget(flyTarget ?? countryCamera.data), !shouldLocateCountry || !countryCamera.isLoading)
   const { data: species = [] } = useSpecies()
   const { data: portal = {}, isLoading: portalLoading } = useCommunityPortal(activeView !== 'map')
   const createSighting = useCreateSighting()
@@ -222,6 +224,8 @@ export default function App({ path = '/map' }) {
       openAuth('register', 'submit')
       return
     }
+    setVisitDraft(null)
+    setDraftLocation(null)
     setSelected(null)
     setListOpen(false)
     setSubmissionOpen(true)
@@ -237,6 +241,7 @@ export default function App({ path = '/map' }) {
 
   function goToPlace(target) {
     setSelected(null)
+    setViewport(viewportForTarget(target))
     setFlyTarget({ ...target, selectedAt: Date.now() })
   }
 
@@ -283,7 +288,7 @@ export default function App({ path = '/map' }) {
       })
       trackFieldEvent('place_saved', 'fungi')
       setToast('Place saved. Plan your return in My field desk.')
-    } catch (error) { setToast(getApiError(error, 'This place could not be saved. Please try again.')) }
+    } catch (error) { trackFieldEvent('place_save_failed', 'fungi'); setToast(getApiError(error, 'This place could not be saved. Please try again.')) }
   }
 
   function closeSubmission() {
@@ -328,13 +333,13 @@ export default function App({ path = '/map' }) {
         />
 
         <section ref={stageRef} className={`map-stage ${listOpen ? 'is-list' : ''} ${submissionOpen ? 'is-picking' : ''}`} aria-label="Worldwide mushroom observations map">
-          <Suspense fallback={<div className="map-loading" role="status"><span>Loading map...</span></div>}>
+          {!listOpen && <Suspense fallback={<div className="map-loading" role="status"><span>Loading map...</span></div>}>
             {shouldLocateCountry && countryCamera.isLoading ? <div className="map-loading" role="status"><span>Loading map...</span></div> : <MapView key={mapAttempt} onMapError={setMapError}
               countryCamera={countryCamera.data}
               sightings={sightings}
               onSightingClick={setSelected}
               onBoundsChange={setViewport}
-              flyTarget={flyTarget}
+              flyTarget={flyTarget ?? (viewport ? { bbox: [viewport.west, viewport.south, viewport.east, viewport.north] } : null)}
               draftLocation={draftLocation}
               onMapClick={submissionOpen ? setDraftLocation : undefined}
               isPickingLocation={submissionOpen}
@@ -342,10 +347,10 @@ export default function App({ path = '/map' }) {
               zone={zone}
               zoneFitKey={zoneFitKey}
             />}
-          </Suspense>
+          </Suspense>}
 
           <details className="map-data-status"><summary>Observation updates</summary><DataFreshness /></details>
-          {mapError && <div className="map-failure" role="alert"><h2>The map could not load</h2><p>Your library and regional guides remain available.</p><button className="button button-secondary" onClick={() => { trackFieldEvent('map_retry', 'fungi'); setMapError(false); setMapAttempt(value => value + 1) }}>Retry map</button><a href="/regions">Browse regions</a><a href="/">Open the library</a></div>}
+          {mapError && !listOpen && <div className="map-failure" role="alert"><h2>The map could not load</h2><p>Your library and regional guides remain available.</p><button className="button button-secondary" onClick={() => { trackFieldEvent('map_retry', 'fungi'); setMapError(false); setMapAttempt(value => value + 1) }}>Retry map</button><a href="/regions">Browse regions</a><a href="/">Open the library</a></div>}
           <div className="map-toolbar">
             <PlaceSearch onSelect={goToPlace} />
             <button className="map-filter-button" type="button" onClick={() => setFiltersOpen(true)}>
@@ -355,7 +360,7 @@ export default function App({ path = '/map' }) {
             <button className={`map-filter-button map-identify-button ${identifyOpen ? 'active' : ''}`} type="button" aria-expanded={identifyOpen} onClick={() => { setListOpen(false); setIdentifyOpen(open => !open) }}>
               <Sparkles size={17} aria-hidden="true" /> Suggest an ID
             </button>
-            <button className="map-filter-button field-list-toggle" type="button" aria-pressed={listOpen} onClick={() => { setListOpen(open => !open); setSelected(null); trackFieldEvent('observation_list_open', 'fungi') }}><List size={17} /> {listOpen ? 'Show map' : 'Browse list'}</button>
+            <button className="map-filter-button field-list-toggle" type="button" aria-pressed={listOpen} onClick={() => { setListOpen(open => !open); setSelected(null) }}><List size={17} /> {listOpen ? 'Show map' : 'Browse list'}</button>
             <button className="map-filter-button field-desk-toggle" type="button" onClick={() => user ? openAccount() : openAuth('register', 'desk')}><Bookmark size={17} /> My field desk</button>
             <div className="map-results" aria-live="polite">
               <MapPin size={17} aria-hidden="true" />
@@ -420,7 +425,7 @@ export default function App({ path = '/map' }) {
           )}
 
 
-          {listOpen && <ObservationList sightings={sightings} loading={isLoading} error={sightingsError} onRetry={retrySightings} onSelect={item => { setSelected(item); }} onSave={item => saveSelected(false, item)} savedIds={savedIds} saving={saveLocation.isPending} user={user} onAccount={() => user ? openAccount('saved') : openAuth('register', 'desk')} onClear={() => setFilters({ ...DEFAULT_FILTERS })} />}
+          {listOpen && <ObservationList scope={viewport || flyTarget || countryCamera.data ? 'Selected map area' : 'Worldwide results'} onBroaden={() => setFilters(current => ({ ...current, recent_days: null }))} sightings={sightings} loading={isLoading || (shouldLocateCountry && countryCamera.isLoading)} error={sightingsError} onRetry={retrySightings} onSelect={item => { setSelected(item); }} onSave={item => saveSelected(false, item)} savedIds={savedIds} saving={saveLocation.isPending} user={user} onAccount={() => user ? openAccount('saved') : openAuth('register', 'desk')} onClear={() => setFilters({ ...DEFAULT_FILTERS })} />}
 
           {selected && <ObservationRecord key={selected.id} saved={savedIds.has(selected.id)}
             sighting={selected}
@@ -468,6 +473,8 @@ export default function App({ path = '/map' }) {
 
       {submissionOpen && (
         <SubmitDrawer
+          key={visitDraft?.id ?? 'new-find'}
+          initialVisit={visitDraft}
           species={species}
           location={draftLocation}
           onSubmit={submitSighting}
@@ -487,6 +494,7 @@ export default function App({ path = '/map' }) {
           onToast={setToast}
           onExplore={() => { setAccountOpen(false); navigate('map'); setListOpen(true) }}
           onAddFind={() => { setAccountOpen(false); openSubmission() }}
+          onRecordVisit={item => { setAccountOpen(false); navigate('map'); setSelected(null); setListOpen(false); setVisitDraft(item); setDraftLocation({ latitude: item.latitude, longitude: item.longitude }); setFlyTarget({ center: [item.longitude, item.latitude], selectedAt: Date.now() }); setSubmissionOpen(true); trackFieldEvent('visit_notebook_started', 'fungi') }}
           onOpenPlace={item => { setAccountOpen(false); setListOpen(false); navigate('map'); setFlyTarget({ center: [item.longitude, item.latitude], selectedAt: Date.now() }); setSelected(item.sighting_id ? { id: item.sighting_id } : null) }}
         /></Suspense>
       )}

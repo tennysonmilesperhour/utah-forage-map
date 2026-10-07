@@ -289,6 +289,7 @@ class SavedLocation(Base):
     latitude = Column(Float, nullable=False)
     longitude = Column(Float, nullable=False)
     revisit_on = Column(Date)
+    visited_on = Column(Date)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
 
     user = relationship("User", back_populates="saved_locations")

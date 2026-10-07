@@ -262,6 +262,7 @@ class SavedLocationCreate(BaseModel):
 
 
 class SavedLocationRead(SavedLocationCreate):
+    visited_on: Optional[date] = None
     id: UUID
     created_at: datetime
 
@@ -269,6 +270,7 @@ class SavedLocationRead(SavedLocationCreate):
 
 
 class SavedLocationUpdate(BaseModel):
+    visited_on: Optional[date] = None
     title: Optional[str] = Field(default=None, min_length=1, max_length=120)
     notes: Optional[str] = Field(default=None, max_length=1000)
     revisit_on: Optional[date] = None

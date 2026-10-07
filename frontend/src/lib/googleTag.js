@@ -1,3 +1,5 @@
+import { captureProductEvent } from './posthog'
+import { CONSENT_KEY, FIELD_EVENTS, getAnalyticsConsent } from './analyticsPolicy'
 // Google tag integration for GA4 and optional Google Ads conversions.
 // GA4 uses basic consent mode: no Google script loads until the visitor opts in.
 
@@ -5,7 +7,7 @@ const ADS_ID = import.meta.env.VITE_GOOGLE_ADS_ID?.trim() || ''
 const GA_ID = import.meta.env.VITE_GA_MEASUREMENT_ID?.trim() || ''
 const SIGNUP_LABEL = import.meta.env.VITE_GOOGLE_ADS_SIGNUP_LABEL?.trim() || ''
 const SUBMIT_LABEL = import.meta.env.VITE_GOOGLE_ADS_SUBMIT_LABEL?.trim() || ''
-const CONSENT_STORAGE_KEY = 'wmf:analytics-consent:v1'
+const CONSENT_STORAGE_KEY = CONSENT_KEY
 
 const validAdsId = /^AW-[A-Z0-9]+$/i.test(ADS_ID)
 const validGaId = /^G-[A-Z0-9]+$/i.test(GA_ID)
@@ -76,8 +78,7 @@ function removeAnalyticsCookies() {
 }
 
 export function getGoogleAnalyticsConsent() {
-  if (typeof window === 'undefined') return null
-  return window.localStorage.getItem(CONSENT_STORAGE_KEY)
+  return getAnalyticsConsent()
 }
 
 export function initGoogleTag() {
@@ -96,8 +97,9 @@ export function initGoogleTag() {
 }
 
 export function setGoogleAnalyticsConsent(choice) {
-  if (!validGaId || typeof window === 'undefined') return
-  window.localStorage.setItem(CONSENT_STORAGE_KEY, choice)
+  if (typeof window === 'undefined') return
+  try { window.localStorage.setItem(CONSENT_STORAGE_KEY, choice) } catch { return }
+  if (!validGaId) return
   setConsentDefaults()
 
   if (choice === 'granted') {
@@ -176,9 +178,11 @@ function startVitals() {
 
 // Closed, low-cardinality fields: never forward notes, coordinates, search text or URLs.
 export function trackFieldEvent(name, collection) {
-  if (!validGaId || typeof window === 'undefined' || getGoogleAnalyticsConsent() !== 'granted') return
-  if (!['guide_to_map', 'map_retry', 'map_empty_recovery', 'id_helper_focus', 'place_saved', 'observation_list_open', 'revisit_planned', 'revisit_calendar_export', 'field_desk_open'].includes(name)) return
-  if (!['fungi', 'herbs'].includes(collection)) return
+  if (typeof window === 'undefined' || getGoogleAnalyticsConsent() !== 'granted') return
+  if (!FIELD_EVENTS.has(name) || !['fungi', 'herbs'].includes(collection)) return
+  void captureProductEvent(name, collection)
+  if (!validGaId) return
+  loadGoogleTag()
   gtag('event', name, { collection, page_path: safePagePath(), send_to: GA_ID })
 }
 
