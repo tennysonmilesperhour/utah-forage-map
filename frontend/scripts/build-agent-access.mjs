@@ -49,7 +49,7 @@ function speciesTwin(guide) {
     ...guide.lookalikes.map(item => `- ${item.slug ? `[${item.name}](${SITE}/learn/species/${item.slug})` : item.name} (${item.severity}): ${item.check}`), '',
     htmlToMarkdown(`<main>${guide.content_html}</main>`, url), '',
   ]
-  if (guide.sources?.length) lines.push('## Sources', '', ...guide.sources.map(item => `- [${item.title}](${item.url})`), '')
+  if (guide.sources?.length && !/^## Sources/m.test(lines.join('\n'))) lines.push('## Sources', '', ...guide.sources.map(item => `- [${item.title}](${item.url})`), '')
   lines.push(`Photo: ${guide.image.credit} (${guide.image.license}), source ${guide.image.source}`)
   return lines.join('\n')
 }
@@ -58,7 +58,7 @@ function foragingTwin(guide) {
   const url = `${SITE}/learn/foraging/${guide.slug}`
   return [header(guide.title, url, [`Updated: ${guide.updated}. Author: ${guide.author}. Review: ${guide.reviewer}.`]), guide.summary, '',
     htmlToMarkdown(`<main>${guide.content_html}</main>`, url), '',
-    '## Sources', '', ...guide.sources.map(item => `- [${item.title}](${item.url})`), ''].join('\n')
+    ...(/^## Sources/m.test(guide.content_html.replace(/<h2[^>]*>/g, '## ').replace(/<\/h2>/g, '\n')) ? [] : ['## Sources', '', ...guide.sources.map(item => `- [${item.title}](${item.url})`), '']) ].join('\n')
 }
 
 const twinRoutes = []
