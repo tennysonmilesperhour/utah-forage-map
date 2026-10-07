@@ -25,7 +25,7 @@ from app.models import (
     Species, User, UserSession, Verification,
 )
 from app.herbs import HERB_PROFILES, HERBS_BY_SLUG, harvest_months, moon_context, zone_readiness
-from app.privacy import MAX_OFFSET_MILES, MILES_PER_DEGREE, normalize_longitude, public_sighting
+from app.privacy import MAX_OFFSET_MILES, MILES_PER_DEGREE, normalize_longitude, public_coordinates, public_sighting
 from app.regions import REGIONS, get_region
 from app.schemas import (
     AlertSubscriptionCreate, AlertSubscriptionRead, AlertSubscriptionUpdate, CommunityEventRead,
@@ -1313,11 +1313,24 @@ def list_saved_locations(user: User = Depends(get_current_user), db: Session = D
 
 @app.post("/api/account/saved", response_model=SavedLocationRead, status_code=201)
 def save_location(payload: SavedLocationCreate, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    # Serialize saves per account in PostgreSQL so repeated taps/requests are idempotent.
+    db.query(User).filter(User.id == user.id).with_for_update().first()
+    values = payload.model_dump()
+    values["title"] = values["title"].strip()
+    if not values["title"]:
+        raise HTTPException(status_code=422, detail="A saved place needs a title")
     if payload.sighting_id:
         sighting = db.get(Sighting, payload.sighting_id)
         if sighting is None or sighting.review_status != "approved" or sighting.location_privacy == "private":
             raise HTTPException(status_code=404, detail="Observation not found")
-    saved = SavedLocation(**payload.model_dump(), user_id=user.id)
+        existing = db.query(SavedLocation).filter(
+            SavedLocation.user_id == user.id, SavedLocation.sighting_id == payload.sighting_id
+        ).order_by(SavedLocation.created_at.asc()).first()
+        if existing:
+            return existing
+        # Resolve coordinates on the server; a save must never acquire the owner's exact point.
+        values["latitude"], values["longitude"] = public_coordinates(sighting)
+    saved = SavedLocation(**values, user_id=user.id)
     db.add(saved)
     db.commit()
     db.refresh(saved)
@@ -1335,7 +1348,9 @@ def update_saved_location(
     if saved is None or saved.user_id != user.id:
         raise HTTPException(status_code=404, detail="Saved place not found")
     for key, value in payload.model_dump(exclude_unset=True).items():
-        setattr(saved, key, value)
+        if key == "title" and (value is None or not value.strip()):
+            raise HTTPException(status_code=422, detail="A saved place needs a title")
+        setattr(saved, key, value.strip() if key == "title" else value)
     db.commit()
     db.refresh(saved)
     return saved

@@ -1,7 +1,9 @@
 import DataFreshness from './components/DataFreshness'
-import { lazy, Suspense, useEffect, useRef, useState } from 'react'
-import { CheckCircle2, Filter, MailCheck, MapPin, NotebookPen, SearchX, Sparkles, Sprout } from 'lucide-react'
-import AccountWorkspace from './components/AccountWorkspace'
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
+import { Bookmark, CheckCircle2, Filter, List, MailCheck, MapPin, NotebookPen, SearchX, Sparkles, Sprout } from 'lucide-react'
+import ObservationList from './components/ObservationList'
+import './field-planning.css'
+import { getApiError } from './hooks/useAuth'
 import AppHeader from './components/AppHeader'
 import AuthDialog from './components/AuthDialog'
 import CommunityPanel from './components/CommunityPanel'
@@ -12,7 +14,7 @@ import PlaceSearch from './components/PlaceSearch'
 import Sidebar from './components/Sidebar'
 import SubmitDrawer from './components/SubmitDrawer'
 import { useCurrentUser, useLogout, useVerifyEmail } from './hooks/useAuth'
-import { useSaveLocation } from './hooks/useAccount'
+import { useSavedLocations, useSaveLocation } from './hooks/useAccount'
 import { useCreateAlert, useObservationRecord } from './hooks/useCompanion'
 import { useCommunityPortal, useCreateSighting, useSightings, useSpecies } from './hooks/useSightings'
 import { useGrowingZone, useOccurrence } from './hooks/useOccurrence'
@@ -27,6 +29,7 @@ import { trackPageView, trackFieldEvent } from './lib/googleTag'
 import './mycelial.css'
 import './occurrence.css'
 
+const AccountWorkspace = lazy(() => import('./components/AccountWorkspace'))
 const MapView = lazy(() => import('./components/MapView'))
 const IdentifyPanel = lazy(() => import('./components/IdentifyPanel'))
 export default function App({ path = '/map' }) {
@@ -49,17 +52,18 @@ export default function App({ path = '/map' }) {
   const [activeView, setActiveView] = useState(() => viewFromPathname(typeof window === 'undefined' ? path : window.location.pathname))
   const [submissionOpen, setSubmissionOpen] = useState(false)
   const [accountOpen, setAccountOpen] = useState(false)
-  const [accountInitialTab, setAccountInitialTab] = useState(() => initialParams.get('tab') || 'logbook')
+  const [accountInitialTab, setAccountInitialTab] = useState(() => initialParams.get('tab') || 'overview')
   const [followTarget] = useState(initialParams.get('follow'))
   const [followHandled, setFollowHandled] = useState(false)
   const [observationHandled, setObservationHandled] = useState(false)
   const [toast, setToast] = useState('')
   const [userZoneFitKey, setZoneFitKey] = useState(null)
+  const [listOpen, setListOpen] = useState(() => initialParams.get('view') === 'list' || !import.meta.env.VITE_MAPBOX_TOKEN)
   const [hotspots, setHotspots] = useState(false)
   const [identifyOpen, setIdentifyOpen] = useState(() => initialParams.get('identify') === '1')
   const stageRef = useRef(null)
   const [guestPromptVisible, setGuestPromptVisible] = useState(
-    () => typeof window === 'undefined' || window.localStorage.getItem('ufm:onboarding:guest-message:v1') !== 'true',
+    () => { try { return typeof window === 'undefined' || window.localStorage.getItem('ufm:onboarding:guest-message:v1') !== 'true' } catch { return true } },
   )
 
   const { system: unitSystem } = useUnitSystem()
@@ -69,11 +73,13 @@ export default function App({ path = '/map' }) {
   const logout = useLogout()
   const verifyEmail = useVerifyEmail()
   const saveLocation = useSaveLocation()
+  const savedLocations = useSavedLocations(Boolean(user))
+  const savedIds = useMemo(() => new Set((savedLocations.data ?? []).map(item => item.sighting_id)), [savedLocations.data])
   const createAlert = useCreateAlert()
   const sharedRecord = useObservationRecord(initialObservationId)
-  const { data: sightings = [], isLoading, isError: sightingsError, refetch: retrySightings } = useSightings(filters, initialTaxonId ? null : viewport)
+  const { data: sightings = [], isLoading, isError: sightingsError, refetch: retrySightings } = useSightings(filters, viewport)
   const { data: species = [] } = useSpecies()
-  const { data: portal = {}, isLoading: portalLoading } = useCommunityPortal()
+  const { data: portal = {}, isLoading: portalLoading } = useCommunityPortal(activeView !== 'map')
   const createSighting = useCreateSighting()
   const displayedSpeciesCount = new Set(sightings.map(item => item.species_id)).size
   const activeFilterCount = countActiveFilters(filters)
@@ -155,7 +161,7 @@ export default function App({ path = '/map' }) {
   useEffect(() => {
     if (authLoading || window.location.pathname !== '/account') return
     if (user) {
-      setAccountInitialTab(initialParams.get('tab') || 'logbook')
+      setAccountInitialTab(initialParams.get('tab') || 'overview')
       setAccountOpen(true)
     } else {
       setAuthMode('login')
@@ -190,7 +196,7 @@ export default function App({ path = '/map' }) {
 
   function dismissGuestPrompt() {
     setGuestPromptVisible(false)
-    window.localStorage.setItem('ufm:onboarding:guest-message:v1', 'true')
+    try { window.localStorage.setItem('ufm:onboarding:guest-message:v1', 'true') } catch { /* Storage may be unavailable in private browsers. */ }
   }
 
   function openAuth(mode, action = null) {
@@ -198,7 +204,7 @@ export default function App({ path = '/map' }) {
     setAuthMode(mode)
   }
 
-  function openAccount(tab = 'logbook') {
+  function openAccount(tab = 'overview') {
     setAccountInitialTab(tab)
     setAccountOpen(true)
   }
@@ -217,6 +223,7 @@ export default function App({ path = '/map' }) {
       return
     }
     setSelected(null)
+    setListOpen(false)
     setSubmissionOpen(true)
   }
 
@@ -251,7 +258,8 @@ export default function App({ path = '/map' }) {
 
   function handleAuthenticated() {
     setAuthMode(null)
-    if (pendingAction === 'submit') setSubmissionOpen(true)
+    if (pendingAction === 'submit') { setListOpen(false); setSubmissionOpen(true) }
+    if (pendingAction === 'desk' || !pendingAction) openAccount('overview')
     if (pendingAction === 'save' && pendingSaveTarget) saveSelected(true, pendingSaveTarget)
     setPendingAction(null)
     setPendingSaveTarget(null)
@@ -264,13 +272,18 @@ export default function App({ path = '/map' }) {
       openAuth('register', 'save')
       return
     }
-    await saveLocation.mutateAsync({
-      sighting_id: target.id,
-      title: target.species?.common_name ?? 'Saved observation',
-      latitude: target.latitude,
-      longitude: target.longitude,
-    })
-    setToast('Place saved to your field desk.')
+    if (saveLocation.isPending) return
+    if (savedIds.has(target.id)) { openAccount('saved'); return }
+    try {
+      await saveLocation.mutateAsync({
+        sighting_id: target.id,
+        title: target.species?.common_name ?? 'Saved observation',
+        latitude: target.latitude,
+        longitude: target.longitude,
+      })
+      trackFieldEvent('place_saved', 'fungi')
+      setToast('Place saved. Plan your return in My field desk.')
+    } catch (error) { setToast(getApiError(error, 'This place could not be saved. Please try again.')) }
   }
 
   function closeSubmission() {
@@ -285,7 +298,7 @@ export default function App({ path = '/map' }) {
   }
 
   async function signOut() {
-    await logout.mutateAsync()
+    try { await logout.mutateAsync() } catch { setToast('Sign out failed. Please try again.'); return }
     closeSubmission()
     setAccountOpen(false)
     setToast('You are signed out. The public map is still available.')
@@ -314,7 +327,7 @@ export default function App({ path = '/map' }) {
           species={species}
         />
 
-        <section ref={stageRef} className={`map-stage ${submissionOpen ? 'is-picking' : ''}`} aria-label="Worldwide mushroom observations map">
+        <section ref={stageRef} className={`map-stage ${listOpen ? 'is-list' : ''} ${submissionOpen ? 'is-picking' : ''}`} aria-label="Worldwide mushroom observations map">
           <Suspense fallback={<div className="map-loading" role="status"><span>Loading map...</span></div>}>
             {shouldLocateCountry && countryCamera.isLoading ? <div className="map-loading" role="status"><span>Loading map...</span></div> : <MapView key={mapAttempt} onMapError={setMapError}
               countryCamera={countryCamera.data}
@@ -339,13 +352,15 @@ export default function App({ path = '/map' }) {
               <Filter size={17} aria-hidden="true" /> Filters
               {activeFilterCount > 0 && <span className="filter-count" aria-label={`${activeFilterCount} active filters`}>{activeFilterCount}</span>}
             </button>
-            <button className={`map-filter-button map-identify-button ${identifyOpen ? 'active' : ''}`} type="button" aria-expanded={identifyOpen} onClick={() => setIdentifyOpen(open => !open)}>
+            <button className={`map-filter-button map-identify-button ${identifyOpen ? 'active' : ''}`} type="button" aria-expanded={identifyOpen} onClick={() => { setListOpen(false); setIdentifyOpen(open => !open) }}>
               <Sparkles size={17} aria-hidden="true" /> Suggest an ID
             </button>
+            <button className="map-filter-button field-list-toggle" type="button" aria-pressed={listOpen} onClick={() => { setListOpen(open => !open); setSelected(null); trackFieldEvent('observation_list_open', 'fungi') }}><List size={17} /> {listOpen ? 'Show map' : 'Browse list'}</button>
+            <button className="map-filter-button field-desk-toggle" type="button" onClick={() => user ? openAccount() : openAuth('register', 'desk')}><Bookmark size={17} /> My field desk</button>
             <div className="map-results" aria-live="polite">
               <MapPin size={17} aria-hidden="true" />
-              <strong>{sightings.length}</strong>
-              <span>locations</span>
+              <strong>{sightings.length.toLocaleString()}</strong>
+              <span>{sightings.length >= 4000 ? 'shown (limit)' : 'locations'}</span>
               <i aria-hidden="true" />
               <Sprout size={17} aria-hidden="true" />
               <strong>{displayedSpeciesCount}</strong>
@@ -362,7 +377,7 @@ export default function App({ path = '/map' }) {
           </div>
 
           <OccurrenceLegend
-            className={`map-occurrence-legend ${selected ? 'is-compact' : ''}`}
+            className={`${listOpen ? 'field-hidden ' : ''}map-occurrence-legend ${selected ? 'is-compact' : ''}`}
             collection="fungi"
             focus={focus}
             hemisphere={hemisphere}
@@ -377,8 +392,8 @@ export default function App({ path = '/map' }) {
             guideHref={focus ? `/learn/species/${focus.slug}` : undefined}
           />
 
-          {sightingsError && <div className="map-empty-state" role="alert"><div><strong>Observations could not be loaded</strong><p>The map is still available. Retry, or browse the library.</p></div><button className="button button-secondary" onClick={() => { trackFieldEvent('map_retry', 'fungi'); retrySightings() }}>Retry records</button><a href="/">Open library</a></div>}
-          {!sightingsError && !isLoading && sightings.length === 0 && !submissionOpen && (
+          {!listOpen && sightingsError && <div className="map-empty-state" role="alert"><div><strong>Observations could not be loaded</strong><p>The map is still available. Retry, or browse the library.</p></div><button className="button button-secondary" onClick={() => { trackFieldEvent('map_retry', 'fungi'); retrySightings() }}>Retry records</button><a href="/">Open library</a></div>}
+          {!listOpen && !sightingsError && !isLoading && sightings.length === 0 && !submissionOpen && (
             <div className="map-empty-state" role="status">
               <SearchX size={22} aria-hidden="true" />
               <div>
@@ -391,13 +406,13 @@ export default function App({ path = '/map' }) {
             </div>
           )}
 
-          {identifyOpen && (
+          {identifyOpen && !listOpen && (
             <Suspense fallback={null}>
               <IdentifyPanel className="map-identify-panel" collection="fungi" location={mapCentre} onClose={() => setIdentifyOpen(false)} onShowOnMap={focusSpecies} />
             </Suspense>
           )}
 
-          {!authLoading && !user && guestPromptVisible && !submissionOpen && !selected && !identifyOpen && sightings.length > 0 && (
+          {!authLoading && !user && guestPromptVisible && !listOpen && !submissionOpen && !selected && !identifyOpen && sightings.length > 0 && (
             <GuestPrompt
               onDismiss={dismissGuestPrompt}
               onCreateAccount={() => openAuth('register')}
@@ -405,7 +420,9 @@ export default function App({ path = '/map' }) {
           )}
 
 
-          {selected && <ObservationRecord
+          {listOpen && <ObservationList sightings={sightings} loading={isLoading} error={sightingsError} onRetry={retrySightings} onSelect={item => { setSelected(item); }} onSave={item => saveSelected(false, item)} savedIds={savedIds} saving={saveLocation.isPending} user={user} onAccount={() => user ? openAccount('saved') : openAuth('register', 'desk')} onClear={() => setFilters({ ...DEFAULT_FILTERS })} />}
+
+          {selected && <ObservationRecord key={selected.id} saved={savedIds.has(selected.id)}
             sighting={selected}
             user={user}
             unitSystem={unitSystem}
@@ -460,7 +477,7 @@ export default function App({ path = '/map' }) {
       )}
 
       {accountOpen && user && (
-        <AccountWorkspace
+        <Suspense fallback={<div className="toast" role="status">Opening your field desk…</div>}><AccountWorkspace
           key={`${user.id}:${accountInitialTab}`}
           user={user}
           species={species}
@@ -468,12 +485,16 @@ export default function App({ path = '/map' }) {
           onClose={() => setAccountOpen(false)}
           onDeleted={() => { setAccountOpen(false); setToast('Your account has been deleted.') }}
           onToast={setToast}
-        />
+          onExplore={() => { setAccountOpen(false); navigate('map'); setListOpen(true) }}
+          onAddFind={() => { setAccountOpen(false); openSubmission() }}
+          onOpenPlace={item => { setAccountOpen(false); setListOpen(false); navigate('map'); setFlyTarget({ center: [item.longitude, item.latitude], selectedAt: Date.now() }); setSelected(item.sighting_id ? { id: item.sighting_id } : null) }}
+        /></Suspense>
       )}
 
       {authMode && (
         <AuthDialog
           mode={authMode}
+          intent={pendingAction}
           resetToken={resetToken}
           onClose={() => { setAuthMode(null); setPendingAction(null) }}
           onAuthenticated={handleAuthenticated}

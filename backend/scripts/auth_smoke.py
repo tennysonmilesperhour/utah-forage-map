@@ -298,8 +298,8 @@ def main():
         saved = client.post("/api/account/saved", json={
             "sighting_id": sighting_id,
             "title": "Morel area",
-            "latitude": public[0]["latitude"],
-            "longitude": public[0]["longitude"],
+            "latitude": 0,
+            "longitude": 0,
         })
         assert saved.status_code == 201, saved.text
         assert len(client.get("/api/account/saved").json()) == 1
@@ -308,6 +308,22 @@ def main():
         })
         assert revisit.status_code == 200, revisit.text
         assert revisit.json()["revisit_on"] == "2026-09-01"
+        repeated = client.post("/api/account/saved", json={
+            "sighting_id": sighting_id, "title": "Do not overwrite my plan",
+            "latitude": 0, "longitude": 0,
+        })
+        assert repeated.status_code == 201, repeated.text
+        assert repeated.json()["id"] == saved.json()["id"]
+        assert repeated.json()["notes"] == "Check after the next cool rain."
+        assert repeated.json()["revisit_on"] == "2026-09-01"
+        assert repeated.json()["latitude"] == public[0]["latitude"]
+        assert len(client.get("/api/account/saved").json()) == 1
+        for invalid_title in [None, "   "]:
+            invalid = client.patch(f"/api/account/saved/{saved.json()['id']}", json={"title": invalid_title})
+            assert invalid.status_code == 422, invalid.text
+        cleared = client.patch(f"/api/account/saved/{saved.json()['id']}", json={"revisit_on": None})
+        assert cleared.status_code == 200 and cleared.json()["revisit_on"] is None
+
 
         sessions = client.get("/api/account/sessions")
         assert sessions.status_code == 200 and sessions.json()[0]["current"]

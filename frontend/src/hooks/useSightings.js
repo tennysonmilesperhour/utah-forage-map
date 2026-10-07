@@ -12,7 +12,7 @@ function dateDaysAgo(days) {
 export function useSightings(filters = {}, viewport = null) {
   return useQuery({
     queryKey: ['sightings', filters, viewport],
-    queryFn: async () => {
+    queryFn: async ({ signal }) => {
       const params = {}
       if (filters.species_id) params.species_id = filters.species_id
       if (filters.taxon_id) params.taxon_id = filters.taxon_id
@@ -28,7 +28,7 @@ export function useSightings(filters = {}, viewport = null) {
       if (viewport) Object.assign(params, viewport)
       params.limit = 4000
 
-      const { data } = await axios.get('/api/sightings', { params })
+      const { data } = await axios.get('/api/sightings', { params, signal })
       return data
     },
     staleTime: 1000 * 60 * 5,
@@ -64,9 +64,10 @@ export function useCreateSighting() {
   })
 }
 
-export function useCommunityPortal() {
+export function useCommunityPortal(enabled = true) {
   return useQuery({
     queryKey: ['community-portal'],
+    enabled,
     queryFn: async () => {
       const [activity, summary, events, clubs, resources] = await Promise.all([
         axios.get('/api/community/activity'),
