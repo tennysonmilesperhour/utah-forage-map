@@ -106,3 +106,4 @@ await writeFile(path.join(root, 'src', 'content', 'species-index.generated.js'),
 console.log(`Built ${guides.length} species guides.`)
 
 await import('./build-foraging.mjs')
+await import('./build-open-data.mjs')

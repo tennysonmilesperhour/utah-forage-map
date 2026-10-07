@@ -20,6 +20,8 @@ dist/
 .ssr/
 frontend/src/content/species.generated.js
 frontend/src/content/species-index.generated.js
+frontend/src/content/open-data.generated.js
+frontend/server/agent-data.generated.json
 
 # Database
 *.sqlite3

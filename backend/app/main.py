@@ -41,6 +41,7 @@ from app.schemas import (
 from app.security import DEFAULT_SECRET_KEY, SECRET_KEY, hash_identifier, hash_token, new_token, passwords
 from app.freshness import observation_freshness
 from app.identify import identify_router
+from app.agent_traffic import agent_traffic_router
 from app.plant_catalogue import RECORD_PLANTS
 
 
@@ -422,6 +423,20 @@ def get_current_auth(
 
 def get_current_user(auth: AuthContext = Depends(get_current_auth)) -> User:
     return auth.user
+
+
+def optional_admin(
+    session_token: Optional[str] = Cookie(None, alias=SESSION_COOKIE),
+    db: Session = Depends(get_db),
+) -> Optional[User]:
+    """The signed-in admin, or None. Used by routes that also accept the service credential."""
+    if not session_token:
+        return None
+    try:
+        user = get_current_auth(session_token, db).user
+    except HTTPException:
+        return None
+    return user if user.role == "admin" and user.email_verified else None
 
 
 def require_moderator(user: User = Depends(get_current_user)) -> User:
@@ -994,6 +1009,69 @@ def get_region_detail(region_slug: str, db: Session = Depends(get_db)):
         **region_summary(db, region),
         "outlook": outlook[:12],
         "recent_observations": recent_observations,
+    }
+
+
+REGIONAL_SIGNAL_MIN_SAMPLE = 3
+
+
+@app.get("/api/open-data/regional-signal")
+def regional_signal(response: Response, db: Session = Depends(get_db)):
+    """Aggregated 90-day field signal per region. Counts only: no coordinates, people or record ids."""
+    response.headers["Cache-Control"] = "public, max-age=3600"
+    today = date.today()
+    regions = []
+    for region in REGIONS:
+        observations = region_sighting_query(db, region).filter(
+            Sighting.found_on >= today - timedelta(days=60)
+        ).all()
+        by_species = {}
+        for sighting in observations:
+            item = by_species.setdefault(sighting.species_id, {
+                "species": sighting.species, "observations_14d": 0, "observations_30d": 0, "previous_30d": 0,
+            })
+            if sighting.found_on >= today - timedelta(days=14):
+                item["observations_14d"] += 1
+            if sighting.found_on >= today - timedelta(days=30):
+                item["observations_30d"] += 1
+            else:
+                item["previous_30d"] += 1
+        outlook = []
+        for item in by_species.values():
+            sample = item["observations_30d"] + item["previous_30d"]
+            if sample < REGIONAL_SIGNAL_MIN_SAMPLE:
+                continue
+            recent, current, previous = item["observations_14d"], item["observations_30d"], item["previous_30d"]
+            if recent == 0 and previous > 0:
+                status_name = "ending"
+            elif recent > 0 and (previous == 0 or current >= max(2, previous * 1.5)):
+                status_name = "starting"
+            else:
+                status_name = "likely"
+            outlook.append({
+                "taxon_id": item["species"].inaturalist_taxon_id,
+                "common_name": item["species"].common_name,
+                "latin_name": item["species"].latin_name,
+                "status": status_name,
+                "confidence": "high" if sample >= 10 else "medium",
+                "observations_14d": recent,
+                "observations_30d": current,
+                "previous_30d": previous,
+            })
+        outlook.sort(key=lambda row: (-row["observations_14d"], row["common_name"]))
+        summary = region_summary(db, region)
+        regions.append({
+            "slug": region["slug"], "name": region["name"], "hemisphere": region["hemisphere"],
+            "observations_90d": summary["observations_90d"], "observations_14d": summary["observations_14d"],
+            "species_count_90d": summary["species_count"], "latest_observed_on": summary["latest_observed_on"],
+            "outlook": outlook[:20],
+        })
+    return {
+        "generated_on": today.isoformat(),
+        "min_species_sample": REGIONAL_SIGNAL_MIN_SAMPLE,
+        "source": "Reviewed public observations on World Mushroom Foraging, mostly research-grade iNaturalist records",
+        "notice": "A map observation is not an identification. Never eat a wild mushroom based on this data.",
+        "regions": regions,
     }
 
 
@@ -1836,3 +1914,4 @@ app.include_router(billing_router(get_current_user, enforce_rate_limit))
 
 app.include_router(journal_router(get_current_user))
 app.include_router(identify_router(enforce_rate_limit, request_ip))
+app.include_router(agent_traffic_router(require_cron, optional_admin))

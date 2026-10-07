@@ -25,6 +25,7 @@ image:
   license: https://creativecommons.org/licenses/by/4.0/
 lookalikes:
   - name: Panther Cap
+    slug: panther-cap
     severity: toxic
     check: Amanita pantherina has a brown cap but causes a similar and often stronger poisoning syndrome.
   - name: Rain-washed Amanita

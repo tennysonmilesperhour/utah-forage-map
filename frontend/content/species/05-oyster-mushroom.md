@@ -26,9 +26,11 @@ image:
   license: https://creativecommons.org/licenses/by/4.0/
 lookalikes:
   - name: Angel Wings
-    severity: caution
+    slug: angel-wings
+    severity: toxic
     check: Pleurocybella porrigens is thinner, stemless, and grows on conifer wood; avoid it.
   - name: Jack-o'-lantern
+    slug: jack-o-lantern
     severity: toxic
     check: Jack-o'-lanterns are orange and grow in dense clusters; oyster mushrooms are never bright orange.
   - name: Crepidotus species

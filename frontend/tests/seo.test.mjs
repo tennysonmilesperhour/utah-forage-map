@@ -78,7 +78,7 @@ test('sitemaps list exactly the canonical pages and exclude private and comparis
 })
 
 test('discovery files are text and unknown routes have an explicit 404 document', async () => {
-  assert.match(await readFile(new URL('llms.txt', dist), 'utf8'), /^# Mushroom/)
+  assert.match(await readFile(new URL('llms.txt', dist), 'utf8'), /^# World Mushroom Foraging/)
   const notFound = load(await readFile(new URL('404.html', dist), 'utf8'))
   assert.match(notFound('meta[name="robots"]').attr('content'), /noindex/)
   const config = JSON.parse(await readFile(new URL('../vercel.json', import.meta.url), 'utf8'))

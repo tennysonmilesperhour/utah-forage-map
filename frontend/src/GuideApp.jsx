@@ -20,6 +20,7 @@ import { applyGuideMetadata } from './lib/guideSeo'
 import { trackPageView } from './lib/googleTag'
 import { foragingBySlug } from './content/foraging.generated'
 import counts from './data/catalogue-counts.json'
+import { openDatasets } from './content/open-data.generated'
 import { ForagingIndex, ForagingArticle, ForagingCards, GuideContents } from './components/ForagingGuides'
 import './mycelial.css'
 import './occurrence.css'
@@ -73,6 +74,7 @@ function GuideFooter() {
         <a href="/herbs/atlas">Wild plant atlas</a>
         <a href="/learn/safety">Safety</a>
         <a href="/about">Editorial standards</a>
+        <a href="/data">Open data</a>
         <a href="/privacy">Privacy</a>
         <a href="/disclaimer">Disclaimer</a>
         <a href="/field-guide">How the map works</a>
@@ -518,9 +520,51 @@ function AboutPage() {
           <article><h2>What we cite</h2><p>Safety and medical claims prioritize poison centers, government agencies, university resources, toxicology literature, and established mycological organizations. Observation photography is licensed and attributed.</p></article>
           <article><h2>How locations are protected</h2><p>Approximate public coordinates are shifted before publication. Exact contributor coordinates remain private unless the contributor explicitly chooses otherwise.</p></article>
           <article><h2>Analytics and cookies</h2><p>Google Analytics is optional and stays off until you allow it. When enabled, it helps us understand aggregate use of maps and guides; advertising storage and personalization remain off. Read the <a href="/privacy">privacy notice</a> or reopen Privacy choices at any time to change your selection.</p></article>
-          <article id="data-license"><h2>Data provenance and reuse</h2><p>Effective August 27, 2026, you may quote, analyze, and redistribute the privacy-safe observation metadata compiled by Mushroom Forage Map for personal, educational, and research use when you credit Mushroom Forage Map and retain available source links. This permission excludes source photographs and text, commercial resale, attempts to reconstruct obscured locations, and personally identifying data. Imported observations and other third-party material remain subject to their original creators' licenses and attribution requirements.</p></article>
+          <article id="data-license"><h2>Data provenance and reuse</h2><p>The open datasets on the <a href="/data">open data page</a> are licensed CC BY 4.0: reuse them, including commercially, with credit to World Mushroom Foraging. Observation-derived counts come from research-grade iNaturalist records; the observations belong to iNaturalist and its observers under the licences they chose, so credit iNaturalist and its observers too. Guide text may be quoted with a link but not republished in full. Source photographs keep their own licences. Do not try to reconstruct obscured locations or identify people. Other imported observations and third-party material remain subject to their original creators' licenses and attribution requirements.</p></article>
         </section>
         <ReviewQueue />
+        <a className="button button-primary" href={FUNGI_HOME}>Open the fungi library <ArrowRight size={16} aria-hidden="true" /></a>
+      </main>
+    </GuideLayout>
+  )
+}
+
+function DataPage() {
+  return (
+    <GuideLayout>
+      <main className="trust-page open-data-page">
+        <p className="eyebrow"><Globe2 size={16} aria-hidden="true" /> Open data</p>
+        <h1>Open mushroom data for people and AI assistants</h1>
+        <p className="trust-lede">Seasonality, lookalike pairs and regional field signals, free to reuse under CC BY 4.0. Credit World Mushroom Foraging (https://worldmushroomforaging.org). Every file is a count or a published guide field, never an exact location, a person or an unreviewed submission.</p>
+        <p className="global-safety-note"><strong>A map observation is not an identification. Never eat a wild mushroom based on this data.</strong> Nothing here says whether a mushroom is edible.</p>
+        <section className="trust-sections">
+          {openDatasets.map(dataset => (
+            <article key={dataset.id} id={dataset.id}>
+              <h2>{dataset.title}</h2>
+              <p>{dataset.description}</p>
+              <p><strong>{dataset.rowCount.toLocaleString('en-US')} rows</strong>, snapshot <time dateTime={dataset.snapshot}>{dataset.snapshot}</time>. Columns: <code>{dataset.columns.join(', ')}</code></p>
+              <p>{dataset.notes}</p>
+              <p><a href={`/data/${dataset.id}.csv`}>Download CSV</a> · <a href={`/data/${dataset.id}.json`}>Download JSON</a></p>
+            </article>
+          ))}
+          <article id="regional-signal">
+            <h2>Regional 90-day field signal</h2>
+            <p>For each of ten regions: how many reviewed public observations were found in the last 14 and 90 days, and which species are starting, likely or ending, counted by when each mushroom was found. Species with fewer than three recent records are left out. Live data, counts only.</p>
+            <p><a href="/api/open-data/regional-signal">Open the live JSON</a></p>
+          </article>
+          <article id="catalog">
+            <h2>Catalog and discovery files</h2>
+            <p>Machine-readable catalog: <a href="/data/index.json">/data/index.json</a>. Short guide for AI agents: <a href="/llms.txt">/llms.txt</a>. API catalog: <a href="/.well-known/api-catalog">/.well-known/api-catalog</a>. Every page has a plain markdown twin at the same address plus <code>.md</code>.</p>
+          </article>
+          <article id="mcp">
+            <h2>Ask from an AI assistant (MCP server)</h2>
+            <p>A read-only Model Context Protocol server, open without a key, lives at <code>https://worldmushroomforaging.org/mcp</code>. Tools: <code>search_species</code>, <code>get_species_guide</code> (with lookalikes and the safety warning), <code>seasonality</code>, <code>in_season_near</code> and <code>list_regions</code>. Each answer carries the page to cite. It does not identify mushrooms from photos, return exact locations, or say whether a mushroom is edible. Details: <a href="/llms/data-and-mcp.txt">tools and examples</a>.</p>
+          </article>
+          <article id="cite">
+            <h2>How to cite and what the licence covers</h2>
+            <p>Cite as: World Mushroom Foraging, https://worldmushroomforaging.org/data, retrieved on the date you used it, with the page URL of any guide you quote. The CC BY 4.0 licence covers our compilation. Observation-derived counts come from research-grade iNaturalist records; the observations belong to iNaturalist and its observers under the licences they chose, so credit iNaturalist and its observers too. Guide text may be quoted with a link but not republished in full. Photos keep their own licences.</p>
+          </article>
+        </section>
         <a className="button button-primary" href={FUNGI_HOME}>Open the fungi library <ArrowRight size={16} aria-hidden="true" /></a>
       </main>
     </GuideLayout>
@@ -592,6 +636,7 @@ export default function GuideApp({ path = FUNGI_HOME }) {
   if (normalizedPath === '/learn/safety') return <SafetyPage />
   if (normalizedPath === '/about') return <AboutPage />
   if (normalizedPath === '/privacy') return <PrivacyPage />
+  if (normalizedPath === '/data') return <DataPage />
   if (normalizedPath === '/disclaimer') return <DisclaimerPage />
 
   const regionMatch = normalizedPath.match(/^\/regions\/([^/]+)$/)

@@ -25,6 +25,7 @@ image:
   license: https://creativecommons.org/licenses/by/4.0/
 lookalikes:
   - name: Bitter Bolete
+    slug: bitter-bolete
     severity: harmless
     check: Tylopilus felleus develops pink-flushed pores and coarse dark netting; its intense bitterness ruins a meal.
   - name: Red-pored boletes

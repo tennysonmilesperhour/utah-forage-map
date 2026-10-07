@@ -25,12 +25,15 @@ image:
   license: https://creativecommons.org/licenses/by/4.0/
 lookalikes:
   - name: Sheathed Woodtuft
+    slug: sheathed-woodtuft
     severity: deadly
     check: Kuehneromyces mutabilis is dangerously similar and requires expert attention to cap, stem scales, and spore evidence.
   - name: Honey Mushroom
+    slug: honey-mushroom
     severity: deadly
     check: Honey mushrooms are usually larger with pale spores; mixed clusters can still put a deadly Galerina in the same basket.
   - name: Mica Cap
+    slug: mica-cap
     severity: deadly
     check: Coprinellus micaceus grows in dense clusters and develops black gills and spores rather than rusty brown ones.
 ---

@@ -29,6 +29,7 @@ lookalikes:
     severity: caution
     check: Lactarius deterrimus is associated with spruce and its orange latex reddens before staining green.
   - name: Woolly Milk Cap
+    slug: woolly-milk-cap
     severity: toxic
     check: Lactarius torminosus has a woolly cap margin, pale to white acrid latex, and birch association.
   - name: Jack-o'-lantern

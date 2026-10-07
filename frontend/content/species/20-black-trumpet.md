@@ -29,6 +29,7 @@ lookalikes:
     severity: caution
     check: Urnula craterium is a thicker spring cup with a dark scaly exterior and tough flesh rather than a thin wavy trumpet.
   - name: Pig's Ear
+    slug: pigs-ear
     severity: caution
     check: Gomphus species are fleshier, often violet or tan, and have a veined, ridged outer surface.
   - name: Other Craterellus species

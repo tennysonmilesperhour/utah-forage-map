@@ -7,7 +7,7 @@
     "content": "node scripts/build-companion-catalogue.mjs && node scripts/build-content.mjs",
     "predev": "npm run content",
     "dev": "vite",
-    "build": "npm run content && vite build && vite build --ssr src/ssr.jsx --outDir .ssr --emptyOutDir && node scripts/prerender.mjs && node scripts/build-ads-txt.mjs",
+    "build": "npm run content && vite build && vite build --ssr src/ssr.jsx --outDir .ssr --emptyOutDir && node scripts/prerender.mjs && node scripts/build-agent-access.mjs && node scripts/build-ads-txt.mjs",
     "prelint": "npm run content",
     "lint": "eslint .",
     "preview": "vite preview",
@@ -18,10 +18,12 @@
     "test:seo": "node --test tests/seo.test.mjs",
     "indexnow": "node scripts/submit-indexnow.mjs",
     "test:privacy": "node --test tests/private-queries.test.mjs",
-    "test:planning": "node --test tests/field-planning.test.mjs"
+    "test:planning": "node --test tests/field-planning.test.mjs",
+    "test:agent": "node --test tests/agent-access.test.mjs tests/agent-build.test.mjs"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.96.2",
+    "@vercel/functions": "^3.9.11",
     "astronomy-engine": "2.1.19",
     "axios": "^1.20.0",
     "date-fns": "^4.1.0",

@@ -29,6 +29,7 @@ lookalikes:
     severity: sickener
     check: Coprinopsis atramentaria is smooth and gray-brown, without shaggy scales, and can trigger an alcohol reaction.
   - name: Green-spored Parasol
+    slug: green-spored-parasol
     severity: toxic
     check: It develops a parasol shape, never dissolves into ink, and produces a green spore print.
   - name: Amanita button
