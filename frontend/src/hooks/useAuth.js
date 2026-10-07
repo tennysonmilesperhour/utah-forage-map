@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
-import { trackSignupConversion } from '../lib/googleTag'
+import { trackSignupConversion, trackFieldEvent } from '../lib/googleTag'
 import { clearPrivateQueries, setSessionUser } from '../lib/privateQueries'
 
 export function getApiError(error, fallback = 'Something went wrong. Please try again.') {
@@ -47,12 +47,12 @@ function useAuthMutation(path, options = {}) {
 
 export function useRegister() {
   return useAuthMutation('/api/auth/register', {
-    onSuccess: () => trackSignupConversion(),
+    onSuccess: () => { trackSignupConversion(); trackFieldEvent('account_created', 'fungi') },
   })
 }
 
 export function useLogin() {
-  return useAuthMutation('/api/auth/login')
+  return useAuthMutation('/api/auth/login', { onSuccess: () => trackFieldEvent('account_signed_in', 'fungi') })
 }
 
 export function useLogout() {
@@ -72,7 +72,7 @@ export function useVerifyEmail() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async token => (await axios.post('/api/auth/verify-email', { token })).data,
-    onSuccess: user => setSessionUser(queryClient, user),
+    onSuccess: user => { setSessionUser(queryClient, user); trackFieldEvent('email_verified', 'fungi') },
   })
 }
 

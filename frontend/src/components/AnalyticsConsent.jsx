@@ -5,7 +5,7 @@ import {
   isGoogleAnalyticsEnabled,
   setGoogleAnalyticsConsent,
 } from '../lib/googleTag'
-import { setPostHogConsent } from '../lib/posthog'
+import { isPostHogEnabled, setPostHogConsent } from '../lib/posthog'
 
 const subscribeToHydration = () => () => {}
 
@@ -14,7 +14,7 @@ export default function AnalyticsConsent({ collection = 'fungi' }) {
   const [sessionChoice, setSessionChoice] = useState(undefined)
   const [settingsOpen, setSettingsOpen] = useState(false)
 
-  if (!hydrated || !isGoogleAnalyticsEnabled) return null
+  if (!hydrated || (!isGoogleAnalyticsEnabled && !isPostHogEnabled)) return null
 
   const consent = sessionChoice ?? getGoogleAnalyticsConsent()
   const open = settingsOpen || consent === null
@@ -51,7 +51,7 @@ export default function AnalyticsConsent({ collection = 'fungi' }) {
     >
       <div className="analytics-consent-copy">
         <strong id="analytics-consent-title"><BarChart3 size={14} aria-hidden="true" /> Optional analytics</strong>
-        <p id="analytics-consent-copy">Google Analytics helps improve the site. Ad storage and personalization stay off. <a href="/privacy">Details</a></p>
+        <p id="analytics-consent-copy">Optional analytics measures use of guides, saves, and visit planning. Notes, coordinates, and account emails are not included in planning events. <a href="/privacy">Details</a></p>
       </div>
       <div className="analytics-consent-actions">
         <button className="button button-secondary" type="button" onClick={() => choose('denied')}>Not now</button>

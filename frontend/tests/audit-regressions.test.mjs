@@ -39,10 +39,11 @@ test('published specialist reviews require a named reviewer, scope and evidence'
 
 test('custom analytics stays consent-gated and excludes arbitrary private fields', async () => {
   const { Script, createContext } = await import('node:vm')
-  const source = (await readFile(new URL('../src/lib/googleTag.js', import.meta.url), 'utf8')).replaceAll('export ', '').replaceAll('import.meta.env', '({ VITE_GA_MEASUREMENT_ID: "G-TEST" })')
+  const source = (await readFile(new URL('../src/lib/googleTag.js', import.meta.url), 'utf8')).replace(/^import .*$/gm, '').replaceAll('export ', '').replaceAll('import.meta.env', '({ VITE_GA_MEASUREMENT_ID: "G-TEST" })')
   let consent = 'denied'
-  const context = createContext({ URL, window: { location: { pathname: '/herbs/atlas/nettle?secret=value#private', origin: 'https://test.example' }, localStorage: { getItem: () => consent } } })
-  new Script(source).runInContext(context)
+  const { FIELD_EVENTS } = await import('../src/lib/analyticsPolicy.js')
+  const context = createContext({ URL, FIELD_EVENTS, CONSENT_KEY: 'test', getAnalyticsConsent: () => consent, captureProductEvent: () => {}, window: { location: { pathname: '/herbs/atlas/nettle?secret=value#private', origin: 'https://test.example' }, localStorage: { getItem: () => consent } } })
+  new Script(source + '\nloadGoogleTag = () => true').runInContext(context)
   new Script('trackFieldEvent("guide_to_map", "herbs")').runInContext(context)
   assert.equal(context.window.dataLayer, undefined)
   consent = 'granted'

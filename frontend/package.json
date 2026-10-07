@@ -17,7 +17,8 @@
     "test:navigation": "node --test tests/navigation.test.mjs",
     "test:seo": "node --test tests/seo.test.mjs",
     "indexnow": "node scripts/submit-indexnow.mjs",
-    "test:privacy": "node --test tests/private-queries.test.mjs"
+    "test:privacy": "node --test tests/private-queries.test.mjs",
+    "test:planning": "node --test tests/field-planning.test.mjs"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.96.2",

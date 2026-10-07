@@ -120,7 +120,7 @@ export default function Sidebar({
 
           <label className="lens-switch" htmlFor={`${idPrefix}-fruiting-now`}>
             <span className="lens-icon"><Clock3 size={18} aria-hidden="true" /></span>
-            <span className="lens-copy"><strong>Fruiting now</strong><small>Found in the past 14 days</small></span>
+            <span className="lens-copy"><strong>Recent finds</strong><small>Found in the past 14 days</small></span>
             <input
               id={`${idPrefix}-fruiting-now`}
               type="checkbox"

@@ -1,0 +1,105 @@
+/* Planning surfaces follow the existing dark fungi collection. */
+.mycelial-theme .field-hidden { display: none; }
+.mycelial-theme .field-list-toggle, .mycelial-theme .field-desk-toggle { display: inline-flex; }
+.mycelial-theme .field-list-toggle[aria-pressed="true"] { background: #e6d9bc; color: #231f17; }
+.mycelial-theme .observation-list { position: absolute; z-index: 8; inset: calc(var(--map-toolbar-bottom, 112px) + 12px) 0 0; overflow-y: auto; overscroll-behavior: contain; background: #151411; padding: 24px 28px 90px; color: #f1eae1; }
+.field-list-heading { display: flex; justify-content: space-between; gap: 24px; align-items: start; margin-bottom: 22px; }
+.field-list-heading h2 { font-size: clamp(23px, 2.5vw, 32px); font-weight: 400; line-height: 1.2; margin: 5px 0 10px; font-style: normal; }
+.field-list-heading p { max-width: 550px; color: #c7c1b6; font-size: 14px; line-height: 1.6; }
+.field-list-heading .button { flex-shrink: 0; }
+.field-eyebrow { text-transform: uppercase; letter-spacing: .16em; font-size: 10px !important; color: #d4c49f !important; }
+.field-list-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; }
+.field-list-controls label { display: flex; align-items: center; gap: 10px; color: #d7cfc4; font-size: 12px; }
+.field-list-controls .field-search { flex: 1; min-width: 180px; border: 1px solid #595347; padding-left: 12px; border-radius: 8px; background: #211f1a; }
+.field-list-controls input[type="search"] { width: 100%; background: transparent; border: 0; }
+.field-list-controls input[type="search"], .field-list-controls select { min-height: 44px; padding: 10px; color: #f1eae1; font-size: 14px; }
+.field-list-controls select { background: #211f1a; border: 1px solid #595347; border-radius: 8px; }
+.field-saved-only { min-height: 44px; cursor: pointer; }
+.field-results-note { color: #d6c9b6; font-size: 12px; margin: 16px 0 8px; }
+.mycelial-theme .field-safety-note { background: #28251d; border-left: 2px solid #c6ae72; padding: 12px; color: #ded3ba; font-size: 12px; line-height: 1.6; margin: 12px 0 20px; }
+.field-results-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px; }
+.field-result { min-width: 0; border: 1px solid #494237; border-radius: 8px; overflow: hidden; background: #211e19; display: flex; flex-direction: column; }
+.field-result-open { display: flex; flex: 1; flex-direction: column; text-align: left; width: 100%; color: inherit; cursor: pointer; }
+.field-result-open:hover { background: #2b2720; }
+.field-result-photo { width: 100%; height: 150px; position: relative; background: #333529; display: grid; place-items: center; overflow: hidden; }
+.field-result-photo img { width: 100%; height: 100%; object-fit: cover; }
+.field-result-photo span { position: absolute; left: 8px; bottom: 8px; font-size: 10px; background: #151411ed; color: #eee7dc; padding: 5px 8px; border-radius: 4px; }
+.field-result-copy { padding: 15px; width: 100%; }
+.field-result-copy h3 { margin: 7px 0; font-size: 18px; font-weight: 500; line-height: 1.3; }
+.field-result-copy p { font-size: 12px; line-height: 1.5; color: #c8bfae; overflow-wrap: anywhere; }
+.field-result-place { display: flex; align-items: start; gap: 5px; margin-top: 12px; }
+.field-result-place svg { flex-shrink: 0; margin-top: 2px; }
+.field-result-save { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 10px; border-top: 1px solid #494237; color: #e9d9b7; cursor: pointer; font-size: 12px; }
+.field-result-save:hover:not(:disabled) { background: #363022; }
+.field-result-save:disabled { color: #b5c4a1; cursor: default; }
+.field-pagination { display: flex; align-items: center; justify-content: center; gap: 18px; margin: 24px 0; font-size: 13px; }
+.field-empty { padding: 28px 16px; border: 1px dashed #615849; border-radius: 8px; text-align: center; margin: 16px 0; }
+.field-empty h3, .field-empty h4 { font-weight: 500; margin: 10px 0; }
+.field-empty p { color: #c8bfae; font-size: 14px; line-height: 1.6; margin-bottom: 16px; }
+.field-empty > a { display: block; margin-top: 16px; text-decoration: underline; }
+.field-empty > svg { margin: auto; }
+.mycelial-theme .sighting-detail { z-index: 12; }
+.field-overview > h3 { font-size: 28px; font-weight: 400; line-height: 1.3; margin: 8px 0; }
+.field-overview > p { font-size: 14px; color: #c8bfae; line-height: 1.6; }
+.field-desk-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 22px 0 30px; }
+.field-desk-stats button { background: #28231d; border: 1px solid #51483b; border-radius: 8px; padding: 16px 12px; display: grid; gap: 8px; text-align: left; cursor: pointer; }
+.field-desk-stats strong { font-size: 26px; font-weight: 400; }
+.field-desk-stats span { font-size: 12px; color: #c8bfae; }
+.field-overview .section-heading h3 { display: flex; align-items: center; gap: 8px; }
+.field-next-visit { display: flex; justify-content: space-between; align-items: center; gap: 12px; border-bottom: 1px solid #51483b; padding: 16px 0; }
+.field-next-visit h4 { font-size: 15px; margin-bottom: 5px; }
+.field-next-visit p, .field-small { font-size: 12px; color: #c8bfae; line-height: 1.6; }
+.field-next-steps { margin-top: 30px; }
+.field-next-steps h3 { font-size: 18px; margin: 12px 0; }
+.field-next-steps > button, .field-next-steps > a { display: flex; align-items: center; gap: 14px; text-align: left; width: 100%; padding: 16px 0; border-bottom: 1px solid #51483b; cursor: pointer; }
+.field-next-steps strong, .field-next-steps small { display: block; }
+.field-next-steps strong { font-size: 14px; font-weight: 500; }
+.field-next-steps small { font-size: 12px; line-height: 1.6; color: #c8bfae; margin-top: 4px; }
+.saved-plan-actions { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
+.mycelial-theme .saved-row { align-items: flex-start; }
+.mycelial-theme .saved-edit { margin-top: 16px; }
+.mycelial-theme .account-tabs { overflow-x: auto; flex-wrap: nowrap; }
+.mycelial-theme .account-tabs button { flex-shrink: 0; min-height: 44px; }
+.auth-intent { border-left: 2px solid #c6ae72; padding: 10px 12px; margin: 12px 0; font-size: 13px; line-height: 1.6; }
+.field-result-open:focus-visible, .field-result-save:focus-visible, .field-desk-stats button:focus-visible, .field-next-steps > :focus-visible { outline: 2px solid #f1dfae; outline-offset: -3px; }
+@media (max-width: 700px) {
+  .mycelial-theme .observation-list { padding: 18px 14px 110px; }
+  .field-list-heading { display: block; }
+  .field-list-heading > .button { margin-top: 12px; }
+  .field-list-heading h2 { font-size: 25px; }
+  .field-list-controls { gap: 10px; }
+  .field-list-controls .field-search { flex-basis: 100%; }
+  .field-results-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .field-result-copy { padding: 10px; }
+  .field-result-copy h3 { font-size: 15px; }
+  .field-result-photo { height: 120px; }
+  .field-result-photo span { font-size: 9px; }
+  .field-result-save { font-size: 11px; padding: 8px 4px; }
+  .field-desk-stats { gap: 8px; }
+  .field-desk-stats button { padding: 12px 8px; }
+  .mycelial-theme .saved-row { flex-wrap: wrap; }
+  .mycelial-theme .saved-row > .row-actions { width: 100%; justify-content: flex-end; }
+  .field-next-visit { flex-wrap: wrap; }
+}
+
+@media (max-width: 700px) {
+  .mycelial-theme .account-tabs button { font-size: 11px; gap: 6px; padding: 10px 12px; }
+}
+
+.field-saved-only input[type="checkbox"] { width: 20px; height: 20px; min-height: 20px; padding: 0; flex: 0 0 20px; accent-color: #dcc99d; }
+.mycelial-theme .is-list .mapboxgl-control-container { visibility: hidden; }
+@media (max-width: 700px) {
+  .mycelial-theme .is-list .map-toolbar { right: 10px; }
+  .mycelial-theme .is-list .map-toolbar .map-identify-button,
+  .mycelial-theme .is-list .map-toolbar .map-submit-button,
+  .mycelial-theme .is-list .map-toolbar .map-results,
+  .mycelial-theme .is-list .map-toolbar .verification-notice { display: none; }
+  .mycelial-theme .is-list .map-toolbar .place-search { flex-basis: 100%; }
+  .mycelial-theme .is-list .field-list-heading > .button { display: none; }
+  .mycelial-theme .is-list .field-list-heading { margin-bottom: 14px; }
+  .mycelial-theme .is-list .field-list-heading p { font-size: 12px; line-height: 1.5; }
+  .mycelial-theme .is-list .field-list-heading h2 { font-size: 23px; }
+}
+
+.field-coverage { margin: 12px 0; padding: 14px 16px; border: 1px solid var(--line, #524b3d); border-radius: 12px; background: rgba(150,170,115,.07); }
+.field-coverage p { margin: 7px 0; font-size: 13px; line-height: 1.5; }

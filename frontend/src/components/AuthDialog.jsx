@@ -4,7 +4,7 @@ import { getApiError, useForgotPassword, useLogin, useRegister, useResetPassword
 
 const EMPTY_FORM = { username: '', email: '', password: '' }
 
-export default function AuthDialog({ mode: initialMode, resetToken, onClose, onAuthenticated, context = 'fungi' }) {
+export default function AuthDialog({ mode: initialMode, resetToken, onClose, onAuthenticated, context = 'fungi', intent = null }) {
   const dialogRef = useRef(null)
   const [mode, setMode] = useState(initialMode)
   const [form, setForm] = useState(EMPTY_FORM)
@@ -111,6 +111,8 @@ export default function AuthDialog({ mode: initialMode, resetToken, onClose, onA
           </p>
         </div>
 
+        {intent === 'save' && <p className="auth-intent" role="status">Your place is selected. Create an account or sign in and we’ll save it automatically.</p>}
+        {intent === 'desk' && <p className="auth-intent">Save places, plan return visits, and keep a private notebook. Your field desk is free.</p>}
         <form onSubmit={submit} className="auth-form">
           {mode === 'register' && (
             <label>
@@ -152,7 +154,7 @@ export default function AuthDialog({ mode: initialMode, resetToken, onClose, onA
         <button className="guest-link" type="button" onClick={onClose}>
           Continue exploring without an account
         </button>
-        <p className="auth-privacy">We use your email only for account access. Private field records are never displayed publicly.</p>
+        <p className="auth-privacy">Your email supports account access and any field alerts you choose. Private field records stay private.</p><a className="guest-link" href="/privacy">Privacy & data choices</a>
       </div>
     </dialog>
   )

@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
-import { trackSubmissionConversion } from '../lib/googleTag'
+import { trackSubmissionConversion, trackFieldEvent } from '../lib/googleTag'
 
 function dateDaysAgo(days) {
   const value = new Date()
@@ -9,10 +9,11 @@ function dateDaysAgo(days) {
   return value.toISOString().slice(0, 10)
 }
 
-export function useSightings(filters = {}, viewport = null) {
+export function useSightings(filters = {}, viewport = null, enabled = true) {
   return useQuery({
     queryKey: ['sightings', filters, viewport],
-    queryFn: async () => {
+    enabled,
+    queryFn: async ({ signal }) => {
       const params = {}
       if (filters.species_id) params.species_id = filters.species_id
       if (filters.taxon_id) params.taxon_id = filters.taxon_id
@@ -28,7 +29,7 @@ export function useSightings(filters = {}, viewport = null) {
       if (viewport) Object.assign(params, viewport)
       params.limit = 4000
 
-      const { data } = await axios.get('/api/sightings', { params })
+      const { data } = await axios.get('/api/sightings', { params, signal })
       return data
     },
     staleTime: 1000 * 60 * 5,
@@ -56,6 +57,7 @@ export function useCreateSighting() {
     },
     onSuccess: () => {
       trackSubmissionConversion()
+      trackFieldEvent('find_recorded', 'fungi')
       queryClient.invalidateQueries({ queryKey: ['sightings'] })
       queryClient.invalidateQueries({ queryKey: ['species'] })
       queryClient.invalidateQueries({ queryKey: ['logbook'] })
@@ -64,9 +66,10 @@ export function useCreateSighting() {
   })
 }
 
-export function useCommunityPortal() {
+export function useCommunityPortal(enabled = true) {
   return useQuery({
     queryKey: ['community-portal'],
+    enabled,
     queryFn: async () => {
       const [activity, summary, events, clubs, resources] = await Promise.all([
         axios.get('/api/community/activity'),

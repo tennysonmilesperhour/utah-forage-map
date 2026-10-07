@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import {
   Bookmark, BookOpen, CheckCircle2, ChevronLeft, ChevronRight, ExternalLink,
-  FlaskConical, ShieldCheck, UserPlus, X,
+  FlaskConical, Share2, ShieldCheck, UserPlus, X,
 } from 'lucide-react'
 import { useObservationRecord, useVerifyObservation } from '../hooks/useCompanion'
 import { getApiError } from '../hooks/useAuth'
 import { speciesPathForTaxon } from '../content/species-index.generated'
+import { observationPath } from '../lib/fieldPlanning'
 import { formatElevation } from '../lib/units'
 
 const FIELD_MARKS = [
@@ -31,9 +32,9 @@ function photoUrl(value) {
 }
 
 export default function ObservationRecord({
-  sighting, user, unitSystem, onClose, onSave, saving, onCreateAccount, onOpenAccount, onToast,
+  sighting, user, unitSystem, onClose, onSave, saving, saved, onCreateAccount, onOpenAccount, onToast,
 }) {
-  const { data } = useObservationRecord(sighting.id)
+  const { data, isPending, isError, refetch } = useObservationRecord(sighting.id)
   const record = data ?? sighting
   const photos = data?.photos?.length ? data.photos : record.photo_url ? [{ url: record.photo_url, position: 0 }] : []
   const [photoIndex, setPhotoIndex] = useState(0)
@@ -61,12 +62,16 @@ export default function ObservationRecord({
   const currentPhoto = photos[Math.min(photoIndex, photos.length - 1)]
   const summary = data?.verification
 
+  if (!record.species) return <article className="sighting-detail observation-record" aria-label="Selected observation"><button className="icon-button sighting-close" type="button" onClick={onClose} aria-label="Close observation details"><X size={18} /></button>{isError ? <div className="field-empty" role="alert"><h2>Record unavailable</h2><p>This observation could not load or is no longer public. Your saved plan remains in your field desk.</p><button className="button button-secondary" onClick={() => refetch()}>Retry record</button></div> : <p role="status">Loading observation…</p>}</article>
+
   return (
     <article className="sighting-detail observation-record" aria-label="Selected observation">
       <button className="icon-button sighting-close" type="button" onClick={onClose} aria-label="Close observation details">
         <X size={18} aria-hidden="true" />
       </button>
 
+      {isPending && !record.species && <p role="status">Loading observation…</p>}
+      {isError && <div className="form-error" role="alert"><p>This record is unavailable or could not load. It may no longer be public.</p><button className="button button-secondary" onClick={() => refetch()}>Retry record</button></div>}
       {currentPhoto && (
         <figure className="sighting-photo observation-plate">
           <img src={photoUrl(currentPhoto.url)} alt={`${record.species?.common_name ?? 'Mushroom'} field observation, view ${photoIndex + 1}`} />
@@ -115,13 +120,16 @@ export default function ObservationRecord({
       )}
 
       <div className="record-actions">
-        <button className="button button-secondary" type="button" onClick={() => onSave(record)} disabled={saving || !data}><Bookmark size={17} /> {saving ? 'Saving...' : 'Save place'}</button>
+        <button className="button button-secondary" type="button" onClick={() => onSave(record)} disabled={saving || !data}><Bookmark size={17} /> {saving ? 'Saving...' : saved ? 'Saved · Plan revisit' : 'Save place'}</button>
+        {data && <button className="button button-secondary" onClick={async () => { try { await navigator.clipboard.writeText(new URL(observationPath(record.id), window.location.origin).href); onToast?.('Public observation link copied.') } catch { setError('The link could not be copied. Please try again.') } }}><Share2 size={17} /> Copy public link</button>}
         {guidePath && <a className="button button-secondary" href={guidePath}><BookOpen size={17} /> Identification guide</a>}
         {!user && <button className="button button-secondary" type="button" onClick={() => onCreateAccount('verify')}><UserPlus size={17} /> Review field marks</button>}
         {user && !user.email_verified && <button className="button button-secondary" type="button" onClick={onOpenAccount}><ShieldCheck size={17} /> Verify email to review</button>}
         {user?.email_verified && <button className="button button-secondary" type="button" onClick={() => setReviewing(!reviewing)}><CheckCircle2 size={17} /> {reviewing ? 'Close review' : 'Review field marks'}</button>}
       </div>
 
+      <p className="field-safety-note">An observation does not confirm edibility or permission to collect. Approximate points are for area research, not navigation to a specimen.</p>
+      {error && !reviewing && <p className="form-error" role="alert">{error}</p>}
       {reviewing && user?.email_verified && (
         <form className="verification-form" onSubmit={submitReview}>
           <h3>Compare the visible evidence</h3>
