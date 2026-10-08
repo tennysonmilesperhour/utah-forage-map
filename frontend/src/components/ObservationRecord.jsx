@@ -3,6 +3,7 @@ import {
   Bookmark, BookOpen, CheckCircle2, ChevronLeft, ChevronRight, ExternalLink,
   FlaskConical, Share2, ShieldCheck, UserPlus, X,
 } from 'lucide-react'
+import FieldPhoto from './FieldPhoto'
 import { useObservationRecord, useVerifyObservation } from '../hooks/useCompanion'
 import { getApiError } from '../hooks/useAuth'
 import { speciesPathForTaxon } from '../content/species-index.generated'
@@ -24,11 +25,6 @@ function foundDateLabel(value) {
   return new Date(`${value}T12:00:00`).toLocaleDateString(undefined, {
     year: 'numeric', month: 'short', day: 'numeric',
   })
-}
-
-function photoUrl(value) {
-  if (!value) return ''
-  return value.replace(/\/(square|small|thumb)(\.[^./]+)$/i, '/medium$2')
 }
 
 export default function ObservationRecord({
@@ -74,7 +70,7 @@ export default function ObservationRecord({
       {isError && <div className="form-error" role="alert"><p>This record is unavailable or could not load. It may no longer be public.</p><button className="button button-secondary" onClick={() => refetch()}>Retry record</button></div>}
       {currentPhoto && (
         <figure className="sighting-photo observation-plate">
-          <img src={photoUrl(currentPhoto.url)} alt={`${record.species?.common_name ?? 'Mushroom'} field observation, view ${photoIndex + 1}`} />
+          <FieldPhoto url={currentPhoto.url} alt={`${record.species?.common_name ?? 'Mushroom'} field observation, view ${photoIndex + 1}`} variant="card" eager sizes="410px" />
           <figcaption>
             <span>Plate {photoIndex + 1} of {photos.length}{currentPhoto.attribution ? ` · ${currentPhoto.attribution}` : ''}</span>
             {photos.length > 1 && (

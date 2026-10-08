@@ -29,7 +29,7 @@ const isSupporterPath = /^\/supporters\/?$/.test(pathname)
 const isHerbMapPath = /^\/herbs\/map\/?$/.test(pathname)
 const isHerbalGuidePath = /^\/herbs\/(atlas|regions|fieldcraft)(\/|$)/.test(pathname)
 const isHerbalPath = pathname === '/herbs' || pathname.startsWith('/herbs/')
-const isGuidePath = pathname === '/' || pathname === '/learn' || pathname.startsWith('/learn/') || pathname === '/regions' || pathname.startsWith('/regions/') || pathname === '/about' || pathname === '/privacy' || pathname === '/disclaimer' || pathname === '/data'
+const isGuidePath = pathname === '/' || pathname === '/learn' || pathname.startsWith('/learn/') || pathname === '/regions' || pathname.startsWith('/regions/') || pathname === '/about' || pathname === '/privacy' || pathname === '/terms' || pathname === '/disclaimer' || pathname === '/data'
 async function mount() {
   const redirect = legacyFungiRedirect(pathname, window.location.search, window.location.hash)
   if (redirect) { window.location.replace(redirect); return }

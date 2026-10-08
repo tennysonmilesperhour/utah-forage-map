@@ -7,6 +7,45 @@ const origin = 'https://worldmushroomforaging.org'
 const reference = JSON.parse(await readFile(new URL('reference/index.json', dist), 'utf8'))
 const pages = new Map(await Promise.all(reference.pages.map(async page => [new URL(page.url).pathname, load(await readFile(new URL(`${new URL(page.url).pathname.slice(1)}${page.url.endsWith('/') ? '' : '/'}index.html`, dist), 'utf8'))])))
 
+test('library cards use thumbnail derivatives and the hero image is preloaded', () => {
+  const home = pages.get('/')
+  const cards = home('.species-card-image img')
+  assert.equal(cards.length, 108)
+  cards.each((_, element) => {
+    const image = home(element)
+    assert.equal(image.attr('loading'), 'lazy')
+    assert.doesNotMatch(`${image.attr('src')} ${image.attr('srcset')}`, /\/(large|original)\./)
+    assert.match(image.attr('src'), /\/medium\./)
+    assert.match(image.attr('srcset'), /\/small\./)
+  })
+  const hero = home('.learn-hero > img')
+  assert.equal(hero.attr('fetchpriority'), 'high')
+  assert.match(hero.attr('src'), /\/images\/fungi\/forest-floor-extended\.webp$/)
+  const preload = home('head link[rel="preload"][as="image"]')
+  assert.equal(preload.attr('href'), hero.attr('src'))
+  assert.equal(preload.attr('fetchpriority'), 'high')
+  assert.equal(home('a.maker-credit').attr('href'), 'https://tennysontaggart.com')
+  assert.equal(home('a.maker-credit').text(), 'by Tennyson Taggart')
+})
+
+test('species pages keep the large photo for the guide hero, schema, and sitemap', async () => {
+  const page = pages.get('/learn/species/honey-mushroom')
+  const hero = page('.species-hero > img')
+  assert.match(hero.attr('src'), /\/large\.jpg$/)
+  assert.match(hero.attr('srcset'), /\/medium\.jpg 500w/)
+  assert.match(hero.attr('srcset'), /\/large\.jpg 1024w/)
+  assert.equal(hero.attr('fetchpriority'), 'high')
+  assert.notEqual(hero.attr('loading'), 'lazy')
+  const graph = JSON.parse(page('script[type="application/ld+json"]').text())['@graph']
+  const article = graph.find(item => item['@type'] === 'Article')
+  assert.match(article.image.contentUrl, /\/photos\/167364677\/large\.jpg$/)
+  assert.equal(page('meta[property="og:image"]').attr('content'), article.image.contentUrl)
+  const sitemap = await readFile(new URL('sitemap-species.xml', dist), 'utf8')
+  const block = sitemap.split('<url>').find(part => part.includes('/learn/species/honey-mushroom'))
+  assert.ok(block.includes(`<image:loc>${article.image.contentUrl}</image:loc>`))
+  assert.equal(page('a.maker-credit').attr('href'), 'https://tennysontaggart.com')
+})
+
 test('the home page serves the fungi library and the map has its own canonical page', () => {
   const home = pages.get('/')
   const map = pages.get('/map')

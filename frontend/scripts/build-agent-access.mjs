@@ -224,6 +224,7 @@ ${topicLinks.join('\n')}
 - [Practical foraging guides](${SITE}/learn/foraging)
 - [Safety and poison response](${SITE}/learn/safety)
 - [Editorial standards and corrections](${SITE}/about)
+- [Terms of use](${SITE}/terms)
 - [Open data](${SITE}/data)
 `
 if (Buffer.byteLength(llms) > 10000) throw new Error(`llms.txt is ${Buffer.byteLength(llms)} bytes; keep it under 10 KB`)

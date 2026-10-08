@@ -90,6 +90,15 @@ Open [http://127.0.0.1:5173](http://127.0.0.1:5173).
 
 The home page (`/`) is the **Fungi Library**. The observation map lives at `/map`; fungi logos and collection switches return to the library. `/learn` redirects home, while `/learn/species/*` and `/learn/foraging/*` retain their URLs. Old root links with map filters or account-action tokens redirect to `/map` with their query parameters preserved. The herb landing page remains `/herbs`.
 
+## Baseline checklist
+
+[ ] private repo + main protected + CI   [x] dependabot + lockfile
+[ ] advisors clean (or exceptions noted)  [ ] backups/PITR confirmed
+[ ] PostHog + exceptions on               [ ] uptime incl. checkout URL
+[ ] privacy / terms / contact (+refund/shipping/disclaimers if selling)
+[ ] support@ email works                  [ ] domain auto-renew on
+[ ] revenue lands in business account     [ ] sales tax configured (physical goods)
+
 ## Verification
 
 ```bash

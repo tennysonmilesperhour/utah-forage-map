@@ -1,4 +1,5 @@
 import DataFreshness from './DataFreshness'
+import FieldPhoto from './FieldPhoto'
 import { useEffect, useState } from 'react'
 import {
   ArrowRight, BookOpen, CalendarDays, CheckCircle2, CircleUserRound,
@@ -27,7 +28,7 @@ function ActivityRecord({ item, onViewSighting, featured = false }) {
   return (
     <article className={`activity-row ${featured ? 'activity-row-featured' : ''}`}>
       {item.photo_url ? (
-        <img src={item.photo_url} alt={`${item.species?.common_name ?? 'Mushroom'} field observation`} loading={featured ? 'eager' : 'lazy'} />
+        <FieldPhoto url={item.photo_url} alt={`${item.species?.common_name ?? 'Mushroom'} field observation`} variant={featured ? 'card' : 'thumb'} eager={featured} sizes={featured ? '(max-width: 800px) 100vw, 360px' : '72px'} />
       ) : (
         <div className="find-icon" aria-hidden="true">{item.species?.common_name?.slice(0, 1) ?? '?'}</div>
       )}

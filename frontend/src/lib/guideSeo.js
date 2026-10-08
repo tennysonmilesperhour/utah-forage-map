@@ -42,6 +42,10 @@ const FIXED_METADATA = {
     title: 'Open Mushroom Data | Seasonality, Lookalikes and Regional Signals',
     description: 'Free CC BY 4.0 datasets: mushroom seasonality by species and hemisphere, lookalike pairs with field checks, a guide catalogue and a live regional field signal. JSON, CSV and an MCP server for AI assistants.',
   },
+  '/terms': {
+    title: 'Terms of Use | Mushroom Forage Map',
+    description: 'Terms for using this site, including no warranty, foraging and identification risk, submissions, supporter billing through Stripe, and contact.',
+  },
   '/disclaimer': {
     title: 'Identification and Foraging Disclaimer | Mushroom Forage Map',
     description: 'Understand the limits of map observations, species guide content, photos, edibility labels, and community review.',
@@ -216,6 +220,7 @@ export function guideRoutes() {
     ...regions.map(region => `/regions/${region.slug}`),
     '/about',
     '/privacy',
+    '/terms',
     '/disclaimer',
     '/data',
   ]

@@ -1,11 +1,13 @@
 import { useEffect, useMemo, useState } from 'react'
 import {
   ArrowLeft, ArrowRight, Binoculars, BookOpen, CalendarDays, CheckCircle2,
-  ExternalLink, Globe2, MapPin, Search, ShieldAlert, ShieldCheck, Sprout,
+  ExternalLink, Globe2, MapPin, Scale, Search, ShieldAlert, ShieldCheck, Sprout,
   TrendingDown, TrendingUp, Vote,
 } from 'lucide-react'
+import FieldPhoto from './components/FieldPhoto'
 import FollowButton from './components/FollowButton'
 import GuideHeader from './components/GuideHeader'
+import MakerCredit from './components/MakerCredit'
 import SeasonalChart from './components/SeasonalChart'
 import DataFreshness from './components/DataFreshness'
 import SpeciesDistribution from './components/SpeciesDistribution'
@@ -54,10 +56,6 @@ function formatDate(value) {
   })
 }
 
-function observationImage(url) {
-  return url?.replace(/\/(square|small|thumb)\./, '/medium.')
-}
-
 function edibilityLabel(value) {
   if (value === 'choice') return 'Choice edible'
   if (value === 'caution') return 'Edible with caution'
@@ -68,7 +66,7 @@ function edibilityLabel(value) {
 function GuideFooter() {
   return (
     <footer className="learn-footer">
-      <div><strong>The Living Fungi Library</strong><span>A Mushroom Forage Map collection. Observation is not identification.</span></div>
+      <div><strong>The Living Fungi Library</strong><span>A Mushroom Forage Map collection. Observation is not identification.</span><MakerCredit /></div>
       <nav aria-label="Guide information">
         <a href="/learn/foraging">Field skills</a>
         <a href="/herbs/atlas">Wild plant atlas</a>
@@ -76,6 +74,7 @@ function GuideFooter() {
         <a href="/about">Editorial standards</a>
         <a href="/data">Open data</a>
         <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
         <a href="/disclaimer">Disclaimer</a>
         <a href="/field-guide">How the map works</a>
       </nav>
@@ -100,7 +99,7 @@ function SpeciesCard({ species, summary }) {
   return (
     <article className="guide-species-card">
       <a className="species-card-image" href={`/learn/species/${species.slug}`} tabIndex="-1" aria-hidden="true">
-        <img src={species.image.url} alt="" loading="lazy" />
+        <FieldPhoto url={species.image.url} alt="" variant="card" sizes="(max-width: 800px) 100vw, 420px" />
       </a>
       <div className="species-card-copy">
         <div className="species-card-badges">
@@ -294,7 +293,7 @@ function LiveFieldSignal({ species, summary, user }) {
         <>
           {summary.latest_photo_url && (
             <figure>
-              <img src={observationImage(summary.latest_photo_url)} alt={`Recent ${species.common_name} observation`} loading="lazy" />
+              <FieldPhoto url={summary.latest_photo_url} alt={`Recent ${species.common_name} observation`} variant="card" sizes="320px" />
               <figcaption>
                 {summary.latest_photo_attribution || 'Recent public observation'}
                 {summary.latest_source_url && <> / <a href={summary.latest_source_url} target="_blank" rel="noreferrer">source <ExternalLink size={11} aria-hidden="true" /></a></>}
@@ -323,7 +322,7 @@ function SpeciesPage({ species, summary, user, updatedAt }) {
         </nav>
 
         <header className="species-hero">
-          <img src={species.image.url} alt={species.image.alt} />
+          <FieldPhoto url={species.image.url} alt={species.image.alt} variant="detail" priority sizes="100vw" />
           <div className="species-hero-overlay" />
           <div className="species-hero-copy">
             <div className="species-hero-badges"><span className={`edibility-badge ${species.edibility}`}>{edibilityLabel(species.edibility)}</span><span className="difficulty-badge">{species.difficulty}</span></div>
@@ -397,7 +396,7 @@ function RegionIndexPage() {
             return (
               <article className="region-label" key={region.slug}>
                 <a className="region-label-image" href={`/regions/${region.slug}`} tabIndex="-1" aria-hidden="true">
-                  <img src={specimen.image.url} alt="" loading={index < 4 ? 'eager' : 'lazy'} />
+                  <FieldPhoto url={specimen.image.url} alt="" variant="card" priority={index === 0} sizes="(max-width: 800px) 100vw, 640px" />
                   <span>{region.hemisphere === 'north' ? 'Northern calendar' : 'Southern calendar'}</span>
                 </a>
                 <div className="region-label-copy">
@@ -432,7 +431,7 @@ function RegionPage({ region, user }) {
         <nav className="guide-breadcrumbs" aria-label="Breadcrumb"><a href="/regions">Regions</a><span>/</span><span aria-current="page">{region.name}</span></nav>
         <header className="region-page-header">
           <figure className="region-page-figure">
-            <img src={specimen.image.url} alt={`${specimen.common_name} field specimen`} />
+            <FieldPhoto url={specimen.image.url} alt={`${specimen.common_name} field specimen`} variant="detail" priority sizes="(max-width: 800px) 100vw, 720px" />
             <figcaption>{specimen.common_name} / {specimen.latin_name}</figcaption>
           </figure>
           <div className="region-page-intro"><p className="eyebrow"><Globe2 size={16} aria-hidden="true" /> Regional field collection</p><h1>{region.name}</h1><p>{region.description}</p></div>
@@ -471,7 +470,7 @@ function RegionPage({ region, user }) {
           <div className="region-section-heading"><div><p className="eyebrow">Recent accessions</p><h2 id="recent-region-title">Latest public records</h2></div><a href={`/map?region=${region.slug}`}>View all on map <ArrowRight size={15} /></a></div>
           {data && !data.recent_observations.length && <p className="empty-state">No public records have been published for this collection yet.</p>}
           <div className="region-recent-grid">
-            {data?.recent_observations.slice(0, 6).map(item => <article key={item.id}>{item.photo_url && <img src={observationImage(item.photo_url)} alt="" loading="lazy" />}<div><span>{formatDate(item.found_on)}</span><h3>{item.species.common_name}</h3><p>{item.place_name || region.name}</p></div></article>)}
+            {data?.recent_observations.slice(0, 6).map(item => <article key={item.id}>{item.photo_url && <FieldPhoto url={item.photo_url} alt="" variant="card" sizes="(max-width: 700px) 100vw, 280px" />}<div><span>{formatDate(item.found_on)}</span><h3>{item.species.common_name}</h3><p>{item.place_name || region.name}</p></div></article>)}
           </div>
         </section>
       </main>
@@ -614,6 +613,29 @@ function DisclaimerPage() {
   )
 }
 
+function TermsPage() {
+  return (
+    <GuideLayout>
+      <main className="trust-page">
+        <p className="eyebrow"><Scale size={16} aria-hidden="true" /> Terms of use</p>
+        <h1>Terms of use</h1>
+        <p className="trust-lede">This page is a general template and is not legal advice. A wrong mushroom identification can kill. Read the <a href="/disclaimer">identification and foraging disclaimer</a> before you rely on anything on this site.</p>
+        <section className="trust-sections">
+          <article><h2>Using the site</h2><p>You may browse the maps, guides, and public observations for personal learning. Do not interfere with the site or other people, try to reconstruct obscured locations, scrape in a way that degrades the service, or use the site to break the law. A map marker is not permission to enter land or to collect anything.</p></article>
+          <article><h2>No warranty</h2><p>The site is provided as is and as available, without warranties of any kind, including accuracy, completeness, fitness for a particular purpose, or that a page will stay available. Photos, dates, edibility labels, ranges, and guides are educational references. They are not an identification, a medical opinion, or a guarantee that a mushroom or plant is safe to eat or handle. Species vary by place, and lookalikes can be deadly. Confirm any identification with a qualified local expert, and contact a poison center or emergency service after a suspected exposure. Do not eat a wild mushroom based on this website.</p></article>
+          <article><h2>Observations and other content you submit</h2><p>If you create an account or submit an observation, note, photo link, or other content, you confirm that you have the right to share it and that it does not include someone else's personal information without permission. You keep ownership of what you submit. You allow this site to store it, to show public submissions, and to moderate or remove material that breaks these terms or the site's review rules. Public coordinates follow the location choice you select; approximate points are shifted before publication, and private notebook entries stay in your account. You can edit or delete your own records. Copies already seen by other people cannot be recalled.</p></article>
+          <article><h2>Limitation of liability</h2><p>To the fullest extent the law allows, no one who operates or contributes to this site is liable for illness, injury, death, property damage, lost access, or any other loss that results from using the site, relying on its content, or from a foraging or identification decision. You use field information at your own risk. Some places do not allow limits on liability for death or personal injury; where that is the law, those limits apply only as far as they are allowed.</p></article>
+          <article><h2>Supporter subscriptions</h2><p>Optional supporter membership is billed by Stripe. The price shown on the <a href="/supporters">membership page</a> is the price you agree to before checkout. Membership renews until you cancel. You can cancel anytime from that page; benefits already paid for continue through the end of the paid period. This site keeps the Stripe customer and subscription identifiers, membership status, and paid-through date. It does not store card numbers. Stripe's own terms cover the payment.</p></article>
+          <article><h2>Changes to these terms</h2><p>These terms can change as the site changes. The updated page replaces the earlier version when it is published here. Continuing to use the site after that publication means you accept the updated terms.</p></article>
+          <article><h2>Contact</h2><p>Questions about these terms can go to <a href="mailto:morphiclabsdata@gmail.com">morphiclabsdata@gmail.com</a>.</p></article>
+        </section>
+        <p className="global-safety-note">This is a general template for a public website. It is not legal advice, and it does not create a lawyer-client relationship.</p>
+        <a className="button button-primary" href="/disclaimer">Read the foraging disclaimer <ArrowRight size={16} aria-hidden="true" /></a>
+      </main>
+    </GuideLayout>
+  )
+}
+
 function NotFoundPage() {
   return <GuideLayout><main className="guide-not-found"><h1>Guide page not found</h1><p>The species may not be in the current catalogue.</p><a className="button button-primary" href={FUNGI_HOME}>Browse the library</a></main></GuideLayout>
 }
@@ -637,6 +659,7 @@ export default function GuideApp({ path = FUNGI_HOME }) {
   if (normalizedPath === '/about') return <AboutPage />
   if (normalizedPath === '/privacy') return <PrivacyPage />
   if (normalizedPath === '/data') return <DataPage />
+  if (normalizedPath === '/terms') return <TermsPage />
   if (normalizedPath === '/disclaimer') return <DisclaimerPage />
 
   const regionMatch = normalizedPath.match(/^\/regions\/([^/]+)$/)
