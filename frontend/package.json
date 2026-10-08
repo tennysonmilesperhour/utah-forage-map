@@ -30,7 +30,7 @@
     "posthog-js": "^1.438.1",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "web-vitals": "^5.3.0"
+    "web-vitals": "^6.2.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
