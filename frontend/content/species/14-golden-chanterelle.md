@@ -30,6 +30,7 @@ lookalikes:
     severity: toxic
     check: Jack-o'-lanterns grow in dense clusters from wood and have sharp, crowded true gills.
   - name: False Chanterelle
+    slug: false-chanterelle
     severity: caution
     check: Hygrophoropsis aurantiaca has thin, crowded, repeatedly forked gills and softer orange flesh.
   - name: Rainbow Chanterelle

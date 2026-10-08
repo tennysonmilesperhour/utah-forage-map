@@ -341,3 +341,6 @@ body:has(.analytics-consent) .mycelial-theme .guest-prompt { display: none; }
 .map-failure { position:absolute; z-index:5; inset:30% 8% auto; padding:24px; background:#111; border:1px solid #b29c70; border-radius:8px; }
 .map-failure a { display:inline-block; margin:12px; }
 .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
+
+.open-data-page code { overflow-wrap: anywhere; word-break: break-word; }
+.open-data-page .trust-sections article { min-width: 0; }

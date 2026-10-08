@@ -1,6 +1,7 @@
 import { foragingGuides, foragingBySlug } from '../content/foraging.generated'
 import { speciesBySlug, speciesGuides } from '../content/species.generated'
 import { regionBySlug, regions } from '../data/regions'
+import { openDataJsonLd } from '../content/open-data.generated'
 
 import { SITE_URL, DEFAULT_IMAGE, FUNGI_LIBRARY_METADATA, siteEntities, applyMetadata, breadcrumb } from './siteIdentity'
 export const GUIDE_SITE_URL = SITE_URL
@@ -36,6 +37,10 @@ const FIXED_METADATA = {
   '/privacy': {
     title: 'Privacy and Analytics | Mushroom Forage Map',
     description: 'Learn how Mushroom Forage Map handles optional Google Analytics, account information, public observations, and private mushroom locations.',
+  },
+  '/data': {
+    title: 'Open Mushroom Data | Seasonality, Lookalikes and Regional Signals',
+    description: 'Free CC BY 4.0 datasets: mushroom seasonality by species and hemisphere, lookalike pairs with field checks, a guide catalogue and a live regional field signal. JSON, CSV and an MCP server for AI assistants.',
   },
   '/terms': {
     title: 'Terms of Use | Mushroom Forage Map',
@@ -138,6 +143,17 @@ export function guideStructuredData(pathname) {
     }
   }
 
+  if (metadata.path === '/data') {
+    return {
+      '@context': 'https://schema.org',
+      '@graph': [...siteEntities(), {
+        '@type': 'CollectionPage', '@id': `${canonical}#webpage`, name: metadata.title, description: metadata.description,
+        url: canonical, isPartOf: { '@id': website['@id'] }, isAccessibleForFree: true,
+        mainEntity: { '@id': `${GUIDE_SITE_URL}/data#catalog` },
+      }, ...openDataJsonLd['@graph'], breadcrumb([['Fungi library', '/'], ['Open data', '/data']])],
+    }
+  }
+
   if (!metadata.species) {
     return {
       '@context': 'https://schema.org',
@@ -206,5 +222,6 @@ export function guideRoutes() {
     '/privacy',
     '/terms',
     '/disclaimer',
+    '/data',
   ]
 }

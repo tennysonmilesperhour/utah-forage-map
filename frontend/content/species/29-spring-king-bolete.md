@@ -29,6 +29,7 @@ lookalikes:
     severity: harmless
     check: Boletus edulis and related fall-fruiting species are extremely similar; season and region help separate them.
   - name: Bitter Bolete
+    slug: bitter-bolete
     severity: caution
     check: Tylopilus species can show pink pores, darker netting, and a bitter taste that ruins a meal.
   - name: Blue-staining Boletes

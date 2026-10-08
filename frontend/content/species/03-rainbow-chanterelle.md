@@ -25,9 +25,11 @@ image:
   license: https://creativecommons.org/licenses/by/4.0/
 lookalikes:
   - name: False Chanterelle
+    slug: false-chanterelle
     severity: caution
     check: Hygrophoropsis aurantiaca has thin, crowded, blade-like true gills and is orange through the flesh.
   - name: Jack-o'-lantern
+    slug: jack-o-lantern
     severity: toxic
     check: Omphalotus forms dense clusters on wood and has sharp true gills; chanterelles grow separately from soil.
   - name: Woolly Chanterelle

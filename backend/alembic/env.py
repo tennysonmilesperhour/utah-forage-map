@@ -14,6 +14,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from app.database import Base, DATABASE_URL, engine  # noqa: E402
 import app.journal  # noqa: E402, F401
+import app.agent_traffic  # noqa: E402, F401
 import app.models  # noqa: E402, F401  — registers all models on Base.metadata
 
 config = context.config

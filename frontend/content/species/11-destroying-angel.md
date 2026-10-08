@@ -28,6 +28,7 @@ lookalikes:
     severity: deadly
     check: Slice vertically; an Amanita button reveals a tiny cap, gills, and stem inside rather than uniform white flesh.
   - name: Meadow Mushroom
+    slug: meadow-mushroom
     severity: deadly
     check: Agaricus gills mature from pink to chocolate brown and produce a brown spore print; there is no volva.
   - name: White Parasol

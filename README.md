@@ -52,6 +52,10 @@ backend/scripts/    Seed and end-to-end API smoke tests
 .github/workflows/  Frontend and backend CI
 ```
 
+## Agent access
+
+AI assistants and automation have their own front door: [`/llms.txt`](https://worldmushroomforaging.org/llms.txt), a markdown twin of every page (same URL plus `.md`), open CC BY 4.0 data at [`/data`](https://worldmushroomforaging.org/data), and a read-only MCP server at `/mcp`. The build writes these from the same content as the pages (`frontend/scripts/build-agent-access.mjs`). Known bots are logged by `frontend/middleware.js` into the `agent_traffic` table, and a weekly Action exports a summary to `docs/agent-review/`. Plan, decisions and review log: [docs/planning/agent-access-2026-10.md](docs/planning/agent-access-2026-10.md). Extra variables: `AGENT_LOG_SECRET` on both Vercel projects, and a `CRON_SECRET` GitHub Actions secret for the weekly export.
+
 ## Local Setup
 
 ### Backend
@@ -122,7 +126,7 @@ python -m crawler.inaturalist
 
 Only research-grade, wild, geolocated worldwide observations from the rolling 90-day window and matching catalogue species are imported. Each cycle reconciles the complete matching iNaturalist result set: new observations are inserted, changed locations and found dates are updated, and records that leave the current research-grade window are retired from the public map. `crawled_sources.source_url` is unique, making repeat runs safe. Imported map points still use public approximation.
 
-The production cron calls `GET /api/cron/inaturalist` with `Authorization: Bearer $CRON_SECRET` once daily. Persisted sync state starts a new cycle only when 14 days have elapsed, processes at most 3,600 records per invocation, and resumes the following day until the worldwide result set is complete. This keeps each invocation bounded and allows retry after failure. The importer follows iNaturalist's recommended 200-record pages, one request per second, cursor pagination, and identifying user agent. Separate alert jobs evaluate mushroom watches weekly and herbal watches daily; an email is sent only when all signals a person selected are aligned.
+Two production crons call the importer with `Authorization: Bearer $CRON_SECRET`. `GET /api/cron/inaturalist` (daily, 11:00 UTC) runs the incremental import of recently updated observations. `GET /api/cron/inaturalist-reconcile` (daily, 12:00 UTC) runs the full reconciliation: persisted sync state starts a new cycle only when 14 days have elapsed, processes at most 3,600 records per invocation, and resumes the following day until the worldwide result set is complete. This keeps each invocation bounded and allows retry after failure. The importer follows iNaturalist's recommended 200-record pages, one request per second, cursor pagination, and identifying user agent. Separate alert jobs evaluate mushroom watches weekly and herbal watches daily; an email is sent only when all signals a person selected are aligned.
 
 ## Production
 
@@ -180,7 +184,6 @@ VITE_GOOGLE_ADS_ID              # AW-XXXXXXXXXX, loads gtag.js for Google Ads
 VITE_GOOGLE_ADS_SIGNUP_LABEL    # conversion label fired on account signup
 VITE_GOOGLE_ADS_SUBMIT_LABEL    # conversion label fired on sighting submission
 VITE_GA_MEASUREMENT_ID          # G-XXXXXXXXXX, optional GA4 through the same tag
-VITE_GOOGLE_CONSENT_DEFAULT     # granted (default) or denied for Consent Mode v2
 VITE_ADSENSE_CLIENT             # ca-pub-XXXXXXXXXXXXXXXX, loads AdSense and ads.txt
 ```
 
@@ -197,13 +200,15 @@ To turn on AdSense:
 2. Set `VITE_ADSENSE_CLIENT` and redeploy. The build writes `dist/ads.txt` from that ID (Vercel serves it at `/ads.txt`), and the AdSense loader is included on every page.
 3. Enable Auto ads from the AdSense dashboard, or place manual units with the `AdSlot` component (`frontend/src/components/AdSlot.jsx`) using a slot ID from AdSense: `<AdSlot slot="1234567890" />`.
 
-Consent Mode v2 defaults to granted. Set `VITE_GOOGLE_CONSENT_DEFAULT=denied` to withhold ad and analytics storage until a consent banner calls `updateGoogleConsent(...)`; add a Consent Management Platform before running personalized ads for EU/UK visitors.
+Consent Mode v2 starts with ad storage, ad user data, ad personalization and analytics storage all denied. Optional analytics (Google Analytics and PostHog) load only after a visitor chooses Allow analytics in the consent control (`frontend/src/components/AnalyticsConsent.jsx`); advertising storage and personalization stay denied either way.
 
 ## API Surface
 
 Public:
 
 - `GET /health`
+- `GET /api/data-status` (observation freshness)
+- `GET /api/open-data/regional-signal` (aggregated 90-day field signal per region, counts only)
 - `GET /api/species`
 - `GET /api/sightings` (supports recency and world-coordinate bounds)
 - `GET /api/sightings/{id}/record`
@@ -231,6 +236,6 @@ Contribution and moderation:
 - `POST /api/sightings`
 - `POST /api/sightings/{id}/verifications`
 - `GET|PATCH /api/moderation/sightings`
-- `GET /api/cron/inaturalist`, `/api/cron/alerts`
+- `GET /api/cron/inaturalist`, `/api/cron/inaturalist-reconcile`, `/api/cron/alerts`, `/api/cron/herb-alerts` (bearer `CRON_SECRET`)
 
 Public sighting responses omit owner IDs, hide private observations, exclude unreviewed community submissions, and transform approximate coordinates deterministically.

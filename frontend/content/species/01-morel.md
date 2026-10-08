@@ -29,6 +29,7 @@ lookalikes:
     severity: toxic
     check: False morels have folded, brain-like lobes and a chambered or cottony interior instead of one clean hollow chamber.
   - name: Verpa bohemica
+    slug: early-false-morel
     severity: caution
     check: Its cap hangs from the very top of the stem like a thimble rather than joining along the lower edge.
 ---

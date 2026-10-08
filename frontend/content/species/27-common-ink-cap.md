@@ -29,6 +29,7 @@ lookalikes:
     severity: toxic-confusion
     check: Shaggy manes have tall white cylindrical caps covered in lifted scales rather than smooth gray bells.
   - name: Mica Cap
+    slug: mica-cap
     severity: caution
     check: Coprinellus micaceus is smaller, honey brown, and often dusted with glitter-like veil granules when young.
   - name: Other Ink Caps

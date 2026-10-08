@@ -146,6 +146,10 @@
       "destination": "/map/index.html"
     },
     {
+      "source": "/mcp",
+      "destination": "/api/mcp"
+    },
+    {
       "source": "/herb-observations",
       "destination": "/api/herb-observations"
     },
@@ -180,6 +184,10 @@
     {
       "source": "/regions/:path*",
       "destination": "/regions/:path*/index.html"
+    },
+    {
+      "source": "/data",
+      "destination": "/data/index.html"
     },
     {
       "source": "/about",
@@ -351,11 +359,85 @@
           "value": "noindex, follow"
         }
       ]
+    },
+    {
+      "source": "/.well-known/api-catalog",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/linkset+json; charset=utf-8"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        }
+      ]
+    },
+    {
+      "source": "/.well-known/mcp/server-card.json",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        }
+      ]
+    },
+    {
+      "source": "/data/:path*.json",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        }
+      ]
+    },
+    {
+      "source": "/data/:path*.csv",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Content-Type",
+          "value": "text/csv; charset=utf-8"
+        }
+      ]
+    },
+    {
+      "source": "/llms.txt",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/plain; charset=utf-8"
+        }
+      ]
+    },
+    {
+      "source": "/llms/:path*",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/plain; charset=utf-8"
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "</.well-known/api-catalog>; rel=\"api-catalog\", </llms.txt>; rel=\"describedby\"; type=\"text/plain\""
+        }
+      ]
     }
   ],
   "functions": {
     "api/herb-observations.js": {
       "maxDuration": 30
+    },
+    "api/mcp.js": {
+      "maxDuration": 15
     }
   }
 }

@@ -29,6 +29,7 @@ lookalikes:
     severity: deadly
     check: Destroying angels retain white gills and white spores and rise from a sack-like volva at the buried base.
   - name: Yellow Stainer
+    slug: yellow-stainer
     severity: toxic
     check: Agaricus xanthodermus flashes chrome yellow, especially at the stem base, and often smells phenolic or medicinal.
   - name: Green-spored Parasol

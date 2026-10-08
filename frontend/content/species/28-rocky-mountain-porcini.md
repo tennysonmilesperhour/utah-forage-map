@@ -29,6 +29,7 @@ lookalikes:
     severity: harmless
     check: The broad Boletus edulis concept overlaps in form, but geography, host, and DNA separate regional species.
   - name: Bitter Bolete
+    slug: bitter-bolete
     severity: caution
     check: Tylopilus felleus develops pinkish pores and dark netting and has intensely bitter flesh.
   - name: Red-pored Boletes

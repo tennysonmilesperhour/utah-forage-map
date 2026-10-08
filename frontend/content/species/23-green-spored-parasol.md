@@ -25,6 +25,7 @@ image:
   license: https://creativecommons.org/publicdomain/zero/1.0/
 lookalikes:
   - name: Shaggy Parasol
+    slug: shaggy-parasol
     severity: toxic-confusion
     check: Chlorophyllum rhacodes has coarser shaggy scales, reddish bruising, and a white spore print, but the group still requires expertise.
   - name: Meadow Mushroom

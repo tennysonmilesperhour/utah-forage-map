@@ -96,6 +96,7 @@ function applyMetadata($, metadata) {
   updateMeta($, 'meta[property="og:type"]', 'content', metadata.article || metadata.species || metadata.plant ? 'article' : 'website')
   updateMeta($, 'meta[name="twitter:card"]', 'content', 'summary_large_image')
   if (metadata.noindex || metadata.missing) updateMeta($, 'meta[name="robots"]', 'content', 'noindex, follow')
+  else $('head').append($('<link rel="alternate" type="text/markdown">').attr('href', `${siteUrl}${metadata.path === '/' ? '/index' : metadata.path}.md`))
 }
 
 for (const route of appRoutes) {
@@ -170,6 +171,7 @@ const pageEntries = [
   { path: '/privacy', lastmod: guideLastModified },
   { path: '/terms', lastmod: guideLastModified },
   { path: '/disclaimer', lastmod: guideLastModified },
+  { path: '/data', lastmod: guideLastModified },
 ]
 const speciesEntries = speciesMetadata.map(metadata => ({
   path: metadata.path,
@@ -243,33 +245,7 @@ for (const route of [...appRoutes, ...routes, ...herbRoutes]) {
   referencePages.push({ title: metadata.title, description: metadata.description, url: `${siteUrl}${route}`, text: `${siteUrl}/reference/${filename}` })
 }
 await writeFile(path.join(dist, 'reference', 'index.json'), JSON.stringify({ site: siteUrl, scope: `${catalogueCounts.fungi} mushroom guides, ${catalogueCounts.herbs} plant profiles, 10 mushroom habitat regions, and practical field skills. Global observation coverage varies.`, editorialPolicy: `${siteUrl}/about#editorial`, pages: referencePages }, null, 2))
-await writeFile(path.join(dist, 'llms.txt'), `# Mushroom Forage Map and The Verdant Hours
-
-> A worldwide public mushroom observation map, ${catalogueCounts.fungi} mushroom profiles, ${catalogueCounts.herbs} wild plant profiles, ten mushroom habitat regions, and practical field-skills guides. Coverage is developing and varies by place. Independent expert review is pending where indicated on each page.
-
-Observation records are not identification, proof of edibility, or access permission. Traditional herb associations are distinguished from scientific evidence. Photographs retain their source licenses; the decorative fungi hero includes disclosed AI outpainting.
-
-## Start here
-- [Fungi library](${siteUrl}/): Mushroom field marks, lookalikes, photographs, sources, and recent observations.
-- [Mushroom map](${siteUrl}/map): Filter dated public observations by species and place.
-- [Global herb observation map](${siteUrl}/herbs/map): Real wild plant records by place, plant, date and month.
-- [Wild plant atlas](${siteUrl}/herbs/atlas): Plant identification, toxic lookalikes, regional context, and source notes.
-- [Practical foraging guides](${siteUrl}/learn/foraging): Identification process, seasons, land access, and recording finds.
-- [Regional mushroom records](${siteUrl}/regions): Observation-based reports with coverage limitations.
-- [Ways of gathering](${siteUrl}/herbs/gathering-ways): Named cultural traditions, reciprocity, and field practice.
-- [Herb fieldcraft](${siteUrl}/herbs/fieldcraft): Gathering practice and source library.
-
-## Provenance and safety
-- [Editorial standards and corrections](${siteUrl}/about)
-- [Mushroom safety and poison response](${siteUrl}/learn/safety)
-- [Identification and access disclaimer](${siteUrl}/disclaimer)
-- [Terms of use](${siteUrl}/terms)
-- [Privacy](${siteUrl}/privacy)
-
-## Reference formats
-- [Canonical URL sitemap](${siteUrl}/sitemap.xml)
-- [Reference index](${siteUrl}/reference/index.json): Public page titles, canonical URLs, descriptions, and text versions generated from the same visible content.
-`)
+// llms.txt, the /llms topic files and the markdown twins are written by scripts/build-agent-access.mjs.
 await writeFile(path.join(dist, 'indexnow-urls.json'), JSON.stringify(referencePages.map(page => page.url), null, 2))
 console.log(`Published ${referencePages.length} readable reference pages; ${snapshots.length}/${publicQueries.length} public data snapshots available.`)
 

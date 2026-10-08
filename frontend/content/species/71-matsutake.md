@@ -26,7 +26,7 @@ image:
 lookalikes:
   - name: "Smith's Amanita"
     slug: smiths-amanita
-    severity: toxic
+    severity: deadly
     check: "Smith's amanita has a rooting, scaly base and a bleach-like smell; it damages the kidneys."
   - name: "Western Matsutake"
     slug: western-matsutake

@@ -25,6 +25,7 @@ image:
   license: https://creativecommons.org/licenses/by/4.0/
 lookalikes:
   - name: Amanita smithiana
+    slug: smiths-amanita
     severity: deadly
     check: This white Amanita may have veil debris and a rooting or club-like base; confusion has caused delayed kidney failure.
   - name: Catathelasma species
