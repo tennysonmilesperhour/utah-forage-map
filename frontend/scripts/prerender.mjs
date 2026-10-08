@@ -168,6 +168,7 @@ const pageEntries = [
   { path: '/regions', lastmod: guideLastModified },
   { path: '/about', lastmod: guideLastModified },
   { path: '/privacy', lastmod: guideLastModified },
+  { path: '/terms', lastmod: guideLastModified },
   { path: '/disclaimer', lastmod: guideLastModified },
 ]
 const speciesEntries = speciesMetadata.map(metadata => ({
@@ -262,6 +263,7 @@ Observation records are not identification, proof of edibility, or access permis
 - [Editorial standards and corrections](${siteUrl}/about)
 - [Mushroom safety and poison response](${siteUrl}/learn/safety)
 - [Identification and access disclaimer](${siteUrl}/disclaimer)
+- [Terms of use](${siteUrl}/terms)
 - [Privacy](${siteUrl}/privacy)
 
 ## Reference formats

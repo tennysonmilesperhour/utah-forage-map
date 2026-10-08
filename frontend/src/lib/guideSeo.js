@@ -37,6 +37,10 @@ const FIXED_METADATA = {
     title: 'Privacy and Analytics | Mushroom Forage Map',
     description: 'Learn how Mushroom Forage Map handles optional Google Analytics, account information, public observations, and private mushroom locations.',
   },
+  '/terms': {
+    title: 'Terms of Use | Mushroom Forage Map',
+    description: 'Terms for using this site, including no warranty, foraging and identification risk, submissions, supporter billing through Stripe, and contact.',
+  },
   '/disclaimer': {
     title: 'Identification and Foraging Disclaimer | Mushroom Forage Map',
     description: 'Understand the limits of map observations, species guide content, photos, edibility labels, and community review.',
@@ -200,6 +204,7 @@ export function guideRoutes() {
     ...regions.map(region => `/regions/${region.slug}`),
     '/about',
     '/privacy',
+    '/terms',
     '/disclaimer',
   ]
 }
