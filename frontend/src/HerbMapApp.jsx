@@ -1,7 +1,9 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { ArrowLeft, ArrowUpRight, BookOpen, Globe2, Leaf, LoaderCircle, MapPinned, Maximize2, Search, ShieldAlert, SlidersHorizontal, Sparkles } from 'lucide-react'
+import FieldPhoto from './components/FieldPhoto'
 import HerbalHeader from './components/HerbalHeader'
+import MakerCredit from './components/MakerCredit'
 import AuthDialog from './components/AuthDialog'
 import PlaceSearch from './components/PlaceSearch'
 import OccurrenceLegend from './components/OccurrenceLegend'
@@ -26,7 +28,7 @@ const statusLabels = { culinary: 'Culinary reference', caution: 'Special caution
 function ObservationPhoto({ record, plant }) {
   const [failed, setFailed] = useState(false)
   if (!record.photo || failed) return <div className="herb-map-photo-empty"><Leaf size={32} strokeWidth={1} /><span>Open the original observation for photographs</span></div>
-  return <figure className="herb-map-photo"><img src={record.photo.url.replace('/square.', '/medium.')} alt={`${plant.name} observed by ${record.observer}`} onError={() => setFailed(true)} /><figcaption><a href={record.sourceUrl} target="_blank" rel="noreferrer">{record.photo.credit}</a> · <a href={licenseHref(record.photo.license)} target="_blank" rel="noreferrer">{record.photo.license.toUpperCase()}</a></figcaption></figure>
+  return <figure className="herb-map-photo"><FieldPhoto url={record.photo.url} alt={`${plant.name} observed by ${record.observer}`} variant="card" eager sizes="(max-width: 800px) 100vw, 360px" onError={() => setFailed(true)} /><figcaption><a href={record.sourceUrl} target="_blank" rel="noreferrer">{record.photo.credit}</a> · <a href={licenseHref(record.photo.license)} target="_blank" rel="noreferrer">{record.photo.license.toUpperCase()}</a></figcaption></figure>
 }
 function WhereItGrows({ plant, hemisphere, zone, onFitZone }) {
   const summary = speciesOccurrence('herbs', plant.slug)
@@ -190,7 +192,7 @@ export default function HerbMapApp() {
           </>}
         </aside>
       </div>
-      <footer className="herb-map-footer"><p><Leaf size={15} />An observation is a place to learn, not permission to harvest. Confirm identity, access and local protections.</p><div><a href="https://www.inaturalist.org" target="_blank" rel="noreferrer">Records from iNaturalist <ArrowUpRight size={12} /></a><a href="/herbs/fieldcraft">Gathering & identification guide</a><a href="/privacy">Privacy</a></div></footer>
+      <footer className="herb-map-footer"><p><Leaf size={15} />An observation is a place to learn, not permission to harvest. Confirm identity, access and local protections.</p><div><a href="https://www.inaturalist.org" target="_blank" rel="noreferrer">Records from iNaturalist <ArrowUpRight size={12} /></a><a href="/herbs/fieldcraft">Gathering & identification guide</a><a href="/privacy">Privacy</a><MakerCredit /></div></footer>
     </main>
     {authMode && <AuthDialog context="herbs" mode={authMode} onClose={() => setAuthMode(null)} onAuthenticated={() => setAuthMode(null)} />}
     {logout.error && <div className="herb-toast" role="alert">Sign out was unsuccessful. Please try again.</div>}

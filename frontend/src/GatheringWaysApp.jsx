@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import HerbalHeader from './components/HerbalHeader'
+import MakerCredit from './components/MakerCredit'
 import HerbalPracticeLibrary from './components/HerbalPracticeLibrary'
 import AuthDialog from './components/AuthDialog'
 import { useCurrentUser, useLogout } from './hooks/useAuth'
@@ -22,7 +23,7 @@ export default function GatheringWaysApp() {
     <a className="skip-link" href="#gathering-content">Skip to gathering ways</a>
     <HerbalHeader view="practice" forest user={user} authLoading={isLoading} onNavigate={view => window.location.assign(herbHref(view))} onAuth={setAuthMode} onLogout={() => logout.mutate()} />
     <HerbalPracticeLibrary />
-    <footer className="herbal-footer"><a href="/herbs/atlas">Plant atlas</a><a href="/herbs/fieldcraft">Identification and field safety</a><a href="/about#editorial">Editorial standards</a><a href="mailto:morphiclabsdata@gmail.com">Corrections and support</a></footer>
+    <footer className="herbal-footer"><a href="/herbs/atlas">Plant atlas</a><a href="/herbs/fieldcraft">Identification and field safety</a><a href="/about#editorial">Editorial standards</a><a href="mailto:morphiclabsdata@gmail.com">Corrections and support</a><MakerCredit /></footer>
     {authMode && <AuthDialog context="herbs" mode={authMode} onClose={() => setAuthMode(null)} onAuthenticated={() => setAuthMode(null)} />}
   </div>
 }

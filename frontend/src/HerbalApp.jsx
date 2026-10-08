@@ -8,6 +8,8 @@ const PlantAstrology = lazy(() => import('./components/AstrologyLibrary').then(m
 const ForagerProfile = lazy(() => import('./components/ForagerProfile'))
 const GatheringJournal = lazy(() => import('./components/GatheringJournal'))
 import AuthDialog from './components/AuthDialog'
+import FieldPhoto from './components/FieldPhoto'
+import MakerCredit from './components/MakerCredit'
 import HerbalHeader from './components/HerbalHeader'
 import HerbMoonVisual from './components/HerbMoonVisual'
 import { isPlainClick, herbHref } from './lib/navigation'
@@ -96,7 +98,7 @@ function SeasonalLedger({ hemisphere, onOpen, onNavigate }) {
       <div className="herb-section-heading"><div><p className="herb-kicker"><CalendarDays size={15} /> {hemisphere === 'south' ? 'Southern' : 'Northern'} hemisphere · {month ? MONTHS[month - 1] : 'Local plant stages'}</p><h2>Plants to revisit this season.</h2></div><button className="herb-outline-button" type="button" onClick={() => onNavigate('plants')}>Explore the atlas <ArrowUpRight size={16} /></button></div>
       <p className="herb-calendar-context">A broad temperate calendar, shifted for the selected hemisphere. Check local plant stage and climate; this is not a tropical calendar or a harvest-safety signal. <a href="/herbs/fieldcraft#seasons">Read the seasonal guide</a>.</p>
       <div className="seasonal-list">
-        {inSeason.map(herb => <button type="button" key={herb.slug} onClick={() => onOpen(herb)}><img src={herb.image.url} alt="" loading="lazy" /><span><strong>{herb.name}</strong><em>{herb.latin}</em><small>{herb.parts.join(' · ')}</small></span><ArrowUpRight size={17} /></button>)}
+        {inSeason.map(herb => <button type="button" key={herb.slug} onClick={() => onOpen(herb)}><FieldPhoto url={herb.image.url} alt="" variant="thumb" sizes="92px" /><span><strong>{herb.name}</strong><em>{herb.latin}</em><small>{herb.parts.join(' · ')}</small></span><ArrowUpRight size={17} /></button>)}
       </div>
       {month && !inSeason.length && <p className="herb-empty">A quieter season for gathering. Explore the atlas to get to know what grows nearby.</p>}
       <p className="ledger-footnote">Season ranges are broad guides and shift with elevation, latitude, rainfall, and local ecology.</p>
@@ -167,7 +169,7 @@ function PlantDetail({ herb, hemisphere, onClose, onWatch, onWish }) {
   return (
     <aside className="herb-specimen" aria-label={`${herb.name} field notes`}>
       <button className="herb-specimen-close" type="button" onClick={onClose} aria-label="Close plant notes"><X size={19} /></button>
-      <figure><img src={herb.image.url} alt={`${herb.name} growing in the field`} /><figcaption><a href={herb.image.source} target="_blank" rel="noreferrer">{herb.image.credit}</a></figcaption></figure>
+      <figure><FieldPhoto url={herb.image.url} alt={`${herb.name} growing in the field`} variant="detail" eager sizes="(max-width: 800px) 100vw, 46vw" /><figcaption><a href={herb.image.source} target="_blank" rel="noreferrer">{herb.image.credit}</a></figcaption></figure>
       <div className="herb-specimen-copy"><p className="herb-kicker">{herb.family}</p><h2>{herb.name}</h2><p className="herb-latin">{herb.latin}</p>
         <div className="harvest-months" aria-label="Typical harvest months">{MONTHS.map((month, index) => <span className={harvestMonthsFor(herb, hemisphere).includes(index + 1) ? 'active' : ''} key={month}>{month}</span>)}</div>
         <dl className="specimen-notes"><div><dt>Field marks</dt><dd>{herb.fieldMarks}</dd></div><div><dt>Habitat</dt><dd>{herb.habitat}</dd></div><div><dt>Harvest</dt><dd>{herb.harvest}</dd></div><div><dt>Stewardship</dt><dd>{herb.stewardship}</dd></div></dl>
@@ -190,7 +192,7 @@ function PlantsView({ hemisphere, selected, onSelect, onClose, onWatch, onWish }
       <section className="atlas-heading"><div><p className="herb-kicker">Twelve plants to know slowly</p><h1>The gathering atlas</h1></div><p>Begin with field marks, harvest windows, and care for the patch. Each plant also offers a quiet invitation to observe and reflect.</p></section>
       <div className="herb-atlas-tools"><label><Search size={18} /><span className="sr-only">Search plants</span><input type="search" placeholder="Search plant or habitat" value={query} onChange={event => setQuery(event.target.value)} /></label><select value={part} onChange={event => setPart(event.target.value)} aria-label="Filter by gathered part">{parts.map(value => <option key={value}>{value}</option>)}</select></div>
       <section className="herb-folio" aria-label="Herbal field guides">
-        {visible.map((herb, index) => <button type="button" className={index % 5 === 0 ? 'folio-feature' : ''} onClick={() => onSelect(herb)} key={herb.slug}><img src={herb.image.url} alt={`${herb.name} in habitat`} loading="lazy" /><span className="folio-copy"><small>{herb.family}</small><strong>{herb.name}</strong><em>{herb.latin}</em><span>{herb.parts.join(' · ')}</span></span></button>)}
+        {visible.map((herb, index) => <button type="button" className={index % 5 === 0 ? 'folio-feature' : ''} onClick={() => onSelect(herb)} key={herb.slug}><FieldPhoto url={herb.image.url} alt={`${herb.name} in habitat`} variant="card" sizes="(max-width: 700px) 100vw, 340px" /><span className="folio-copy"><small>{herb.family}</small><strong>{herb.name}</strong><em>{herb.latin}</em><span>{herb.parts.join(' · ')}</span></span></button>)}
       </section>
       {!visible.length && <p className="herb-atlas-empty" role="status">No plants match these filters. Try another name, habitat, or gathered part.</p>}
       {selected && <PlantDetail herb={selected} hemisphere={hemisphere} onClose={onClose} onWatch={onWatch} onWish={onWish} />}
@@ -266,7 +268,7 @@ function PantryView({ user, presetHerb, onAuth, onToast }) {
 }
 
 function HerbalFooter() {
-  return <footer className="herbal-footer"><div><Leaf size={18} /><span><strong>The Verdant Hours</strong><small>Notice what is here. Gather with care.</small></span></div><p>Never consume a wild plant unless identity is certain. Check permissions, contamination, allergies, pregnancy cautions, and medication interactions with qualified local sources and a health professional.</p><div><a href="/herbs/map">Global herb map</a><a href="/herbs/atlas">Global herb atlas</a><a href="/herbs/fieldcraft">Field skills & sources</a><a href="/learn/foraging/wild-herb-gathering">Start herb gathering</a><a href="https://www.poison.org/articles/plant" target="_blank" rel="noreferrer">Poison Control plant safety</a><a href="https://www.fda.gov/consumers/consumer-updates/fda-101-dietary-supplements" target="_blank" rel="noreferrer">FDA herbal safety</a></div></footer>
+  return <footer className="herbal-footer"><div><Leaf size={18} /><span><strong>The Verdant Hours</strong><small>Notice what is here. Gather with care.</small><MakerCredit /></span></div><p>Never consume a wild plant unless identity is certain. Check permissions, contamination, allergies, pregnancy cautions, and medication interactions with qualified local sources and a health professional.</p><div><a href="/herbs/map">Global herb map</a><a href="/herbs/atlas">Global herb atlas</a><a href="/herbs/fieldcraft">Field skills & sources</a><a href="/learn/foraging/wild-herb-gathering">Start herb gathering</a><a href="https://www.poison.org/articles/plant" target="_blank" rel="noreferrer">Poison Control plant safety</a><a href="https://www.fda.gov/consumers/consumer-updates/fda-101-dietary-supplements" target="_blank" rel="noreferrer">FDA herbal safety</a></div></footer>
 }
 
 export default function HerbalApp() {

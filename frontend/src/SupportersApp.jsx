@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 import { ArrowUpRight, Check, Crown, Gift, Heart, Share2, Users } from 'lucide-react'
 import AppHeader from './components/AppHeader'
+import MakerCredit from './components/MakerCredit'
 import HerbalHeader from './components/HerbalHeader'
 import AuthDialog from './components/AuthDialog'
 import BotanicalSpecimen from './components/BotanicalSpecimen'
@@ -125,7 +126,7 @@ export default function SupportersApp() {
           : publicList.data?.supporters.length ? <ul className="supporter-names">{publicList.data.supporters.map(person => <li key={person.name}><span className="supporter-avatar supporter-gilded" aria-hidden="true">{person.name.slice(0, 1).toUpperCase()}</span><div><strong>{person.name}</strong><small>Supporter since {dateLabel(person.since)}</small></div></li>)}</ul> : <div className="supporter-wall-empty"><BotanicalSpecimen collection={herbs ? 'herbs' : 'fungi'} /><p>A new circle, with room to grow.<br /><span>Supporters who choose to be listed will appear here.</span></p></div>}
         {publicList.data?.total > 60 && <div className="supporter-pagination"><button disabled={!offset} onClick={() => setOffset(Math.max(0, offset - 60))}>Previous</button><span>{offset + 1}–{Math.min(offset + 60, publicList.data.total)} of {publicList.data.total}</span><button disabled={offset + 60 >= publicList.data.total} onClick={() => setOffset(offset + 60)}>Next</button></div>}
       </section>
-      <footer className="supporter-footer"><div><span>Made for curious people and a living world.</span><button className="supporter-motion-toggle" onClick={motion.toggle} aria-pressed={motion.paused}>{`${motion.paused ? 'Play' : 'Pause'} ${herbs ? 'herb' : 'mushroom'} animation`}</button></div><nav aria-label="Supporter information"><a href="/privacy">Privacy</a><a href="mailto:morphiclabsdata@gmail.com">Membership help</a><a href={herbs ? '/herbs' : '/'}>Back to the collection <ArrowUpRight size={14} /></a></nav></footer>
+      <footer className="supporter-footer"><div><span>Made for curious people and a living world.</span><MakerCredit /><button className="supporter-motion-toggle" onClick={motion.toggle} aria-pressed={motion.paused}>{`${motion.paused ? 'Play' : 'Pause'} ${herbs ? 'herb' : 'mushroom'} animation`}</button></div><nav aria-label="Supporter information"><a href="/privacy">Privacy</a><a href="mailto:morphiclabsdata@gmail.com">Membership help</a><a href={herbs ? '/herbs' : '/'}>Back to the collection <ArrowUpRight size={14} /></a></nav></footer>
     </main>
     {authMode && <AuthDialog mode={authMode} context={herbs ? 'herbs' : 'fungi'} onClose={() => setAuthMode(null)} onAuthenticated={() => setAuthMode(null)} />}
   </div>
