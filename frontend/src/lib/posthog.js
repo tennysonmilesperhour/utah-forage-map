@@ -14,6 +14,7 @@ export async function initPostHog() {
       defaults: '2026-05-30', person_profiles: 'never',
       autocapture: false, capture_pageview: false, capture_pageleave: false,
       capture_dead_clicks: false, capture_heatmaps: false,
+      capture_exceptions: true,
       disable_session_recording: true, disable_surveys: true,
       advanced_disable_feature_flags: true,
       before_send: sanitizeProductEvent,
