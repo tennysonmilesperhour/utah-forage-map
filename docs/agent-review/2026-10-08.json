@@ -1,0 +1,106 @@
+{
+  "date": "2026-10-08",
+  "site": "https://worldmushroomforaging.org",
+  "days": 7,
+  "traffic": {
+    "available": false,
+    "reason": "CRON_SECRET is not set for this run"
+  },
+  "prune": {
+    "skipped": true
+  },
+  "checks": {
+    "catalog": {
+      "status": 404,
+      "datasets": []
+    },
+    "/llms.txt": {
+      "status": 200,
+      "ms": 340,
+      "bytes": 2325
+    },
+    "/robots.txt": {
+      "status": 200,
+      "ms": 137
+    },
+    "/.well-known/api-catalog": {
+      "status": 404,
+      "ms": 29
+    },
+    "/.well-known/mcp/server-card.json": {
+      "status": 404,
+      "ms": 23
+    },
+    "/learn/species/morel.md": {
+      "status": 404,
+      "ms": 26
+    },
+    "/data": {
+      "status": 404,
+      "ms": 36
+    },
+    "mcp": {
+      "initialize": {
+        "status": 404,
+        "ok": false
+      },
+      "tools": [],
+      "calls": [
+        {
+          "tool": "search_species",
+          "status": 404,
+          "ms": 32,
+          "is_error": null,
+          "has_notice": false,
+          "has_cite_url": false
+        },
+        {
+          "tool": "get_species_guide",
+          "status": 404,
+          "ms": 30,
+          "is_error": null,
+          "has_notice": false,
+          "has_cite_url": false
+        },
+        {
+          "tool": "seasonality",
+          "status": 404,
+          "ms": 33,
+          "is_error": null,
+          "has_notice": false,
+          "has_cite_url": false
+        },
+        {
+          "tool": "in_season_near",
+          "status": 404,
+          "ms": 63,
+          "is_error": null,
+          "has_notice": false,
+          "has_cite_url": false
+        },
+        {
+          "tool": "list_regions",
+          "status": 404,
+          "ms": 28,
+          "is_error": null,
+          "has_notice": false,
+          "has_cite_url": false
+        }
+      ]
+    }
+  },
+  "problems": [
+    "data catalog unreachable",
+    "/.well-known/api-catalog returned 404",
+    "/.well-known/mcp/server-card.json returned 404",
+    "/learn/species/morel.md returned 404",
+    "/data returned 404",
+    "mcp initialize failed",
+    "mcp tool search_species failed or lacks the safety notice",
+    "mcp tool get_species_guide failed or lacks the safety notice",
+    "mcp tool seasonality failed or lacks the safety notice",
+    "mcp tool in_season_near failed or lacks the safety notice",
+    "mcp tool list_regions failed or lacks the safety notice",
+    "markdown twin has no canonical Link header"
+  ]
+}
