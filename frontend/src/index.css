@@ -3813,6 +3813,17 @@ button:disabled {
   text-decoration: underline;
 }
 
+.maker-credit {
+  font-size: 11px;
+  line-height: 1.4;
+  text-underline-offset: 2px;
+}
+
+.learn-footer .maker-credit {
+  color: #b8c6bf;
+  font-size: 11px;
+}
+
 .species-guide-main {
   width: min(1180px, calc(100% - 40px));
   min-height: calc(100dvh - 68px);

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Bookmark, Check, MapPin, Search, Sprout } from 'lucide-react'
 import DataFreshness from './DataFreshness'
+import FieldPhoto from './FieldPhoto'
 import { trackFieldEvent } from '../lib/googleTag'
 import { dateLabel, observationCoverage, observationResults } from '../lib/fieldPlanning'
 
@@ -25,7 +26,7 @@ export default function ObservationList({ scope, onBroaden, sightings, loading, 
     <p className="field-safety-note">A record is a starting point, not a harvest guarantee. Locations may be approximate; confirm identification and land access independently.</p>
     {error ? <div className="field-empty"><h3>Records could not load</h3><p>Your filters are still here.</p><button className="button button-primary" onClick={onRetry}>Try again</button></div> : !loading && !results.length ? <div className="field-empty"><Sprout size={26} /><h3>{savedOnly ? 'No saved places in these results' : 'No matching observations'}</h3><p>Try another place or a broader date window. No records does not mean no fungi.</p><button className="button button-secondary" onClick={() => { setQuery(''); setSavedOnly(false); onClear(); setPage(1) }}>Reset search and filters</button><a href="/regions">Explore regional field guides</a></div> : <div className="field-results-grid">{results.slice((currentPage - 1) * 24, currentPage * 24).map(item => <article className="field-result" key={item.id}>
       <button className="field-result-open" onClick={() => onSelect(item)} aria-label={`View ${item.species?.common_name ?? 'mushroom'} observation in ${item.place_name || 'unrecorded place'}`}>
-        <div className="field-result-photo">{item.photo_url ? <img src={item.photo_url} alt="" loading="lazy" width="320" height="180" /> : <Sprout size={36} aria-hidden="true" />}<span>{item.verified ? 'Reviewed source' : 'Community record'}</span></div>
+        <div className="field-result-photo">{item.photo_url ? <FieldPhoto url={item.photo_url} alt="" variant="card" sizes="320px" width={320} height={180} /> : <Sprout size={36} aria-hidden="true" />}<span>{item.verified ? 'Reviewed source' : 'Community record'}</span></div>
         <div className="field-result-copy"><p>{dateLabel(item.found_on)}</p><h3>{item.species?.common_name ?? 'Mushroom observation'}</h3><p>{item.species?.latin_name}</p><p className="field-result-place"><MapPin size={14} aria-hidden="true" />{item.place_name || 'Locality not recorded'}</p>{item.habitat_type && <p>{item.habitat_type}</p>}</div>
       </button>
       <button className="field-result-save" disabled={saving || savedIds.has(item.id)} onClick={() => onSave(item)}>{savedIds.has(item.id) ? <Check size={16} /> : <Bookmark size={16} />}{savedIds.has(item.id) ? 'Saved to your field desk' : 'Save for a visit'}</button>

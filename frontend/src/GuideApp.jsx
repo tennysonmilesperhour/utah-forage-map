@@ -4,8 +4,10 @@ import {
   ExternalLink, Globe2, MapPin, Search, ShieldAlert, ShieldCheck, Sprout,
   TrendingDown, TrendingUp, Vote,
 } from 'lucide-react'
+import FieldPhoto from './components/FieldPhoto'
 import FollowButton from './components/FollowButton'
 import GuideHeader from './components/GuideHeader'
+import MakerCredit from './components/MakerCredit'
 import SeasonalChart from './components/SeasonalChart'
 import DataFreshness from './components/DataFreshness'
 import SpeciesDistribution from './components/SpeciesDistribution'
@@ -53,10 +55,6 @@ function formatDate(value) {
   })
 }
 
-function observationImage(url) {
-  return url?.replace(/\/(square|small|thumb)\./, '/medium.')
-}
-
 function edibilityLabel(value) {
   if (value === 'choice') return 'Choice edible'
   if (value === 'caution') return 'Edible with caution'
@@ -67,7 +65,7 @@ function edibilityLabel(value) {
 function GuideFooter() {
   return (
     <footer className="learn-footer">
-      <div><strong>The Living Fungi Library</strong><span>A Mushroom Forage Map collection. Observation is not identification.</span></div>
+      <div><strong>The Living Fungi Library</strong><span>A Mushroom Forage Map collection. Observation is not identification.</span><MakerCredit /></div>
       <nav aria-label="Guide information">
         <a href="/learn/foraging">Field skills</a>
         <a href="/herbs/atlas">Wild plant atlas</a>
@@ -98,7 +96,7 @@ function SpeciesCard({ species, summary }) {
   return (
     <article className="guide-species-card">
       <a className="species-card-image" href={`/learn/species/${species.slug}`} tabIndex="-1" aria-hidden="true">
-        <img src={species.image.url} alt="" loading="lazy" />
+        <FieldPhoto url={species.image.url} alt="" variant="card" sizes="(max-width: 800px) 100vw, 420px" />
       </a>
       <div className="species-card-copy">
         <div className="species-card-badges">
@@ -292,7 +290,7 @@ function LiveFieldSignal({ species, summary, user }) {
         <>
           {summary.latest_photo_url && (
             <figure>
-              <img src={observationImage(summary.latest_photo_url)} alt={`Recent ${species.common_name} observation`} loading="lazy" />
+              <FieldPhoto url={summary.latest_photo_url} alt={`Recent ${species.common_name} observation`} variant="card" sizes="320px" />
               <figcaption>
                 {summary.latest_photo_attribution || 'Recent public observation'}
                 {summary.latest_source_url && <> / <a href={summary.latest_source_url} target="_blank" rel="noreferrer">source <ExternalLink size={11} aria-hidden="true" /></a></>}
@@ -321,7 +319,7 @@ function SpeciesPage({ species, summary, user, updatedAt }) {
         </nav>
 
         <header className="species-hero">
-          <img src={species.image.url} alt={species.image.alt} />
+          <FieldPhoto url={species.image.url} alt={species.image.alt} variant="detail" priority sizes="100vw" />
           <div className="species-hero-overlay" />
           <div className="species-hero-copy">
             <div className="species-hero-badges"><span className={`edibility-badge ${species.edibility}`}>{edibilityLabel(species.edibility)}</span><span className="difficulty-badge">{species.difficulty}</span></div>
@@ -395,7 +393,7 @@ function RegionIndexPage() {
             return (
               <article className="region-label" key={region.slug}>
                 <a className="region-label-image" href={`/regions/${region.slug}`} tabIndex="-1" aria-hidden="true">
-                  <img src={specimen.image.url} alt="" loading={index < 4 ? 'eager' : 'lazy'} />
+                  <FieldPhoto url={specimen.image.url} alt="" variant="card" priority={index === 0} sizes="(max-width: 800px) 100vw, 640px" />
                   <span>{region.hemisphere === 'north' ? 'Northern calendar' : 'Southern calendar'}</span>
                 </a>
                 <div className="region-label-copy">
@@ -430,7 +428,7 @@ function RegionPage({ region, user }) {
         <nav className="guide-breadcrumbs" aria-label="Breadcrumb"><a href="/regions">Regions</a><span>/</span><span aria-current="page">{region.name}</span></nav>
         <header className="region-page-header">
           <figure className="region-page-figure">
-            <img src={specimen.image.url} alt={`${specimen.common_name} field specimen`} />
+            <FieldPhoto url={specimen.image.url} alt={`${specimen.common_name} field specimen`} variant="detail" priority sizes="(max-width: 800px) 100vw, 720px" />
             <figcaption>{specimen.common_name} / {specimen.latin_name}</figcaption>
           </figure>
           <div className="region-page-intro"><p className="eyebrow"><Globe2 size={16} aria-hidden="true" /> Regional field collection</p><h1>{region.name}</h1><p>{region.description}</p></div>
@@ -469,7 +467,7 @@ function RegionPage({ region, user }) {
           <div className="region-section-heading"><div><p className="eyebrow">Recent accessions</p><h2 id="recent-region-title">Latest public records</h2></div><a href={`/map?region=${region.slug}`}>View all on map <ArrowRight size={15} /></a></div>
           {data && !data.recent_observations.length && <p className="empty-state">No public records have been published for this collection yet.</p>}
           <div className="region-recent-grid">
-            {data?.recent_observations.slice(0, 6).map(item => <article key={item.id}>{item.photo_url && <img src={observationImage(item.photo_url)} alt="" loading="lazy" />}<div><span>{formatDate(item.found_on)}</span><h3>{item.species.common_name}</h3><p>{item.place_name || region.name}</p></div></article>)}
+            {data?.recent_observations.slice(0, 6).map(item => <article key={item.id}>{item.photo_url && <FieldPhoto url={item.photo_url} alt="" variant="card" sizes="(max-width: 700px) 100vw, 280px" />}<div><span>{formatDate(item.found_on)}</span><h3>{item.species.common_name}</h3><p>{item.place_name || region.name}</p></div></article>)}
           </div>
         </section>
       </main>

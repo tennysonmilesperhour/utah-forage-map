@@ -50,6 +50,19 @@ function updateMeta($, selector, attribute, value) {
   if (element.length) element.attr(attribute, value)
 }
 
+function prioritizeLcpImage($) {
+  const image = $('img[fetchpriority="high"]').first()
+  if (!image.length) return
+  const href = image.attr('src')
+  if (!href) return
+  const link = $('<link rel="preload" as="image">').attr('href', href).attr('fetchpriority', 'high')
+  const srcSet = image.attr('srcset')
+  const sizes = image.attr('sizes')
+  if (srcSet) link.attr('imagesrcset', srcSet)
+  if (sizes) link.attr('imagesizes', sizes)
+  $('head').append(link)
+}
+
 function applyMetadata($, metadata) {
   const entry = metadata.path === '/herbs/gathering-ways' ? 'src/GatheringWaysApp.jsx' : metadata.path === '/supporters' ? 'src/SupportersApp.jsx' : metadata.path === '/herbs/map' ? 'src/HerbMapApp.jsx' : metadata.path.startsWith('/herbs/') ? 'src/HerbAtlasApp.jsx' : metadata.path === '/herbs' ? 'src/HerbalApp.jsx' : appRoutes.includes(metadata.path) ? 'src/App.jsx' : 'src/GuideApp.jsx'
   const visited = new Set()
@@ -89,6 +102,7 @@ for (const route of appRoutes) {
   const metadata = renderer.pageMetadataForPath(route)
   const $ = load(template)
   $('#root').attr('data-prerendered-path', route).html(renderer.renderApp(route))
+  prioritizeLcpImage($)
   applyMetadata($, metadata)
   const structuredData = renderer.pageStructuredDataForPath(route)
   if (structuredData) {
@@ -106,6 +120,7 @@ for (const route of routes) {
   const $ = load(template)
   const snapshot = snapshotFor(route)
   $('#root').attr('data-prerendered-path', route).html(renderer.renderGuide(route, snapshot))
+  prioritizeLcpImage($)
   if (snapshot.length) $('body').append(`<script id="public-query-snapshot" type="application/json">${JSON.stringify(snapshot).replace(/</g, '\\u003c')}</script>`)
 
   applyMetadata($, metadata)
@@ -122,6 +137,7 @@ for (const route of herbRoutes) {
   const metadata = renderer.herbGuideMetadata(route)
   const $ = load(template)
   $('#root').attr('data-prerendered-path', route).html(renderer.renderHerbGuide(route))
+  prioritizeLcpImage($)
   applyMetadata($, metadata)
   updateMeta($, 'meta[property="og:type"]', 'content', metadata.plant ? 'article' : 'website')
   $('script[type="application/ld+json"]').remove()
