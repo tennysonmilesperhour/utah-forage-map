@@ -190,6 +190,10 @@
       "destination": "/disclaimer/index.html"
     },
     {
+      "source": "/terms",
+      "destination": "/terms/index.html"
+    },
+    {
       "source": "/herbs/atlas",
       "destination": "/herbs/atlas/index.html"
     },
