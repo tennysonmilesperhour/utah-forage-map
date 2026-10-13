@@ -43,6 +43,37 @@ class IncrementalTests(unittest.TestCase):
             self.assertEqual(fetch.call_args.kwargs['updated_since'], previous - timedelta(hours=2))
         self.assertEqual(observation_freshness(self.db, self.now)['status'], 'stale')
         self.assertIn('upstream unavailable', self.db.get(SourceSync, INCREMENTAL_SOURCE).last_error)
+        with patch('crawler.inaturalist.fetch_observations', return_value=([], 1, True, None)) as retry:
+            result = run_incremental_import(self.db, client=object(), now=self.now + timedelta(minutes=10))
+        self.assertEqual(result['status'], 'ok')
+        self.assertEqual(retry.call_count, 1)
+    def test_in_flight_run_is_not_started_twice(self):
+        previous = self.now - timedelta(days=1)
+        self.db.add(SourceSync(
+            source_name=INCREMENTAL_SOURCE,
+            last_started_at=self.now,
+            last_succeeded_at=previous,
+            last_result=json.dumps({'covered_through': previous.isoformat(), 'status': 'ok'}),
+        ))
+        self.db.commit()
+        with patch('crawler.inaturalist.fetch_observations') as fetch:
+            skipped = run_incremental_import(self.db, client=object(), now=self.now + timedelta(minutes=1))
+        self.assertEqual(skipped, {'status': 'skipped', 'reason': 'already_running'})
+        fetch.assert_not_called()
+    def test_freshness_accepts_aware_coverage_and_mixed_batch_times(self):
+        self.db.add(SourceSync(source_name=INCREMENTAL_SOURCE, last_result=json.dumps({
+            'covered_through': self.now.isoformat() + '+00:00',
+            'last_batch_at': '2026-10-11T12:00:39',
+            'status': 'ok',
+        })))
+        self.db.add(SourceSync(source_name='iNaturalist', last_result=json.dumps({
+            'last_batch_at': 12, 'status': 'in_progress',
+        })))
+        self.db.commit()
+        status = observation_freshness(self.db, self.now)
+        self.assertEqual(status['status'], 'current')
+        self.assertEqual(status['covered_through'], self.now)
+        self.assertEqual(status['last_batch_at'], '2026-10-11T12:00:39')
     def test_freshness_expires_and_tolerates_corrupt_state(self):
         self.assertEqual(observation_freshness(self.db, self.now)['status'], 'stale')
         row=SourceSync(source_name=INCREMENTAL_SOURCE, last_result=json.dumps({'covered_through':self.now.isoformat()}))

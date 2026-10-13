@@ -17,6 +17,9 @@ SYNC_INTERVAL = timedelta(days=14)
 ROLLING_WINDOW = timedelta(days=90)
 PAGE_SIZE = 200
 MAX_PAGES_PER_RUN = 18
+# Long enough that a live invocation is not started twice, short enough that a
+# killed run can be retried the same day. A recorded error is always retryable.
+IN_FLIGHT_WINDOW = timedelta(minutes=5)
 REQUEST_HEADERS = {
     "Accept": "application/json",
     "User-Agent": "MushroomForageMap/2.0 (https://worldmushroomforaging.org)",
@@ -264,6 +267,32 @@ def retire_missing_observations(db, cycle_started_at, fetched_total):
     return retired
 
 
+def _naive(value):
+    if isinstance(value, datetime) and value.tzinfo is not None:
+        return value.replace(tzinfo=None)
+    return value
+
+
+def run_still_in_flight(sync, now):
+    """True only while an attempt may still be executing.
+
+    A finished run, or one that stored last_error, must not block the retry
+    Vercel issues after a cron failure. Comparing a timezone-aware clock to a
+    naive one used to raise and fail the cron before any work.
+    """
+    if sync is None or sync.last_error or not sync.last_started_at:
+        return False
+    try:
+        started = _naive(sync.last_started_at)
+        succeeded = _naive(sync.last_succeeded_at)
+        current = _naive(now)
+        if succeeded and started <= succeeded:
+            return False
+        return current - started < IN_FLIGHT_WINDOW
+    except TypeError:
+        return False
+
+
 def parse_cycle(sync):
     if not sync.last_result:
         return None
@@ -300,12 +329,7 @@ def run_scheduled_import(db, force=False, client=None, sleeper=time.sleep, now=N
             "last_succeeded_at": sync.last_succeeded_at.isoformat(),
             "next_run_at": next_run_at.isoformat(),
         }
-    if (
-        not force
-        and sync.last_started_at
-        and (not sync.last_succeeded_at or sync.last_started_at > sync.last_succeeded_at)
-        and now - sync.last_started_at < timedelta(hours=1)
-    ):
+    if not force and run_still_in_flight(sync, now):
         return {"status": "skipped", "reason": "already_running"}
 
     if cycle is None:
@@ -410,8 +434,8 @@ def run_incremental_import(db, client=None, sleeper=time.sleep, now=None):
         sync = SourceSync(source_name=INCREMENTAL_SOURCE)
         db.add(sync)
         db.flush()
-    if sync.last_started_at and now - sync.last_started_at < timedelta(hours=1):
-        return {"status": "skipped", "reason": "already_running_or_recent"}
+    if run_still_in_flight(sync, now):
+        return {"status": "skipped", "reason": "already_running"}
     cycle = parse_cycle(sync)
     if cycle is None:
         try:
