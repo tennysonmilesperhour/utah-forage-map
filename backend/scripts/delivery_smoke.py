@@ -62,7 +62,8 @@ def main():
             assert first.post('/api/auth/password/forgot', json={'email':account['email']}).status_code == 202
             reset = link_token('reset')
             assert first.post('/api/auth/password/reset', json={'token':reset, 'password':'replacement-test-password'}).status_code == 204
-            assert second.get('/api/auth/me').status_code == 401
+            revoked = second.get('/api/auth/me')
+            assert revoked.status_code == 204 and revoked.content == b''
             assert second.post('/api/auth/login', json={'email':account['email'], 'password':account['password']}).status_code == 401
             assert second.post('/api/auth/login', json={'email':account['email'], 'password':'replacement-test-password'}).status_code == 200
             assert second.get('/api/account/saved').json()[0]['revisit_on'] == later

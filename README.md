@@ -222,7 +222,7 @@ Public:
 Accounts:
 
 - `POST /api/auth/register`, `/login`, `/logout`
-- `GET /api/auth/me`
+- `GET /api/auth/me` (204 with an empty body when there is no active session)
 - `POST /api/auth/verify-email`, `/verification/resend`
 - `POST /api/auth/password/forgot`, `/password/reset`
 - `GET /api/account/logbook`, `/saved`, `/alerts`, `/sessions`

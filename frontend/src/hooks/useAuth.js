@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 import { trackSignupConversion, trackFieldEvent } from '../lib/googleTag'
-import { clearPrivateQueries, setSessionUser } from '../lib/privateQueries'
+import { clearPrivateQueries, setSessionUser, userFromAuthMe } from '../lib/privateQueries'
 
 export function getApiError(error, fallback = 'Something went wrong. Please try again.') {
   return error?.response?.data?.detail ?? fallback
@@ -13,7 +13,8 @@ export function useCurrentUser() {
     queryKey: ['current-user'],
     queryFn: async ({ signal }) => {
       try {
-        const { data } = await axios.get('/api/auth/me', { signal })
+        const response = await axios.get('/api/auth/me', { signal })
+        const data = userFromAuthMe(response.status, response.data)
         if (!signal.aborted && client.getQueryData(['current-user'])?.id !== data?.id) clearPrivateQueries(client)
         return data
       } catch (error) {

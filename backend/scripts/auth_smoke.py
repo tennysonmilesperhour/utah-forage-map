@@ -46,7 +46,16 @@ def token_from_last_link(name):
 
 def main():
     with TestClient(main_module.app) as client:
-        for path in ['/api/auth/me', '/api/account/logbook', '/api/account/herb-inventory']:
+        anonymous = client.get('/api/auth/me')
+        assert anonymous.status_code == 204, anonymous.text
+        assert anonymous.content == b''
+        assert anonymous.headers['cache-control'] == 'private, no-store'
+        assert 'Cookie' in anonymous.headers['vary']
+        stale = client.get('/api/auth/me', cookies={main_module.SESSION_COOKIE: 'not-a-real-session'})
+        assert stale.status_code == 204, stale.text
+        assert stale.content == b''
+        client.cookies.clear()
+        for path in ['/api/account/logbook', '/api/account/herb-inventory']:
             response = client.get(path)
             assert response.status_code == 401
             assert response.headers['cache-control'] == 'private, no-store'
@@ -73,7 +82,9 @@ def main():
         assert registration.status_code == 201, registration.text
         assert registration.json()["role"] == "user"
         assert registration.json()["email_verified"] is False
-        assert client.get("/api/auth/me").status_code == 200
+        signed_in = client.get("/api/auth/me")
+        assert signed_in.status_code == 200, signed_in.text
+        assert signed_in.json()["email"] == "moderator@example.com"
 
         verification = client.post("/api/auth/verify-email", json={"token": token_from_last_link("verify")})
         assert verification.status_code == 200, verification.text
@@ -333,7 +344,8 @@ def main():
             "token": token_from_last_link("reset"), "password": "new-field-notes-2026",
         })
         assert reset.status_code == 204, reset.text
-        assert client.get("/api/auth/me").status_code == 401
+        revoked = client.get("/api/auth/me")
+        assert revoked.status_code == 204 and revoked.content == b''
         login = client.post("/api/auth/login", json={
             "email": "moderator@example.com", "password": "new-field-notes-2026",
         })
@@ -345,7 +357,8 @@ def main():
 
         deletion = client.request("DELETE", "/api/account", json={"password": "new-field-notes-2026"})
         assert deletion.status_code == 204, deletion.text
-        assert client.get("/api/auth/me").status_code == 401
+        deleted = client.get("/api/auth/me")
+        assert deleted.status_code == 204 and deleted.content == b''
         assert len(client.get("/api/sightings").json()) == 1
 
     runtime_dir.cleanup()

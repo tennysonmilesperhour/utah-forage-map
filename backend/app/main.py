@@ -425,6 +425,19 @@ def get_current_user(auth: AuthContext = Depends(get_current_auth)) -> User:
     return auth.user
 
 
+def optional_user(
+    session_token: Optional[str] = Cookie(None, alias=SESSION_COOKIE),
+    db: Session = Depends(get_db),
+) -> Optional[User]:
+    """The signed-in user, or None. Session probe only: protected routes keep get_current_user."""
+    if not session_token:
+        return None
+    try:
+        return get_current_auth(session_token, db).user
+    except HTTPException:
+        return None
+
+
 def optional_admin(
     session_token: Optional[str] = Cookie(None, alias=SESSION_COOKIE),
     db: Session = Depends(get_db),
@@ -551,8 +564,10 @@ def logout(
     response.delete_cookie(SESSION_COOKIE, path="/", samesite="lax")
 
 
-@app.get("/api/auth/me", response_model=UserRead)
-def current_account(user: User = Depends(get_current_user)):
+@app.get("/api/auth/me", response_model=UserRead, responses={204: {"description": "Not signed in"}})
+def current_account(user: Optional[User] = Depends(optional_user)):
+    if user is None:
+        return Response(status_code=204)
     return user
 
 

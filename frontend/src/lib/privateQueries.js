@@ -1,6 +1,11 @@
 // Keep legacy roots here as well, so an identity change clears pre-upgrade caches.
 const PRIVATE_ROOTS = new Set(['membership', 'supporter-confirmation', 'journal', 'logbook', 'saved-locations', 'account-sessions', 'moderation-queue', 'alerts', 'herb-watch-zones', 'herb-inventory', 'herb-wishlist'])
 
+export function userFromAuthMe(status, data) {
+  if (status === 204 || data == null || data === '') return null
+  return data
+}
+
 export function clearPrivateQueries(client) {
   const predicate = query => query.meta?.private === true || PRIVATE_ROOTS.has(query.queryKey[0])
   // Cancellation is synchronous; consuming the signal also aborts the transport.
