@@ -1,7 +1,14 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { QueryClient, QueryObserver } from '@tanstack/react-query'
-import { privateQueryOptions, setSessionUser } from '../src/lib/privateQueries.js'
+import { privateQueryOptions, setSessionUser, userFromAuthMe } from '../src/lib/privateQueries.js'
+
+test('a signed-out session probe is an empty account, and a signed-in probe keeps the user', () => {
+  assert.equal(userFromAuthMe(204, ''), null)
+  assert.equal(userFromAuthMe(204, null), null)
+  assert.equal(userFromAuthMe(200, null), null)
+  assert.deepEqual(userFromAuthMe(200, { id: 'A', username: 'Trail' }), { id: 'A', username: 'Trail' })
+})
 
 test('account switching never supplies the previous notebook while loading or on failure', async () => {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false, gcTime: Infinity } } })
