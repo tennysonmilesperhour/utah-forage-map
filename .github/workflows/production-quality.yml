@@ -11,7 +11,7 @@ jobs:
     if: github.event_name != 'deployment_status'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -20,7 +20,7 @@ jobs:
     if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success' && (github.event.deployment.environment == 'Production' || startsWith(github.event.deployment.environment, 'Production – '))
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ github.event.deployment.sha }}
       - uses: actions/setup-node@v4
