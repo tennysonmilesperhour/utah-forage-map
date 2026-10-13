@@ -1,5 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, DeclarativeBase
+from sqlalchemy.pool import NullPool
 from dotenv import load_dotenv
 import os
 
@@ -11,8 +12,17 @@ if DATABASE_URL.startswith("postgres://"):
 elif DATABASE_URL.startswith("postgresql://"):
     DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+psycopg://", 1)
 
-connect_args = {"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {}
-engine = create_engine(DATABASE_URL, connect_args=connect_args, pool_pre_ping=True)
+# Fluid keeps a Python process across requests. A QueuePool holds Postgres
+# sessions open after the instance is frozen, which fills Neon's connection
+# limit and then every query fails. Open one connection per request instead.
+if DATABASE_URL.startswith("sqlite"):
+    connect_args = {"check_same_thread": False}
+    pool_kwargs = {}
+else:
+    connect_args = {"connect_timeout": 10}
+    pool_kwargs = {"poolclass": NullPool}
+
+engine = create_engine(DATABASE_URL, connect_args=connect_args, pool_pre_ping=True, **pool_kwargs)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
