@@ -3,13 +3,14 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '50 15 * * 1'
-permissions:
-  contents: write
+permissions: {}
 concurrency:
   group: agent-review
   cancel-in-progress: false
 jobs:
   export:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
