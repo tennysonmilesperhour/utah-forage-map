@@ -49,5 +49,8 @@
     "marked": "^16.4.1",
     "tailwindcss": "^4.2.2",
     "vite": "^8.0.4"
+  },
+  "overrides": {
+    "zod": "4.6.6"
   }
 }
