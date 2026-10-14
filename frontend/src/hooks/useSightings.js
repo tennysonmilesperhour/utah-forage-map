@@ -27,7 +27,7 @@ export function useSightings(filters = {}, viewport = null, enabled = true) {
       if (filters.edibility_group) params.edibility_group = filters.edibility_group
       if (filters.recent_days) params.found_after = dateDaysAgo(filters.recent_days)
       if (viewport) Object.assign(params, viewport)
-      params.limit = 4000
+      params.limit = 1000
 
       const { data } = await axios.get('/api/sightings', { params, signal })
       return data

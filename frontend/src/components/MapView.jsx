@@ -242,12 +242,16 @@ export default function MapView({
         },
       })
       syncSquares()
-      onBoundsChangeRef.current?.(roundedBounds(map))
+      // Initial camera bounds are useful only after Mapbox has finished applying
+      // its initial target. The parent can then decide whether this visit should
+      // load observations (region links do, the worldwide opening view does not).
+      map.once('idle', () => onBoundsChangeRef.current?.(roundedBounds(map), { initial: true }))
     })
 
+    map.on('movestart', () => onBoundsChangeRef.current?.(null, { moving: true }))
     map.on('moveend', () => {
       syncSquares()
-      onBoundsChangeRef.current?.(roundedBounds(map))
+      onBoundsChangeRef.current?.(roundedBounds(map), { initial: false })
     })
     const interactiveLayers = () => [POINT_LAYER, SQUARES_LAYER, ZONE_FILL_LAYER].filter(id => map.getLayer(id))
     // Points are hidden behind hotspots when zoomed out, and always visible without them.
