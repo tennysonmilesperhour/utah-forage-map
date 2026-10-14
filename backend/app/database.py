@@ -1,8 +1,10 @@
 from sqlalchemy import create_engine
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import sessionmaker, DeclarativeBase
 from sqlalchemy.pool import NullPool
 from dotenv import load_dotenv
 import os
+from app.database_diagnostics import log_database_error
 
 load_dotenv()
 
@@ -34,5 +36,8 @@ def get_db():
     db = SessionLocal()
     try:
         yield db
+    except SQLAlchemyError as error:
+        log_database_error(error)
+        raise
     finally:
         db.close()
