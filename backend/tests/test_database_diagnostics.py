@@ -7,9 +7,7 @@ from app.database_diagnostics import (
     connection_attempt_summary,
     engine_target_type,
     log_database_error,
-    probe_ipv4_database_connection,
     resolve_address_families,
-    safe_probe_failure,
     safe_database_error,
 )
 
@@ -115,58 +113,6 @@ class DatabaseDiagnosticsTests(unittest.TestCase):
         self.assertIn("category=socket_address_unavailable", output)
         self.assertNotIn(url.host, output)
         self.assertNotIn("192.0.2.2", output)
-
-    def test_ipv4_probe_uses_one_address_existing_options_and_no_queries(self):
-        url = SimpleNamespace(host="ep-private-pooler.us-east-1.aws.neon.tech", port=None)
-        connection = SimpleNamespace(closed=False)
-        connection.close = lambda: setattr(connection, "closed", True)
-
-        class Dialect:
-            @staticmethod
-            def create_connect_args(_url):
-                return (), {"user": "test-user", "password": "test-secret", "sslmode": "require", "channel_binding": "require"}
-
-        engine = SimpleNamespace(url=url, dialect=Dialect())
-        resolver_calls = []
-        connect_calls = []
-
-        def resolver(host, port, family, type):
-            resolver_calls.append((host, port, family, type))
-            return [
-                (socket.AF_INET, socket.SOCK_STREAM, 6, "", ("192.0.2.10", 5432)),
-                (socket.AF_INET, socket.SOCK_STREAM, 6, "", ("192.0.2.11", 5432)),
-            ]
-
-        def connect(*args, **kwargs):
-            connect_calls.append((args, kwargs))
-            return connection
-
-        with self.assertLogs("app.database_diagnostics", level="INFO") as captured:
-            probe_ipv4_database_connection(engine, resolver, connect)
-        self.assertEqual(len(resolver_calls), 1)
-        self.assertEqual(len(connect_calls), 1)
-        self.assertEqual(connect_calls[0][1]["hostaddr"], "192.0.2.10")
-        self.assertEqual(connect_calls[0][1]["connect_timeout"], 5)
-        self.assertEqual(connect_calls[0][1]["sslmode"], "require")
-        self.assertEqual(connect_calls[0][1]["channel_binding"], "require")
-        self.assertTrue(connection.closed)
-        output = "\n".join(captured.output)
-        for secret in (url.host, "192.0.2.10", "test-secret"):
-            self.assertNotIn(secret, output)
-
-    def test_ipv4_probe_failure_logs_only_safe_categories(self):
-        error = self.OperationalError("hidden wrapper")
-        error.orig = RuntimeError(
-            "connection to server at 'private.neon.tech' failed: "
-            "password=hidden Cannot assign requested address"
-        )
-        error.orig.sqlstate = "08001"
-        details = safe_probe_failure(error)
-        self.assertEqual(details["code"], "08001")
-        self.assertEqual(details["category"], "socket_address_unavailable")
-        self.assertEqual(details["message"], "socket could not assign an outbound address")
-        for secret in ("private.neon.tech", "hidden"):
-            self.assertNotIn(secret, str(details))
 
 
 if __name__ == "__main__":
