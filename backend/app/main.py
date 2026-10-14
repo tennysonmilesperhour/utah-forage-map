@@ -12,9 +12,11 @@ import httpx
 from fastapi import BackgroundTasks, Cookie, Depends, FastAPI, Header, HTTPException, Query, Request, Response, status
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import func, or_, text
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session, joinedload
 
 from app.database import Base, engine, get_db
+from app.database_diagnostics import log_database_error, probe_ipv4_database_connection
 from app.journal import journal_router, remove_user_journal
 from app.billing import billing_router, cancel_for_deleted_account
 from app.email_service import send_account_email, send_digest_email, send_herb_watch_email
@@ -106,8 +108,15 @@ def create_dev_tables():
 
 
 @app.get("/health")
-def health(db: Session = Depends(get_db)):
-    db.execute(text("SELECT 1")).scalar_one()
+def health():
+    try:
+        with engine.connect() as connection:
+            connection.execute(text("SELECT 1")).scalar_one()
+    except SQLAlchemyError as error:
+        log_database_error(error, engine.url)
+        if os.getenv("VERCEL_ENV") == "preview":
+            probe_ipv4_database_connection(engine)
+        raise
     return {"status": "ok", "project": "mushroom-forage-map", "email_configured": bool(os.getenv("RESEND_API_KEY"))}
 
 
