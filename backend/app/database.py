@@ -37,7 +37,7 @@ def get_db():
     try:
         yield db
     except SQLAlchemyError as error:
-        log_database_error(error)
+        log_database_error(error, engine.url)
         raise
     finally:
         db.close()
