@@ -16,7 +16,7 @@ import { speciesBySlug, speciesGuides, speciesPathForTaxon } from './content/spe
 import { regionBySlug, regions } from './data/regions'
 import { useCurrentUser } from './hooks/useAuth'
 import { useRegion, useRegions } from './hooks/useCompanion'
-import { useGuideRequests, useGuideSummaries } from './hooks/useGuide'
+import { shouldFetchGuideSummaries, useGuideRequests, useGuideSummaries } from './hooks/useGuide'
 import { FUNGI_HOME } from './lib/navigation'
 import { applyGuideMetadata } from './lib/guideSeo'
 import { trackPageView } from './lib/googleTag'
@@ -642,7 +642,11 @@ function NotFoundPage() {
 
 export default function GuideApp({ path = FUNGI_HOME }) {
   const normalizedPath = path.length > 1 ? path.replace(/\/$/, '') : path
-  const { data: summaries = [], dataUpdatedAt: summariesUpdatedAt } = useGuideSummaries()
+  const speciesRouteMatch = normalizedPath.match(/^\/learn\/species\/([^/]+)$/)
+  const hasSpeciesGuide = Boolean(speciesRouteMatch && speciesBySlug[speciesRouteMatch[1]])
+  const { data: summaries = [], dataUpdatedAt: summariesUpdatedAt } = useGuideSummaries({
+    enabled: shouldFetchGuideSummaries(normalizedPath, hasSpeciesGuide),
+  })
   const { data: user = null } = useCurrentUser()
 
   useEffect(() => {

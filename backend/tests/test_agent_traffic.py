@@ -2,14 +2,15 @@ import os
 os.environ["AGENT_LOG_SECRET"] = "log-secret"
 os.environ["CRON_SECRET"] = "cron-secret"
 import unittest
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine, event, text
 from sqlalchemy.orm import sessionmaker
 
 from app.agent_traffic import AgentHit, _summary_python, log_hit, prune, summary
 from app.database import Base
+from app.models import Sighting, Species, User
 
 
 def seed(db):
@@ -78,6 +79,7 @@ class AgentTrafficApi(unittest.TestCase):
         self.engine = create_engine("sqlite://", connect_args={"check_same_thread": False}, poolclass=StaticPool)
         Base.metadata.create_all(self.engine)
         Session = sessionmaker(bind=self.engine)
+        self.Session = Session
 
         def override():
             db = Session()
@@ -109,10 +111,86 @@ class AgentTrafficApi(unittest.TestCase):
         self.assertEqual(pruned.json()["deleted"], 0)
 
     def test_regional_signal_has_no_coordinates(self):
+        self.add_public_signal_sightings()
         data = self.client.get("/api/open-data/regional-signal").json()
         self.assertEqual(len(data["regions"]), 10)
         self.assertIn("Never eat a wild mushroom", data["notice"])
         self.assertNotIn("latitude", str(data))
+        pacific = next(region for region in data["regions"] if region["slug"] == "pacific-northwest")
+        self.assertEqual(pacific["observations_90d"], 3)
+        self.assertEqual(pacific["outlook"][0]["observations_30d"], 3)
+
+    def test_public_guide_summaries_advertise_bounded_shared_caching(self):
+        response = self.client.get("/api/guide/species")
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("max-age=60", response.headers["cache-control"])
+        self.assertIn("s-maxage=900", response.headers["cache-control"])
+
+    def add_public_signal_sightings(self):
+        db = self.Session()
+        user = User(username="signal-test", email="signal-test@example.test", hashed_password="unused")
+        species = Species(
+            common_name="Test morel", latin_name="Morchella testii", inaturalist_taxon_id=999001,
+        )
+        db.add_all([user, species])
+        db.flush()
+        for day in (1, 2, 3):
+            db.add(Sighting(
+                user_id=user.id, species_id=species.id, latitude=48, longitude=-122,
+                found_on=date.today() - timedelta(days=day), location_privacy="approximate",
+                review_status="approved",
+            ))
+        db.add(Sighting(
+            user_id=user.id, species_id=species.id, latitude=48, longitude=-122,
+            found_on=date.today(), location_privacy="private", review_status="approved",
+        ))
+        db.add(Sighting(
+            user_id=user.id, species_id=species.id, latitude=48, longitude=-122,
+            found_on=date.today(), location_privacy="approximate", review_status="pending",
+        ))
+        db.commit()
+        db.close()
+
+    def test_regions_summary_uses_one_batched_query_and_public_cache(self):
+        self.add_public_signal_sightings()
+        statements = []
+        listener = lambda *_args: statements.append(True)
+        event.listen(self.engine, "before_cursor_execute", listener)
+        try:
+            response = self.client.get("/api/regions")
+        finally:
+            event.remove(self.engine, "before_cursor_execute", listener)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(statements), 1)
+        data = response.json()
+        pacific = next(region for region in data if region["slug"] == "pacific-northwest")
+        self.assertEqual(pacific["observations_90d"], 3)
+        self.assertEqual(pacific["species_count"], 1)
+        self.assertIn("s-maxage=300", response.headers["cache-control"])
+
+    def test_regional_signal_batches_public_aggregates_and_can_scope_one_region(self):
+        self.add_public_signal_sightings()
+        statements = []
+        listener = lambda *_args: statements.append(True)
+        event.listen(self.engine, "before_cursor_execute", listener)
+        try:
+            response = self.client.get("/api/open-data/regional-signal?region_slug=pacific-northwest")
+        finally:
+            event.remove(self.engine, "before_cursor_execute", listener)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(statements), 2)
+        data = response.json()
+        self.assertEqual(len(data["regions"]), 1)
+        region = data["regions"][0]
+        self.assertEqual(region["observations_90d"], 3)
+        self.assertEqual(region["observations_14d"], 3)
+        self.assertEqual(region["species_count_90d"], 1)
+        self.assertEqual(region["outlook"][0]["observations_30d"], 3)
+        self.assertNotIn("latitude", str(data))
+        self.assertIn("s-maxage=300", response.headers["cache-control"])
+        self.assertEqual(self.client.get("/api/open-data/regional-signal?region_slug=not-a-region").status_code, 404)
 
 
 @unittest.skipUnless(os.getenv("TEST_POSTGRES_URL"), "set TEST_POSTGRES_URL to test the SQL functions")

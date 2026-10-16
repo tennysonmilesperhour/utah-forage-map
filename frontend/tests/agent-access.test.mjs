@@ -55,6 +55,21 @@ test('regional seasonality prefers live data and in_season_near returns aggregat
   assert.ok(!/latitude|longitude|coordinates/.test(JSON.stringify(near.species)))
 })
 
+test('in_season_near requests only the selected region signal', async () => {
+  let requestedUrl
+  const regionalServer = createServer({
+    fetchJson: async url => {
+      requestedUrl = url
+      return regional
+    },
+  })
+  await regionalServer.handleBody({
+    jsonrpc: '2.0', id: 1, method: 'tools/call',
+    params: { name: 'in_season_near', arguments: { region: 'pacific-northwest' } },
+  })
+  assert.equal(new URL(requestedUrl).searchParams.get('region_slug'), 'pacific-northwest')
+})
+
 test('tools fall back to static data when the API is down and reject unknown input', async () => {
   const offline = createServer({ fetchJson: async () => { throw new Error('down') }, now: () => new Date('2026-04-15T00:00:00Z') })
   const reply = await offline.handleBody({ jsonrpc: '2.0', id: 1, method: 'tools/call', params: { name: 'in_season_near', arguments: { region: 'rocky mountains' } } })

@@ -4,6 +4,13 @@ import axios from 'axios'
 
 const GUIDE_VOTER_STORAGE_KEY = 'mushroom-guide-voter'
 
+export function shouldFetchGuideSummaries(path, hasSpeciesGuide = false) {
+  const normalizedPath = path.length > 1 ? path.replace(/\/$/, '') : path
+  return normalizedPath === '/' || normalizedPath === '/learn' || (
+    hasSpeciesGuide && /^\/learn\/species\/[^/]+$/.test(normalizedPath)
+  )
+}
+
 function getGuideVoterToken() {
   if (typeof window === 'undefined' || typeof window.crypto?.randomUUID !== 'function') return null
   try {
@@ -17,13 +24,14 @@ function getGuideVoterToken() {
   }
 }
 
-export function useGuideSummaries() {
+export function useGuideSummaries({ enabled = true } = {}) {
   return useQuery({
     queryKey: ['guide-species-summaries'],
     queryFn: async () => {
       const { data } = await axios.get('/api/guide/species')
       return data
     },
+    enabled,
     staleTime: 1000 * 60 * 15,
   })
 }
