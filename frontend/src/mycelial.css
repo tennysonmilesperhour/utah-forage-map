@@ -86,6 +86,8 @@
 /* Suggest an ID borrows the Filters button style, but stays visible once the sidebar replaces Filters.
    The toolbar wraps short of the map controls rather than running under them, and lets map drags through its gaps. */
 .mycelial-theme .map-toolbar .map-identify-button { display: flex; white-space: nowrap; }
+.mycelial-theme .map-toolbar .map-region-select { min-height: 44px; max-width: 220px; padding: 0 12px; color: var(--ink); font: inherit; }
+.mycelial-theme .map-toolbar .map-region-select option { color: #f1eae1; background: #181419; }
 .mycelial-theme .map-toolbar { pointer-events: none; }
 .mycelial-theme .map-toolbar > * { pointer-events: auto; }
 @media (min-width: 601px) { .mycelial-theme .map-toolbar { right: 62px; flex-wrap: wrap; } }

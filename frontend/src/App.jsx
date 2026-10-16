@@ -22,7 +22,8 @@ import { useUnitSystem } from './hooks/useUnits'
 import { useVisitorCountry } from './hooks/useVisitorCountry'
 import { viewportForTarget } from './lib/fieldPlanning'
 import { countActiveFilters, DEFAULT_FILTERS } from './lib/filters'
-import { regionBySlug } from './data/regions'
+import { regionBySlug, regions } from './data/regions'
+import { canLoadSightings } from './lib/mapSearch'
 import { hemisphereFor } from './data/occurrence'
 import { speciesIndexBySlug, speciesIndexByTaxon } from './content/species-index.generated'
 import { applyPageMetadata, pathForView, viewFromPathname } from './lib/seo'
@@ -38,8 +39,13 @@ export default function App({ path = '/map' }) {
   const initialTaxonId = Number(initialParams.get('taxon')) || undefined
   const initialRegion = regionBySlug[initialParams.get('region')]
   const initialObservationId = initialParams.get('observation')
+  const initialListOpen = initialParams.get('view') === 'list' || !import.meta.env.VITE_MAPBOX_TOKEN || (!initialParams.has('observation') && !initialParams.has('identify') && initialParams.get('view') !== 'map' && typeof window !== 'undefined' && window.matchMedia('(max-width: 640px)').matches)
   const [filters, setFilters] = useState(() => ({ ...DEFAULT_FILTERS, taxon_id: initialTaxonId }))
-  const [viewport, setViewport] = useState(null)
+  const [viewport, setViewport] = useState(() => initialRegion ? viewportForTarget({ bbox: initialRegion.bounds }) : null)
+  const [selectedRegionSlug, setSelectedRegionSlug] = useState(() => initialRegion?.slug ?? '')
+  const [mapAreaSelected, setMapAreaSelected] = useState(() => Boolean(initialRegion))
+  const [mapSettled, setMapSettled] = useState(() => Boolean(initialRegion && initialListOpen))
+  const viewportTimerRef = useRef(null)
   const [flyTarget, setFlyTarget] = useState(() => initialRegion ? { bbox: initialRegion.bounds } : null)
   const [selected, setSelected] = useState(null)
   const [draftLocation, setDraftLocation] = useState(null)
@@ -60,7 +66,7 @@ export default function App({ path = '/map' }) {
   const [observationHandled, setObservationHandled] = useState(false)
   const [toast, setToast] = useState('')
   const [userZoneFitKey, setZoneFitKey] = useState(null)
-  const [listOpen, setListOpen] = useState(() => initialParams.get('view') === 'list' || !import.meta.env.VITE_MAPBOX_TOKEN || (!initialParams.has('observation') && !initialParams.has('identify') && initialParams.get('view') !== 'map' && typeof window !== 'undefined' && window.matchMedia('(max-width: 640px)').matches))
+  const [listOpen, setListOpen] = useState(() => initialListOpen)
   const [hotspots, setHotspots] = useState(false)
   const [identifyOpen, setIdentifyOpen] = useState(() => initialParams.get('identify') === '1')
   const stageRef = useRef(null)
@@ -79,7 +85,7 @@ export default function App({ path = '/map' }) {
   const savedIds = useMemo(() => new Set((savedLocations.data ?? []).map(item => item.sighting_id)), [savedLocations.data])
   const createAlert = useCreateAlert()
   const sharedRecord = useObservationRecord(initialObservationId)
-  const { data: sightings = [], isLoading, isError: sightingsError, refetch: retrySightings } = useSightings(filters, viewport ?? viewportForTarget(flyTarget ?? countryCamera.data), !shouldLocateCountry || !countryCamera.isLoading)
+  const { data: sightings = [], isLoading, isError: sightingsError, refetch: retrySightings } = useSightings(filters, viewport, canLoadSightings({ areaSelected: mapAreaSelected, mapSettled }))
   const { data: species = [] } = useSpecies()
   const { data: portal = {}, isLoading: portalLoading } = useCommunityPortal(activeView !== 'map')
   const createSighting = useCreateSighting()
@@ -117,7 +123,12 @@ export default function App({ path = '/map' }) {
     if (!match && sharedRecord.isPending && !sharedRecord.failureCount) return
     setSelected(match ?? { id: initialObservationId })
     setObservationHandled(true)
-    if (Number.isFinite(match?.latitude) && Number.isFinite(match?.longitude)) setFlyTarget({ center: [match.longitude, match.latitude], selectedAt: Date.now() })
+    if (Number.isFinite(match?.latitude) && Number.isFinite(match?.longitude)) {
+      setMapAreaSelected(true)
+      setMapSettled(false)
+      setViewport(null)
+      setFlyTarget({ center: [match.longitude, match.latitude], selectedAt: Date.now() })
+    }
   }, [initialObservationId, observationHandled, sightings, sharedRecord.data, sharedRecord.isPending, sharedRecord.failureCount])
 
   useEffect(() => {
@@ -179,11 +190,28 @@ export default function App({ path = '/map' }) {
 
   useEffect(() => {
     function syncRoute() {
+      window.clearTimeout(viewportTimerRef.current)
       setActiveView(viewFromPathname(window.location.pathname))
+      const params = new URLSearchParams(window.location.search)
+      const slug = regionBySlug[params.get('region')]?.slug ?? ''
+      const region = regionBySlug[slug]
+      const nextListOpen = params.get('view') === 'list' || (!params.has('view') && initialListOpen)
+      setListOpen(nextListOpen)
+      setSelectedRegionSlug(slug)
+      setMapAreaSelected(Boolean(region))
+      setMapSettled(false)
+      setViewport(region && nextListOpen ? null : region ? viewportForTarget({ bbox: region.bounds }) : null)
+      setFlyTarget(region ? { bbox: region.bounds, selectedAt: Date.now() } : null)
+      if (region && nextListOpen) {
+        const bounds = viewportForTarget({ bbox: region.bounds })
+        viewportTimerRef.current = window.setTimeout(() => { setViewport(bounds); setMapSettled(true) }, 350)
+      }
     }
     window.addEventListener('popstate', syncRoute)
     return () => window.removeEventListener('popstate', syncRoute)
-  }, [])
+  }, [initialListOpen])
+
+  useEffect(() => () => window.clearTimeout(viewportTimerRef.current), [])
 
   useEffect(() => {
     const token = initialParams.get('verify')
@@ -240,9 +268,68 @@ export default function App({ path = '/map' }) {
   }
 
   function goToPlace(target) {
+    const params = new URLSearchParams(window.location.search)
+    params.delete('region')
+    const query = params.toString()
+    window.history.pushState({}, '', `${window.location.pathname}${query ? `?${query}` : ''}`)
+    setSelectedRegionSlug('')
     setSelected(null)
-    setViewport(viewportForTarget(target))
+    setMapAreaSelected(true)
+    setMapSettled(false)
+    setViewport(null)
     setFlyTarget({ ...target, selectedAt: Date.now() })
+    if (listOpen) {
+      const bounds = viewportForTarget(target)
+      viewportTimerRef.current = window.setTimeout(() => { setViewport(bounds); setMapSettled(true) }, 350)
+    }
+  }
+
+  function selectRegion(slug) {
+    const region = regionBySlug[slug]
+    window.clearTimeout(viewportTimerRef.current)
+    setSelectedRegionSlug(region?.slug ?? '')
+    setMapAreaSelected(Boolean(region))
+    setMapSettled(false)
+    setViewport(null)
+    setSelected(null)
+    setFlyTarget(region ? { bbox: region.bounds, selectedAt: Date.now() } : null)
+    if (region && listOpen) {
+      const bounds = viewportForTarget({ bbox: region.bounds })
+      viewportTimerRef.current = window.setTimeout(() => { setViewport(bounds); setMapSettled(true) }, 350)
+    }
+    const params = new URLSearchParams(window.location.search)
+    if (region) params.set('region', region.slug)
+    else params.delete('region')
+    const query = params.toString()
+    window.history.pushState({}, '', `${window.location.pathname}${query ? `?${query}` : ''}`)
+  }
+
+  function updateMapBounds(bounds, { initial = false, moving = false } = {}) {
+    if (moving) {
+      window.clearTimeout(viewportTimerRef.current)
+      setMapSettled(false)
+      return
+    }
+    if (!initial) {
+      setMapAreaSelected(true)
+      setMapSettled(false)
+    } else if (mapAreaSelected) {
+      setMapSettled(false)
+    }
+    window.clearTimeout(viewportTimerRef.current)
+    viewportTimerRef.current = window.setTimeout(() => {
+      setViewport(bounds)
+      setMapSettled(true)
+    }, 300)
+  }
+
+  function toggleListView() {
+    const next = !listOpen
+    setListOpen(next)
+    setSelected(null)
+    const params = new URLSearchParams(window.location.search)
+    params.set('view', next ? 'list' : 'map')
+    window.history.pushState({}, '', `${window.location.pathname}?${params.toString()}`)
   }
 
   function viewSightingOnMap(sighting) {
@@ -338,7 +425,7 @@ export default function App({ path = '/map' }) {
               countryCamera={countryCamera.data}
               sightings={sightings}
               onSightingClick={setSelected}
-              onBoundsChange={setViewport}
+              onBoundsChange={updateMapBounds}
               flyTarget={flyTarget ?? (viewport ? { bbox: [viewport.west, viewport.south, viewport.east, viewport.north] } : null)}
               draftLocation={draftLocation}
               onMapClick={submissionOpen ? setDraftLocation : undefined}
@@ -353,6 +440,11 @@ export default function App({ path = '/map' }) {
           {mapError && !listOpen && <div className="map-failure" role="alert"><h2>The map could not load</h2><p>Your library and regional guides remain available.</p><button className="button button-secondary" onClick={() => { trackFieldEvent('map_retry', 'fungi'); setMapError(false); setMapAttempt(value => value + 1) }}>Retry map</button><a href="/regions">Browse regions</a><a href="/">Open the library</a></div>}
           <div className="map-toolbar">
             <PlaceSearch onSelect={goToPlace} />
+            <label className="sr-only" htmlFor="map-region-select">Choose a region</label>
+            <select id="map-region-select" className="map-filter-button map-region-select" value={selectedRegionSlug} onChange={event => selectRegion(event.target.value)}>
+              <option value="">Choose a region</option>
+              {regions.map(region => <option key={region.slug} value={region.slug}>{region.name}</option>)}
+            </select>
             <button className="map-filter-button" type="button" onClick={() => setFiltersOpen(true)}>
               <Filter size={17} aria-hidden="true" /> Filters
               {activeFilterCount > 0 && <span className="filter-count" aria-label={`${activeFilterCount} active filters`}>{activeFilterCount}</span>}
@@ -360,12 +452,12 @@ export default function App({ path = '/map' }) {
             <button className={`map-filter-button map-identify-button ${identifyOpen ? 'active' : ''}`} type="button" aria-expanded={identifyOpen} onClick={() => { setListOpen(false); setIdentifyOpen(open => !open) }}>
               <Sparkles size={17} aria-hidden="true" /> Suggest an ID
             </button>
-            <button className="map-filter-button field-list-toggle" type="button" aria-pressed={listOpen} onClick={() => { setListOpen(open => !open); setSelected(null) }}><List size={17} /> {listOpen ? 'Show map' : 'Browse list'}</button>
+            <button className="map-filter-button field-list-toggle" type="button" aria-pressed={listOpen} onClick={toggleListView}><List size={17} /> {listOpen ? 'Show map' : 'Browse list'}</button>
             <button className="map-filter-button field-desk-toggle" type="button" onClick={() => user ? openAccount() : openAuth('register', 'desk')}><Bookmark size={17} /> My field desk</button>
             <div className="map-results" aria-live="polite">
               <MapPin size={17} aria-hidden="true" />
               <strong>{sightings.length.toLocaleString()}</strong>
-              <span>{sightings.length >= 4000 ? 'shown (limit)' : 'locations'}</span>
+              <span>{sightings.length >= 1000 ? 'shown (limit)' : 'locations'}</span>
               <i aria-hidden="true" />
               <Sprout size={17} aria-hidden="true" />
               <strong>{displayedSpeciesCount}</strong>
@@ -398,6 +490,7 @@ export default function App({ path = '/map' }) {
           />
 
           {!listOpen && sightingsError && <div className="map-empty-state" role="alert"><div><strong>Observations could not be loaded</strong><p>The map is still available. Retry, or browse the library.</p></div><button className="button button-secondary" onClick={() => { trackFieldEvent('map_retry', 'fungi'); retrySightings() }}>Retry records</button><a href="/">Open library</a></div>}
+          {!listOpen && !mapAreaSelected && <div className="map-empty-state map-region-prompt" role="status"><div><strong>Choose a region to begin</strong><p>Search for a place or choose a region above. Records load after the map settles on your selection.</p></div></div>}
           {!listOpen && !sightingsError && !isLoading && sightings.length === 0 && !submissionOpen && (
             <div className="map-empty-state" role="status">
               <SearchX size={22} aria-hidden="true" />
@@ -425,7 +518,7 @@ export default function App({ path = '/map' }) {
           )}
 
 
-          {listOpen && <ObservationList scope={viewport || flyTarget || countryCamera.data ? 'Selected map area' : 'Worldwide results'} onBroaden={() => setFilters(current => ({ ...current, recent_days: null }))} sightings={sightings} loading={isLoading || (shouldLocateCountry && countryCamera.isLoading)} error={sightingsError} onRetry={retrySightings} onSelect={item => { setSelected(item); }} onSave={item => saveSelected(false, item)} savedIds={savedIds} saving={saveLocation.isPending} user={user} onAccount={() => user ? openAccount('saved') : openAuth('register', 'desk')} onClear={() => setFilters({ ...DEFAULT_FILTERS })} />}
+          {listOpen && <ObservationList scope={viewport || flyTarget || countryCamera.data ? 'Selected map area' : 'Worldwide results'} onBroaden={() => setFilters(current => ({ ...current, recent_days: null }))} sightings={sightings} loading={isLoading} error={sightingsError} onRetry={retrySightings} onSelect={item => { setSelected(item); }} onSave={item => saveSelected(false, item)} savedIds={savedIds} saving={saveLocation.isPending} user={user} onAccount={() => user ? openAccount('saved') : openAuth('register', 'desk')} onClear={() => setFilters({ ...DEFAULT_FILTERS })} waitingForArea={!mapAreaSelected} />}
 
           {selected && <ObservationRecord key={selected.id} saved={savedIds.has(selected.id)}
             sighting={selected}

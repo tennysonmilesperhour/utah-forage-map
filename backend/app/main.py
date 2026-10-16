@@ -11,7 +11,7 @@ from uuid import UUID, uuid4
 import httpx
 from fastapi import BackgroundTasks, Cookie, Depends, FastAPI, Header, HTTPException, Query, Request, Response, status
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy import func, or_
+from sqlalchemy import func, or_, text
 from sqlalchemy.orm import Session, joinedload
 
 from app.database import Base, engine, get_db
@@ -107,7 +107,7 @@ def create_dev_tables():
 
 @app.get("/health")
 def health(db: Session = Depends(get_db)):
-    db.query(User.id).limit(1).all()
+    db.execute(text("SELECT 1")).scalar_one()
     return {"status": "ok", "project": "mushroom-forage-map", "email_configured": bool(os.getenv("RESEND_API_KEY"))}
 
 
