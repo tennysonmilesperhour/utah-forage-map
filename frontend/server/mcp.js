@@ -140,7 +140,8 @@ export function createTools({ fetchJson = defaultFetchJson, now = () => new Date
         const size = Math.min(Number(limit) || 12, 25)
         let live = null
         try {
-          const signal = await fetchJson(`${API_BASE}/api/open-data/regional-signal`)
+          const query = new URLSearchParams({ region_slug: found.slug })
+          const signal = await fetchJson(`${API_BASE}/api/open-data/regional-signal?${query}`)
           live = signal.regions?.find(item => item.slug === found.slug) ?? null
         } catch { live = null }
         if (live && live.outlook?.length) {

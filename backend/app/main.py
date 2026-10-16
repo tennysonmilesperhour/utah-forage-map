@@ -11,7 +11,7 @@ from uuid import UUID, uuid4
 import httpx
 from fastapi import BackgroundTasks, Cookie, Depends, FastAPI, Header, HTTPException, Query, Request, Response, status
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy import func, or_, text
+from sqlalchemy import and_, case, func, literal, or_, select, text, union_all
 from sqlalchemy.orm import Session, joinedload
 
 from app.database import Base, engine, get_db
@@ -341,6 +341,50 @@ def region_summary(db: Session, region):
         "observations_14d": observations_14d,
         "species_count": species_count,
         "latest_observed_on": latest_observed_on,
+    }
+
+
+def batch_region_summaries(db: Session, regions, today=None):
+    """Compute public region counters for all requested regions in one query."""
+    if not regions:
+        return {}
+    today = today or date.today()
+    cutoff_90 = today - timedelta(days=90)
+    cutoff_14 = today - timedelta(days=14)
+    bounds = {}
+    columns = []
+    labels = {}
+    for index, region in enumerate(regions):
+        west, south, east, north = region["bounds"]
+        inside = and_(
+            Sighting.latitude.between(south, north),
+            Sighting.longitude.between(west, east),
+        )
+        bounds[region["slug"]] = inside
+        names = {
+            key: f"r{index}_{key}"
+            for key in ("observations_90d", "observations_14d", "species_count", "latest_observed_on")
+        }
+        labels[region["slug"]] = names
+        columns.extend([
+            func.coalesce(func.sum(case((and_(inside, Sighting.found_on >= cutoff_90), 1), else_=0)), 0).label(names["observations_90d"]),
+            func.coalesce(func.sum(case((and_(inside, Sighting.found_on >= cutoff_14), 1), else_=0)), 0).label(names["observations_14d"]),
+            func.count(func.distinct(case((and_(inside, Sighting.found_on >= cutoff_90), Sighting.species_id), else_=None))).label(names["species_count"]),
+            func.max(case((inside, Sighting.found_on), else_=None)).label(names["latest_observed_on"]),
+        ])
+
+    row = db.query(*columns).filter(
+        Sighting.review_status == "approved",
+        Sighting.location_privacy != "private",
+        or_(*bounds.values()),
+    ).one()
+    values = row._mapping
+    return {
+        region["slug"]: {
+            **region,
+            **{key: values[label] for key, label in labels[region["slug"]].items()},
+        }
+        for region in regions
     }
 
 
@@ -765,7 +809,8 @@ def list_species(db: Session = Depends(get_db)):
 
 
 @app.get("/api/guide/species", response_model=list[GuideSpeciesSummary])
-def guide_species_summaries(db: Session = Depends(get_db)):
+def guide_species_summaries(response: Response, db: Session = Depends(get_db)):
+    response.headers["Cache-Control"] = "public, max-age=60, s-maxage=900, stale-while-revalidate=900"
     cutoff = date.today() - timedelta(days=90)
     public_filters = (
         Sighting.review_status == "approved",
@@ -971,8 +1016,10 @@ def data_status(response: Response, db: Session = Depends(get_db)):
 
 
 @app.get("/api/regions", response_model=list[RegionSummaryRead])
-def list_regions(db: Session = Depends(get_db)):
-    return [region_summary(db, region) for region in REGIONS]
+def list_regions(response: Response, db: Session = Depends(get_db)):
+    response.headers["Cache-Control"] = "public, max-age=60, s-maxage=300, stale-while-revalidate=300"
+    summaries = batch_region_summaries(db, REGIONS)
+    return [summaries[region["slug"]] for region in REGIONS]
 
 
 @app.get("/api/regions/{region_slug}", response_model=RegionDetailRead)
@@ -1030,33 +1077,65 @@ def get_region_detail(region_slug: str, db: Session = Depends(get_db)):
 REGIONAL_SIGNAL_MIN_SAMPLE = 3
 
 
+def batch_region_species_signals(db: Session, regions, today):
+    """Return per-region species counts from one UNION of bounded aggregates."""
+    if not regions:
+        return []
+    cutoff_60 = today - timedelta(days=60)
+    cutoff_30 = today - timedelta(days=30)
+    cutoff_14 = today - timedelta(days=14)
+    queries = []
+    for region in regions:
+        west, south, east, north = region["bounds"]
+        queries.append(select(
+            literal(region["slug"]).label("region_slug"),
+            Species.inaturalist_taxon_id.label("taxon_id"),
+            Species.common_name.label("common_name"),
+            Species.latin_name.label("latin_name"),
+            func.sum(case((Sighting.found_on >= cutoff_14, 1), else_=0)).label("observations_14d"),
+            func.sum(case((Sighting.found_on >= cutoff_30, 1), else_=0)).label("observations_30d"),
+            func.sum(case((Sighting.found_on < cutoff_30, 1), else_=0)).label("previous_30d"),
+        ).select_from(Sighting).join(Species, Sighting.species_id == Species.id).where(
+            Sighting.latitude.between(south, north),
+            Sighting.longitude.between(west, east),
+            Sighting.location_privacy != "private",
+            Sighting.review_status == "approved",
+            Sighting.found_on >= cutoff_60,
+        ).group_by(
+            Species.id, Species.inaturalist_taxon_id, Species.common_name, Species.latin_name,
+        ))
+    combined = union_all(*queries).subquery()
+    return db.query(combined).all()
+
+
 @app.get("/api/open-data/regional-signal")
-def regional_signal(response: Response, db: Session = Depends(get_db)):
+def regional_signal(
+    response: Response,
+    region_slug: Optional[str] = Query(None, pattern=r"^[a-z0-9-]+$"),
+    db: Session = Depends(get_db),
+):
     """Aggregated 90-day field signal per region. Counts only: no coordinates, people or record ids."""
-    response.headers["Cache-Control"] = "public, max-age=3600"
+    response.headers["Cache-Control"] = "public, max-age=60, s-maxage=300, stale-while-revalidate=300"
     today = date.today()
+    selected = get_region(region_slug) if region_slug else None
+    if region_slug and selected is None:
+        raise HTTPException(status_code=404, detail="Region not found")
+    requested_regions = [selected] if selected else list(REGIONS)
+    summaries = batch_region_summaries(db, requested_regions, today)
+    species_rows = batch_region_species_signals(db, requested_regions, today)
+    species_by_region = {region["slug"]: [] for region in requested_regions}
+    for item in species_rows:
+        species_by_region[item.region_slug].append(item)
+
     regions = []
-    for region in REGIONS:
-        observations = region_sighting_query(db, region).filter(
-            Sighting.found_on >= today - timedelta(days=60)
-        ).all()
-        by_species = {}
-        for sighting in observations:
-            item = by_species.setdefault(sighting.species_id, {
-                "species": sighting.species, "observations_14d": 0, "observations_30d": 0, "previous_30d": 0,
-            })
-            if sighting.found_on >= today - timedelta(days=14):
-                item["observations_14d"] += 1
-            if sighting.found_on >= today - timedelta(days=30):
-                item["observations_30d"] += 1
-            else:
-                item["previous_30d"] += 1
+    for region in requested_regions:
+        summary = summaries[region["slug"]]
         outlook = []
-        for item in by_species.values():
-            sample = item["observations_30d"] + item["previous_30d"]
+        for item in species_by_region[region["slug"]]:
+            sample = item.observations_30d + item.previous_30d
             if sample < REGIONAL_SIGNAL_MIN_SAMPLE:
                 continue
-            recent, current, previous = item["observations_14d"], item["observations_30d"], item["previous_30d"]
+            recent, current, previous = item.observations_14d, item.observations_30d, item.previous_30d
             if recent == 0 and previous > 0:
                 status_name = "ending"
             elif recent > 0 and (previous == 0 or current >= max(2, previous * 1.5)):
@@ -1064,9 +1143,9 @@ def regional_signal(response: Response, db: Session = Depends(get_db)):
             else:
                 status_name = "likely"
             outlook.append({
-                "taxon_id": item["species"].inaturalist_taxon_id,
-                "common_name": item["species"].common_name,
-                "latin_name": item["species"].latin_name,
+                "taxon_id": item.taxon_id,
+                "common_name": item.common_name,
+                "latin_name": item.latin_name,
                 "status": status_name,
                 "confidence": "high" if sample >= 10 else "medium",
                 "observations_14d": recent,
@@ -1074,7 +1153,6 @@ def regional_signal(response: Response, db: Session = Depends(get_db)):
                 "previous_30d": previous,
             })
         outlook.sort(key=lambda row: (-row["observations_14d"], row["common_name"]))
-        summary = region_summary(db, region)
         regions.append({
             "slug": region["slug"], "name": region["name"], "hemisphere": region["hemisphere"],
             "observations_90d": summary["observations_90d"], "observations_14d": summary["observations_14d"],
