@@ -1,0 +1,173 @@
+{
+  "date": "2026-10-19",
+  "site": "https://worldmushroomforaging.org",
+  "days": 7,
+  "traffic": {
+    "available": false,
+    "reason": "CRON_SECRET is not set for this run"
+  },
+  "prune": {
+    "skipped": true
+  },
+  "checks": {
+    "catalog": {
+      "status": 200,
+      "datasets": [
+        {
+          "id": "seasonality",
+          "format": "json",
+          "status": 200,
+          "ms": 275,
+          "rows": 147,
+          "expected_rows": 147
+        },
+        {
+          "id": "seasonality",
+          "format": "csv",
+          "status": 200,
+          "ms": 230,
+          "rows": null,
+          "expected_rows": 147
+        },
+        {
+          "id": "lookalikes",
+          "format": "json",
+          "status": 200,
+          "ms": 515,
+          "rows": 320,
+          "expected_rows": 320
+        },
+        {
+          "id": "lookalikes",
+          "format": "csv",
+          "status": 200,
+          "ms": 230,
+          "rows": null,
+          "expected_rows": 320
+        },
+        {
+          "id": "species",
+          "format": "json",
+          "status": 200,
+          "ms": 188,
+          "rows": 108,
+          "expected_rows": 108
+        },
+        {
+          "id": "species",
+          "format": "csv",
+          "status": 200,
+          "ms": 173,
+          "rows": null,
+          "expected_rows": 108
+        },
+        {
+          "id": "regions",
+          "format": "json",
+          "status": 200,
+          "ms": 165,
+          "rows": 10,
+          "expected_rows": 10
+        },
+        {
+          "id": "regions",
+          "format": "csv",
+          "status": 200,
+          "ms": 142,
+          "rows": null,
+          "expected_rows": 10
+        },
+        {
+          "id": "regional-signal",
+          "format": "json",
+          "status": 200,
+          "ms": 1593,
+          "rows": null,
+          "expected_rows": null
+        }
+      ]
+    },
+    "/llms.txt": {
+      "status": 200,
+      "ms": 158,
+      "bytes": 3865
+    },
+    "/robots.txt": {
+      "status": 200,
+      "ms": 49
+    },
+    "/.well-known/api-catalog": {
+      "status": 200,
+      "ms": 176
+    },
+    "/.well-known/mcp/server-card.json": {
+      "status": 200,
+      "ms": 170
+    },
+    "/learn/species/morel.md": {
+      "status": 200,
+      "ms": 46,
+      "canonical_link": "<https://worldmushroomforaging.org/learn/species/morel>; rel=\"canonical\""
+    },
+    "/data": {
+      "status": 200,
+      "ms": 176
+    },
+    "mcp": {
+      "initialize": {
+        "status": 200,
+        "ok": true
+      },
+      "tools": [
+        "search_species",
+        "get_species_guide",
+        "seasonality",
+        "in_season_near",
+        "list_regions"
+      ],
+      "calls": [
+        {
+          "tool": "search_species",
+          "status": 200,
+          "ms": 153,
+          "is_error": false,
+          "has_notice": true,
+          "has_cite_url": true
+        },
+        {
+          "tool": "get_species_guide",
+          "status": 200,
+          "ms": 143,
+          "is_error": false,
+          "has_notice": true,
+          "has_cite_url": true
+        },
+        {
+          "tool": "seasonality",
+          "status": 200,
+          "ms": 824,
+          "is_error": false,
+          "has_notice": true,
+          "has_cite_url": true
+        },
+        {
+          "tool": "in_season_near",
+          "status": 200,
+          "ms": 285,
+          "is_error": false,
+          "has_notice": true,
+          "has_cite_url": true
+        },
+        {
+          "tool": "list_regions",
+          "status": 200,
+          "ms": 126,
+          "is_error": false,
+          "has_notice": true,
+          "has_cite_url": true
+        }
+      ]
+    }
+  },
+  "problems": []
+}
