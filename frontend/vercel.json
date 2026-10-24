@@ -439,5 +439,6 @@
     "api/mcp.js": {
       "maxDuration": 15
     }
-  }
+  },
+  "installCommand": "npx --yes npm@12.2.1 ci --ignore-scripts"
 }

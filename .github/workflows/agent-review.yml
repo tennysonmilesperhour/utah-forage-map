@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: '22.23.4'
       - name: Export traffic, check live files and the MCP server, prune old rows
         env:
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
