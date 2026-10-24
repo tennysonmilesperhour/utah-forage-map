@@ -2,6 +2,7 @@ alembic==1.16.5
 anthropic==1.8.0
 # GHSA-82r6-8w77-94w6: certificate hostname validation is fixed in 4.14.2+.
 anyio==4.15.1
+certifi==2026.10.19
 email-validator==2.3.0
 fastapi==0.142.4
 httpx==0.28.1
