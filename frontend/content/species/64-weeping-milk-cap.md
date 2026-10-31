@@ -2,7 +2,7 @@
 slug: weeping-milk-cap
 common_name: "Weeping Milk Cap"
 latin_name: "Lactifluus volemus"
-aliases: "Voluminous-latex milky"
+aliases: "Voluminous-latex milky, Lactifluus volemus complex"
 taxon_id: 1366740
 summary: "An orange-brown milk cap that releases abundant white latex staining brown, with a fishy smell."
 edibility: edible

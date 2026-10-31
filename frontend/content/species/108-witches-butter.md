@@ -30,8 +30,8 @@ lookalikes:
   - name: "Black witch's butter"
     severity: harmless
     check: "Exidia glandulosa is black."
-  - name: "Wood Ear"
-    slug: wood-ear
+  - name: "Jelly Ear"
+    slug: jelly-ear
     severity: harmless
     check: "Wood ear is brown and ear-shaped."
 ---

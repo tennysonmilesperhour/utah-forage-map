@@ -30,3 +30,15 @@ test('deployment redirects and rewrites preserve the same entry points', async (
   assert.ok(config.rewrites.some(rule => rule.source === '/account' && rule.destination === '/map/index.html'))
   assert.ok(!config.redirects.some(rule => rule.source === '/' && !rule.has))
 })
+
+test('renamed species slugs redirect permanently to an existing guide', async () => {
+  const config = JSON.parse(await readFile(new URL('../vercel.json', import.meta.url), 'utf8'))
+  const { speciesBySlug } = await import('../src/content/species.generated.js')
+  for (const [from, to] of [['wood-ear', 'jelly-ear']]) {
+    assert.equal(speciesBySlug[from], undefined)
+    assert.ok(speciesBySlug[to], to)
+    for (const suffix of ['', '.md']) {
+      assert.ok(config.redirects.some(rule => rule.source === `/learn/species/${from}${suffix}` && rule.destination === `/learn/species/${to}${suffix}` && rule.permanent), from + suffix)
+    }
+  }
+})

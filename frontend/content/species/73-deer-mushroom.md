@@ -2,7 +2,7 @@
 slug: deer-mushroom
 common_name: "Deer Mushroom"
 latin_name: "Pluteus cervinus"
-aliases: "Fawn mushroom"
+aliases: "Fawn mushroom, Pluteus cervinus complex"
 taxon_id: 1617451
 summary: "A brown-capped mushroom on dead wood with free white gills that turn pink and a pink spore print."
 edibility: edible

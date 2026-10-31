@@ -1,8 +1,8 @@
 ---
-slug: wood-ear
+slug: jelly-ear
 common_name: "Jelly Ear"
 latin_name: "Auricularia auricula-judae"
-aliases: "Jelly ear; Auricularia complex"
+aliases: "Wood ear, Auricularia auricula-judae complex"
 taxon_id: 1138427
 summary: "A rubbery, ear-shaped brown jelly fungus on dead hardwood, especially elder, eaten widely after cooking."
 edibility: edible
