@@ -1,5 +1,7 @@
 # September audit implementation
 
+This records the September release. Counts that describe the live catalogue were refreshed on 31 October 2026 from `frontend/src/data/catalogue-counts.json` (108 mushroom guides, 113 herb profiles of which 20 are toxic references, 221 reviewable profiles in total). Counts in the Verification section describe that release and are left as they were.
+
 ## Delivered in this release
 
 - Account-scoped private queries, cancellation on identity changes and no-store private API responses. Private workspace forms also remount on identity changes to discard unsaved drafts. Covers notebook, saved places, watches, pantry, journal, sessions, moderation and membership.
@@ -8,10 +10,10 @@
 - Explicit/selectable hemisphere for fungi seasonal charts; unknown/equatorial countries prompt for a choice. Timing-only herb watches say “Your selected timing matches.”
 - Prerendered `/herbs/gathering-ways`, metadata, sitemap, readable reference export and legacy-link redirect. Private fieldbook views have noindex responses.
 - Five stable destinations in both mobile bars. Herb private tools are grouped under My fieldbook. The fungi phone map icon is visible; skip links and map recovery are available.
-- One generated plant catalogue for both frontend and backend. Pantry/wishlist cover 37 non-toxic profiles; all 44 remain in the atlas, map and journal. Watches remain explicitly limited to 12 plants until regional timing models are reviewed.
+- One generated plant catalogue for both frontend and backend. Pantry/wishlist now cover 93 non-toxic profiles (37 at the September release); all 113 remain in the atlas, map and journal (44 at the September release). Watches remain explicitly limited to 12 plants until regional timing models are reviewed.
 - Long immutable cache headers for hashed assets and lazy private herb views. Consent-gated LCP, INP and CLS measurements, guide-to-map and empty-result recovery events; custom events exclude notes, search text, coordinates and account identifiers.
 - Post-production IndexNow submission, guarded by the frontend release SHA. Submission is not proof of indexing.
-- Public 74-profile review queue, evidence requirements for recorded reviews, and scoped field-description citations for five previously single-source fungi profiles. Expert review remains pending.
+- Public review queue (74 profiles at the September release, 221 now), evidence requirements for recorded reviews, and scoped field-description citations for five previously single-source fungi profiles. Expert review remains pending.
 - Compatible patches for js-yaml and @humanfs/node build-tool advisories; npm audit reports no known vulnerabilities at verification.
 
 ## Release and operational checks
@@ -27,7 +29,7 @@
 
 ### Specialist review
 
-All 74 profiles still await independent specialist review. `frontend/src/data/editorialReviews.json` accepts only completed review records. Each record needs reviewer, credentials, ISO date, regional scope and an HTTPS evidence link. Obtain consent to publish the reviewer identity. Review the complete claims, preparation, lookalikes and diagnostic imagery; a source-link check is not a review. Require a second editorial approver in the content PR and retain the signed review/corrections record.
+All 221 profiles (108 mushroom guides and 113 herb profiles) still await independent specialist review. `frontend/src/data/editorialReviews.json` accepts only completed review records. Each record needs reviewer, credentials, ISO date, regional scope and an HTTPS evidence link. Obtain consent to publish the reviewer identity. Review the complete claims, preparation, lookalikes and diagnostic imagery; a source-link check is not a review. Require a second editorial approver in the content PR and retain the signed review/corrections record.
 
 First commission dangerous pairs: edible Amanita versus deadly Amanita; morel versus false morel; puffball versus young Amanita; wild garlic versus lily-of-the-valley/autumn crocus; edible Apiaceae versus hemlocks; purslane versus spurge. Then highest-use culinary profiles and regional variants. The new MushroomExpert references support morphology/ecology only, not edibility. King bolete, rainbow chanterelle and gem-studded puffball still need stronger verified references; source fetches did not complete in this pass. No institutional endorsement or completed expert review is claimed.
 
@@ -47,7 +49,7 @@ Search Console, Bing Webmaster Tools and private analytics access were unavailab
 | Empty-result recovery and repeat visits | Not measured | Preserve consent and privacy |
 | p75 LCP / INP / CLS | Not measured | ≤2500ms / ≤200ms / ≤0.1 |
 | Linked AI citations and attributable referrals | Not measured | Separate mentions, citations and visits |
-| Completed independent profile reviews | 0 / 74 | Prioritize safety-critical comparisons |
+| Completed independent profile reviews | 0 / 221 (0 / 74 at the September release) | Prioritize safety-critical comparisons |
 | Incremental covered-through lag | First run pending | Aim <24h; alert >26h |
 
 Use a fixed monthly sample of questions (regional season, dangerous lookalike, habitat, permissions, beginner learning and observation interpretation) across relevant assistants. Record model, date, prompt, linked citations and landing page. This sample cannot establish universal rank. No number-one LLM recommendation is promised.

@@ -4,7 +4,7 @@ Approved direction: the same Forest immersion theme selected for Herbs, with a d
 
 ## Palette and surfaces
 
-Canvas `#0b090c`, surface `#181419`, raised plum `#282129`, ivory text `#f1eae1`, muted text `#bfb4ba`, pale plum `#c4b5ce`, bark accent `#d6bfa9`. Primary buttons use ivory with dark text. Clear glass has a lightly reflective edge and 14–20px blur. Cards and buttons have 8px corners; panels and navigation 10px. Safety colors retain separate red, amber, and muted olive states.
+Canvas `#0b090c`, surface `#181419`, raised plum `#282129`, ivory text `#f1eae1`, muted text `#bfb4ba`, pale plum `#c4b5ce`, bark accent `#d6bfa9`. Primary buttons use ivory with dark text. Clear glass has a lightly reflective edge and 14 to 20px blur. Cards and buttons have 8px corners; panels and navigation 10px. Safety colors retain separate red, amber, and muted olive states.
 
 The public map remains the fungi entry. Filters, search, map overlays, records, community, authentication, account panels, watch forms, guide pages, regions, and informational pages inherit the shared theme. The globe atmosphere and cluster colors use charcoal/plum; individual species markers retain their existing semantic colors. No map data, coordinates, or scientific content changed.
 
@@ -28,5 +28,5 @@ Use case: photorealistic-natural. Asset type: wide atmospheric hero backdrop for
 
 ## Verification
 
-Frontend lint and the production client/SSR build passed, including prerendering 46 guide routes and 3 app routes. Existing map bundle-size warnings remain. Desktop and mobile browser verification and captures are recorded in the PR. No authenticated write was needed for this visual change.
+Frontend lint and the production client/SSR build passed, including prerendering 46 guide routes and 3 app routes at the time of that change (on 31 October 2026 the build prerenders 259 guide routes and 7 app routes). Existing map bundle-size warnings remain. Desktop and mobile browser verification and captures are recorded in the PR. No authenticated write was needed for this visual change.
 

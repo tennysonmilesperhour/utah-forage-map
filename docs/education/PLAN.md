@@ -16,7 +16,7 @@ documents: [SPECIES_TEMPLATE.md](SPECIES_TEMPLATE.md) (page format and writing g
 ### Approved implementation scope
 
 The approved implementation now includes the guide itself: a `/learn` index, pages for a curated
-30-species catalogue, safety and editorial-standard pages, live 90-day evidence, map links,
+species catalogue (30 guides at approval, 108 mushroom guides on 31 October 2026), safety and editorial-standard pages, live 90-day evidence, map links,
 prerendered HTML, metadata, sitemap coverage, and an account-free poll for the next guide.
 
 The comparison hubs, seasonal calendar, beginner course, yard guide, glossary, newsletter,
@@ -135,7 +135,8 @@ The user-stated worry is verbosity. The guardrails:
 prerendering for `/learn/*`; the trust pages (/about, /disclaimer, how-we-verify); the species
 page template component; first 12 species pages from the existing catalogue (content compiled in
 SPECIES_CONTENT.md); `slug` column + map-popup links; sitemap + structured data. The catalogue was
-then expanded to 30 species with a public request poll.
+then expanded to 30 species with a public request poll, and has since grown to 108 mushroom
+guides (31 October 2026).
 
 **Phase 2 — The traffic engines:**
 seasonal calendar driven by live data; lookalike comparison pages (morel vs false morel first —
