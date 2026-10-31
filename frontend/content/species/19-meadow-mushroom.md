@@ -15,6 +15,7 @@ warning: White lawn mushrooms are a high-consequence identification problem. Dig
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-08-15
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/117321346/large.jpeg
   alt: Meadow mushroom turned over to show mature chocolate-brown gills
@@ -24,6 +25,14 @@ image:
   copyright_notice: © Thomas Mesaglio
   license: https://creativecommons.org/licenses/by/4.0/
 lookalikes:
+  - name: "Death Cap"
+    slug: death-cap
+    severity: deadly
+    check: "Death cap has white gills that never turn pink or brown, a white spore print, a skirt-like ring and a sac-like volva. Dig up the whole base."
+  - name: "Western Destroying Angel"
+    slug: western-destroying-angel
+    severity: deadly
+    check: "Western destroying angel has white gills, a white spore print and a sac-like volva at the base."
   - name: Destroying Angel
     slug: destroying-angel
     severity: deadly
@@ -36,6 +45,10 @@ lookalikes:
     slug: green-spored-parasol
     severity: toxic
     check: Mature specimens develop gray-green gills and leave a green spore print rather than chocolate brown.
+  - name: "Horse Mushroom"
+    slug: horse-mushroom
+    severity: harmless
+    check: "Horse mushroom is larger, with a large two-layered ring and an aniseed smell. It bruises yellow, so rule out the yellow stainer, which turns chrome yellow at the cut stem base and smells of ink."
 ---
 
 ## Identification

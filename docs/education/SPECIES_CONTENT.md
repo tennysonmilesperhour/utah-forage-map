@@ -41,9 +41,10 @@ real expertise and real data.
 - **ID:** pores not gills — **white young, aging yellow-olive, never red**; pores don't bruise
   blue; fine **white netting (reticulation)** on the upper stem; thick club stem, brown
   "hamburger-bun" cap; white flesh, no color change; olive-brown spore print.
-- **Lookalikes:** *Tylopilus felleus* (bitter bolete) — pores flush pink, coarse dark netting,
-  overwhelmingly bitter taste-and-spit (harmless, ruins the meal). Beginner rule: skip any
-  bolete with red/orange pores or strong blue bruising.
+- **Lookalikes:** *Tylopilus felleus* (bitter bolete): pores flush pink, coarse dark netting,
+  overwhelmingly bitter flesh (not dangerous, ruins the meal). Do not tell readers to taste
+  and spit; the site's rule is never to taste a wild mushroom to identify it. Beginner rule:
+  skip any bolete with pinkish, red or orange pores or strong blue bruising.
 - **Season/habitat:** summer–fall with conifers; in the Rockies it flushes late Jul–Sep with
   monsoon rain at high elevation.
 - **Uses:** one of the world's premier culinary mushrooms; drying intensifies flavor. Cannot be

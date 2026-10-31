@@ -14,6 +14,7 @@ warning: "Protected or red-listed in several European countries. The scaly vase 
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-09-27
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/175442579/large.jpeg
   alt: "Purple-tan pig's ear fungus with wrinkled underside"
@@ -28,7 +29,7 @@ lookalikes:
     check: "Turbinellus floccosus is orange with coarse scales and a hollow vase."
   - name: "Black Trumpet"
     slug: black-trumpet
-    severity: harmless
+    severity: caution
     check: "Black trumpet is thin, hollow, and charcoal gray."
   - name: "Violet corals"
     severity: caution

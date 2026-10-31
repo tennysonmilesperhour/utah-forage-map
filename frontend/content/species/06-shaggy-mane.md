@@ -15,7 +15,7 @@ warning: Only young, all-white specimens are considered edible, and every lawn b
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-08-15
-last_updated: 2026-09-25
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/93399523/large.jpeg
   alt: Tall white shaggy mane mushrooms in grass
@@ -25,8 +25,9 @@ image:
   copyright_notice: © Tom Norton
   license: https://creativecommons.org/licenses/by/4.0/
 lookalikes:
-  - name: Common Inky Cap
-    severity: sickener
+  - name: "Common Ink Cap"
+    slug: common-ink-cap
+    severity: toxic
     check: Coprinopsis atramentaria is smooth and gray-brown, without shaggy scales, and can trigger an alcohol reaction.
   - name: Green-spored Parasol
     slug: green-spored-parasol

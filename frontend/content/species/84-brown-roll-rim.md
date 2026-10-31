@@ -14,6 +14,7 @@ warning: "Poisonous and potentially fatal. Repeated meals can trigger an immune 
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-09-27
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/308499680/large.jpg
   alt: "Brown roll-rim with inrolled margin and yellowish gills"
@@ -24,10 +25,10 @@ image:
   license: https://creativecommons.org/licenses/by/4.0/
 lookalikes:
   - name: "Milk caps"
-    severity: caution
+    severity: toxic
     check: "Lactarius species release latex when cut."
   - name: "Velvet roll-rim"
-    severity: caution
+    severity: toxic
     check: "Tapinella atrotomentosa has a black velvety stem and grows on conifer stumps."
   - name: "Saffron Milk Cap"
     slug: saffron-milk-cap

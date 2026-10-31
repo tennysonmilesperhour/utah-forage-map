@@ -15,6 +15,7 @@ warning: Skip boletes with red or orange pores or strong blue bruising until an 
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-08-15
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/5589742/large.jpg
   alt: Brown-capped king bolete with a thick pale stem
@@ -31,6 +32,30 @@ lookalikes:
   - name: Red-pored boletes
     severity: caution
     check: Red or orange pores and strong blue staining are a stop sign for beginners, not a feature to dismiss.
+  - name: "Rocky Mountain Porcini"
+    slug: rocky-mountain-porcini
+    severity: harmless
+    check: "Boletus rubriceps is a red-capped porcini of Rocky Mountain spruce and fir forests; region and host tree separate it."
+  - name: "Spring King Bolete"
+    slug: spring-king-bolete
+    severity: harmless
+    check: "Boletus rex-veris fruits in spring under western conifers; season and region separate it from fall king boletes."
+  - name: "Bay Bolete"
+    slug: bay-bolete
+    severity: harmless
+    check: "Bay bolete has a chestnut cap, a streaked stem with no white net and pale yellow pores that bruise blue."
+  - name: "Pine Bolete"
+    slug: pine-bolete
+    severity: harmless
+    check: "Pine bolete has a darker wine-red cap and usually grows with pine."
+  - name: "Summer Bolete"
+    slug: summer-bolete
+    severity: harmless
+    check: "Summer bolete has a dry, often cracked pale brown cap, a net along the whole stem, and fruits from early summer."
+  - name: "Devil's Bolete"
+    slug: devils-bolete
+    severity: toxic
+    check: "Devil's bolete has red pores, a red-netted stem and a pale whitish cap. Skip any bolete with red or orange pores."
 ---
 
 ## Identification

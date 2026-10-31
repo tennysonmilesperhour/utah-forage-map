@@ -15,7 +15,7 @@ warning: The deliciosus group contains regional species with different ranges an
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-08-15
-last_updated: 2026-09-25
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/453385752/large.jpeg
   alt: Group of orange saffron milk caps with green bruising and visible gills
@@ -36,6 +36,10 @@ lookalikes:
     slug: jack-o-lantern
     severity: toxic
     check: Jack-o'-lanterns grow in fused wood-based clusters and do not bleed colored latex when the gills are cut.
+  - name: "Brown Roll-rim"
+    slug: brown-roll-rim
+    severity: toxic
+    check: "Brown roll-rim has an inrolled cap margin, soft gills that bruise brown and no latex. It can cause a severe immune reaction even after earlier meals without symptoms."
 ---
 
 ## Identification

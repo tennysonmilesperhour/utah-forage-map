@@ -11,10 +11,11 @@ season: "Summer to autumn"
 habitat: "Conifer and mixed forests"
 underside: "Cream to yellowish brittle gills"
 spore_print: "Cream to ochre"
-warning: "Red Russulas include acrid, toxic species. Confirm the fishy odor, brown staining, and mild taste."
+warning: "Red Russulas include toxic species. Confirm the fishy odor, yellow then brown staining and the cream to ochre spore print with a qualified local expert. Do not taste a wild mushroom to identify it."
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-09-27
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/553894971/large.jpg
   alt: "Purple-red shrimp russula showing cream gills"
@@ -27,10 +28,10 @@ lookalikes:
   - name: "The Sickener"
     slug: the-sickener
     severity: toxic
-    check: "The sickener is scarlet with white gills and a burning taste."
+    check: "The sickener is scarlet with pure white gills, a white spore print and no brown staining."
   - name: "Other red Russula"
     severity: caution
-    check: "Many red Russulas are acrid; test a tiny piece and spit it out."
+    check: "Many red Russulas are toxic and look alike. Do not taste them to tell them apart; rely on spore print color, staining and a qualified local expert."
   - name: "Charcoal Burner"
     slug: charcoal-burner
     severity: harmless

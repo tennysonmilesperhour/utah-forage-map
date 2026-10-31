@@ -15,7 +15,7 @@ warning: Confirm the substrate and spore print. Thin white fans on conifer wood 
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-08-15
-last_updated: 2026-09-25
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/34047624/large.jpg
   alt: Layered oyster mushroom caps growing from hardwood
@@ -36,6 +36,14 @@ lookalikes:
   - name: Crepidotus species
     severity: caution
     check: These are often smaller and produce a brown spore print rather than a pale one.
+  - name: "Golden Oyster"
+    slug: golden-oyster
+    severity: harmless
+    check: "Golden oyster has bright yellow caps in tight clusters."
+  - name: "Ghost Fungus"
+    slug: ghost-fungus
+    severity: toxic
+    check: "Ghost fungus, from Australia, has gills that glow faintly green in the dark and often a darker center to the cap."
 ---
 
 ## Identification

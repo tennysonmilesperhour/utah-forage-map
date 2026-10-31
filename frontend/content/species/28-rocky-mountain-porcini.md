@@ -15,6 +15,7 @@ warning: Confirm pale stem reticulation, non-blue-staining pores, and local rang
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-08-15
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/413082134/large.jpeg
   alt: Red-brown Rocky Mountain porcini with a thick pale stem in spruce litter
@@ -35,6 +36,10 @@ lookalikes:
   - name: Red-pored Boletes
     severity: toxic
     check: Red or orange pores and rapid blue staining move the specimen outside this porcini profile.
+  - name: "Aspen Bolete"
+    slug: aspen-bolete
+    severity: caution
+    check: "Aspen bolete grows with aspen and has dark scabers on the stem instead of a net."
 ---
 
 ## Identification

@@ -14,6 +14,7 @@ warning: "Potentially fatal. Contains amatoxins that survive cooking. Contact a 
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-09-27
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/412608983/large.jpeg
   alt: "Pure white European destroying angel in forest moss"
@@ -23,6 +24,10 @@ image:
   copyright_notice: "\u00a9 Linda L\u00f6tj\u00f6nen"
   license: https://creativecommons.org/licenses/by/4.0/
 lookalikes:
+  - name: "False Death Cap"
+    slug: false-death-cap
+    severity: deadly
+    check: "False death cap, including its white form, has a rimmed, rounded bulb instead of a loose sac and smells of raw potato. Treat any white Amanita as deadly."
   - name: "Horse Mushroom"
     slug: horse-mushroom
     severity: deadly

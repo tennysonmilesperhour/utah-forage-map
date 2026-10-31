@@ -15,6 +15,7 @@ warning: Supplement claims outpace human evidence. A wild identification and a m
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-08-15
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/5885301/large.jpg
   alt: White lion's mane fungus with long hanging spines on hardwood
@@ -27,7 +28,8 @@ lookalikes:
   - name: Bear's Head Tooth
     severity: harmless
     check: Hericium americanum branches repeatedly before producing long teeth; it is an edible relative.
-  - name: Coral Tooth
+  - name: "Coral Tooth Fungus"
+    slug: coral-tooth
     severity: harmless
     check: Hericium coralloides forms a delicate branching coral with shorter comb-like teeth.
 ---

@@ -15,6 +15,7 @@ warning: Western Leccinum have caused gastrointestinal illness even after cookin
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-08-15
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/23304043/large.jpg
   alt: Orange-capped aspen bolete showing dark scabers along its pale stem
@@ -34,6 +35,10 @@ lookalikes:
   - name: Orange-capped Boletes
     severity: caution
     check: Similar caps occur with birch and other hosts; the aspen association must be documented rather than assumed.
+  - name: "Orange Birch Bolete"
+    slug: orange-birch-bolete
+    severity: caution
+    check: "Leccinum versipelle grows with birch and has an orange cap with an overhanging margin and black scabers on the stem."
 ---
 
 ## Identification

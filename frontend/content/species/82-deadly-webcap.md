@@ -14,6 +14,7 @@ warning: "Potentially fatal. Kidney damage may not show for days to weeks after 
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-09-27
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/544839462/large.jpg
   alt: "Orange-brown deadly webcap mushrooms in moss"
@@ -23,6 +24,10 @@ image:
   copyright_notice: "\u00a9 Bohan Jia"
   license: https://creativecommons.org/licenses/by/4.0/
 lookalikes:
+  - name: "Fool's Webcap"
+    slug: fools-webcap
+    severity: deadly
+    check: "Cortinarius orellanus is a close relative of European broadleaf woods with the same kidney toxin. Treat any orange-brown webcap as deadly."
   - name: "Yellowfoot"
     slug: yellowfoot
     severity: deadly

@@ -15,6 +15,7 @@ warning: True gills or growth in dense clusters on wood point away from chantere
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-08-15
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/233278751/large.jpg
   alt: Golden rainbow chanterelles emerging from forest duff
@@ -33,8 +34,12 @@ lookalikes:
     severity: toxic
     check: Omphalotus forms dense clusters on wood and has sharp true gills; chanterelles grow separately from soil.
   - name: Woolly Chanterelle
-    severity: sickener
+    severity: toxic
     check: Turbinellus floccosus has a scaly orange vase shape and can cause gastrointestinal illness.
+  - name: "Golden Chanterelle"
+    slug: golden-chanterelle
+    severity: harmless
+    check: "Golden chanterelle is the egg-yellow European species without a pink bloom. Its name has often been misapplied to North American chanterelles."
 ---
 
 ## Identification

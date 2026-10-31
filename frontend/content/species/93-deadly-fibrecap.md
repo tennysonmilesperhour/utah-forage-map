@@ -15,6 +15,7 @@ warning: "Potentially fatal. Contains high levels of muscarine. Often confused w
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-09-27
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/78468338/large.jpg
   alt: "Cream deadly fibrecap with a splitting, fibrous cap"
@@ -32,7 +33,7 @@ lookalikes:
     severity: deadly
     check: "The miller smells of meal and has pink spores."
   - name: "Other fibrecaps"
-    severity: toxic
+    severity: deadly
     check: "Most Inocybe contain muscarine; none are suitable for eating."
 ---
 

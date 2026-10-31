@@ -14,6 +14,7 @@ warning: "Green-tinged Russulas can be confused with the death cap. Confirm no r
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-09-27
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/407972327/large.jpeg
   alt: "Charcoal burner Russula with a violet-green cap"
@@ -30,10 +31,14 @@ lookalikes:
   - name: "The Sickener"
     slug: the-sickener
     severity: toxic
-    check: "The sickener is scarlet and intensely acrid."
+    check: "The sickener is scarlet, with brittle pure white gills and a white spore print."
   - name: "Other Russula"
     severity: caution
-    check: "Many Russula overlap in color; taste, spore color, and gill texture help separate them."
+    check: "Many Russula overlap in color. Spore print color and gill texture help separate them, but tasting is not a safe check; confirm with a qualified local expert."
+  - name: "Shrimp Russula"
+    slug: shrimp-russula
+    severity: harmless
+    check: "Shrimp russula has brittle gills that shatter when rubbed, a stem that bruises yellow then brown, and a shellfish smell with age."
 ---
 
 ## Identification

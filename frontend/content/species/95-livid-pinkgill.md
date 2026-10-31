@@ -14,6 +14,7 @@ warning: "Poisonous. Causes severe, prolonged vomiting and diarrhea and has caus
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-09-27
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/551930596/large.jpg
   alt: "Pale livid pinkgill with yellowish gills"
@@ -31,8 +32,16 @@ lookalikes:
     severity: toxic
     check: "Clitocybe nebularis is gray with white spores and decurrent gills."
   - name: "The miller"
-    severity: caution
+    severity: toxic
     check: "The miller is smaller with decurrent gills."
+  - name: "Aborted Entoloma"
+    slug: aborted-entoloma
+    severity: toxic
+    check: "Aborted entoloma is a gray gilled mushroom on wood or buried wood, often beside white aborted lumps. Its gilled form shares pink spores with toxic Entoloma, so do not separate them without an expert."
+  - name: "Deer Mushroom"
+    slug: deer-mushroom
+    severity: toxic
+    check: "Deer mushroom has free gills that turn pink and grows on dead wood; livid pinkgill has attached gills and grows from soil."
 ---
 
 ## Identification

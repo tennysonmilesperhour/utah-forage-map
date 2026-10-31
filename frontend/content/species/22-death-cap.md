@@ -15,6 +15,7 @@ warning: Potentially fatal. If ingestion is possible, contact a poison center im
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-08-15
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/347794788/large.jpg
   alt: Pale olive death cap showing white gills, ring, and stem in woodland litter
@@ -24,6 +25,30 @@ image:
   copyright_notice: Public domain (CC0)
   license: https://creativecommons.org/publicdomain/zero/1.0/
 lookalikes:
+  - name: "Common Stinkhorn"
+    slug: common-stinkhorn
+    severity: deadly
+    check: "Stinkhorn eggs cut to show a jelly layer around a spongy core, with no outline of a cap and gills."
+  - name: "The Blusher"
+    slug: blusher
+    severity: deadly
+    check: "The blusher has a brown to pinkish cap with warts and flesh that bruises pinkish red. Any Amanita confusion is dangerous."
+  - name: "Caesar's Mushroom"
+    slug: caesars-mushroom
+    severity: deadly
+    check: "Caesar's mushroom eggs show a yellow cap and gills when cut; death cap eggs show white gills. Never rely on egg color alone."
+  - name: "American Caesar's Mushroom"
+    slug: american-caesars-mushroom
+    severity: deadly
+    check: "American Caesar's mushroom has a red to orange cap, yellow gills and a yellow stem above a white sac. Never eat any Amanita on egg or color checks alone."
+  - name: "Charcoal Burner"
+    slug: charcoal-burner
+    severity: deadly
+    check: "Charcoal burner has brittle Russula flesh that snaps cleanly, no ring and no volva. Dig up the whole base of any greenish-capped mushroom."
+  - name: "False Death Cap"
+    slug: false-death-cap
+    severity: deadly
+    check: "False death cap has a pale lemon to white cap, a rimmed, rounded bulb instead of a loose sac, and smells of raw potato. It is still an Amanita: never worth the risk."
   - name: Meadow Mushroom
     slug: meadow-mushroom
     severity: deadly

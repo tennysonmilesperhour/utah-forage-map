@@ -15,6 +15,7 @@ warning: Regional Laetiporus species and host trees matter. Cook thoroughly and 
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-08-15
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/24338667/large.jpeg
   alt: Orange and cream chicken of the woods shelves growing from a fallen hardwood log
@@ -34,6 +35,14 @@ lookalikes:
   - name: Black-staining Polypore
     severity: caution
     check: Meripilus fronds are gray-brown and bruise black, especially along handled edges.
+  - name: "Dryad's Saddle"
+    slug: dryads-saddle
+    severity: harmless
+    check: "Dryad's saddle is cream to tan with dark brown scales on the cap and large, angular pores underneath."
+  - name: "Beefsteak Fungus"
+    slug: beefsteak-fungus
+    severity: harmless
+    check: "Beefsteak fungus is a soft, liver-red bracket that oozes red juice when cut and has separate tiny tubes underneath."
 ---
 
 ## Identification

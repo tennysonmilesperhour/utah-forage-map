@@ -14,6 +14,7 @@ warning: "Leave it. Waxcap grasslands are declining and protected in some region
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-09-27
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/351369011/large.jpg
   alt: "Scarlet waxcap mushrooms in short grass"
@@ -31,7 +32,7 @@ lookalikes:
     check: "Hygrocybe conica turns black with age or handling."
   - name: "Cinnabar Chanterelle"
     slug: cinnabar-chanterelle
-    severity: harmless
+    severity: caution
     check: "Cinnabar chanterelles grow in woods and have blunt ridges."
 ---
 

@@ -113,7 +113,7 @@ lookalikeFiles.push(current)
 lookalikeFiles.forEach((blocks, index) => {
   const name = lookalikeFiles.length === 1 ? 'llms/lookalikes.txt' : `llms/lookalikes-${index + 1}.txt`
   topics.set(name, [`# Mushroom lookalikes and safety warnings${lookalikeFiles.length > 1 ? ` (part ${index + 1} of ${lookalikeFiles.length})` : ''}`, '', `> ${NOTICE}`, '',
-    'Severity words are printed as on each guide page; they are not yet uniform across both pages of a pair, so check both guides. Field checks reduce risk but never replace in-person identification by a qualified local expert.', '', ...blocks].join('\n'))
+    'Severity is the worst outcome if the two species are mixed up, in either direction (harmless, caution, toxic or deadly), and both guides of a pair carry the same word. It describes the pair, not the edibility of either species. Field checks reduce risk but never replace in-person identification by a qualified local expert.', '', ...blocks].join('\n'))
 })
 
 const seasonLines = data.seasonality.map(row => {

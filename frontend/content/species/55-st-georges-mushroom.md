@@ -14,6 +14,7 @@ warning: "The deadly fibrecap and livid pinkgill also fruit in spring. Confirm a
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-09-27
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/342895477/large.jpg
   alt: "Stout white St George's mushrooms in grass"
@@ -23,6 +24,10 @@ image:
   copyright_notice: "\u00a9 Lucian Clanet"
   license: https://creativecommons.org/licenses/by/4.0/
 lookalikes:
+  - name: "European Destroying Angel"
+    slug: european-destroying-angel
+    severity: deadly
+    check: "European destroying angel is pure white with a ring, a shaggy stem and a sac-like volva, and fruits later in the year. Dig up the base of any white mushroom."
   - name: "Deadly Fibrecap"
     slug: deadly-fibrecap
     severity: deadly

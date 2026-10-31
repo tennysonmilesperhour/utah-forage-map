@@ -273,10 +273,11 @@ function LookalikeCards({ lookalikes }) {
     <section className="lookalike-section" aria-labelledby="lookalike-title">
       <div className="section-kicker"><ShieldAlert size={18} aria-hidden="true" /><span>Compare before concluding</span></div>
       <h2 id="lookalike-title">Lookalikes to rule out</h2>
+      <p className="lookalike-scale">Each label is the worst outcome if the two are mixed up, in either direction: harmless, caution, toxic or deadly.</p>
       <div className="lookalike-grid">
         {lookalikes.map(item => (
           <article key={item.name} className={`lookalike-card severity-${item.severity}`}>
-            <div><h3>{item.slug ? <a href={`/learn/species/${item.slug}`}>{item.name}</a> : item.name}</h3><span>{item.severity.replace('-', ' ')}</span></div>
+            <div><h3>{item.slug ? <a href={`/learn/species/${item.slug}`}>{item.name}</a> : item.name}</h3><span>{item.severity}</span></div>
             <p>{item.check}</p>
           </article>
         ))}

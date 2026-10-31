@@ -15,7 +15,7 @@ warning: Golden chanterelles are a regional species complex. Confirm local taxon
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-08-15
-last_updated: 2026-09-25
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/430849322/large.jpeg
   alt: Golden chanterelle showing blunt ridges beneath a wavy cap
@@ -25,6 +25,14 @@ image:
   copyright_notice: Public domain (CC0)
   license: https://creativecommons.org/publicdomain/zero/1.0/
 lookalikes:
+  - name: "Deadly Webcap"
+    slug: deadly-webcap
+    severity: deadly
+    check: "Deadly webcap has true, thin gills, a rusty-brown spore print and a cobweb veil when young. Its kidney toxin can take days to cause symptoms."
+  - name: "Fool's Webcap"
+    slug: fools-webcap
+    severity: deadly
+    check: "Fool's webcap has true, thin gills and a rusty-brown spore print. Its kidney toxin can take days to cause symptoms."
   - name: Jack-o'-lantern
     slug: jack-o-lantern
     severity: toxic

@@ -15,6 +15,7 @@ warning: "Harvest only fresh, white specimens; yellowing ones are bitter."
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-09-27
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/452214006/large.jpg
   alt: "White coral tooth fungus with hanging spines on a log"
@@ -34,6 +35,10 @@ lookalikes:
   - name: "Coral fungi"
     severity: caution
     check: "Ramaria and Clavulina branch upward from soil and have no spines."
+  - name: "Crown-tipped Coral"
+    slug: crown-tipped-coral
+    severity: harmless
+    check: "Crown-tipped coral has upright branches that end in small crown-shaped tips, not hanging spines."
 ---
 
 ## Identification

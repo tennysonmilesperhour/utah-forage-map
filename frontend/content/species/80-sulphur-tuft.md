@@ -14,6 +14,7 @@ warning: "Poisonous; causes vomiting and diarrhea, and severe poisonings are rep
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-09-27
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/333570515/large.jpeg
   alt: "Clustered sulphur tuft mushrooms with yellow caps on a stump"
@@ -34,6 +35,14 @@ lookalikes:
     slug: sheathed-woodtuft
     severity: toxic
     check: "Woodtuft has brown gills and a scaly stem below a ring."
+  - name: "Velvet Shank"
+    slug: velvet-shank
+    severity: toxic
+    check: "Velvet shank has white to cream gills, a velvety dark stem and a white spore print."
+  - name: "Golden Oyster"
+    slug: golden-oyster
+    severity: toxic
+    check: "Golden oyster has bright yellow caps with white gills running down the stem and a pale spore print."
 ---
 
 ## Identification

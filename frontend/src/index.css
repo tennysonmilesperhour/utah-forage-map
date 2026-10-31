@@ -4006,6 +4006,12 @@ button:disabled {
   font-size: 26px;
 }
 
+.lookalike-scale {
+  margin: 6px 0 0;
+  color: var(--ink-muted);
+  font-size: 14px;
+}
+
 .lookalike-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -4023,12 +4029,10 @@ button:disabled {
 }
 
 .lookalike-card.severity-toxic,
-.lookalike-card.severity-deadly,
-.lookalike-card.severity-toxic-confusion {
+.lookalike-card.severity-deadly {
   border-left-color: var(--danger-red);
 }
 
-.lookalike-card.severity-sickener,
 .lookalike-card.severity-caution {
   border-left-color: var(--safety-amber);
 }
@@ -5605,8 +5609,6 @@ textarea::placeholder {
 .lookalike-card,
 .lookalike-card.severity-toxic,
 .lookalike-card.severity-deadly,
-.lookalike-card.severity-toxic-confusion,
-.lookalike-card.severity-sickener,
 .lookalike-card.severity-caution {
   border: 1px solid var(--border);
   border-radius: 0;
@@ -5614,13 +5616,11 @@ textarea::placeholder {
 }
 
 .lookalike-card.severity-toxic,
-.lookalike-card.severity-deadly,
-.lookalike-card.severity-toxic-confusion {
+.lookalike-card.severity-deadly {
   border-color: oklch(48% 0.08 28);
   background: oklch(19% 0.018 28);
 }
 
-.lookalike-card.severity-sickener,
 .lookalike-card.severity-caution {
   border-color: oklch(49% 0.055 75);
   background: oklch(19% 0.014 75);

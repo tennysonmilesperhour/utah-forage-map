@@ -14,6 +14,7 @@ warning: "It can accumulate arsenic from some soils. Lilac bonnet and lilac fibr
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-09-27
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/437351607/large.jpeg
   alt: "Violet amethyst deceiver mushrooms in leaf litter"
@@ -32,6 +33,10 @@ lookalikes:
   - name: "Violet webcaps"
     severity: toxic
     check: "Cortinarius have a cobwebby veil and rusty-brown spores."
+  - name: "Wood Blewit"
+    slug: wood-blewit
+    severity: caution
+    check: "Wood blewit is larger and fleshier, with crowded gills and a pinkish-buff spore print, and grows in leaf litter and compost."
 ---
 
 ## Identification

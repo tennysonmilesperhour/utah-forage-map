@@ -14,6 +14,7 @@ warning: "The deadly Galerina marginata is almost identical. Most experts advise
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-09-27
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/227200335/large.jpeg
   alt: "Cluster of sheathed woodtuft mushrooms on a mossy stump"
@@ -35,6 +36,10 @@ lookalikes:
     slug: sulphur-tuft
     severity: toxic
     check: "Sulphur tuft has yellow caps, greenish gills, and purple-brown spores."
+  - name: "Velvet Shank"
+    slug: velvet-shank
+    severity: caution
+    check: "Velvet shank has a velvety dark stem with no ring, a sticky orange-brown cap and a white spore print."
 ---
 
 ## Identification

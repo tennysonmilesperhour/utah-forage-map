@@ -15,6 +15,7 @@ warning: "Poisonous. Muscarine causes sweating, salivation, tears, and slowed he
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-09-27
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/422217590/large.jpg
   alt: "Small white fool's funnel mushrooms in grass"
@@ -29,7 +30,7 @@ lookalikes:
     severity: toxic
     check: "Fairy ring mushroom has well-spaced gills that barely touch the stem, and a tan cap."
   - name: "The miller"
-    severity: caution
+    severity: toxic
     check: "Clitopilus prunulus smells of meal and has pink spores."
   - name: "St George's Mushroom"
     slug: st-georges-mushroom

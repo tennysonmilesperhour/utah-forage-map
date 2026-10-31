@@ -135,7 +135,7 @@ export function datasetDefinitions(data, occurrence, date) {
     },
     {
       id: 'lookalikes', title: 'Mushroom lookalike pairs with field checks',
-      description: 'Dangerous and harmless lookalikes for each guide, the field check that separates them, and whether the lookalike lists the species back. Severity words are the ones printed on each guide page and are not yet uniform across pairs, so read both pages of a pair. This is study material, not an edibility judgement.',
+      description: 'Dangerous and harmless lookalikes for each guide, the field check that separates them, and whether the lookalike lists the species back. Severity is the worst outcome if the two species are mixed up, in either direction (harmless, caution, toxic or deadly). Both pages of a pair carry the same word, so a severity describes the pair, not the edibility of either species. This is study material, not an edibility judgement.',
       rows: data.lookalikes, columns: columns(data.lookalikes), notes: 'Written by the World Mushroom Foraging field desk with cited sources on each species page. Independent expert review is pending.', source: 'World Mushroom Foraging species guides', snapshot: date,
       temporal: date, keywords: ['mushroom', 'lookalike', 'poisonous', 'identification', 'safety'], page: `${SITE}/learn`,
     },

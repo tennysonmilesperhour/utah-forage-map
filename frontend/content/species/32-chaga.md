@@ -15,6 +15,7 @@ warning: "Not a food mushroom. Heavy, long-term chaga tea use has been linked to
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-09-27
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/702373216/large.jpg
   alt: "Black cracked chaga canker growing from a birch trunk"
@@ -34,6 +35,10 @@ lookalikes:
   - name: "Black knot"
     severity: harmless
     check: "Black knot forms swollen black galls on cherry and plum branches, not on birch trunks."
+  - name: "Birch Polypore"
+    slug: birch-polypore
+    severity: harmless
+    check: "Birch polypore is a smooth, pale brown, kidney-shaped bracket with a white pore surface, not a black, cracked canker."
 ---
 
 ## Identification

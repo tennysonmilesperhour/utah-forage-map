@@ -15,6 +15,7 @@ warning: "Not recommended. It has caused gastrointestinal upset and loss of coor
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-09-27
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/500107302/large.jpeg
   alt: "Early false morel showing a wrinkled cap on a pale stem"
@@ -26,15 +27,19 @@ image:
 lookalikes:
   - name: "Morel"
     slug: morel
-    severity: caution
+    severity: toxic
     check: "True morels are hollow throughout and their caps join the stem at the lower edge."
   - name: "Half-free morel"
-    severity: caution
+    severity: toxic
     check: "Morchella punctipes caps attach halfway down and the stem is hollow."
   - name: "False Morel"
     slug: false-morel
     severity: toxic
     check: "Gyromitra has brain-like lobes and a chambered interior."
+  - name: "White Saddle"
+    slug: white-saddle
+    severity: toxic
+    check: "White saddle has a whitish, saddle-shaped cap on a deeply ribbed, chambered white stem."
 ---
 
 ## Identification

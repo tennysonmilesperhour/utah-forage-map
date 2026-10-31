@@ -15,6 +15,7 @@ warning: Use young, fresh fronds and confirm the white pore surface. Similar ros
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-08-15
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/99085994/large.jpg
   alt: Dense gray-brown hen of the woods rosette at a hardwood base
@@ -33,6 +34,10 @@ lookalikes:
   - name: Umbrella Polypore
     severity: caution
     check: Polyporus umbellatus forms many round caps on distinct slender stems rather than overlapping spoon-shaped fronds.
+  - name: "Cauliflower Mushroom"
+    slug: cauliflower-mushroom
+    severity: harmless
+    check: "Cauliflower mushroom is cream to pale yellow, with flat, wavy, noodle-like lobes and no pore surface."
 ---
 
 ## Identification

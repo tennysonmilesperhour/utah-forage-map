@@ -14,6 +14,7 @@ warning: "Not recommended; it can cause digestive upset. Its main danger is teac
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-09-27
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/307288630/large.jpg
   alt: "Orange false chanterelle with crowded forked gills"
@@ -35,6 +36,14 @@ lookalikes:
     slug: pacific-golden-chanterelle
     severity: caution
     check: "Pacific golden chanterelle has blunt, pinkish ridges."
+  - name: "Rainbow Chanterelle"
+    slug: rainbow-chanterelle
+    severity: caution
+    check: "Rainbow chanterelle has blunt, forked false gills, firm pale flesh and often a pinkish cap bloom, and grows from soil under conifers."
+  - name: "Yellowfoot"
+    slug: yellowfoot
+    severity: caution
+    check: "Yellowfoot has a thin brown cap, gray-yellow vein-like ridges and a hollow yellow stem."
 ---
 
 ## Identification

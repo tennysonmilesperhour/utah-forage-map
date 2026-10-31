@@ -15,6 +15,7 @@ warning: Amanita smithiana can resemble matsutake and cause kidney failure. This
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-08-15
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/168729229/large.jpeg
   alt: White western matsutake cap pushing through dark conifer duff
@@ -34,6 +35,10 @@ lookalikes:
   - name: Scaly Tricholoma species
     severity: toxic
     check: Gray or brown Tricholoma can lack the characteristic firm white flesh and spicy cinnamon-like odor.
+  - name: "Matsutake"
+    slug: matsutake
+    severity: harmless
+    check: "Tricholoma matsutake is the Eurasian species. Region and DNA, not field marks, separate the two."
 ---
 
 ## Identification
