@@ -22,7 +22,7 @@ async function request(url, options = {}) {
 }
 
 const authorised = { headers: { Authorization: `Bearer ${SECRET}` } }
-const report = { date, site: SITE, days: DAYS, traffic: null, prune: null, checks: {} }
+const report = { date, site: SITE, days: DAYS, traffic: null, prune: null, checks: {}, regional_signal: null }
 
 // 1. Traffic summary and prune (service credential only)
 if (!SECRET) {
@@ -48,6 +48,8 @@ if (catalogResult.ok) {
       const result = await request(dataset[format])
       let rows = null
       if (result.ok && format === 'json' && dataset.id !== 'regional-signal') rows = (await result.response.json()).rows?.length ?? null
+      // Keep the weekly regional signal (aggregated counts only) so a citable history builds up.
+      if (result.ok && dataset.id === 'regional-signal') report.regional_signal = await result.response.json()
       datasets.push({ id: dataset.id, format, status: result.status, ms: result.ms, rows, expected_rows: dataset.rows ?? null })
     }
   }

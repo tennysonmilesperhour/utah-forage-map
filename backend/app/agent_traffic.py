@@ -9,11 +9,13 @@ development and CI behave the same way.
 from datetime import datetime, timedelta
 import hmac
 import os
+import re
 from typing import Callable, Optional
 
 from fastapi import APIRouter, Depends, Header, HTTPException, Query, Request, Response
 from pydantic import BaseModel
 from sqlalchemy import BigInteger, Column, DateTime, Index, Integer, String, text
+from sqlalchemy.exc import DBAPIError
 from sqlalchemy.orm import Session
 
 from app.database import Base, get_db
@@ -21,6 +23,7 @@ from app.database import Base, get_db
 KINDS = ("training", "search", "assistant", "seo", "tool")
 AGENT_PATH_PREFIXES = ("/llms", "/data/", "/mcp", "/.well-known/")
 RETENTION_DAYS = 180
+MCP_TOOL_UNSAFE = re.compile(r"[^A-Za-z0-9_.-]")
 
 
 class AgentHit(Base):
@@ -32,6 +35,8 @@ class AgentHit(Base):
     kind = Column(String(12), nullable=False)
     path = Column(String(300), nullable=False)
     user_agent = Column(String(300), nullable=False, default="")
+    # Name of the MCP tool called on /mcp (migration b7e4c2a91d05). Arguments are never stored.
+    mcp_tool = Column(String(60), nullable=True)
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
 
 
@@ -40,6 +45,7 @@ class AgentHitCreate(BaseModel):
     kind: str
     path: str
     user_agent: str = ""
+    mcp_tool: Optional[str] = None
 
 
 def _clean(value: str, limit: int) -> str:
@@ -50,18 +56,33 @@ def _is_postgres(db: Session) -> bool:
     return db.get_bind().dialect.name == "postgresql"
 
 
-def log_hit(db: Session, agent: str, kind: str, path: str, user_agent: str = "") -> None:
+def clean_tool(value: Optional[str]) -> Optional[str]:
+    return MCP_TOOL_UNSAFE.sub("", value or "")[:60] or None
+
+
+def log_hit(db: Session, agent: str, kind: str, path: str, user_agent: str = "", mcp_tool: Optional[str] = None) -> None:
+    tool = clean_tool(mcp_tool)
     if _is_postgres(db):
-        db.execute(
-            text("SELECT agent_traffic_log(:agent, :kind, :path, :ua)"),
-            {"agent": _clean(agent, 60), "kind": kind, "path": _clean(path, 300), "ua": _clean(user_agent, 300)},
-        )
+        params = {"agent": _clean(agent, 60), "kind": kind, "path": _clean(path, 300), "ua": _clean(user_agent, 300)}
+        logged = False
+        if tool:
+            # Until migration b7e4c2a91d05 has run, the five-argument function does not exist;
+            # fall back to logging the hit without the tool name.
+            try:
+                with db.begin_nested():
+                    db.execute(text("SELECT agent_traffic_log(:agent, :kind, :path, :ua, :tool)"), {**params, "tool": tool})
+                logged = True
+            except DBAPIError:
+                logged = False
+        if not logged:
+            db.execute(text("SELECT agent_traffic_log(:agent, :kind, :path, :ua)"), params)
     else:
         db.add(AgentHit(
             agent=_clean(agent, 60) or "unknown",
             kind=kind if kind in KINDS else "tool",
             path=_clean(path, 300) or "/",
             user_agent=_clean(user_agent, 300),
+            mcp_tool=tool,
         ))
     db.commit()
 
@@ -118,6 +139,11 @@ def _summary_python(db: Session, days: int) -> dict:
         "top_paths": top_paths,
         "agent_file_hits": sum(1 for row in current if _is_agent_file(row.path)),
         "mcp_hits": sum(1 for row in current if row.path == "/mcp"),
+        "mcp_tools": sorted(
+            ({"tool": tool, "hits": hits}
+             for tool, hits in count([row for row in current if row.mcp_tool], lambda row: row.mcp_tool).items()),
+            key=lambda item: (-item["hits"], item["tool"]),
+        ),
         "unknown_user_agents": unknown,
         "daily": daily,
     }
@@ -152,7 +178,7 @@ def agent_traffic_router(require_service: Callable, optional_admin: Callable) ->
     ):
         if not write_key or not x_agent_log_key or not hmac.compare_digest(x_agent_log_key, write_key):
             raise HTTPException(status_code=401, detail="Invalid log credential")
-        log_hit(db, payload.agent, payload.kind, payload.path, payload.user_agent)
+        log_hit(db, payload.agent, payload.kind, payload.path, payload.user_agent, payload.mcp_tool)
         return Response(status_code=204)
 
     def allow_reader(request: Request, authorization: Optional[str], x_cron_secret: Optional[str], admin) -> None:

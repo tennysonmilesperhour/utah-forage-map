@@ -15,6 +15,7 @@ export const MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'Jun
 // Hemisphere month counts are published only when they rest on enough records and people.
 export const MIN_RECORDS = 30
 export const MIN_PEOPLE = 10
+export const HERB_NOTICE = 'A plant observation count is not an identification, a harvest window or a sign that a plant is safe. Never eat or use a wild plant based on this data.'
 
 const INAT_SOURCE = 'iNaturalist research-grade observations (iNaturalist open data, AWS Open Data Program)'
 
@@ -49,7 +50,38 @@ export function latestReview(speciesGuides) {
   return speciesGuides.map(guide => guide.last_updated || guide.last_reviewed).sort().at(-1)
 }
 
-export function buildDatasets({ speciesGuides, regions, occurrence }) {
+function monthRows(entry, base, snapshot) {
+  const rows = []
+  const suppressed = []
+  for (const hemisphere of ['north', 'south']) {
+    const counts = entry.months?.[hemisphere] ?? []
+    const records = counts.reduce((sum, value) => sum + value, 0)
+    if (records < MIN_RECORDS || entry.observers < MIN_PEOPLE) { suppressed.push(hemisphere); continue }
+    const row = { ...base, hemisphere, records, people_all_hemispheres: entry.observers }
+    MONTHS.forEach((month, index) => { row[month] = counts[index] })
+    row.peak_months = peakMonths(counts).join(' ')
+    row.first_year = entry.firstYear
+    row.last_month = entry.lastMonth
+    row.snapshot = snapshot
+    rows.push(row)
+  }
+  return { rows, suppressed }
+}
+
+// Same thresholds and shape as the mushroom table. Toxic profiles stay in, flagged, so an
+// assistant never mistakes a poisonous lookalike's months for a gathering season.
+export function buildHerbSeasonality(herbs = [], occurrence) {
+  const rows = []
+  for (const plant of herbs) {
+    const entry = occurrence.herbs?.[plant.slug]
+    if (!entry) continue
+    const base = { plant_slug: plant.slug, name: plant.name, latin_name: plant.latin, toxic_lookalike_reference: plant.status === 'toxic' }
+    for (const row of monthRows(entry, base, occurrence.snapshot).rows) rows.push({ ...row, page_url: `${SITE}/herbs/atlas/${plant.slug}` })
+  }
+  return rows
+}
+
+export function buildDatasets({ speciesGuides, regions, occurrence, herbs }) {
   const pageUrl = guide => `${SITE}/learn/species/${guide.slug}`
   const species = speciesGuides.map(guide => ({
     slug: guide.slug,
@@ -72,23 +104,10 @@ export function buildDatasets({ speciesGuides, regions, occurrence }) {
   for (const guide of speciesGuides) {
     const entry = occurrence.fungi[guide.slug]
     if (!entry) continue
-    for (const hemisphere of ['north', 'south']) {
-      const counts = entry.months?.[hemisphere] ?? []
-      const records = counts.reduce((sum, value) => sum + value, 0)
-      if (records < MIN_RECORDS || entry.observers < MIN_PEOPLE) { suppressed.push(`${guide.slug}:${hemisphere}`); continue }
-      const row = {
-        species_slug: guide.slug, common_name: guide.common_name, latin_name: guide.latin_name,
-        inaturalist_taxon_id: guide.taxon_id, hemisphere, records,
-        people_all_hemispheres: entry.observers,
-      }
-      MONTHS.forEach((month, index) => { row[month] = counts[index] })
-      row.peak_months = peakMonths(counts).join(' ')
-      row.first_year = entry.firstYear
-      row.last_month = entry.lastMonth
-      row.snapshot = occurrence.snapshot
-      row.page_url = pageUrl(guide)
-      seasonality.push(row)
-    }
+    const base = { species_slug: guide.slug, common_name: guide.common_name, latin_name: guide.latin_name, inaturalist_taxon_id: guide.taxon_id }
+    const result = monthRows(entry, base, occurrence.snapshot)
+    for (const row of result.rows) seasonality.push({ ...row, page_url: pageUrl(guide) })
+    for (const hemisphere of result.suppressed) suppressed.push(`${guide.slug}:${hemisphere}`)
   }
 
   const bySlug = Object.fromEntries(speciesGuides.map(guide => [guide.slug, guide]))
@@ -113,7 +132,7 @@ export function buildDatasets({ speciesGuides, regions, occurrence }) {
     page_url: `${SITE}/regions/${region.slug}`,
   }))
 
-  return { species, seasonality, suppressed, lookalikes, regions: regionRows }
+  return { species, seasonality, suppressed, lookalikes, regions: regionRows, herbSeasonality: buildHerbSeasonality(herbs, occurrence) }
 }
 
 const COMMON = {
@@ -132,6 +151,13 @@ export function datasetDefinitions(data, occurrence, date) {
       description: `Records per calendar month for each catalogue mushroom, split by hemisphere. A month count is how many research-grade records fall in that month across all years, not a forecast. Hemisphere rows with fewer than ${MIN_RECORDS} records, or species seen by fewer than ${MIN_PEOPLE} people, are left out.`,
       rows: data.seasonality, columns: columns(data.seasonality), notes: inat, source: INAT_SOURCE, snapshot: occurrence.snapshot,
       temporal: occurrence.snapshot, keywords: ['mushroom', 'seasonality', 'phenology', 'foraging', 'iNaturalist'], page: `${SITE}/learn`,
+    },
+    {
+      id: 'herb-seasonality', title: 'Wild plant seasonality by species and hemisphere',
+      description: `Records per calendar month for each plant in the herb atlas, split by hemisphere, in the same shape as the mushroom table. A month count is how many research-grade records fall in that month across all years, not a harvest window or a forecast. toxic_lookalike_reference is true for the poisonous plants the atlas keeps as lookalike references; false does not mean a plant is safe to eat or use. Hemisphere rows with fewer than ${MIN_RECORDS} records, or plants seen by fewer than ${MIN_PEOPLE} people, are left out. ${HERB_NOTICE}`,
+      rows: data.herbSeasonality, columns: columns(data.herbSeasonality), notes: inat, source: INAT_SOURCE, snapshot: occurrence.snapshot,
+      temporal: occurrence.snapshot, keywords: ['wild plants', 'herbs', 'seasonality', 'phenology', 'iNaturalist'], page: `${SITE}/herbs`,
+      notice: `${HERB_NOTICE} ${NOTICE}`,
     },
     {
       id: 'lookalikes', title: 'Mushroom lookalike pairs with field checks',
@@ -188,7 +214,7 @@ export function catalogJsonLd(definitions) {
     '@context': 'https://schema.org',
     '@graph': [{
       '@type': 'DataCatalog', '@id': `${SITE}/data#catalog`, name: 'World Mushroom Foraging open data',
-      description: 'Open mushroom seasonality, lookalike and regional field-signal data, free to reuse with credit.',
+      description: 'Open mushroom seasonality, lookalike and regional field-signal data, plus wild plant seasonality, free to reuse with credit.',
       url: `${SITE}/data`, ...COMMON, publisher: { '@id': `${SITE}/#organization` },
       dataset: [...definitions.map(definition => ({ '@id': `${SITE}/data#${definition.id}` })), { '@id': `${SITE}/data#regional-signal` }],
     }, ...definitions.map(datasetJsonLd), liveDataset()],
@@ -220,7 +246,7 @@ export function datasetFiles(definitions) {
     files.set(`data/${definition.id}.csv`, csv(definition.rows, definition.columns))
     files.set(`data/${definition.id}.json`, JSON.stringify({
       title: definition.title, description: definition.description, license: LICENSE_URL, attribution: ATTRIBUTION,
-      notice: NOTICE, notes: definition.notes, snapshot: definition.snapshot, rows: definition.rows,
+      notice: definition.notice ?? NOTICE, notes: definition.notes, snapshot: definition.snapshot, rows: definition.rows,
     }, null, 1))
   }
   files.set('data/index.json', JSON.stringify(catalogIndex(definitions), null, 1))

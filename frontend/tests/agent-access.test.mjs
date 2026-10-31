@@ -111,6 +111,14 @@ test('middleware posts a log row for a bot, skips browsers and adds the canonica
     assert.equal(response.headers.get('link'), '<https://worldmushroomforaging.org/learn/species/morel>; rel="canonical"')
     middleware(new Request('https://worldmushroomforaging.org/', { headers: { 'user-agent': 'Mozilla/5.0 Chrome/130 Safari/537.36' } }), context)
     assert.equal(posted.length, 1)
+    const call = { jsonrpc: '2.0', id: 3, method: 'tools/call', params: { name: 'seasonality', arguments: { species: 'morel', region: 'secret spot' } } }
+    const mcp = new Request('https://worldmushroomforaging.org/mcp', { method: 'POST', headers: { 'user-agent': 'Claude-User/1.0', 'content-type': 'application/json' }, body: JSON.stringify(call) })
+    middleware(mcp, context)
+    await Promise.all(pending)
+    const logged = JSON.parse(posted[1].init.body)
+    assert.equal(logged.mcp_tool, 'seasonality')
+    assert.doesNotMatch(posted[1].init.body, /secret spot|morel/)
+    assert.equal(await mcp.text(), JSON.stringify(call), 'the MCP function still receives the original body')
   } finally {
     globalThis.fetch = realFetch
     delete process.env.AGENT_LOG_SECRET
