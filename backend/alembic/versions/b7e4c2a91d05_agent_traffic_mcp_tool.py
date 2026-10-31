@@ -41,11 +41,30 @@ def _previous():
     return module
 
 
+# Text sort keys use byte order (COLLATE "C") so ties come out in the same order as the
+# Python summary whatever collation the database was created with (Neon and CI default to
+# en_US, which ignores punctuation and would put "ClaudeBot" before "Claude-User").
+BYTE_ORDER = [
+    ("ORDER BY hits DESC, agent)", 'ORDER BY hits DESC, agent COLLATE "C")'),
+    ("ORDER BY hits DESC, kind)", 'ORDER BY hits DESC, kind COLLATE "C")'),
+    ("ORDER BY hits DESC, path)", 'ORDER BY hits DESC, path COLLATE "C")'),
+    ("ORDER BY count(*) DESC, path LIMIT", 'ORDER BY count(*) DESC, path COLLATE "C" LIMIT'),
+    ("ORDER BY hits DESC, user_agent)", 'ORDER BY hits DESC, user_agent COLLATE "C")'),
+    ("ORDER BY count(*) DESC, user_agent LIMIT", 'ORDER BY count(*) DESC, user_agent COLLATE "C" LIMIT'),
+    ("ORDER BY hits DESC, mcp_tool)", 'ORDER BY hits DESC, mcp_tool COLLATE "C")'),
+]
+
+
 def summary_with_tools(summary_sql: str) -> str:
     anchor = "\n        'unknown_user_agents',"
     if anchor not in summary_sql:
         raise RuntimeError("agent_traffic_summary layout changed; update this migration")
-    return summary_sql.replace(anchor, MCP_TOOLS + anchor, 1)
+    sql = summary_sql.replace(anchor, MCP_TOOLS + anchor, 1)
+    for old, new in BYTE_ORDER:
+        if old not in sql:
+            raise RuntimeError(f"agent_traffic_summary layout changed near {old!r}; update this migration")
+        sql = sql.replace(old, new)
+    return sql
 
 
 def upgrade():
