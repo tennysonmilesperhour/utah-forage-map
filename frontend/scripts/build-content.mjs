@@ -13,6 +13,9 @@ const requiredFields = [
   'difficulty', 'season', 'habitat', 'underside', 'spore_print', 'warning',
   'author', 'reviewer', 'last_reviewed', 'image',
 ]
+// Worst outcome if the two species are mixed up, in either direction.
+// tests/lookalikes.test.mjs keeps both pages of a pair in step.
+const LOOKALIKE_SEVERITIES = ['harmless', 'caution', 'toxic', 'deadly']
 const requiredImageFields = [
   'url', 'alt', 'credit', 'source', 'creator', 'copyright_notice', 'license',
 ]
@@ -44,6 +47,8 @@ for (const file of files) {
   if (data.lookalikes.some(item => !item.name || !item.severity || !item.check)) {
     throw new Error(`${file} has an incomplete lookalike`)
   }
+  const unknownSeverity = data.lookalikes.find(item => !LOOKALIKE_SEVERITIES.includes(item.severity))
+  if (unknownSeverity) throw new Error(`${file} lookalike ${unknownSeverity.name} has severity ${unknownSeverity.severity}; use ${LOOKALIKE_SEVERITIES.join(', ')}`)
   if (slugs.has(data.slug)) throw new Error(`${file} duplicates slug: ${data.slug}`)
   if (taxonIds.has(Number(data.taxon_id))) throw new Error(`${file} duplicates taxon_id: ${data.taxon_id}`)
   slugs.add(data.slug)

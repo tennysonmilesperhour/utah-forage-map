@@ -15,6 +15,7 @@ warning: "Poisonous. Causes severe vomiting and diarrhea. Avoid boletes with red
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-09-27
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/15061640/large.jpeg
   alt: "Pale devil's bolete with red pores and bulbous stem"
@@ -32,8 +33,12 @@ lookalikes:
     check: "Rubroboletus rhodoxanthus and relatives share red pores and bluing."
   - name: "King Bolete"
     slug: king-bolete
-    severity: harmless
+    severity: toxic
     check: "King bolete has white to yellow pores and a white net."
+  - name: "Pine Bolete"
+    slug: pine-bolete
+    severity: toxic
+    check: "Pine bolete has a dark wine-red cap and white pores aging yellow-olive, never red."
 ---
 
 ## Identification

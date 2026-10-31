@@ -15,6 +15,7 @@ warning: "The fool's funnel grows in the same lawns and is poisonous. Check gill
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-09-27
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/50588912/large.jpg
   alt: "Tan fairy ring mushrooms scattered in a lawn"
@@ -35,6 +36,10 @@ lookalikes:
   - name: "Other lawn mushrooms"
     severity: caution
     check: "Collect only where every specimen has been checked; lawns host many small species."
+  - name: "Stinking Dapperling"
+    slug: stinking-dapperling
+    severity: toxic
+    check: "Stinking dapperling has a small white cap with brown scales concentrated at the center, a fragile ring and a strong, unpleasant smell."
 ---
 
 ## Identification

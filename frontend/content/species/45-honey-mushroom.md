@@ -15,6 +15,7 @@ warning: "Always cook thoroughly; raw or undercooked honey mushrooms cause vomit
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-09-27
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/167364677/large.jpg
   alt: "Cluster of honey mushrooms with yellow-brown caps at the base of a tree"
@@ -36,6 +37,10 @@ lookalikes:
     slug: jack-o-lantern
     severity: toxic
     check: "Jack-o'-lanterns are bright orange throughout and lack a ring."
+  - name: "Sheathed Woodtuft"
+    slug: sheathed-woodtuft
+    severity: caution
+    check: "Sheathed woodtuft has a two-toned cap that dries from the center, a scaly stem below the ring and a brown spore print. Deadly galerina looks almost the same and also has brown spores, so leave brown-spored clusters on wood to experts."
 ---
 
 ## Identification

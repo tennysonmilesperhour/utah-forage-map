@@ -15,6 +15,7 @@ warning: Potentially fatal. If ingestion is possible, call Poison Control immedi
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-08-15
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/330361432/large.jpg
   alt: White destroying angel mushroom showing cap, ring, and stem
@@ -24,6 +25,14 @@ image:
   copyright_notice: © Alan Rockefeller
   license: https://creativecommons.org/licenses/by/4.0/
 lookalikes:
+  - name: "Aborted Entoloma"
+    slug: aborted-entoloma
+    severity: deadly
+    check: "The aborted form is an irregular white lump with pinkish, marbled flesh and no outline of a cap, gills or stem when cut."
+  - name: "Yellow Stainer"
+    slug: yellow-stainer
+    severity: deadly
+    check: "Yellow stainer has free gills that turn pink then chocolate brown, a brown spore print, no volva, and it stains chrome yellow at the base."
   - name: Young Puffball
     severity: deadly
     check: Slice vertically; an Amanita button reveals a tiny cap, gills, and stem inside rather than uniform white flesh.

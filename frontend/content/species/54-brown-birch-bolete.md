@@ -15,6 +15,7 @@ warning: "Cook thoroughly, and discard old, soft caps. Some people react to Lecc
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-09-27
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/116927438/large.jpeg
   alt: "Brown birch bolete with a pale scaly stem in grass"
@@ -29,11 +30,11 @@ lookalikes:
     severity: caution
     check: "Bitter bolete has pinkish pores and a dark net rather than scabers."
   - name: "Other brown scaber stalks"
-    severity: harmless
+    severity: caution
     check: "Several Leccinum species differ in flesh staining and host tree."
   - name: "Bay Bolete"
     slug: bay-bolete
-    severity: harmless
+    severity: caution
     check: "Bay bolete has a streaked stem without scabers and pores bruising blue."
 ---
 

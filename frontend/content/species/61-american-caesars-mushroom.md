@@ -14,6 +14,7 @@ warning: "An Amanita. Confirm yellow gills and stem and the white sac volva, and
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-09-27
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/160859381/large.jpg
   alt: "Red-orange American Caesar's mushrooms with yellow stems"
@@ -34,6 +35,10 @@ lookalikes:
     slug: death-cap
     severity: deadly
     check: "Unopened eggs of deadly Amanita look similar; cut and check the colors."
+  - name: "Caesar's Mushroom"
+    slug: caesars-mushroom
+    severity: harmless
+    check: "Amanita caesarea is the European relative with the same orange cap, yellow gills and white sac-like volva. Range, not appearance, separates the two."
 ---
 
 ## Identification

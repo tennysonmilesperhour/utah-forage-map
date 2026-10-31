@@ -14,6 +14,7 @@ warning: "Poisonous raw. Causes vomiting and diarrhea."
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-09-27
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/563201585/large.jpg
   alt: "Scarlet sickener Russula in moss"
@@ -28,16 +29,20 @@ lookalikes:
     check: "Russula nobilis grows with beech and is also acrid."
   - name: "Shrimp Russula"
     slug: shrimp-russula
-    severity: harmless
+    severity: toxic
     check: "Shrimp russula has a fishy smell, yellowish gills, and bruises brown."
   - name: "Other red Russula"
-    severity: caution
-    check: "Taste a tiny piece and spit it out; acrid red Russulas should be left."
+    severity: toxic
+    check: "Red Russulas are hard to tell apart and several are toxic. Do not taste them to separate them; leave red Russulas unless a qualified local expert confirms the species."
+  - name: "Charcoal Burner"
+    slug: charcoal-burner
+    severity: toxic
+    check: "Charcoal burner has a mixed violet, gray and green cap and white gills that bend without breaking."
 ---
 
 ## Identification
 
-The cap is bright scarlet, and its skin peels almost to the center, revealing pink flesh. Gills and stem are pure white. The flesh is brittle and crumbly. A tiny piece tasted and spat out burns intensely.
+The cap is bright scarlet, and its skin peels almost to the center, revealing pink flesh. Gills and stem are pure white. The flesh is brittle and crumbly. Field guides describe its taste as burning hot, but tasting is not a safe way to identify any wild mushroom: rely on the white spore print, white gills, habitat and a qualified local expert.
 
 ## Why it matters
 

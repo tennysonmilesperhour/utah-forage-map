@@ -15,6 +15,7 @@ warning: "Woody and not a food mushroom."
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-09-27
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/204661813/large.jpeg
   alt: "Gray hoof-shaped tinder fungus bracket on a birch"
@@ -35,6 +36,10 @@ lookalikes:
     slug: birch-polypore
     severity: harmless
     check: "Birch polypore is smooth, white, and soft by comparison."
+  - name: "Chaga"
+    slug: chaga
+    severity: harmless
+    check: "Chaga is a black, deeply cracked canker with rusty orange flesh, not a hoof-shaped bracket with pores."
 ---
 
 ## Identification

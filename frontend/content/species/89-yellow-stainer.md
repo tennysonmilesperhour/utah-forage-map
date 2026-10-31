@@ -14,6 +14,7 @@ warning: "Poisonous. The most common cause of Agaricus poisoning. Always cut the
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-09-27
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/144785717/large.jpg
   alt: "White yellow stainer with a bright yellow cut stem base"
@@ -35,6 +36,10 @@ lookalikes:
     slug: destroying-angel
     severity: deadly
     check: "Destroying angels have white gills and a volva."
+  - name: "Wine Cap"
+    slug: wine-cap
+    severity: toxic
+    check: "Wine cap has a wine-red to tan cap, attached gray-purple gills, a thick ring with a cogwheel pattern and a purple-black spore print, and does not stain yellow at the base."
 ---
 
 ## Identification

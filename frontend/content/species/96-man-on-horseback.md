@@ -15,6 +15,7 @@ warning: "Poisonous. Repeated meals have caused rhabdomyolysis and deaths in Fra
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-09-27
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/10420482/large.jpeg
   alt: "Yellow man on horseback mushroom with sulphur gills"
@@ -28,10 +29,10 @@ lookalikes:
     severity: toxic
     check: "Tricholoma sulphureum smells strongly of coal gas."
   - name: "Aspen knight"
-    severity: caution
+    severity: toxic
     check: "Tricholoma frondosae grows with aspen and is closely related."
   - name: "Other yellow Tricholoma"
-    severity: caution
+    severity: toxic
     check: "Several yellow knights overlap in appearance."
 ---
 

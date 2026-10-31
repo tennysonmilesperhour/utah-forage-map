@@ -14,6 +14,7 @@ warning: "Causes gastrointestinal upset in some people. The green-spored parasol
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-09-27
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/334537730/large.jpg
   alt: "Shaggy parasol with coarse scales on a pale cap"
@@ -29,7 +30,7 @@ lookalikes:
     check: "Its spore print is dull green and its gills turn grayish green with age."
   - name: "Parasol Mushroom"
     slug: parasol-mushroom
-    severity: harmless
+    severity: caution
     check: "The true parasol is taller and has a snakeskin-banded stem."
   - name: "Brown parasol"
     severity: caution

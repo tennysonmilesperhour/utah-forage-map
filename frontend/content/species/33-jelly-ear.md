@@ -1,8 +1,8 @@
 ---
-slug: wood-ear
+slug: jelly-ear
 common_name: "Jelly Ear"
 latin_name: "Auricularia auricula-judae"
-aliases: "Jelly ear; Auricularia complex"
+aliases: "Wood ear, Auricularia auricula-judae complex"
 taxon_id: 1138427
 summary: "A rubbery, ear-shaped brown jelly fungus on dead hardwood, especially elder, eaten widely after cooking."
 edibility: edible
@@ -15,6 +15,7 @@ warning: "Cook before eating. Soak dried wood ears briefly and refrigerate; long
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-09-27
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/347336106/large.jpeg
   alt: "Brown, rubbery ear-shaped jelly fungi growing on a fallen branch"
@@ -33,6 +34,10 @@ lookalikes:
   - name: "Amber jelly roll"
     severity: harmless
     check: "Exidia recisa forms small amber, top-shaped blobs on willow and alder twigs."
+  - name: "Witches' Butter"
+    slug: witches-butter
+    severity: harmless
+    check: "Witches' butter is bright yellow to orange and lobed like brain folds, not brown and ear-shaped."
 ---
 
 ## Identification

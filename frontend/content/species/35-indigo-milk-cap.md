@@ -2,7 +2,7 @@
 slug: indigo-milk-cap
 common_name: "Indigo Milk Cap"
 latin_name: "Lactarius indigo"
-aliases: "Blue milk mushroom"
+aliases: "Blue milk mushroom, Lactarius indigo complex"
 taxon_id: 1366733
 summary: "A striking blue milk cap whose cut gills bleed blue latex that slowly stains green."
 edibility: edible

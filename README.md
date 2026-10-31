@@ -67,9 +67,11 @@ source venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env
 alembic upgrade head
-python -m scripts.seed
+python -m scripts.seed --demo
 uvicorn app.main:app --reload
 ```
+
+`--demo` adds illustrative Utah sightings, community reports, events and clubs for local development. They are not real reviewed records, so the production seed below runs without it and only writes the species catalogue and resource guides.
 
 The local default is `sqlite:///./utah_forage_map.db`. Set `DATABASE_URL` to a PostgreSQL URL in production. Development creates missing tables for convenience; production requires `alembic upgrade head`.
 

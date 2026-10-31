@@ -15,6 +15,7 @@ warning: Potentially fatal. Never eat little brown mushrooms from wood, and cont
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-08-15
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/584244172/large.jpg
   alt: Small tawny deadly Galerina showing rusty gills and a ringed stem
@@ -24,6 +25,18 @@ image:
   copyright_notice: © Alan Rockefeller
   license: https://creativecommons.org/licenses/by/4.0/
 lookalikes:
+  - name: "Candy Cap"
+    slug: candy-cap
+    severity: deadly
+    check: "Candy cap releases watery white latex when the gills are cut, drops a pale spore print and has no ring. Galerina has no latex and rusty-brown spores."
+  - name: "Velvet Shank"
+    slug: velvet-shank
+    severity: deadly
+    check: "Velvet shank has a velvety dark stem with no ring, a sticky orange-brown cap and a white spore print, and fruits in cold weather."
+  - name: "Ringed Conecap"
+    slug: ringed-conecap
+    severity: deadly
+    check: "Pholiotina rugosa is a slender, conical brown mushroom with a ring and rusty-brown spores. It also contains amatoxins and is just as dangerous."
   - name: Sheathed Woodtuft
     slug: sheathed-woodtuft
     severity: deadly

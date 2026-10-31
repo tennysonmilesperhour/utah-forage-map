@@ -14,6 +14,7 @@ warning: "Poisonous. Causes delayed kidney injury that can require dialysis. It 
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-09-27
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/166224012/large.jpg
   alt: "Shaggy white Smith's amanita with cottony stem"
@@ -32,7 +33,7 @@ lookalikes:
     severity: deadly
     check: "The Asian and European matsutake shares the same field test: odor and stem base."
   - name: "Catathelasma"
-    severity: caution
+    severity: toxic
     check: "Catathelasma is larger and has a double ring and decurrent gills."
 ---
 

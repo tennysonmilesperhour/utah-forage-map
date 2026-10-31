@@ -15,6 +15,7 @@ warning: Poisonous. Muscimol and ibotenic acid products are not a safe shortcut,
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-08-15
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/432197409/large.jpeg
   alt: Red fly agaric cap with white veil warts in moss
@@ -32,8 +33,16 @@ lookalikes:
     severity: toxic
     check: Rain can remove the white warts, so the ring, white gills, spore print, and basal structure still need examination.
   - name: Russula species
-    severity: caution
+    severity: toxic
     check: Russulas lack both the skirt-like ring and the structured bulb at the stem base.
+  - name: "Caesar's Mushroom"
+    slug: caesars-mushroom
+    severity: toxic
+    check: "Caesar's mushroom has yellow gills and a yellow stem above a white sac-like volva; fly agaric gills and stem are white."
+  - name: "American Caesar's Mushroom"
+    slug: american-caesars-mushroom
+    severity: toxic
+    check: "American Caesar's mushroom has yellow gills and a yellow stem; fly agaric gills and stem are white. Rain can wash warts off a fly agaric, so check the gills."
 ---
 
 ## Identification

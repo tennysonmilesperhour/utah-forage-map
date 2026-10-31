@@ -15,6 +15,7 @@ warning: "Always take a spore print: violet webcaps have rusty-brown spores and 
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-09-27
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/702665378/large.jpg
   alt: "Lilac wood blewit showing violet gills and stem"
@@ -32,7 +33,7 @@ lookalikes:
     check: "Inocybe species are smaller, fibrous-capped, and drop brown spores."
   - name: "Amethyst Deceiver"
     slug: amethyst-deceiver
-    severity: harmless
+    severity: caution
     check: "Amethyst deceiver is smaller and slender, with thick, widely spaced gills."
 ---
 

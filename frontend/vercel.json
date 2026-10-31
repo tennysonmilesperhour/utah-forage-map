@@ -42,6 +42,16 @@
       "permanent": true
     },
     {
+      "source": "/learn/species/wood-ear",
+      "destination": "/learn/species/jelly-ear",
+      "permanent": true
+    },
+    {
+      "source": "/learn/species/wood-ear.md",
+      "destination": "/learn/species/jelly-ear.md",
+      "permanent": true
+    },
+    {
       "source": "/reference/learn.md",
       "destination": "/reference/library.md",
       "permanent": true

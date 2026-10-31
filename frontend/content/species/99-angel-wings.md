@@ -14,6 +14,7 @@ warning: "Poisonous. Linked to fatal acute encephalopathy, especially in people 
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-09-27
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/26706572/large.jpg
   alt: "Pure white angel wings fungus on a conifer log"
@@ -32,7 +33,7 @@ lookalikes:
     severity: toxic
     check: "Ghost fungus is thicker, glows, and grows in Australia."
   - name: "Crepidotus"
-    severity: harmless
+    severity: toxic
     check: "Crepidotus are small and drop brown spores."
 ---
 

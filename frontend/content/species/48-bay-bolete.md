@@ -14,6 +14,7 @@ warning: "Avoid boletes with red or orange pores and any with a bitter taste. Co
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-09-27
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/231101319/large.jpg
   alt: "Chestnut-brown bay bolete cap on a pale stem in moss"
@@ -34,6 +35,10 @@ lookalikes:
   - name: "Red-cracked boletes"
     severity: harmless
     check: "Xerocomellus species are smaller, with cracking caps and red flesh under the cracks."
+  - name: "Brown Birch Bolete"
+    slug: brown-birch-bolete
+    severity: caution
+    check: "Brown birch bolete grows with birch and has a pale stem covered in dark scabers, not streaks, and pores that do not bruise blue."
 ---
 
 ## Identification

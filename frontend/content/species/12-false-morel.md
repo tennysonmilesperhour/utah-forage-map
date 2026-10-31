@@ -15,6 +15,7 @@ warning: Poisonous. The site does not endorse traditional detoxification methods
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-08-15
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/18867417/large.jpg
   alt: Reddish brown false morel with a folded brain-like cap
@@ -26,14 +27,22 @@ image:
 lookalikes:
   - name: Morel
     slug: morel
-    severity: toxic-confusion
+    severity: toxic
     check: True morels have regular pits and ridges and one clean hollow chamber from cap to base.
   - name: Snow Morels
-    severity: caution
+    severity: toxic
     check: Other Gyromitra species vary in toxicity and are difficult to separate; regional expert review is needed.
   - name: Verpa species
-    severity: caution
+    severity: toxic
     check: Verpa caps attach only at the top of the stem and hang like a thimble.
+  - name: "Early False Morel"
+    slug: early-false-morel
+    severity: toxic
+    check: "Verpa bohemica has a wrinkled thimble cap attached only at the top of a stem stuffed with cottony fibers. It is also poisonous."
+  - name: "White Saddle"
+    slug: white-saddle
+    severity: toxic
+    check: "White saddle has a whitish, saddle-shaped cap on a deeply ribbed white stem."
 ---
 
 ## Identification

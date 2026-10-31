@@ -65,7 +65,10 @@ confusable species:
 - Side-by-side photos.
 - A plain-language "how to tell them apart" sentence (Wild Food UK's "Possible Confusion"
   model: "false chanterelle is more orangey and lacks the white flesh").
-- A severity tag on each lookalike: harmless / sickener / **deadly**.
+- A severity tag on each lookalike: harmless / caution / toxic / **deadly**. It means the worst
+  outcome if the two species are mixed up, in either direction, so both pages of a pair carry
+  the same word and it is never milder than the more dangerous species. Every linked lookalike
+  is listed back on the other page (`frontend/tests/lookalikes.test.mjs` enforces both rules).
 - A region note where relevant ("common in Europe, absent from western North America").
 - When a species genuinely has no dangerous lookalikes, say so explicitly — don't omit the
   section.

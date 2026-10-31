@@ -15,6 +15,7 @@ warning: Poisonous. Cut every puffball-like mushroom vertically; earthballs deve
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-08-15
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/442605448/large.jpeg
   alt: Tan common earthball with a thick cracked surface among woodland leaves
@@ -26,11 +27,11 @@ image:
 lookalikes:
   - name: Giant Puffball
     slug: giant-puffball
-    severity: toxic-confusion
+    severity: toxic
     check: An edible-stage puffball has a thinner skin and a completely uniform white interior.
   - name: Gem-studded Puffball
     slug: gem-studded-puffball
-    severity: toxic-confusion
+    severity: toxic
     check: Gem-studded puffballs have detachable spines and homogeneous white flesh when young.
   - name: Amanita button
     severity: deadly

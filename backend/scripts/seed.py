@@ -1,4 +1,6 @@
 import json
+import os
+import sys
 from datetime import date, timedelta
 from pathlib import Path
 
@@ -18,7 +20,7 @@ SPECIES = [
         "common_name": "King Bolete", "latin_name": "Boletus edulis", "inaturalist_taxon_id": 48701, "edibility": "choice",
         "look_alikes": "Bitter boletes and red-pored boletes", "habitat_notes": "Montane spruce, fir, and pine forest",
         "peak_months": None, "elevation_min_ft": None, "elevation_max_ft": None,
-        "range_notes": "Temperate and boreal forests across the Northern Hemisphere and introduced ranges.", "notes": "Check pore color, bruising, and taste with an expert before considering consumption.",
+        "range_notes": "Temperate and boreal forests across the Northern Hemisphere and introduced ranges.", "notes": "Check pore color, stem netting and bruising with a qualified local expert before considering consumption. Never taste a wild mushroom to identify it.",
     },
     {
         "common_name": "Rainbow Chanterelle", "latin_name": "Cantharellus roseocanus", "inaturalist_taxon_id": 499666, "edibility": "choice",
@@ -191,6 +193,10 @@ SPECIES = [
 ]
 
 
+# Demo content from the original Utah field catalogue. These are illustrative
+# rows, not real reviewed observations, reports, events or clubs, so they are
+# only written with --demo (or SEED_DEMO=1) for local development. A plain
+# production seed never publishes them.
 SIGHTINGS = [
     ("Morel", 40.612, -111.591, 7200, "forest", 5),
     ("Morel", 39.146, -111.367, 8100, "forest", 5),
@@ -214,18 +220,66 @@ def get_or_create(db, model, lookup, **values):
 
 
 def catalogue_species():
-    """Hand-written entries above, plus every other guide species generated from the frontend library."""
+    """Hand-written entries above, plus every other guide species generated from the frontend library.
+
+    Lookalike lists always come from the generated guide data so they match the published guides.
+    """
     defined = {item["latin_name"] for item in SPECIES}
     generated = json.loads((Path(__file__).resolve().parents[1] / "app" / "data" / "fungi-species.json").read_text())
+    guide_lookalikes = {item["latin_name"]: item["look_alikes"] for item in generated if item.get("look_alikes")}
+    written = [{**item, "look_alikes": guide_lookalikes.get(item["latin_name"], item["look_alikes"])} for item in SPECIES]
     extra = [
         {**item, "peak_months": None, "elevation_min_ft": None, "elevation_max_ft": None}
         for item in generated
         if item["latin_name"] not in defined
     ]
-    return [*SPECIES, *extra]
+    return [*written, *extra]
 
 
-def seed():
+def demo_requested(argv=None):
+    return "--demo" in (sys.argv[1:] if argv is None else argv) or os.getenv("SEED_DEMO") == "1"
+
+
+def seed_demo_content(db):
+    """Illustrative Utah rows for local development only (see the note above SIGHTINGS)."""
+    curator = get_or_create(
+        db, User, {"email": "fielddesk@system.local"},
+        username="Mushroom Field Desk", hashed_password=passwords.hash(new_token()),
+        role="system", email_verified=True,
+    )
+    curator.username = "Mushroom Field Desk"
+    if db.query(Sighting).filter_by(user_id=curator.id).count() == 0:
+        by_name = {item.common_name: item for item in db.query(Species).all()}
+        for common_name, latitude, longitude, elevation, habitat, month in SIGHTINGS:
+            db.add(Sighting(
+                user_id=curator.id, species_id=by_name[common_name].id,
+                latitude=latitude, longitude=longitude, elevation_ft=elevation,
+                month=month, habitat_type=habitat, source="field desk",
+                confidence_score=85, verified=True, review_status="approved",
+                location_privacy="approximate", notes="Seed observation from the original Utah field catalogue.",
+            ))
+        curator.total_finds = len(SIGHTINGS)
+
+    get_or_create(db, CommunityFind, {"title": "Morels after a Wasatch burn"},
+        region="Wasatch Front", species_name="Morel", summary="A reviewed seasonal report from mixed aspen and conifer habitat.",
+        contributor_name="Field desk", reviewed=True)
+    get_or_create(db, CommunityFind, {"title": "Boletes in the high Uintas"},
+        region="Uinta Mountains", species_name="King Bolete", summary="Research and community observations increased after sustained monsoon moisture.",
+        contributor_name="Community report", reviewed=True)
+    get_or_create(db, CommunityEvent, {"title": "Beginner mushroom field walk"},
+        starts_on=date.today() + timedelta(days=21), location_name="Wasatch Front trailhead",
+        region="Northern Utah", description="A leave-no-trace identification walk; exact meeting point is shared after registration.", organizer="Mushroom Field Desk")
+    get_or_create(db, CommunityEvent, {"title": "Late-summer bolete survey"},
+        starts_on=date.today() + timedelta(days=45), location_name="Uinta Mountains",
+        region="Northeastern Utah", description="Document habitat, elevation, and field marks for the public record.", organizer="Volunteer survey team")
+    get_or_create(db, ForageClub, {"name": "Utah Mushroom Society"},
+        region="Statewide", description="Local education, identification practice, and responsible foraging.",
+        contact_url="https://utahmushrooms.org", meeting_cadence="Seasonal")
+    get_or_create(db, ForageClub, {"name": "Wasatch Field Table"},
+        region="Wasatch Front", description="Informal field walks focused on observation and habitat literacy.", meeting_cadence="Monthly in season")
+
+
+def seed(demo=False):
     Base.metadata.create_all(bind=engine)
     db = SessionLocal()
     try:
@@ -239,41 +293,8 @@ def seed():
                 db.add(Species(**values))
         db.flush()
 
-        curator = get_or_create(
-            db, User, {"email": "fielddesk@system.local"},
-            username="Mushroom Field Desk", hashed_password=passwords.hash(new_token()),
-            role="system", email_verified=True,
-        )
-        curator.username = "Mushroom Field Desk"
-        if db.query(Sighting).filter_by(user_id=curator.id).count() == 0:
-            by_name = {item.common_name: item for item in db.query(Species).all()}
-            for common_name, latitude, longitude, elevation, habitat, month in SIGHTINGS:
-                db.add(Sighting(
-                    user_id=curator.id, species_id=by_name[common_name].id,
-                    latitude=latitude, longitude=longitude, elevation_ft=elevation,
-                    month=month, habitat_type=habitat, source="field desk",
-                    confidence_score=85, verified=True, review_status="approved",
-                    location_privacy="approximate", notes="Seed observation from the original Utah field catalogue.",
-                ))
-            curator.total_finds = len(SIGHTINGS)
-
-        get_or_create(db, CommunityFind, {"title": "Morels after a Wasatch burn"},
-            region="Wasatch Front", species_name="Morel", summary="A reviewed seasonal report from mixed aspen and conifer habitat.",
-            contributor_name="Field desk", reviewed=True)
-        get_or_create(db, CommunityFind, {"title": "Boletes in the high Uintas"},
-            region="Uinta Mountains", species_name="King Bolete", summary="Research and community observations increased after sustained monsoon moisture.",
-            contributor_name="Community report", reviewed=True)
-        get_or_create(db, CommunityEvent, {"title": "Beginner mushroom field walk"},
-            starts_on=date.today() + timedelta(days=21), location_name="Wasatch Front trailhead",
-            region="Northern Utah", description="A leave-no-trace identification walk; exact meeting point is shared after registration.", organizer="Mushroom Field Desk")
-        get_or_create(db, CommunityEvent, {"title": "Late-summer bolete survey"},
-            starts_on=date.today() + timedelta(days=45), location_name="Uinta Mountains",
-            region="Northeastern Utah", description="Document habitat, elevation, and field marks for the public record.", organizer="Volunteer survey team")
-        get_or_create(db, ForageClub, {"name": "Utah Mushroom Society"},
-            region="Statewide", description="Local education, identification practice, and responsible foraging.",
-            contact_url="https://utahmushrooms.org", meeting_cadence="Seasonal")
-        get_or_create(db, ForageClub, {"name": "Wasatch Field Table"},
-            region="Wasatch Front", description="Informal field walks focused on observation and habitat literacy.", meeting_cadence="Monthly in season")
+        if demo:
+            seed_demo_content(db)
         get_or_create(db, ResourceGuide, {"title": "Responsible collecting on national forests"},
             category="Access", summary="Check the current forest order and district rules before collecting.",
             url="https://www.fs.usda.gov/", priority=10)
@@ -287,10 +308,11 @@ def seed():
             category="Safety", summary="Call Poison Control immediately after a suspected exposure.",
             url="https://www.poison.org/", priority=1)
         db.commit()
-        print(f"Seed complete: {db.query(Species).count()} species, {db.query(Sighting).count()} sightings")
+        print(f"Seed complete: {db.query(Species).count()} species, {db.query(Sighting).count()} sightings"
+              f"{'' if demo else ' (demo Utah content skipped; pass --demo for local development)'}")
     finally:
         db.close()
 
 
 if __name__ == "__main__":
-    seed()
+    seed(demo=demo_requested())

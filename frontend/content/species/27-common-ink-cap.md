@@ -15,6 +15,7 @@ warning: Coprine can cause flushing, pounding heartbeat, nausea, and low blood p
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-08-15
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/7862618/large.jpeg
   alt: Clustered gray common ink caps beside a tree as their gills darken
@@ -26,7 +27,7 @@ image:
 lookalikes:
   - name: Shaggy Mane
     slug: shaggy-mane
-    severity: toxic-confusion
+    severity: toxic
     check: Shaggy manes have tall white cylindrical caps covered in lifted scales rather than smooth gray bells.
   - name: Mica Cap
     slug: mica-cap

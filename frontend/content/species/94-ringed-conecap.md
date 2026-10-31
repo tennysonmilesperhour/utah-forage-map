@@ -15,6 +15,7 @@ warning: "Potentially fatal to people and pets. Contains amatoxins. Contact a po
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-09-27
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/251588026/large.jpg
   alt: "Small brown ringed conecap with a thin stem and ring"
@@ -24,6 +25,10 @@ image:
   copyright_notice: "\u00a9 Owen Jones"
   license: https://creativecommons.org/licenses/by/4.0/
 lookalikes:
+  - name: "Wine Cap"
+    slug: wine-cap
+    severity: deadly
+    check: "Wine cap is much larger, with a wine-red to tan cap, a thick ring with a cogwheel pattern and a purple-black spore print."
   - name: "Psilocybe species"
     severity: deadly
     check: "People seeking psychoactive mushrooms have eaten conecaps; Psilocybe spores are purple-brown."

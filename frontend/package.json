@@ -19,7 +19,7 @@
     "indexnow": "node scripts/submit-indexnow.mjs",
     "test:privacy": "node --test tests/private-queries.test.mjs",
     "test:planning": "node --test tests/field-planning.test.mjs",
-    "test:agent": "node --test tests/agent-access.test.mjs tests/agent-build.test.mjs"
+    "test:agent": "node --test tests/agent-access.test.mjs tests/agent-build.test.mjs tests/lookalikes.test.mjs"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.96.2",

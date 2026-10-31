@@ -14,6 +14,7 @@ warning: "Poisonous. Contains ibotenic acid and muscimol, causing confusion, agi
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-09-27
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/438603882/large.jpg
   alt: "Brown panther cap with white warts and a white stem"
@@ -25,15 +26,19 @@ image:
 lookalikes:
   - name: "The Blusher"
     slug: blusher
-    severity: caution
+    severity: toxic
     check: "Blusher flesh and bruises turn pinkish red; panther cap flesh stays white."
   - name: "Gray spotted amanita"
-    severity: caution
+    severity: toxic
     check: "Amanita excelsa has grayish warts and a non-striate margin."
   - name: "Fly Agaric"
     slug: fly-agaric
     severity: toxic
     check: "Faded fly agarics can look brown; both are poisonous."
+  - name: "False Death Cap"
+    slug: false-death-cap
+    severity: toxic
+    check: "False death cap has a pale lemon or white cap with patchy veil remnants, a rimmed bulb and a raw potato smell."
 ---
 
 ## Identification

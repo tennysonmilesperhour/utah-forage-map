@@ -11,10 +11,11 @@ season: "Summer to autumn"
 habitat: "Pine and spruce forests on acidic soil"
 underside: "White pores turning yellow-olive, not bruising blue"
 spore_print: "Olive brown"
-warning: "Rule out bitter and red-pored boletes. Taste a tiny raw piece and spit it out; bitterness means bitter bolete."
+warning: "Rule out bitter and red-pored boletes by pore color, stem net and bruising. Do not taste a wild mushroom to identify it; confirm any new bolete with a qualified local expert."
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-09-27
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/414548449/large.jpeg
   alt: "Two stout pine boletes with wine-red caps and pale stems"
@@ -27,7 +28,7 @@ lookalikes:
   - name: "Bitter Bolete"
     slug: bitter-bolete
     severity: caution
-    check: "Bitter bolete has pinkish pores, a dark brown net, and a very bitter taste."
+    check: "Bitter bolete has pores that turn pinkish with age and a coarse dark brown net on the stem. Leave any bolete with pinkish pores; tasting is not a safe check."
   - name: "King Bolete"
     slug: king-bolete
     severity: harmless
@@ -36,6 +37,10 @@ lookalikes:
     slug: devils-bolete
     severity: toxic
     check: "Devil's bolete has red pores and a pale, whitish cap."
+  - name: "Summer Bolete"
+    slug: summer-bolete
+    severity: harmless
+    check: "Summer bolete has a paler brown, often cracked cap, a net along the whole stem, and grows with oak and beech."
 ---
 
 ## Identification

@@ -20,13 +20,16 @@ def seed(db):
         ("GPTBot", "training", "/learn/species/morel", "GPTBot/1.2", now - timedelta(days=2)),
         ("ChatGPT-User", "assistant", "/llms.txt", "ChatGPT-User/1.0", now - timedelta(days=1)),
         ("ClaudeBot", "training", "/mcp", "ClaudeBot/1.0", now - timedelta(hours=3)),
+        ("Claude-User", "assistant", "/mcp", "Claude-User/1.0", now - timedelta(hours=2), "seasonality"),
+        ("mcp-client", "tool", "/mcp", "mcp-client/1.0", now - timedelta(hours=1), "seasonality"),
+        ("mcp-client", "tool", "/mcp", "mcp-client/1.0", now - timedelta(hours=1), "search_species"),
         ("unknown", "tool", "/data/index.json", "python-httpx/0.28", now - timedelta(days=3)),
         ("unknown", "tool", "/data/index.json", "python-httpx/0.28", now - timedelta(days=3)),
         ("GPTBot", "training", "/learn/species/morel.md", "GPTBot/1.2", now - timedelta(days=9)),
         ("PerplexityBot", "search", "/", "PerplexityBot/1.0", now - timedelta(days=40)),
     ]
-    for agent, kind, path, ua, created in rows:
-        db.add(AgentHit(agent=agent, kind=kind, path=path, user_agent=ua, created_at=created))
+    for agent, kind, path, ua, created, *tool in rows:
+        db.add(AgentHit(agent=agent, kind=kind, path=path, user_agent=ua, created_at=created, mcp_tool=(tool or [None])[0]))
     db.commit()
 
 
@@ -58,18 +61,26 @@ class AgentTrafficSqlite(unittest.TestCase):
     def test_summary_shape_and_previous_period(self):
         seed(self.db)
         result = summary(self.db, 7)
-        self.assertEqual(result["hits"], 6)
+        self.assertEqual(result["hits"], 9)
         self.assertEqual(result["previous_hits"], 1)
-        self.assertEqual(result["mcp_hits"], 1)
-        self.assertEqual(result["agent_file_hits"], 4)
+        self.assertEqual(result["mcp_hits"], 4)
+        self.assertEqual(result["mcp_tools"], [{"tool": "seasonality", "hits": 2}, {"tool": "search_species", "hits": 1}])
+        self.assertEqual(result["agent_file_hits"], 7)
         self.assertEqual(result["by_agent"][0]["agent"], "GPTBot")
         self.assertEqual(result["unknown_user_agents"], [{"user_agent": "python-httpx/0.28", "hits": 2}])
-        self.assertEqual(sum(day["hits"] for day in result["daily"]), 6)
+        self.assertEqual(sum(day["hits"] for day in result["daily"]), 9)
+
+    def test_log_keeps_only_a_clean_tool_name(self):
+        log_hit(self.db, "unknown", "tool", "/mcp", "mcp-client/1.0", "seasonality; DROP TABLE x" + "z" * 80)
+        log_hit(self.db, "unknown", "tool", "/mcp", "mcp-client/1.0", "  ")
+        rows = self.db.query(AgentHit).order_by(AgentHit.id).all()
+        self.assertEqual(rows[0].mcp_tool, ("seasonalityDROPTABLEx" + "z" * 80)[:60])
+        self.assertIsNone(rows[1].mcp_tool)
 
     def test_prune_removes_only_old_rows(self):
         seed(self.db)
         self.assertEqual(prune(self.db, 30), 1)
-        self.assertEqual(self.db.query(AgentHit).count(), 7)
+        self.assertEqual(self.db.query(AgentHit).count(), 10)
 
 
 class AgentTrafficApi(unittest.TestCase):
@@ -101,11 +112,14 @@ class AgentTrafficApi(unittest.TestCase):
         self.assertEqual(self.client.post("/api/agent-log", json=body).status_code, 401)
         self.assertEqual(self.client.post("/api/agent-log", json=body, headers={"X-Agent-Log-Key": "nope"}).status_code, 401)
         self.assertEqual(self.client.post("/api/agent-log", json=body, headers={"X-Agent-Log-Key": "log-secret"}).status_code, 204)
+        tool_body = {**body, "path": "/mcp", "mcp_tool": "list_regions"}
+        self.assertEqual(self.client.post("/api/agent-log", json=tool_body, headers={"X-Agent-Log-Key": "log-secret"}).status_code, 204)
         self.assertEqual(self.client.get("/api/admin/agent-traffic").status_code, 401)
         self.assertEqual(self.client.get("/api/admin/agent-traffic", headers={"Authorization": "Bearer wrong"}).status_code, 401)
         ok = self.client.get("/api/admin/agent-traffic?days=7", headers={"Authorization": "Bearer cron-secret"})
         self.assertEqual(ok.status_code, 200)
-        self.assertEqual(ok.json()["hits"], 1)
+        self.assertEqual(ok.json()["hits"], 2)
+        self.assertEqual(ok.json()["mcp_tools"], [{"tool": "list_regions", "hits": 1}])
         self.assertEqual(self.client.post("/api/admin/agent-traffic/prune").status_code, 401)
         pruned = self.client.post("/api/admin/agent-traffic/prune", headers={"Authorization": "Bearer cron-secret"})
         self.assertEqual(pruned.json()["deleted"], 0)
@@ -214,11 +228,20 @@ class AgentTrafficPostgres(unittest.TestCase):
         self.assertEqual((len(row.agent), row.kind, len(row.path), len(row.user_agent)), (60, "tool", 300, 300))
         db.delete(row)
         db.commit()
+        log_hit(db, "unknown", "tool", "/mcp", "mcp-client/1.0", "get_species_guide")
+        self.assertEqual(db.query(AgentHit).order_by(AgentHit.id.desc()).first().mcp_tool, "get_species_guide")
         sql_result = normalise(summary(db, 7))
         python_result = normalise(_summary_python(db, 7))
         self.assertEqual(sql_result, python_result)
+        self.assertEqual(sql_result["mcp_tools"][0], {"tool": "seasonality", "hits": 2})
         self.assertEqual(prune(db, 30), 1)
         db.close()
+        # Before the tool-name migration the API still logs, just without the tool.
+        alembic("downgrade", "a1c5d9e03f72")
+        legacy = sessionmaker(bind=engine)()
+        log_hit(legacy, "unknown", "tool", "/mcp", "mcp-client/1.0", "seasonality")
+        self.assertEqual(legacy.execute(text("SELECT count(*) FROM agent_traffic WHERE path = '/mcp'")).scalar_one(), 6)
+        legacy.close()
         alembic("downgrade", "e6b71d8c2a90")
 
 

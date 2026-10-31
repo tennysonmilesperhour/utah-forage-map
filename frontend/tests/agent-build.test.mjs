@@ -49,6 +49,12 @@ test('open data catalog lists CC BY datasets with JSON and CSV that exist, and n
   }
   const seasonality = JSON.parse(await read('data/seasonality.json')).rows
   assert.ok(seasonality.every(row => row.records >= 30 && row.people_all_hemispheres >= 10))
+  const herbs = JSON.parse(await read('data/herb-seasonality.json'))
+  assert.ok(herbs.rows.length > 0)
+  assert.ok(herbs.rows.every(row => row.records >= 30 && row.people_all_hemispheres >= 10 && typeof row.toxic_lookalike_reference === 'boolean'))
+  assert.ok(herbs.rows.some(row => row.toxic_lookalike_reference))
+  assert.match(herbs.notice, /Never eat or use a wild plant based on this data/)
+  assert.match(herbs.notice, /Never eat a wild mushroom based on this data/)
 })
 
 test('the /data page has DataCatalog and Dataset JSON-LD in the server HTML', async () => {

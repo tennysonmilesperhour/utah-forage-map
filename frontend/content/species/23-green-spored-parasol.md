@@ -15,6 +15,7 @@ warning: Poisonous and capable of causing severe vomiting, abdominal pain, and d
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-08-15
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/234599615/large.jpg
   alt: Young green-spored parasol with brown cap scales growing in grass
@@ -26,7 +27,7 @@ image:
 lookalikes:
   - name: Shaggy Parasol
     slug: shaggy-parasol
-    severity: toxic-confusion
+    severity: toxic
     check: Chlorophyllum rhacodes has coarser shaggy scales, reddish bruising, and a white spore print, but the group still requires expertise.
   - name: Meadow Mushroom
     slug: meadow-mushroom
@@ -35,6 +36,14 @@ lookalikes:
   - name: Amanita species
     severity: deadly
     check: Dig the entire stem base to check for a bulb or volva; white-gilled Amanita can overlap when young.
+  - name: "Shaggy Mane"
+    slug: shaggy-mane
+    severity: toxic
+    check: "Shaggy mane has a tall, scaly, cylindrical cap that dissolves into black ink from the edge and never opens into a flat parasol."
+  - name: "Parasol Mushroom"
+    slug: parasol-mushroom
+    severity: toxic
+    check: "Parasol mushroom is taller, with a snakeskin-patterned stem, a movable double ring and a white spore print."
 ---
 
 ## Identification

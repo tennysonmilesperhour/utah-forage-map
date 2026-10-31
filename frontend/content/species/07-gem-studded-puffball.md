@@ -15,6 +15,7 @@ warning: Slice every specimen top to bottom. Any internal cap, gills, stem, dark
 author: Mushroom Forage Map field desk
 reviewer: Expert review pending
 last_reviewed: 2026-08-15
+last_updated: 2026-10-31
 image:
   url: https://inaturalist-open-data.s3.amazonaws.com/photos/458636958/large.jpeg
   alt: White gem-studded puffballs with small conical spines
@@ -27,11 +28,12 @@ lookalikes:
   - name: Amanita button
     severity: deadly
     check: A vertical slice reveals a developing cap, gills, and stem instead of featureless white flesh.
-  - name: Earthball
+  - name: "Common Earthball"
+    slug: common-earthball
     severity: toxic
     check: Scleroderma species have a tough rind and a firm purple-black interior rather than a homogeneous white center.
   - name: Mature puffball
-    severity: sickener
+    severity: toxic
     check: Yellow, olive, or powdery flesh means the specimen is past the edible stage.
 ---
 
