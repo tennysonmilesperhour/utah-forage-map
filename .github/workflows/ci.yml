@@ -30,6 +30,7 @@ jobs:
       - run: npm run test:planning
       - run: npm run test:agent
       - run: npm run test:privacy
+      - run: npm run test:guides
       - run: node --test tests/audit-regressions.test.mjs tests/check-production.test.mjs
 
   backend:
