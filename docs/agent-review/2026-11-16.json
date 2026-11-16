@@ -1,0 +1,1457 @@
+{
+  "date": "2026-11-16",
+  "site": "https://worldmushroomforaging.org",
+  "days": 7,
+  "traffic": {
+    "available": false,
+    "reason": "CRON_SECRET is not set for this run"
+  },
+  "prune": {
+    "skipped": true
+  },
+  "checks": {
+    "catalog": {
+      "status": 200,
+      "datasets": [
+        {
+          "id": "seasonality",
+          "format": "json",
+          "status": 200,
+          "ms": 147,
+          "rows": 147,
+          "expected_rows": 147
+        },
+        {
+          "id": "seasonality",
+          "format": "csv",
+          "status": 200,
+          "ms": 170,
+          "rows": null,
+          "expected_rows": 147
+        },
+        {
+          "id": "herb-seasonality",
+          "format": "json",
+          "status": 200,
+          "ms": 207,
+          "rows": 182,
+          "expected_rows": 182
+        },
+        {
+          "id": "herb-seasonality",
+          "format": "csv",
+          "status": 200,
+          "ms": 145,
+          "rows": null,
+          "expected_rows": 182
+        },
+        {
+          "id": "lookalikes",
+          "format": "json",
+          "status": 200,
+          "ms": 137,
+          "rows": 396,
+          "expected_rows": 396
+        },
+        {
+          "id": "lookalikes",
+          "format": "csv",
+          "status": 200,
+          "ms": 143,
+          "rows": null,
+          "expected_rows": 396
+        },
+        {
+          "id": "species",
+          "format": "json",
+          "status": 200,
+          "ms": 152,
+          "rows": 108,
+          "expected_rows": 108
+        },
+        {
+          "id": "species",
+          "format": "csv",
+          "status": 200,
+          "ms": 168,
+          "rows": null,
+          "expected_rows": 108
+        },
+        {
+          "id": "regions",
+          "format": "json",
+          "status": 200,
+          "ms": 142,
+          "rows": 10,
+          "expected_rows": 10
+        },
+        {
+          "id": "regions",
+          "format": "csv",
+          "status": 200,
+          "ms": 143,
+          "rows": null,
+          "expected_rows": 10
+        },
+        {
+          "id": "regional-signal",
+          "format": "json",
+          "status": 200,
+          "ms": 2021,
+          "rows": null,
+          "expected_rows": null
+        }
+      ]
+    },
+    "/llms.txt": {
+      "status": 200,
+      "ms": 187,
+      "bytes": 3997
+    },
+    "/robots.txt": {
+      "status": 200,
+      "ms": 52
+    },
+    "/.well-known/api-catalog": {
+      "status": 200,
+      "ms": 154
+    },
+    "/.well-known/mcp/server-card.json": {
+      "status": 200,
+      "ms": 147
+    },
+    "/learn/species/morel.md": {
+      "status": 200,
+      "ms": 136,
+      "canonical_link": "<https://worldmushroomforaging.org/learn/species/morel>; rel=\"canonical\""
+    },
+    "/data": {
+      "status": 200,
+      "ms": 135
+    },
+    "mcp": {
+      "initialize": {
+        "status": 200,
+        "ok": true
+      },
+      "tools": [
+        "search_species",
+        "get_species_guide",
+        "seasonality",
+        "in_season_near",
+        "list_regions"
+      ],
+      "calls": [
+        {
+          "tool": "search_species",
+          "status": 200,
+          "ms": 140,
+          "is_error": false,
+          "has_notice": true,
+          "has_cite_url": true
+        },
+        {
+          "tool": "get_species_guide",
+          "status": 200,
+          "ms": 129,
+          "is_error": false,
+          "has_notice": true,
+          "has_cite_url": true
+        },
+        {
+          "tool": "seasonality",
+          "status": 200,
+          "ms": 848,
+          "is_error": false,
+          "has_notice": true,
+          "has_cite_url": true
+        },
+        {
+          "tool": "in_season_near",
+          "status": 200,
+          "ms": 256,
+          "is_error": false,
+          "has_notice": true,
+          "has_cite_url": true
+        },
+        {
+          "tool": "list_regions",
+          "status": 200,
+          "ms": 127,
+          "is_error": false,
+          "has_notice": true,
+          "has_cite_url": true
+        }
+      ]
+    }
+  },
+  "regional_signal": {
+    "generated_on": "2026-11-16",
+    "min_species_sample": 3,
+    "source": "Reviewed public observations on World Mushroom Foraging, mostly research-grade iNaturalist records",
+    "notice": "A map observation is not an identification. Never eat a wild mushroom based on this data.",
+    "regions": [
+      {
+        "slug": "pacific-northwest",
+        "name": "Pacific Northwest",
+        "hemisphere": "north",
+        "observations_90d": 4188,
+        "observations_14d": 914,
+        "species_count_90d": 20,
+        "latest_observed_on": "2026-11-15",
+        "outlook": [
+          {
+            "taxon_id": 48715,
+            "common_name": "Fly Agaric",
+            "latin_name": "Amanita muscaria",
+            "status": "starting",
+            "confidence": "high",
+            "observations_14d": 529,
+            "observations_30d": 1161,
+            "previous_30d": 540
+          },
+          {
+            "taxon_id": 47392,
+            "common_name": "Shaggy Mane",
+            "latin_name": "Coprinus comatus",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 102,
+            "observations_30d": 245,
+            "previous_30d": 228
+          },
+          {
+            "taxon_id": 54134,
+            "common_name": "Turkey Tail",
+            "latin_name": "Trametes versicolor",
+            "status": "starting",
+            "confidence": "high",
+            "observations_14d": 95,
+            "observations_30d": 179,
+            "previous_30d": 78
+          },
+          {
+            "taxon_id": 48215,
+            "common_name": "Lobster Mushroom",
+            "latin_name": "Hypomyces lactifluorum",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 74,
+            "observations_30d": 211,
+            "previous_30d": 270
+          },
+          {
+            "taxon_id": 48701,
+            "common_name": "King Bolete",
+            "latin_name": "Boletus edulis",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 66,
+            "observations_30d": 211,
+            "previous_30d": 320
+          },
+          {
+            "taxon_id": 521711,
+            "common_name": "Western Matsutake",
+            "latin_name": "Tricholoma murrillianum",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 14,
+            "observations_30d": 92,
+            "previous_30d": 84
+          },
+          {
+            "taxon_id": 48443,
+            "common_name": "Gem-studded Puffball",
+            "latin_name": "Lycoperdon perlatum",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 10,
+            "observations_30d": 24,
+            "previous_30d": 32
+          },
+          {
+            "taxon_id": 48521,
+            "common_name": "Common Ink Cap",
+            "latin_name": "Coprinopsis atramentaria",
+            "status": "starting",
+            "confidence": "high",
+            "observations_14d": 6,
+            "observations_30d": 12,
+            "previous_30d": 6
+          },
+          {
+            "taxon_id": 49158,
+            "common_name": "Lion's Mane",
+            "latin_name": "Hericium erinaceus",
+            "status": "starting",
+            "confidence": "high",
+            "observations_14d": 6,
+            "observations_30d": 14,
+            "previous_30d": 6
+          },
+          {
+            "taxon_id": 154735,
+            "common_name": "Deadly Galerina",
+            "latin_name": "Galerina marginata",
+            "status": "starting",
+            "confidence": "medium",
+            "observations_14d": 4,
+            "observations_30d": 7,
+            "previous_30d": 2
+          },
+          {
+            "taxon_id": 52135,
+            "common_name": "Death Cap",
+            "latin_name": "Amanita phalloides",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 4,
+            "observations_30d": 13,
+            "previous_30d": 13
+          },
+          {
+            "taxon_id": 155197,
+            "common_name": "Saffron Milk Cap",
+            "latin_name": "Lactarius deliciosus",
+            "status": "starting",
+            "confidence": "medium",
+            "observations_14d": 2,
+            "observations_30d": 3,
+            "previous_30d": 0
+          },
+          {
+            "taxon_id": 48494,
+            "common_name": "Oyster Mushroom",
+            "latin_name": "Pleurotus ostreatus",
+            "status": "starting",
+            "confidence": "medium",
+            "observations_14d": 1,
+            "observations_30d": 3,
+            "previous_30d": 1
+          },
+          {
+            "taxon_id": 499666,
+            "common_name": "Rainbow Chanterelle",
+            "latin_name": "Cantharellus roseocanus",
+            "status": "likely",
+            "confidence": "medium",
+            "observations_14d": 1,
+            "observations_30d": 3,
+            "previous_30d": 3
+          }
+        ]
+      },
+      {
+        "slug": "rocky-mountains",
+        "name": "Rocky Mountains",
+        "hemisphere": "north",
+        "observations_90d": 983,
+        "observations_14d": 66,
+        "species_count_90d": 21,
+        "latest_observed_on": "2026-11-15",
+        "outlook": [
+          {
+            "taxon_id": 47392,
+            "common_name": "Shaggy Mane",
+            "latin_name": "Coprinus comatus",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 51,
+            "observations_30d": 81,
+            "previous_30d": 193
+          },
+          {
+            "taxon_id": 54134,
+            "common_name": "Turkey Tail",
+            "latin_name": "Trametes versicolor",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 6,
+            "observations_30d": 9,
+            "previous_30d": 7
+          },
+          {
+            "taxon_id": 48521,
+            "common_name": "Common Ink Cap",
+            "latin_name": "Coprinopsis atramentaria",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 2,
+            "observations_30d": 4,
+            "previous_30d": 8
+          },
+          {
+            "taxon_id": 117308,
+            "common_name": "Green-spored Parasol",
+            "latin_name": "Chlorophyllum molybdites",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 2,
+            "observations_30d": 8,
+            "previous_30d": 17
+          },
+          {
+            "taxon_id": 48215,
+            "common_name": "Lobster Mushroom",
+            "latin_name": "Hypomyces lactifluorum",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 2,
+            "observations_30d": 5,
+            "previous_30d": 22
+          },
+          {
+            "taxon_id": 48494,
+            "common_name": "Oyster Mushroom",
+            "latin_name": "Pleurotus ostreatus",
+            "status": "starting",
+            "confidence": "medium",
+            "observations_14d": 2,
+            "observations_30d": 4,
+            "previous_30d": 0
+          },
+          {
+            "taxon_id": 143563,
+            "common_name": "Meadow Mushroom",
+            "latin_name": "Agaricus campestris",
+            "status": "likely",
+            "confidence": "medium",
+            "observations_14d": 1,
+            "observations_30d": 2,
+            "previous_30d": 2
+          },
+          {
+            "taxon_id": 48715,
+            "common_name": "Fly Agaric",
+            "latin_name": "Amanita muscaria",
+            "status": "ending",
+            "confidence": "high",
+            "observations_14d": 0,
+            "observations_30d": 17,
+            "previous_30d": 44
+          },
+          {
+            "taxon_id": 48443,
+            "common_name": "Gem-studded Puffball",
+            "latin_name": "Lycoperdon perlatum",
+            "status": "ending",
+            "confidence": "high",
+            "observations_14d": 0,
+            "observations_30d": 0,
+            "previous_30d": 13
+          },
+          {
+            "taxon_id": 48701,
+            "common_name": "King Bolete",
+            "latin_name": "Boletus edulis",
+            "status": "ending",
+            "confidence": "high",
+            "observations_14d": 0,
+            "observations_30d": 1,
+            "previous_30d": 16
+          },
+          {
+            "taxon_id": 499666,
+            "common_name": "Rainbow Chanterelle",
+            "latin_name": "Cantharellus roseocanus",
+            "status": "ending",
+            "confidence": "high",
+            "observations_14d": 0,
+            "observations_30d": 1,
+            "previous_30d": 13
+          },
+          {
+            "taxon_id": 499696,
+            "common_name": "Rocky Mountain Porcini",
+            "latin_name": "Boletus rubriceps",
+            "status": "ending",
+            "confidence": "medium",
+            "observations_14d": 0,
+            "observations_30d": 1,
+            "previous_30d": 4
+          },
+          {
+            "taxon_id": 521711,
+            "common_name": "Western Matsutake",
+            "latin_name": "Tricholoma murrillianum",
+            "status": "ending",
+            "confidence": "high",
+            "observations_14d": 0,
+            "observations_30d": 9,
+            "previous_30d": 11
+          }
+        ]
+      },
+      {
+        "slug": "northeastern-north-america",
+        "name": "Northeastern North America",
+        "hemisphere": "north",
+        "observations_90d": 16298,
+        "observations_14d": 1024,
+        "species_count_90d": 23,
+        "latest_observed_on": "2026-11-15",
+        "outlook": [
+          {
+            "taxon_id": 54134,
+            "common_name": "Turkey Tail",
+            "latin_name": "Trametes versicolor",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 529,
+            "observations_30d": 1066,
+            "previous_30d": 1368
+          },
+          {
+            "taxon_id": 47392,
+            "common_name": "Shaggy Mane",
+            "latin_name": "Coprinus comatus",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 223,
+            "observations_30d": 515,
+            "previous_30d": 708
+          },
+          {
+            "taxon_id": 49158,
+            "common_name": "Lion's Mane",
+            "latin_name": "Hericium erinaceus",
+            "status": "starting",
+            "confidence": "high",
+            "observations_14d": 67,
+            "observations_30d": 180,
+            "previous_30d": 105
+          },
+          {
+            "taxon_id": 53714,
+            "common_name": "Hen of the Woods",
+            "latin_name": "Grifola frondosa",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 66,
+            "observations_30d": 561,
+            "previous_30d": 1397
+          },
+          {
+            "taxon_id": 48494,
+            "common_name": "Oyster Mushroom",
+            "latin_name": "Pleurotus ostreatus",
+            "status": "starting",
+            "confidence": "high",
+            "observations_14d": 36,
+            "observations_30d": 49,
+            "previous_30d": 9
+          },
+          {
+            "taxon_id": 53713,
+            "common_name": "Chicken of the Woods",
+            "latin_name": "Laetiporus sulphureus",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 33,
+            "observations_30d": 257,
+            "previous_30d": 955
+          },
+          {
+            "taxon_id": 154735,
+            "common_name": "Deadly Galerina",
+            "latin_name": "Galerina marginata",
+            "status": "starting",
+            "confidence": "high",
+            "observations_14d": 28,
+            "observations_30d": 85,
+            "previous_30d": 29
+          },
+          {
+            "taxon_id": 48715,
+            "common_name": "Fly Agaric",
+            "latin_name": "Amanita muscaria",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 11,
+            "observations_30d": 119,
+            "previous_30d": 702
+          },
+          {
+            "taxon_id": 57692,
+            "common_name": "Giant Puffball",
+            "latin_name": "Calvatia gigantea",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 10,
+            "observations_30d": 83,
+            "previous_30d": 586
+          },
+          {
+            "taxon_id": 126831,
+            "common_name": "Jack-o'-lantern",
+            "latin_name": "Omphalotus illudens",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 7,
+            "observations_30d": 135,
+            "previous_30d": 594
+          },
+          {
+            "taxon_id": 48521,
+            "common_name": "Common Ink Cap",
+            "latin_name": "Coprinopsis atramentaria",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 5,
+            "observations_30d": 10,
+            "previous_30d": 30
+          },
+          {
+            "taxon_id": 55927,
+            "common_name": "Common Earthball",
+            "latin_name": "Scleroderma citrinum",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 4,
+            "observations_30d": 29,
+            "previous_30d": 147
+          },
+          {
+            "taxon_id": 52135,
+            "common_name": "Death Cap",
+            "latin_name": "Amanita phalloides",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 3,
+            "observations_30d": 16,
+            "previous_30d": 19
+          },
+          {
+            "taxon_id": 48443,
+            "common_name": "Gem-studded Puffball",
+            "latin_name": "Lycoperdon perlatum",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 2,
+            "observations_30d": 30,
+            "previous_30d": 153
+          },
+          {
+            "taxon_id": 125390,
+            "common_name": "Destroying Angel",
+            "latin_name": "Amanita bisporigera",
+            "status": "ending",
+            "confidence": "high",
+            "observations_14d": 0,
+            "observations_30d": 0,
+            "previous_30d": 31
+          },
+          {
+            "taxon_id": 117308,
+            "common_name": "Green-spored Parasol",
+            "latin_name": "Chlorophyllum molybdites",
+            "status": "ending",
+            "confidence": "high",
+            "observations_14d": 0,
+            "observations_30d": 3,
+            "previous_30d": 86
+          },
+          {
+            "taxon_id": 48701,
+            "common_name": "King Bolete",
+            "latin_name": "Boletus edulis",
+            "status": "ending",
+            "confidence": "high",
+            "observations_14d": 0,
+            "observations_30d": 0,
+            "previous_30d": 21
+          },
+          {
+            "taxon_id": 48215,
+            "common_name": "Lobster Mushroom",
+            "latin_name": "Hypomyces lactifluorum",
+            "status": "ending",
+            "confidence": "high",
+            "observations_14d": 0,
+            "observations_30d": 10,
+            "previous_30d": 106
+          },
+          {
+            "taxon_id": 143563,
+            "common_name": "Meadow Mushroom",
+            "latin_name": "Agaricus campestris",
+            "status": "ending",
+            "confidence": "medium",
+            "observations_14d": 0,
+            "observations_30d": 0,
+            "previous_30d": 5
+          }
+        ]
+      },
+      {
+        "slug": "southeastern-north-america",
+        "name": "Southeastern North America",
+        "hemisphere": "north",
+        "observations_90d": 3051,
+        "observations_14d": 348,
+        "species_count_90d": 18,
+        "latest_observed_on": "2026-11-15",
+        "outlook": [
+          {
+            "taxon_id": 54134,
+            "common_name": "Turkey Tail",
+            "latin_name": "Trametes versicolor",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 189,
+            "observations_30d": 464,
+            "previous_30d": 633
+          },
+          {
+            "taxon_id": 49158,
+            "common_name": "Lion's Mane",
+            "latin_name": "Hericium erinaceus",
+            "status": "starting",
+            "confidence": "high",
+            "observations_14d": 34,
+            "observations_30d": 73,
+            "previous_30d": 18
+          },
+          {
+            "taxon_id": 53713,
+            "common_name": "Chicken of the Woods",
+            "latin_name": "Laetiporus sulphureus",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 30,
+            "observations_30d": 108,
+            "previous_30d": 145
+          },
+          {
+            "taxon_id": 53714,
+            "common_name": "Hen of the Woods",
+            "latin_name": "Grifola frondosa",
+            "status": "starting",
+            "confidence": "high",
+            "observations_14d": 25,
+            "observations_30d": 108,
+            "previous_30d": 35
+          },
+          {
+            "taxon_id": 47392,
+            "common_name": "Shaggy Mane",
+            "latin_name": "Coprinus comatus",
+            "status": "starting",
+            "confidence": "high",
+            "observations_14d": 17,
+            "observations_30d": 27,
+            "previous_30d": 9
+          },
+          {
+            "taxon_id": 117308,
+            "common_name": "Green-spored Parasol",
+            "latin_name": "Chlorophyllum molybdites",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 16,
+            "observations_30d": 45,
+            "previous_30d": 276
+          },
+          {
+            "taxon_id": 126831,
+            "common_name": "Jack-o'-lantern",
+            "latin_name": "Omphalotus illudens",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 14,
+            "observations_30d": 93,
+            "previous_30d": 105
+          },
+          {
+            "taxon_id": 48494,
+            "common_name": "Oyster Mushroom",
+            "latin_name": "Pleurotus ostreatus",
+            "status": "starting",
+            "confidence": "high",
+            "observations_14d": 13,
+            "observations_30d": 30,
+            "previous_30d": 1
+          },
+          {
+            "taxon_id": 48443,
+            "common_name": "Gem-studded Puffball",
+            "latin_name": "Lycoperdon perlatum",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 5,
+            "observations_30d": 12,
+            "previous_30d": 13
+          },
+          {
+            "taxon_id": 48715,
+            "common_name": "Fly Agaric",
+            "latin_name": "Amanita muscaria",
+            "status": "starting",
+            "confidence": "medium",
+            "observations_14d": 2,
+            "observations_30d": 6,
+            "previous_30d": 3
+          },
+          {
+            "taxon_id": 57692,
+            "common_name": "Giant Puffball",
+            "latin_name": "Calvatia gigantea",
+            "status": "starting",
+            "confidence": "high",
+            "observations_14d": 1,
+            "observations_30d": 15,
+            "previous_30d": 3
+          },
+          {
+            "taxon_id": 55927,
+            "common_name": "Common Earthball",
+            "latin_name": "Scleroderma citrinum",
+            "status": "ending",
+            "confidence": "medium",
+            "observations_14d": 0,
+            "observations_30d": 4,
+            "previous_30d": 5
+          },
+          {
+            "taxon_id": 125390,
+            "common_name": "Destroying Angel",
+            "latin_name": "Amanita bisporigera",
+            "status": "ending",
+            "confidence": "medium",
+            "observations_14d": 0,
+            "observations_30d": 0,
+            "previous_30d": 5
+          },
+          {
+            "taxon_id": 48215,
+            "common_name": "Lobster Mushroom",
+            "latin_name": "Hypomyces lactifluorum",
+            "status": "ending",
+            "confidence": "high",
+            "observations_14d": 0,
+            "observations_30d": 5,
+            "previous_30d": 11
+          }
+        ]
+      },
+      {
+        "slug": "western-europe",
+        "name": "Western Europe",
+        "hemisphere": "north",
+        "observations_90d": 22197,
+        "observations_14d": 2714,
+        "species_count_90d": 21,
+        "latest_observed_on": "2026-11-16",
+        "outlook": [
+          {
+            "taxon_id": 48715,
+            "common_name": "Fly Agaric",
+            "latin_name": "Amanita muscaria",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 1268,
+            "observations_30d": 3459,
+            "previous_30d": 3969
+          },
+          {
+            "taxon_id": 47392,
+            "common_name": "Shaggy Mane",
+            "latin_name": "Coprinus comatus",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 622,
+            "observations_30d": 1675,
+            "previous_30d": 1929
+          },
+          {
+            "taxon_id": 48701,
+            "common_name": "King Bolete",
+            "latin_name": "Boletus edulis",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 191,
+            "observations_30d": 522,
+            "previous_30d": 875
+          },
+          {
+            "taxon_id": 48443,
+            "common_name": "Gem-studded Puffball",
+            "latin_name": "Lycoperdon perlatum",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 123,
+            "observations_30d": 374,
+            "previous_30d": 306
+          },
+          {
+            "taxon_id": 54134,
+            "common_name": "Turkey Tail",
+            "latin_name": "Trametes versicolor",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 122,
+            "observations_30d": 325,
+            "previous_30d": 316
+          },
+          {
+            "taxon_id": 48494,
+            "common_name": "Oyster Mushroom",
+            "latin_name": "Pleurotus ostreatus",
+            "status": "starting",
+            "confidence": "high",
+            "observations_14d": 106,
+            "observations_30d": 234,
+            "previous_30d": 45
+          },
+          {
+            "taxon_id": 52135,
+            "common_name": "Death Cap",
+            "latin_name": "Amanita phalloides",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 45,
+            "observations_30d": 154,
+            "previous_30d": 371
+          },
+          {
+            "taxon_id": 155197,
+            "common_name": "Saffron Milk Cap",
+            "latin_name": "Lactarius deliciosus",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 42,
+            "observations_30d": 99,
+            "previous_30d": 77
+          },
+          {
+            "taxon_id": 53713,
+            "common_name": "Chicken of the Woods",
+            "latin_name": "Laetiporus sulphureus",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 36,
+            "observations_30d": 131,
+            "previous_30d": 715
+          },
+          {
+            "taxon_id": 154735,
+            "common_name": "Deadly Galerina",
+            "latin_name": "Galerina marginata",
+            "status": "starting",
+            "confidence": "high",
+            "observations_14d": 36,
+            "observations_30d": 67,
+            "previous_30d": 30
+          },
+          {
+            "taxon_id": 48607,
+            "common_name": "Black Trumpet",
+            "latin_name": "Craterellus cornucopioides",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 28,
+            "observations_30d": 62,
+            "previous_30d": 50
+          },
+          {
+            "taxon_id": 48521,
+            "common_name": "Common Ink Cap",
+            "latin_name": "Coprinopsis atramentaria",
+            "status": "starting",
+            "confidence": "high",
+            "observations_14d": 24,
+            "observations_30d": 86,
+            "previous_30d": 54
+          },
+          {
+            "taxon_id": 55927,
+            "common_name": "Common Earthball",
+            "latin_name": "Scleroderma citrinum",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 22,
+            "observations_30d": 69,
+            "previous_30d": 137
+          },
+          {
+            "taxon_id": 48641,
+            "common_name": "Hedgehog Mushroom",
+            "latin_name": "Hydnum repandum",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 11,
+            "observations_30d": 43,
+            "previous_30d": 34
+          },
+          {
+            "taxon_id": 47347,
+            "common_name": "Golden Chanterelle",
+            "latin_name": "Cantharellus cibarius",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 10,
+            "observations_30d": 42,
+            "previous_30d": 104
+          },
+          {
+            "taxon_id": 57692,
+            "common_name": "Giant Puffball",
+            "latin_name": "Calvatia gigantea",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 8,
+            "observations_30d": 27,
+            "previous_30d": 138
+          },
+          {
+            "taxon_id": 49158,
+            "common_name": "Lion's Mane",
+            "latin_name": "Hericium erinaceus",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 8,
+            "observations_30d": 23,
+            "previous_30d": 23
+          },
+          {
+            "taxon_id": 143563,
+            "common_name": "Meadow Mushroom",
+            "latin_name": "Agaricus campestris",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 7,
+            "observations_30d": 47,
+            "previous_30d": 53
+          },
+          {
+            "taxon_id": 53714,
+            "common_name": "Hen of the Woods",
+            "latin_name": "Grifola frondosa",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 5,
+            "observations_30d": 30,
+            "previous_30d": 160
+          },
+          {
+            "taxon_id": 117308,
+            "common_name": "Green-spored Parasol",
+            "latin_name": "Chlorophyllum molybdites",
+            "status": "ending",
+            "confidence": "medium",
+            "observations_14d": 0,
+            "observations_30d": 1,
+            "previous_30d": 3
+          }
+        ]
+      },
+      {
+        "slug": "northern-europe",
+        "name": "Northern Europe",
+        "hemisphere": "north",
+        "observations_90d": 6505,
+        "observations_14d": 255,
+        "species_count_90d": 19,
+        "latest_observed_on": "2026-11-15",
+        "outlook": [
+          {
+            "taxon_id": 48715,
+            "common_name": "Fly Agaric",
+            "latin_name": "Amanita muscaria",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 72,
+            "observations_30d": 303,
+            "previous_30d": 1248
+          },
+          {
+            "taxon_id": 47392,
+            "common_name": "Shaggy Mane",
+            "latin_name": "Coprinus comatus",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 65,
+            "observations_30d": 226,
+            "previous_30d": 720
+          },
+          {
+            "taxon_id": 47347,
+            "common_name": "Golden Chanterelle",
+            "latin_name": "Cantharellus cibarius",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 26,
+            "observations_30d": 63,
+            "previous_30d": 109
+          },
+          {
+            "taxon_id": 48494,
+            "common_name": "Oyster Mushroom",
+            "latin_name": "Pleurotus ostreatus",
+            "status": "starting",
+            "confidence": "high",
+            "observations_14d": 22,
+            "observations_30d": 49,
+            "previous_30d": 25
+          },
+          {
+            "taxon_id": 54134,
+            "common_name": "Turkey Tail",
+            "latin_name": "Trametes versicolor",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 17,
+            "observations_30d": 54,
+            "previous_30d": 57
+          },
+          {
+            "taxon_id": 48443,
+            "common_name": "Gem-studded Puffball",
+            "latin_name": "Lycoperdon perlatum",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 13,
+            "observations_30d": 61,
+            "previous_30d": 134
+          },
+          {
+            "taxon_id": 48607,
+            "common_name": "Black Trumpet",
+            "latin_name": "Craterellus cornucopioides",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 10,
+            "observations_30d": 33,
+            "previous_30d": 61
+          },
+          {
+            "taxon_id": 154735,
+            "common_name": "Deadly Galerina",
+            "latin_name": "Galerina marginata",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 8,
+            "observations_30d": 15,
+            "previous_30d": 18
+          },
+          {
+            "taxon_id": 55927,
+            "common_name": "Common Earthball",
+            "latin_name": "Scleroderma citrinum",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 5,
+            "observations_30d": 13,
+            "previous_30d": 28
+          },
+          {
+            "taxon_id": 48521,
+            "common_name": "Common Ink Cap",
+            "latin_name": "Coprinopsis atramentaria",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 5,
+            "observations_30d": 11,
+            "previous_30d": 28
+          },
+          {
+            "taxon_id": 48701,
+            "common_name": "King Bolete",
+            "latin_name": "Boletus edulis",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 5,
+            "observations_30d": 20,
+            "previous_30d": 273
+          },
+          {
+            "taxon_id": 48641,
+            "common_name": "Hedgehog Mushroom",
+            "latin_name": "Hydnum repandum",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 3,
+            "observations_30d": 23,
+            "previous_30d": 24
+          },
+          {
+            "taxon_id": 155197,
+            "common_name": "Saffron Milk Cap",
+            "latin_name": "Lactarius deliciosus",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 2,
+            "observations_30d": 9,
+            "previous_30d": 32
+          },
+          {
+            "taxon_id": 53714,
+            "common_name": "Hen of the Woods",
+            "latin_name": "Grifola frondosa",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 1,
+            "observations_30d": 6,
+            "previous_30d": 37
+          },
+          {
+            "taxon_id": 53713,
+            "common_name": "Chicken of the Woods",
+            "latin_name": "Laetiporus sulphureus",
+            "status": "ending",
+            "confidence": "high",
+            "observations_14d": 0,
+            "observations_30d": 5,
+            "previous_30d": 32
+          },
+          {
+            "taxon_id": 52135,
+            "common_name": "Death Cap",
+            "latin_name": "Amanita phalloides",
+            "status": "ending",
+            "confidence": "high",
+            "observations_14d": 0,
+            "observations_30d": 13,
+            "previous_30d": 87
+          },
+          {
+            "taxon_id": 57692,
+            "common_name": "Giant Puffball",
+            "latin_name": "Calvatia gigantea",
+            "status": "ending",
+            "confidence": "high",
+            "observations_14d": 0,
+            "observations_30d": 3,
+            "previous_30d": 30
+          },
+          {
+            "taxon_id": 143563,
+            "common_name": "Meadow Mushroom",
+            "latin_name": "Agaricus campestris",
+            "status": "ending",
+            "confidence": "medium",
+            "observations_14d": 0,
+            "observations_30d": 2,
+            "previous_30d": 4
+          }
+        ]
+      },
+      {
+        "slug": "east-asia",
+        "name": "East Asia",
+        "hemisphere": "north",
+        "observations_90d": 553,
+        "observations_14d": 75,
+        "species_count_90d": 15,
+        "latest_observed_on": "2026-11-16",
+        "outlook": [
+          {
+            "taxon_id": 54134,
+            "common_name": "Turkey Tail",
+            "latin_name": "Trametes versicolor",
+            "status": "starting",
+            "confidence": "high",
+            "observations_14d": 48,
+            "observations_30d": 104,
+            "previous_30d": 61
+          },
+          {
+            "taxon_id": 117308,
+            "common_name": "Green-spored Parasol",
+            "latin_name": "Chlorophyllum molybdites",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 8,
+            "observations_30d": 10,
+            "previous_30d": 53
+          },
+          {
+            "taxon_id": 47392,
+            "common_name": "Shaggy Mane",
+            "latin_name": "Coprinus comatus",
+            "status": "starting",
+            "confidence": "high",
+            "observations_14d": 8,
+            "observations_30d": 11,
+            "previous_30d": 5
+          },
+          {
+            "taxon_id": 48607,
+            "common_name": "Black Trumpet",
+            "latin_name": "Craterellus cornucopioides",
+            "status": "starting",
+            "confidence": "medium",
+            "observations_14d": 4,
+            "observations_30d": 6,
+            "previous_30d": 2
+          },
+          {
+            "taxon_id": 48494,
+            "common_name": "Oyster Mushroom",
+            "latin_name": "Pleurotus ostreatus",
+            "status": "starting",
+            "confidence": "high",
+            "observations_14d": 4,
+            "observations_30d": 9,
+            "previous_30d": 2
+          },
+          {
+            "taxon_id": 48443,
+            "common_name": "Gem-studded Puffball",
+            "latin_name": "Lycoperdon perlatum",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 2,
+            "observations_30d": 5,
+            "previous_30d": 9
+          },
+          {
+            "taxon_id": 49158,
+            "common_name": "Lion's Mane",
+            "latin_name": "Hericium erinaceus",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 1,
+            "observations_30d": 3,
+            "previous_30d": 9
+          },
+          {
+            "taxon_id": 48715,
+            "common_name": "Fly Agaric",
+            "latin_name": "Amanita muscaria",
+            "status": "ending",
+            "confidence": "high",
+            "observations_14d": 0,
+            "observations_30d": 3,
+            "previous_30d": 28
+          },
+          {
+            "taxon_id": 53714,
+            "common_name": "Hen of the Woods",
+            "latin_name": "Grifola frondosa",
+            "status": "ending",
+            "confidence": "medium",
+            "observations_14d": 0,
+            "observations_30d": 0,
+            "previous_30d": 3
+          }
+        ]
+      },
+      {
+        "slug": "southern-australia",
+        "name": "Southern Australia",
+        "hemisphere": "south",
+        "observations_90d": 108,
+        "observations_14d": 12,
+        "species_count_90d": 6,
+        "latest_observed_on": "2026-11-16",
+        "outlook": [
+          {
+            "taxon_id": 117308,
+            "common_name": "Green-spored Parasol",
+            "latin_name": "Chlorophyllum molybdites",
+            "status": "starting",
+            "confidence": "high",
+            "observations_14d": 4,
+            "observations_30d": 10,
+            "previous_30d": 2
+          },
+          {
+            "taxon_id": 48715,
+            "common_name": "Fly Agaric",
+            "latin_name": "Amanita muscaria",
+            "status": "starting",
+            "confidence": "medium",
+            "observations_14d": 3,
+            "observations_30d": 3,
+            "previous_30d": 1
+          },
+          {
+            "taxon_id": 54134,
+            "common_name": "Turkey Tail",
+            "latin_name": "Trametes versicolor",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 3,
+            "observations_30d": 5,
+            "previous_30d": 6
+          },
+          {
+            "taxon_id": 47392,
+            "common_name": "Shaggy Mane",
+            "latin_name": "Coprinus comatus",
+            "status": "likely",
+            "confidence": "high",
+            "observations_14d": 1,
+            "observations_30d": 7,
+            "previous_30d": 9
+          }
+        ]
+      },
+      {
+        "slug": "new-zealand",
+        "name": "New Zealand",
+        "hemisphere": "south",
+        "observations_90d": 62,
+        "observations_14d": 14,
+        "species_count_90d": 5,
+        "latest_observed_on": "2026-11-15",
+        "outlook": [
+          {
+            "taxon_id": 54134,
+            "common_name": "Turkey Tail",
+            "latin_name": "Trametes versicolor",
+            "status": "starting",
+            "confidence": "high",
+            "observations_14d": 10,
+            "observations_30d": 20,
+            "previous_30d": 10
+          },
+          {
+            "taxon_id": 47392,
+            "common_name": "Shaggy Mane",
+            "latin_name": "Coprinus comatus",
+            "status": "likely",
+            "confidence": "medium",
+            "observations_14d": 1,
+            "observations_30d": 2,
+            "previous_30d": 4
+          }
+        ]
+      },
+      {
+        "slug": "southern-south-america",
+        "name": "Southern South America",
+        "hemisphere": "south",
+        "observations_90d": 48,
+        "observations_14d": 5,
+        "species_count_90d": 5,
+        "latest_observed_on": "2026-11-08",
+        "outlook": [
+          {
+            "taxon_id": 47392,
+            "common_name": "Shaggy Mane",
+            "latin_name": "Coprinus comatus",
+            "status": "starting",
+            "confidence": "high",
+            "observations_14d": 3,
+            "observations_30d": 14,
+            "previous_30d": 8
+          },
+          {
+            "taxon_id": 54134,
+            "common_name": "Turkey Tail",
+            "latin_name": "Trametes versicolor",
+            "status": "likely",
+            "confidence": "medium",
+            "observations_14d": 2,
+            "observations_30d": 3,
+            "previous_30d": 5
+          }
+        ]
+      }
+    ]
+  },
+  "problems": []
+}
