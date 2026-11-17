@@ -55,6 +55,13 @@ test('open data catalog lists CC BY datasets with JSON and CSV that exist, and n
   assert.ok(herbs.rows.some(row => row.toxic_lookalike_reference))
   assert.match(herbs.notice, /Never eat or use a wild plant based on this data/)
   assert.match(herbs.notice, /Never eat a wild mushroom based on this data/)
+  const pairs = JSON.parse(await read('data/herb-lookalikes.json'))
+  assert.ok(pairs.rows.length > 0)
+  assert.ok(pairs.rows.every(row => typeof row.plant_is_toxic_reference === 'boolean' && row.how_to_tell_apart.trim() && row.page_url.includes('/herbs/atlas/')))
+  assert.ok(pairs.rows.some(row => row.lookalike_is_toxic_reference === true))
+  assert.ok(pairs.rows.every(row => !('severity' in row) && !('edibility' in row)))
+  assert.match(pairs.notice, /Never eat or use a wild plant based on this data/)
+  assert.ok(catalog.datasets.some(item => item.id === 'herb-lookalikes'))
 })
 
 test('the /data page has DataCatalog and Dataset JSON-LD in the server HTML', async () => {
@@ -62,7 +69,7 @@ test('the /data page has DataCatalog and Dataset JSON-LD in the server HTML', as
   const graph = JSON.parse(html('script[type="application/ld+json"]').text())['@graph']
   assert.ok(graph.some(item => item['@type'] === 'DataCatalog'))
   const datasets = graph.filter(item => item['@type'] === 'Dataset')
-  assert.ok(datasets.length >= 5)
+  assert.ok(datasets.length >= 6)
   for (const dataset of datasets) {
     assert.equal(dataset.license, 'https://creativecommons.org/licenses/by/4.0/')
     assert.ok(dataset.distribution.length >= 1)

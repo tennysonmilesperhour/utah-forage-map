@@ -81,6 +81,30 @@ export function buildHerbSeasonality(herbs = [], occurrence) {
   return rows
 }
 
+// Plant lookalike pairs from the herb atlas. The atlas gives a note on how to tell
+// each pair apart but no graded severity, so none is invented here; the row says
+// whether either plant is one of the atlas's toxic references instead.
+export function buildHerbLookalikes(herbs = []) {
+  const bySlug = Object.fromEntries(herbs.map(plant => [plant.slug, plant]))
+  const rows = []
+  for (const plant of herbs) {
+    for (const lookalike of plant.lookalikes ?? []) {
+      const other = lookalike.slug ? bySlug[lookalike.slug] : null
+      rows.push({
+        plant_slug: plant.slug, plant_name: plant.name, latin_name: plant.latin,
+        plant_is_toxic_reference: plant.status === 'toxic',
+        lookalike_name: lookalike.name, lookalike_slug: other ? other.slug : '',
+        lookalike_is_toxic_reference: other ? other.status === 'toxic' : '',
+        how_to_tell_apart: lookalike.note ?? '',
+        listed_back: other ? (other.lookalikes ?? []).some(item => item.slug === plant.slug) : '',
+        sources: (plant.sources ?? []).map(source => source.url).join(' '),
+        page_url: `${SITE}/herbs/atlas/${plant.slug}`,
+      })
+    }
+  }
+  return rows
+}
+
 export function buildDatasets({ speciesGuides, regions, occurrence, herbs }) {
   const pageUrl = guide => `${SITE}/learn/species/${guide.slug}`
   const species = speciesGuides.map(guide => ({
@@ -132,7 +156,7 @@ export function buildDatasets({ speciesGuides, regions, occurrence, herbs }) {
     page_url: `${SITE}/regions/${region.slug}`,
   }))
 
-  return { species, seasonality, suppressed, lookalikes, regions: regionRows, herbSeasonality: buildHerbSeasonality(herbs, occurrence) }
+  return { species, seasonality, suppressed, lookalikes, regions: regionRows, herbSeasonality: buildHerbSeasonality(herbs, occurrence), herbLookalikes: buildHerbLookalikes(herbs) }
 }
 
 const COMMON = {
@@ -164,6 +188,13 @@ export function datasetDefinitions(data, occurrence, date) {
       description: 'Dangerous and harmless lookalikes for each guide, the field check that separates them, and whether the lookalike lists the species back. Severity is the worst outcome if the two species are mixed up, in either direction (harmless, caution, toxic or deadly). Both pages of a pair carry the same word, so a severity describes the pair, not the edibility of either species. This is study material, not an edibility judgement.',
       rows: data.lookalikes, columns: columns(data.lookalikes), notes: 'Written by the World Mushroom Foraging field desk with cited sources on each species page. Independent expert review is pending.', source: 'World Mushroom Foraging species guides', snapshot: date,
       temporal: date, keywords: ['mushroom', 'lookalike', 'poisonous', 'identification', 'safety'], page: `${SITE}/learn`,
+    },
+    {
+      id: 'herb-lookalikes', title: 'Wild plant lookalike pairs with field notes',
+      description: `Lookalikes listed for each plant in the herb atlas, the note on how to tell them apart, and whether either plant is one of the poisonous plants the atlas keeps as lookalike references. The atlas does not grade these pairs by severity, so no severity is given. plant_is_toxic_reference and lookalike_is_toxic_reference false does not mean a plant is safe to eat or use; lookalike_is_toxic_reference is empty when the lookalike has no atlas page. This is study material, not an identification or a judgement that any plant is edible. ${HERB_NOTICE}`,
+      rows: data.herbLookalikes, columns: columns(data.herbLookalikes), notes: 'Written by the World Mushroom Foraging field desk for The Verdant Hours atlas, with cited sources on each plant page. Independent expert review is pending.', source: 'The Verdant Hours wild plant atlas', snapshot: date,
+      temporal: date, keywords: ['wild plants', 'herbs', 'lookalike', 'poisonous', 'identification', 'safety'], page: `${SITE}/herbs/atlas`,
+      notice: `${HERB_NOTICE} ${NOTICE}`,
     },
     {
       id: 'species', title: 'Mushroom guide catalogue',
@@ -214,7 +245,7 @@ export function catalogJsonLd(definitions) {
     '@context': 'https://schema.org',
     '@graph': [{
       '@type': 'DataCatalog', '@id': `${SITE}/data#catalog`, name: 'World Mushroom Foraging open data',
-      description: 'Open mushroom seasonality, lookalike and regional field-signal data, plus wild plant seasonality, free to reuse with credit.',
+      description: 'Open mushroom seasonality, lookalike and regional field-signal data, plus wild plant seasonality and lookalikes, free to reuse with credit.',
       url: `${SITE}/data`, ...COMMON, publisher: { '@id': `${SITE}/#organization` },
       dataset: [...definitions.map(definition => ({ '@id': `${SITE}/data#${definition.id}` })), { '@id': `${SITE}/data#regional-signal` }],
     }, ...definitions.map(datasetJsonLd), liveDataset()],
